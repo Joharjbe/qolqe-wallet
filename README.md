@@ -245,4 +245,4 @@ Para ejecutar sin ventana, omite `--variable HEADLESS:False`. Al terminar, abre 
 
 Los datos iniciales proceden de la semilla del repositorio: Diego tiene S/ 2,500.00 y Bruno S/ 800.00. Las transferencias entre cuentas Qolqe tienen comisión S/ 0.00 (RN-09). Este caso cubre el camino válido de HU-G4-01, HU-G4-06, HU-G4-07 y HU-G4-08; no pretende cubrir todos los errores, condiciones de carrera ni los demás módulos. Consulta [`docs/demo-robot-ia.md`](docs/demo-robot-ia.md) para la demostración de IA y el guion de presentación.
 
-La presentación editable está en [`docs/Presentacion_Robot_Framework_G4_final.pptx`](docs/Presentacion_Robot_Framework_G4_final.pptx). Sus notas incluyen el tiempo sugerido y las fuentes de cada diapositiva.
+La presentación visual y editable está en [`docs/Presentacion_Robot_Framework_G4_visual.pptx`](docs/Presentacion_Robot_Framework_G4_visual.pptx). Incluye capturas reales del flujo y del reporte, enlaces a este README y a la guía de IA, y notas con el tiempo sugerido y las fuentes de cada diapositiva. Las capturas originales están en [`docs/capturas/`](docs/capturas/).
