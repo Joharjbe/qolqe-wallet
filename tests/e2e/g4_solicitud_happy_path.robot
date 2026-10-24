@@ -12,6 +12,7 @@ Suite Teardown    Close Browser
 *** Variables ***
 ${BASE_URL}    http://127.0.0.1:8000
 ${HEADLESS}    True
+${SLOWMO}    0s
 ${DIEGO_CELULAR}    998877665
 ${DIEGO_PIN}    3604
 ${BRUNO_CELULAR}    912345678
@@ -44,5 +45,5 @@ Solicitud de dinero aceptada de punta a punta
 *** Keywords ***
 Preparar demo
     Reiniciar datos locales de Qolqe    ${BASE_URL}
-    New Browser    chromium    headless=${HEADLESS}
+    New Browser    chromium    headless=${HEADLESS}    slowMo=${SLOWMO}
     New Page    ${BASE_URL}/login

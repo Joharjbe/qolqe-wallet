@@ -226,10 +226,10 @@ QOLQE_BD=.demo-data/qolqe.db QOLQE_MODO_PRUEBA=1 python -m uvicorn qolqe.main:ap
 
 ```bash
 source .venv/bin/activate
-python -m robot --variable HEADLESS:False --outputdir reportes tests/e2e/g4_solicitud_happy_path.robot
+python -m robot --variable HEADLESS:False --variable SLOWMO:0.5s --outputdir reportes tests/e2e/g4_solicitud_happy_path.robot
 ```
 
-Para ejecutar sin ventana, omite `--variable HEADLESS:False`. Al terminar, abre `reportes/report.html` para el resultado y `reportes/log.html` para el detalle de cada paso. `reportes/output.xml` es el resultado legible por herramientas. Si usas otro puerto, pasa `--variable BASE_URL:http://127.0.0.1:PUERTO`.
+`SLOWMO:0.5s` ralentiza los clics y las escrituras solo para que el público vea la demo. Para ejecutar sin ventana y a velocidad normal, omite las variables `HEADLESS` y `SLOWMO`. Al terminar, abre `reportes/report.html` para el resultado y `reportes/log.html` para el detalle de cada paso. `reportes/output.xml` es el resultado legible por herramientas. Si usas otro puerto, pasa `--variable BASE_URL:http://127.0.0.1:PUERTO`.
 
 **Atención:** antes de cada ejecución, la prueba llama a `/api/pruebas/reiniciar` y restaura los datos semilla de la instancia local indicada. No la ejecutes contra una base de datos que quieras conservar. El preparador rechaza direcciones remotas y exige que Qolqe esté en modo de pruebas.
 
@@ -247,4 +247,4 @@ Los datos iniciales proceden de la semilla del repositorio: Diego tiene S/ 2,500
 
 La presentación final de 10 minutos está en [`docs/Presentacion_Robot_Framework_G4_visual.pptx`](docs/Presentacion_Robot_Framework_G4_visual.pptx). Cubre la herramienta, su evolución y arquitectura; muestra el patrón Page Object aplicado al código; guía la ejecución y las validaciones en vivo; incluye la revisión con IA y cierra con dificultades y límites. Cada diapositiva muestra las ideas clave del guion y tiene en sus notas el texto completo para leer, los tiempos (0:00–10:00), las acciones de cada demo y las fuentes. Las capturas reales están en [`docs/capturas/`](docs/capturas/).
 
-El texto para exponer cada diapositiva está en [`docs/Guion_exposicion_Robot_Qolqe_10_min.pdf`](docs/Guion_exposicion_Robot_Qolqe_10_min.pdf). Los recuadros verdes indican acciones de la demostración que se muestran, pero no se leen.
+El texto para exponer cada diapositiva y los pasos exactos de las dos demos están en [`docs/Guion_exposicion_Robot_Qolqe_10_min.pdf`](docs/Guion_exposicion_Robot_Qolqe_10_min.pdf). Los recuadros verdes indican acciones que se muestran, pero no se leen.
