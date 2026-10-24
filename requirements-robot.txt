@@ -1,0 +1,3 @@
+-r requirements.txt
+robotframework==7.5
+robotframework-browser[bb]==20.6.0

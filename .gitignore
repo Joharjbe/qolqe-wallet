@@ -6,3 +6,8 @@ datos/
 .coverage
 htmlcov/
 reportes/
+.demo-data/
+output.xml
+log.html
+report.html
+.deck-build/

@@ -193,3 +193,56 @@ IA.md                     # Declaración de uso de IA
 ```
 
 En `docs/` encontrarán la especificación de requisitos, la plantilla del informe del proyecto y la plantilla del reporte de defectos; en la raíz, la plantilla de `IA.md`.
+
+---
+
+## 7. Demo E2E del grupo 4: Robot Framework
+
+El caso de [`tests/e2e/g4_solicitud_happy_path.robot`](tests/e2e/g4_solicitud_happy_path.robot) automatiza por la **interfaz web** este recorrido: Diego agrega a Bruno como contacto, le solicita S/ 25.00, Bruno acepta y ambos ven la solicitud aceptada. La prueba verifica también el código de operación y los saldos finales. Se aplica **Page Object** mediante los archivos de [`tests/e2e/pages/`](tests/e2e/pages/): la prueba expresa acciones de negocio y los localizadores están en recursos de cada pantalla.
+
+### Instalación (una vez)
+
+Usa Python 3.11 o superior. Los comandos siguientes corresponden a macOS o Linux. Desde la raíz de este repositorio:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-robot.txt
+rfbrowser install chromium
+```
+
+La descarga de Chromium requiere conexión a internet. Si ya tienes el entorno creado para Qolqe, instala solo `requirements-robot.txt`.
+
+### Ejecutar la demo
+
+**Terminal 1** — iniciar Qolqe en modo de pruebas y con base de datos aislada:
+
+```bash
+source .venv/bin/activate
+QOLQE_BD=.demo-data/qolqe.db QOLQE_MODO_PRUEBA=1 python -m uvicorn qolqe.main:app --host 127.0.0.1 --port 8000
+```
+
+**Terminal 2** — ejecutar y ver el navegador:
+
+```bash
+source .venv/bin/activate
+python -m robot --variable HEADLESS:False --outputdir reportes tests/e2e/g4_solicitud_happy_path.robot
+```
+
+Para ejecutar sin ventana, omite `--variable HEADLESS:False`. Al terminar, abre `reportes/report.html` para el resultado y `reportes/log.html` para el detalle de cada paso. `reportes/output.xml` es el resultado legible por herramientas. Si usas otro puerto, pasa `--variable BASE_URL:http://127.0.0.1:PUERTO`.
+
+**Atención:** antes de cada ejecución, la prueba llama a `/api/pruebas/reiniciar` y restaura los datos semilla de la instancia local indicada. No la ejecutes contra una base de datos que quieras conservar. El preparador rechaza direcciones remotas y exige que Qolqe esté en modo de pruebas.
+
+### Qué se comprueba
+
+| Paso | Evidencia esperada |
+|---|---|
+| Alta de contacto | Aparece «Bruno Demo» en la lista de Diego. |
+| Solicitud | Mensaje de envío y estado «Pendiente» para S/ 25.00. |
+| Aceptación | Estado «Aceptada» y código de operación visible para Bruno. |
+| Efecto financiero | Bruno: S/ 775.00; Diego: S/ 2,525.00. |
+| Visibilidad de ambos usuarios | Diego ve la misma solicitud como «Aceptada». |
+
+Los datos iniciales proceden de la semilla del repositorio: Diego tiene S/ 2,500.00 y Bruno S/ 800.00. Las transferencias entre cuentas Qolqe tienen comisión S/ 0.00 (RN-09). Este caso cubre el camino válido de HU-G4-01, HU-G4-06, HU-G4-07 y HU-G4-08; no pretende cubrir todos los errores, condiciones de carrera ni los demás módulos. Consulta [`docs/demo-robot-ia.md`](docs/demo-robot-ia.md) para la demostración de IA y el guion de presentación.
+
+La presentación editable está en [`docs/Presentacion_Robot_Framework_G4_final.pptx`](docs/Presentacion_Robot_Framework_G4_final.pptx). Sus notas incluyen el tiempo sugerido y las fuentes de cada diapositiva.
