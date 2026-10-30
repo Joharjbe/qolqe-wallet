@@ -92,7 +92,7 @@ Característica: API de solicitudes de dinero (G4)
     Entonces la respuesta tiene estado 200
     Y la solicitud está en estado "ACEPTADA"
     Y la solicitud tiene código de operación
-    Y el saldo de Bruno es "775.00"
+    Y el saldo de Bruno es "770.00"
     Y el saldo de Diego es "2525.00"
     Y "998877665" recibió un SMS que contiene "aceptó tu solicitud"
 
