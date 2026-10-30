@@ -31,7 +31,8 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Levantar Qolqe en modo de pruebas
         run: |
-          QOLQE_BD=datos/ci.db QOLQE_MODO_PRUEBA=1 nohup python -m uvicorn qolqe.main:app --host 127.0.0.1 --port 8000 > uvicorn.log 2>&1 &
+          mkdir -p reportes
+          QOLQE_BD=datos/ci.db QOLQE_MODO_PRUEBA=1 nohup python -m uvicorn qolqe.main:app --host 127.0.0.1 --port 8000 > reportes/uvicorn.log 2>&1 &
           curl --silent --fail --retry 60 --retry-delay 1 --retry-connrefused "$QOLQE_URL/api/salud"
       - name: Pruebas de API (pytest-bdd)
         run: |
@@ -55,9 +56,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: reportes-api
-          path: |
-            reportes/
-            uvicorn.log
+          path: reportes/
 
   web:
     name: web
@@ -119,7 +118,7 @@ jobs:
           path: descargas
           merge-multiple: true
       - name: Armar la matriz de trazabilidad y la portada
-        run: python .github/scripts/trazabilidad.py --reportes descargas/reportes --sitio sitio --matriz sitio/trazabilidad.md
+        run: python .github/scripts/trazabilidad.py --reportes descargas --sitio sitio --matriz sitio/trazabilidad.md
       - name: Mostrar la matriz en el resumen del run
         run: cat sitio/trazabilidad.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/configure-pages@v5

@@ -77,7 +77,7 @@ def contrato(ruta: Path) -> str:
         return "sin ejecutar"
     casos = list(ET.parse(ruta).getroot().iter("testcase"))
     fallos = sum(1 for c in casos if c.find("failure") is not None or c.find("error") is not None)
-    return f"failed ({fallos}/{len(casos)})" if fallos else f"passed ({len(casos)} operaciones)"
+    return f"failed ({fallos}/{len(casos)})" if fallos else f"passed ({len(casos)}/{len(casos)})"
 
 
 def construir_filas(casos: dict, resultados: dict, ruta_contrato: Path) -> list[list[str]]:
