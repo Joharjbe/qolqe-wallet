@@ -1,0 +1,4 @@
+# Desde FastAPI 0.118 el código tras el yield de una dependencia corre después de enviar la respuesta,
+# por lo que el commit de qolqe/bd.py puede llegar tarde (DEF-07 en docs/defectos.md).
+# Se fija la versión para que el pipeline sea repetible; qolqe/ no se modifica.
+fastapi==0.117.1

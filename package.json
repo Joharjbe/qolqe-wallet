@@ -1,0 +1,13 @@
+{
+  "name": "qolqe-e2e-g4",
+  "private": true,
+  "scripts": {
+    "test:web": "bddgen && playwright test",
+    "test:web:3x": "bddgen && playwright test --repeat-each=3",
+    "test:web:demo": "bddgen && playwright test --headed --workers=1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "playwright-bdd": "9.2.1"
+  }
+}

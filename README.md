@@ -8,6 +8,22 @@ Billetera digital **ficticia** usada como sistema bajo prueba (SUT) en el Proyec
 
 ---
 
+## Entrega del Proyecto 2 · Módulo G4
+
+| | |
+|---|---|
+| **Módulo** | G4 · Contactos y solicitudes de dinero |
+| **API (Parte 1)** | pytest + httpx + pytest-bdd · Schemathesis |
+| **Web (Parte 2)** | Playwright (TypeScript) + playwright-bdd · Page Object |
+| **Pipeline** | [`.github/workflows/pruebas.yml`](.github/workflows/pruebas.yml) · [ejecuciones](https://github.com/Joharjbe/qolqe-wallet/actions/workflows/pruebas.yml) |
+| **Reportes publicados** | https://joharjbe.github.io/qolqe-wallet/ |
+| **Matriz de trazabilidad** | [`docs/trazabilidad.md`](docs/trazabilidad.md) |
+| **Informe** | [`docs/informe.md`](docs/informe.md) · [alcance y casos](docs/alcance-y-casos.md) · [defectos](docs/defectos.md) · [guion de la demo](docs/guion-demo.md) |
+
+Comandos en la [sección 6](#6-ejecutar-las-pruebas-del-modulo-g4).
+
+---
+
 ## 1. Requisitos
 
 - Python **3.11 o superior** (recomendado 3.12)
@@ -178,73 +194,63 @@ Disponible solo con `QOLQE_MODO_PRUEBA=1`. **No forma parte del producto**: exis
 
 ---
 
-## 6. Estructura sugerida del repositorio del grupo
+## 6. Ejecutar las pruebas del módulo G4
 
-```
-qolqe/                    # App (NO modificar)
-features/                 # Casos del módulo en Gherkin
-tests/
-  api/                    # Parte 1
-  e2e/pages/              # Parte 2 (Page Objects)
-  performance/            # Parte 3
-docs/                     # Herramienta, trazabilidad, rendimiento, defectos
-.github/workflows/        # Pipeline (Parte 2)
-IA.md                     # Declaración de uso de IA
-```
-
-En `docs/` encontrarán la especificación de requisitos, la plantilla del informe del proyecto y la plantilla del reporte de defectos; en la raíz, la plantilla de `IA.md`.
-
----
-
-## 7. Demo E2E del grupo 4: Robot Framework
-
-El caso de [`tests/e2e/g4_solicitud_happy_path.robot`](tests/e2e/g4_solicitud_happy_path.robot) automatiza por la **interfaz web** este recorrido: Diego agrega a Bruno como contacto, le solicita S/ 25.00, Bruno acepta y ambos ven la solicitud aceptada. La prueba verifica también el código de operación y los saldos finales. Se aplica **Page Object** mediante los archivos de [`tests/e2e/pages/`](tests/e2e/pages/): la prueba expresa acciones de negocio y los localizadores están en recursos de cada pantalla.
-
-### Instalación (una vez)
-
-Usa Python 3.11 o superior. Los comandos siguientes corresponden a macOS o Linux. Desde la raíz de este repositorio:
+Requisitos: Python 3.11 o superior y Node 22 o superior. Instalación, una sola vez:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements-robot.txt
-rfbrowser install chromium
+pip install -r requirements-dev.txt
+npm ci
+npx playwright install chromium
 ```
 
-La descarga de Chromium requiere conexión a internet. Si ya tienes el entorno creado para Qolqe, instala solo `requirements-robot.txt`.
-
-### Ejecutar la demo
-
-**Terminal 1** — iniciar Qolqe en modo de pruebas y con base de datos aislada:
+**Terminal 1**: levantar Qolqe con una base de datos aislada.
 
 ```bash
 source .venv/bin/activate
-QOLQE_BD=.demo-data/qolqe.db QOLQE_MODO_PRUEBA=1 python -m uvicorn qolqe.main:app --host 127.0.0.1 --port 8000
+QOLQE_BD=.demo-data/qolqe.db QOLQE_MODO_PRUEBA=1 python -m uvicorn qolqe.main:app --port 8000
 ```
 
-**Terminal 2** — ejecutar y ver el navegador:
+**Terminal 2**: ejecutar las suites. Reinician los datos de esa instancia; no las ejecuten contra una base que quieran conservar.
 
 ```bash
 source .venv/bin/activate
-python -m robot --variable HEADLESS:False --variable SLOWMO:0.5s --outputdir reportes tests/e2e/g4_solicitud_happy_path.robot
+mkdir -p reportes/api
+python -m pytest tests/api --junitxml=reportes/api/junit.xml --html=reportes/api/reporte.html --self-contained-html
 ```
 
-`SLOWMO:0.5s` ralentiza los clics y las escrituras solo para que el público vea la demo. Para ejecutar sin ventana y a velocidad normal, omite las variables `HEADLESS` y `SLOWMO`. Al terminar, abre `reportes/report.html` para el resultado y `reportes/log.html` para el detalle de cada paso. `reportes/output.xml` es el resultado legible por herramientas. Si usas otro puerto, pasa `--variable BASE_URL:http://127.0.0.1:PUERTO`.
+```bash
+TOKEN=$(curl -s -X POST http://127.0.0.1:8000/api/auth/login -H "Content-Type: application/json" -d '{"celular":"987654321","pin":"4826"}' | python -c "import json,sys;print(json.load(sys.stdin)['access_token'])")
+schemathesis run http://127.0.0.1:8000/openapi.json -H "Authorization: Bearer $TOKEN" --include-path-regex '^/api/(contactos|solicitudes)' --max-examples 30 --seed 42 --report junit,html --report-junit-path reportes/contrato/junit.xml --report-html-path reportes/contrato/html
+```
 
-**Atención:** antes de cada ejecución, la prueba llama a `/api/pruebas/reiniciar` y restaura los datos semilla de la instancia local indicada. No la ejecutes contra una base de datos que quieras conservar. El preparador rechaza direcciones remotas y exige que Qolqe esté en modo de pruebas.
+```bash
+npm run test:web:3x
+```
 
-### Qué se comprueba
+```bash
+npx playwright show-report reportes/web/html
+```
 
-| Paso | Evidencia esperada |
-|---|---|
-| Alta de contacto | Aparece «Bruno Demo» en la lista de Diego. |
-| Solicitud | Mensaje de envío y estado «Pendiente» para S/ 25.00. |
-| Aceptación | Estado «Aceptada» y código de operación visible para Bruno. |
-| Efecto financiero | Bruno: S/ 775.00; Diego: S/ 2,525.00. |
-| Visibilidad de ambos usuarios | Diego ve la misma solicitud como «Aceptada». |
+`npm run test:web:demo` ejecuta la suite web con el navegador visible. Si Qolqe no está levantado, Playwright lo inicia solo con `.demo-data/e2e.db`.
 
-Los datos iniciales proceden de la semilla del repositorio: Diego tiene S/ 2,500.00 y Bruno S/ 800.00. Las transferencias entre cuentas Qolqe tienen comisión S/ 0.00 (RN-09). Este caso cubre el camino válido de HU-G4-01, HU-G4-06, HU-G4-07 y HU-G4-08; no pretende cubrir todos los errores, condiciones de carrera ni los demás módulos. Consulta [`docs/demo-robot-ia.md`](docs/demo-robot-ia.md) para la demostración de IA y el guion de presentación.
+### Estructura
 
-La presentación final de 10 minutos está en [`docs/Presentacion_Robot_Framework_G4_visual.pptx`](docs/Presentacion_Robot_Framework_G4_visual.pptx). Cubre la herramienta, su evolución y arquitectura; muestra el patrón Page Object aplicado al código; guía la ejecución y las validaciones en vivo; incluye la revisión con IA y cierra con dificultades y límites. Cada diapositiva muestra las ideas clave del guion y tiene en sus notas el texto completo para leer, los tiempos (0:00–10:00), las acciones de cada demo y las fuentes. Las capturas reales están en [`docs/capturas/`](docs/capturas/).
-
-El texto para exponer cada diapositiva y los pasos exactos de las dos demos están en [`docs/Guion_exposicion_Robot_Qolqe_10_min.pdf`](docs/Guion_exposicion_Robot_Qolqe_10_min.pdf). Los recuadros verdes indican acciones que se muestran, pero no se leen.
+```
+qolqe/                    # App bajo prueba (sin modificar)
+features/                 # Casos en Gherkin con @HU, @CA, @CP y @DEF
+  contactos_api.feature   solicitudes_api.feature
+  web/contactos_web.feature   web/solicitudes_web.feature
+tests/
+  api/                    # Pasos de pytest-bdd
+  e2e/pages/              # Page Objects
+  e2e/steps/              # Pasos de Playwright
+.github/
+  workflows/pruebas.yml   # Pipeline
+  scripts/                # Resumen del job, matriz y portada
+docs/                     # Informe, alcance, defectos, trazabilidad, guion y presentaciones
+labs/s11-robot/           # Laboratorio S11 (Robot Framework), fuera del pipeline
+IA.md                     # Declaración de uso de IA
+```
