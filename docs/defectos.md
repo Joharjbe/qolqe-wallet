@@ -1,7 +1,7 @@
 # Reporte de defectos · G4
 
 Entorno común: Qolqe (`qolqe/` sin modificar), Python 3.12, SQLite, `QOLQE_MODO_PRUEBA=1`, Chromium; pipeline en `ubuntu-24.04`.
-Cada defecto con prueba automatizada queda como **fallo esperado** (`xfail` estricto): si se corrige, la prueba pasa a XPASS y el pipeline obliga a retirar la etiqueta.
+Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` estricto): si se corrige, la prueba pasa a XPASS y el pipeline obliga a retirar la etiqueta.
 
 | ID | Título | Severidad | Prioridad | Estado |
 |---|---|---|---|---|
@@ -12,6 +12,7 @@ Cada defecto con prueba automatizada queda como **fallo esperado** (`xfail` estr
 | DEF-01 | El alias rechaza la letra ñ | Media | Media | Abierto |
 | DEF-05 | El contrato OpenAPI no declara las reglas de los campos | Baja | Baja | Abierto |
 | DEF-06 | `Allow` incompleto en la respuesta a `OPTIONS` | Baja | Baja | Abierto |
+| DEF-08 | `favorito` acepta 0 y 1 aunque el contrato pide un booleano | Baja | Baja | Abierto |
 
 ## DEF-03: Se puede aceptar una solicitud vencida y se transfiere el dinero
 
@@ -141,10 +142,25 @@ Cada defecto con prueba automatizada queda como **fallo esperado** (`xfail` estr
 
 **Resultado obtenido:** 405 con `Allow: GET`. También en `/api/contactos/{id}` (`Allow: PUT`, falta DELETE) y `/api/solicitudes` (`Allow: GET`, falta POST).
 
+## DEF-08: `favorito` acepta 0 y 1 aunque el contrato pide un booleano
+
+| Campo | Valor |
+|---|---|
+| Módulo / regla | G4 · contrato de `PUT /api/contactos/{id}` |
+| Severidad | Baja |
+| Prioridad | Baja |
+| Prueba que lo detecta | Schemathesis, check `negative_data_rejection` (ST201) |
+
+**Pasos para reproducir:** enviar `PUT /api/contactos/1` con `{"alias": "Bruno oficina", "favorito": 0}`.
+
+**Resultado esperado:** 422, porque el contrato declara `favorito` como booleano.
+
+**Resultado obtenido:** 200 con `favorito: false`. Pydantic convierte el número en modo permisivo. Clasificación: desajuste entre el código y el contrato.
+
 ## Hallazgo descartado
 
 Schemathesis, check `ensure_resource_availability` (ST302): reporta 404 al aceptar una solicitud recién creada con el mismo usuario que la creó. **Falso positivo:** HU-G4-08 CA4 exige ese 404 (solo el destinatario puede aceptar), y CP-A31 lo verifica.
 
 ## Quality gate
 
-Todas las pruebas pasan, salvo los fallos esperados de esta lista; no hay flaky (`failOnFlakyTests`); la suite web pasa 3 veces seguidas; no hay respuestas 500 ni incumplimientos de esquema en el contrato; los reportes quedan publicados. Los tres checks de Schemathesis excluidos corresponden a DEF-05, DEF-06 y al falso positivo anterior.
+Todas las pruebas pasan, salvo los fallos esperados de esta lista; no hay flaky (`failOnFlakyTests`); la suite web pasa 3 veces seguidas; no hay respuestas 500 ni incumplimientos de esquema en el contrato; los reportes quedan publicados. `schemathesis.toml` declara los checks excluidos: DEF-05, DEF-06, DEF-08 (solo en esa operación) y el falso positivo anterior.

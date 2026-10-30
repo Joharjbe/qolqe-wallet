@@ -42,10 +42,9 @@ jobs:
           curl --silent --fail -X POST "$QOLQE_URL/api/pruebas/reiniciar"
           TOKEN=$(curl --silent --fail -X POST "$QOLQE_URL/api/auth/login" -H "Content-Type: application/json" \
             -d '{"celular":"987654321","pin":"4826"}' | python -c "import json,sys;print(json.load(sys.stdin)['access_token'])")
-          # Excluidos por decisión documentada en docs/defectos.md (DEF-05, DEF-06 y un falso positivo).
+          # schemathesis.toml declara los checks excluidos y su motivo (docs/defectos.md).
           schemathesis run "$QOLQE_URL/openapi.json" -H "Authorization: Bearer $TOKEN" \
             --include-path-regex '^/api/(contactos|solicitudes)' \
-            --exclude-checks positive_data_acceptance,allow_header_conformance,ensure_resource_availability \
             --max-examples 30 --seed 42 \
             --report junit,html --report-junit-path reportes/contrato/junit.xml --report-html-path reportes/contrato/html
       - name: Resumen del job

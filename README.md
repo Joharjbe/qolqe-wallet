@@ -223,7 +223,7 @@ python -m pytest tests/api --junitxml=reportes/api/junit.xml --html=reportes/api
 
 ```bash
 TOKEN=$(curl -s -X POST http://127.0.0.1:8000/api/auth/login -H "Content-Type: application/json" -d '{"celular":"987654321","pin":"4826"}' | python -c "import json,sys;print(json.load(sys.stdin)['access_token'])")
-schemathesis run http://127.0.0.1:8000/openapi.json -H "Authorization: Bearer $TOKEN" --include-path-regex '^/api/(contactos|solicitudes)' --exclude-checks positive_data_acceptance,allow_header_conformance,ensure_resource_availability --max-examples 30 --seed 42 --report junit,html --report-junit-path reportes/contrato/junit.xml --report-html-path reportes/contrato/html
+schemathesis run http://127.0.0.1:8000/openapi.json -H "Authorization: Bearer $TOKEN" --include-path-regex '^/api/(contactos|solicitudes)' --max-examples 30 --seed 42 --report junit,html --report-junit-path reportes/contrato/junit.xml --report-html-path reportes/contrato/html
 ```
 
 ```bash

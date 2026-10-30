@@ -1,0 +1,9 @@
+# Checks desactivados por decisión documentada en docs/defectos.md.
+[checks]
+positive_data_acceptance.enabled = false      # DEF-05: reglas de negocio que el contrato no declara
+allow_header_conformance.enabled = false      # DEF-06: cabecera Allow incompleta
+ensure_resource_availability.enabled = false  # Falso positivo: HU-G4-08 CA4 exige ese 404
+
+[[operations]]
+include-name = "PUT /api/contactos/{contacto_id}"
+checks.negative_data_rejection.enabled = false  # DEF-08: favorito acepta 0 y 1 como booleano
