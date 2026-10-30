@@ -2,7 +2,7 @@
 
 Generada por `.github/scripts/trazabilidad.py` a partir de las etiquetas de `features/` y los JUnit XML del pipeline.
 
-Run **#7** · commit `c8131f4` · 2026-10-30 14:59 (hora de Lima) · [ver run](https://github.com/Joharjbe/qolqe-wallet/actions/runs/41119242555)
+Run **#10** · commit `c7d3d14` · 2026-10-30 15:29 (hora de Lima) · [ver run](https://github.com/Joharjbe/qolqe-wallet/actions/runs/41123298780)
 
 ## Cobertura por historia
 
@@ -21,7 +21,7 @@ Run **#7** · commit `c8131f4` · 2026-10-30 14:59 (hora de Lima) · [ver run](h
 
 ## HU → caso → resultado
 
-| HU | CA | Caso | Título | Nivel | Resultado (run #7) |
+| HU | CA | Caso | Título | Nivel | Resultado (run #10) |
 |---|---|---|---|---|---|
 | HU-G4-01 | CA1 | CP-A01 | Agregar un contacto válido normaliza el alias | api | passed (1/1) |
 | HU-G4-01 | CA1 | CP-A02 | Rechazar un celular que no puede ser contacto | api | passed (6/6) |

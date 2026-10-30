@@ -43,7 +43,7 @@ Es **integración continua**: se integra y se prueba en cada cambio, pero no se 
 
 **Trazabilidad HU → casos → ejecución.** [`trazabilidad.md`](trazabilidad.md), generada por `.github/scripts/trazabilidad.py` desde las etiquetas de `features/` y el JUnit XML de cada run.
 
-**Resultados.** [Run #7](https://github.com/Joharjbe/qolqe-wallet/actions/runs/41119242555): 19 escenarios web, 57 de 57 ejecuciones en verde; API 64 passed y 4 xfailed; contrato 10 de 10. El [PR #3](https://github.com/Joharjbe/qolqe-wallet/pull/3) muestra el quality gate bloqueando un cambio. No aparecieron defectos propios de la interfaz. DEF-03 no se alcanza por pantalla, porque la interfaz oculta el botón de aceptar en una solicitud vencida (CP-W15), pero sí por la API.
+**Resultados.** [Run #10](https://github.com/Joharjbe/qolqe-wallet/actions/runs/41123298780): 19 escenarios web, 57 de 57 ejecuciones en verde; API 64 passed y 4 xfailed; contrato 10 de 10. El [PR #3](https://github.com/Joharjbe/qolqe-wallet/pull/3) muestra el quality gate bloqueando un cambio. No aparecieron defectos propios de la interfaz. DEF-03 no se alcanza por pantalla, porque la interfaz oculta el botón de aceptar en una solicitud vencida (CP-W15), pero sí por la API.
 
 ## 4. Pruebas de rendimiento
 
