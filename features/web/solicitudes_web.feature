@@ -6,6 +6,7 @@ Característica: Pantalla de solicitudes de dinero (G4)
     Dado que "Diego" ingresó a Qolqe
     Y abre la pantalla de contactos
     Y agrega el contacto "912345678" con alias "Bruno Demo"
+    Y el contacto "Bruno Demo" aparece en la lista
     Y abre la pantalla de solicitudes
     Cuando solicita "25.00" a "Bruno Demo" por "Devolución demo G4"
     Entonces ve la confirmación "Solicitud enviada"

@@ -39,6 +39,8 @@
 
 Es **integración continua**: se integra y se prueba en cada cambio, pero no se publica la app. API y web van en un solo workflow porque la suite es pequeña.
 
+**Prueba inestable corregida.** En el run #13, CP-W10 falló y pasó en el reintento: la prueba abría la pantalla de solicitudes sin esperar a que se guardara el contacto. `failOnFlakyTests` puso el pipeline en rojo. Se agregó esa aserción al escenario y pasó 15 de 15 en local. Es un error de la prueba, no de Qolqe.
+
 **Quality gate.** Definido en [`defectos.md`](defectos.md). `api` y `web` son status checks obligatorios en la protección de `main`.
 
 **Trazabilidad HU → casos → ejecución.** [`trazabilidad.md`](trazabilidad.md), generada por `.github/scripts/trazabilidad.py` desde las etiquetas de `features/` y el JUnit XML de cada run.
