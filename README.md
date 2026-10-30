@@ -18,7 +18,7 @@ Billetera digital **ficticia** usada como sistema bajo prueba (SUT) en el Proyec
 | **Pipeline** | [`.github/workflows/pruebas.yml`](.github/workflows/pruebas.yml) · [ejecuciones](https://github.com/Joharjbe/qolqe-wallet/actions/workflows/pruebas.yml) |
 | **Reportes publicados** | https://joharjbe.github.io/qolqe-wallet/ |
 | **Matriz de trazabilidad** | [`docs/trazabilidad.md`](docs/trazabilidad.md) |
-| **Informe** | [`docs/informe.md`](docs/informe.md) · [alcance y casos](docs/alcance-y-casos.md) · [defectos](docs/defectos.md) |
+| **Informe** | [`docs/informe.md`](docs/informe.md) · [alcance y casos](docs/alcance-y-casos.md) · [defectos](docs/defectos.md) · presentaciones: [Entrega 1](docs/Entrega1_G4_API.pptx), [Entrega 2](docs/Entrega2_G4_E2E_CICD.pptx) |
 
 Comandos en la [sección 6](#6-ejecutar-las-pruebas-del-modulo-g4).
 
