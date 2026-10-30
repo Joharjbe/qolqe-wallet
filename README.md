@@ -18,7 +18,7 @@ Billetera digital **ficticia** usada como sistema bajo prueba (SUT) en el Proyec
 | **Pipeline** | [`.github/workflows/pruebas.yml`](.github/workflows/pruebas.yml) · [ejecuciones](https://github.com/Joharjbe/qolqe-wallet/actions/workflows/pruebas.yml) |
 | **Reportes publicados** | https://joharjbe.github.io/qolqe-wallet/ |
 | **Matriz de trazabilidad** | [`docs/trazabilidad.md`](docs/trazabilidad.md) |
-| **Informe** | [`docs/informe.md`](docs/informe.md) · [alcance y casos](docs/alcance-y-casos.md) · [defectos](docs/defectos.md) · [guion de la demo](docs/guion-demo.md) |
+| **Informe** | [`docs/informe.md`](docs/informe.md) · [alcance y casos](docs/alcance-y-casos.md) · [defectos](docs/defectos.md) · presentaciones: [Entrega 1](docs/Entrega1_G4_API.pptx), [Entrega 2](docs/Entrega2_G4_E2E_CICD.pptx) |
 
 Comandos en la [sección 6](#6-ejecutar-las-pruebas-del-modulo-g4).
 
@@ -222,8 +222,7 @@ python -m pytest tests/api --junitxml=reportes/api/junit.xml --html=reportes/api
 ```
 
 ```bash
-TOKEN=$(curl -s -X POST http://127.0.0.1:8000/api/auth/login -H "Content-Type: application/json" -d '{"celular":"987654321","pin":"4826"}' | python -c "import json,sys;print(json.load(sys.stdin)['access_token'])")
-schemathesis run http://127.0.0.1:8000/openapi.json -H "Authorization: Bearer $TOKEN" --include-path-regex '^/api/(contactos|solicitudes)' --max-examples 30 --seed 42 --report junit,html --report-junit-path reportes/contrato/junit.xml --report-html-path reportes/contrato/html
+./scripts/correr-contrato.sh
 ```
 
 ```bash
@@ -234,7 +233,7 @@ npm run test:web:3x
 npx playwright show-report reportes/web/html
 ```
 
-`npm run test:web:demo` ejecuta la suite web con el navegador visible. Si Qolqe no está levantado, Playwright lo inicia solo con `.demo-data/e2e.db`.
+`SLOWMO=700 npx playwright test --headed --grep "CP-W10"` muestra un recorrido en el navegador, a una velocidad que se puede seguir. `./scripts/preparar-demo.sh` deja lista la demo en vivo. Si Qolqe no está levantado, Playwright lo inicia solo con `.demo-data/e2e.db`.
 
 ### Estructura
 

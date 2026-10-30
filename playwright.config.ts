@@ -30,6 +30,8 @@ export default defineConfig({
     testIdAttribute: 'data-testid',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    // Solo para la demo: SLOWMO=700 hace visibles los pasos en el navegador.
+    launchOptions: { slowMo: Number(process.env.SLOWMO ?? 0) },
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {

@@ -39,15 +39,7 @@ jobs:
           mkdir -p reportes/api
           python -m pytest tests/api --junitxml=reportes/api/junit.xml --html=reportes/api/reporte.html --self-contained-html
       - name: Pruebas de contrato (Schemathesis)
-        run: |
-          curl --silent --fail -X POST "$QOLQE_URL/api/pruebas/reiniciar"
-          TOKEN=$(curl --silent --fail -X POST "$QOLQE_URL/api/auth/login" -H "Content-Type: application/json" \
-            -d '{"celular":"987654321","pin":"4826"}' | python -c "import json,sys;print(json.load(sys.stdin)['access_token'])")
-          # schemathesis.toml declara los checks excluidos y su motivo (docs/defectos.md).
-          schemathesis run "$QOLQE_URL/openapi.json" -H "Authorization: Bearer $TOKEN" \
-            --include-path-regex '^/api/(contactos|solicitudes)' \
-            --max-examples 30 --seed 42 \
-            --report junit,html --report-junit-path reportes/contrato/junit.xml --report-html-path reportes/contrato/html
+        run: ./scripts/correr-contrato.sh
       - name: Resumen del job
         if: ${{ !cancelled() }}
         run: python .github/scripts/resumen.py "API" reportes/api/junit.xml "Contrato" reportes/contrato/junit.xml
