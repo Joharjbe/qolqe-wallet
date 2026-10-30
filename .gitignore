@@ -11,3 +11,10 @@ output.xml
 log.html
 report.html
 .deck-build/
+
+# Parte 2
+node_modules/
+.features-gen/
+test-results/
+playwright-report/
+.DS_Store
