@@ -1,0 +1,15 @@
+# Lint del código de pruebas y del pipeline. qolqe/ es el sistema bajo prueba y no se revisa.
+target-version = "py312"
+line-length = 160
+extend-exclude = ["qolqe", "labs", "node_modules", ".features-gen", ".venv", "reportes", ".kiwi"]
+
+[lint]
+# Reglas por defecto de ruff más errores reales (pyflakes, pycodestyle E4/E7/E9), bugbear y pyupgrade.
+extend-select = ["E4", "E7", "E9", "F", "B", "UP"]
+
+[lint.per-file-ignores]
+# Los pasos de cada área se importan al final de conftest con *, porque usan los helpers definidos arriba.
+"tests/api/conftest.py" = ["E402", "F403"]
+# Los scripts agregan .github/scripts a sys.path antes de importar casos.py.
+".github/scripts/*.py" = ["E402"]
+"scripts/kiwi_sincronizar.py" = ["E402"]

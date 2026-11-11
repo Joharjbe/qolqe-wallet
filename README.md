@@ -8,19 +8,21 @@ Billetera digital **ficticia** usada como sistema bajo prueba (SUT) en el Proyec
 
 ---
 
-## Entrega del Proyecto 2 · Módulo G4
+## Entrega del Proyecto 2 · Núcleo común y G4
+
+[![Pruebas](https://github.com/Joharjbe/qolqe-wallet/actions/workflows/pruebas.yml/badge.svg?branch=main)](https://github.com/Joharjbe/qolqe-wallet/actions/workflows/pruebas.yml)
 
 | | |
 |---|---|
-| **Módulo** | G4 · Contactos y solicitudes de dinero |
-| **API (Parte 1)** | pytest + httpx + pytest-bdd · Schemathesis |
-| **Web (Parte 2)** | Playwright (TypeScript) + playwright-bdd · Page Object |
-| **Pipeline** | [`.github/workflows/pruebas.yml`](.github/workflows/pruebas.yml) · [ejecuciones](https://github.com/Joharjbe/qolqe-wallet/actions/workflows/pruebas.yml) |
-| **Reportes publicados** | https://joharjbe.github.io/qolqe-wallet/ |
-| **Matriz de trazabilidad** | [`docs/trazabilidad.md`](docs/trazabilidad.md) |
-| **Informe** | [`docs/informe.md`](docs/informe.md) · [alcance y casos](docs/alcance-y-casos.md) · [defectos](docs/defectos.md) · presentaciones: [Entrega 1](docs/Entrega1_G4_API.pptx), [Entrega 2](docs/Entrega2_G4_E2E_CICD.pptx) |
+| **Módulos** | Núcleo común (HU-N-01 a HU-N-09) y G4 · Contactos y solicitudes de dinero (HU-G4-01 a HU-G4-10): 51 criterios, 335 casos |
+| **API** | pytest + httpx + pytest-bdd: 276 escenarios, funcionales y técnicos (766 ejecuciones) · Schemathesis: contrato de 19 operaciones |
+| **Web** | Playwright (TypeScript) + playwright-bdd · Page Object con componentes y fixtures: 58 escenarios (71 pruebas), 3 repeticiones |
+| **Pipeline** | [`.github/workflows/pruebas.yml`](.github/workflows/pruebas.yml): `estatico` → `api` y `contrato` → `web` → `quality-gate`, más `reportes`, `gestion-casos` y `publicar` · evidencia `sin-imagenes` o `con-imagenes` · [ejecuciones](https://github.com/Joharjbe/qolqe-wallet/actions/workflows/pruebas.yml) · [detalle](docs/pipeline.md) |
+| **Reportes publicados** | https://joharjbe.github.io/qolqe-wallet/ (con el workflow nuevo en `main`: portada, reportes, matriz del run e historial de los últimos 30 runs) |
+| **Trazabilidad y gestión de casos** | Matriz HU → CA → CP → resultado por run, `junit-cp.xml` e historial · Kiwi TCMS 17.0 en Docker: [`docs/gestion-casos.md`](docs/gestion-casos.md) |
+| **Informe** | [`docs/informe.md`](docs/informe.md) · [respuesta a la retroalimentación](docs/respuesta-feedback.md) · [arquitectura](docs/arquitectura.md) · [alcance y casos](docs/alcance-y-casos.md) · [defectos](docs/defectos.md) · [matriz](docs/trazabilidad.md) · presentaciones: [Entrega 1](docs/Entrega1_G4_API.pptx), [Entrega 2](docs/Entrega2_G4_E2E_CICD.pptx) |
 
-Comandos en la [sección 6](#6-ejecutar-las-pruebas-del-modulo-g4).
+Comandos en la [sección 6](#6-ejecutar-las-pruebas).
 
 ---
 
@@ -194,7 +196,7 @@ Disponible solo con `QOLQE_MODO_PRUEBA=1`. **No forma parte del producto**: exis
 
 ---
 
-## 6. Ejecutar las pruebas del módulo G4
+## 6. Ejecutar las pruebas
 
 Requisitos: Python 3.11 o superior y Node 22 o superior. Instalación, una sola vez:
 
@@ -213,43 +215,73 @@ source .venv/bin/activate
 QOLQE_BD=.demo-data/qolqe.db QOLQE_MODO_PRUEBA=1 python -m uvicorn qolqe.main:app --port 8000
 ```
 
-**Terminal 2**: ejecutar las suites. Reinician los datos de esa instancia; no las ejecuten contra una base que quieran conservar.
+**Terminal 2**: ejecutar las suites con el entorno virtual activo (`source .venv/bin/activate`). Reinician los datos de esa instancia: no las ejecuten contra una base que quieran conservar. Para otro puerto, `QOLQE_URL=http://127.0.0.1:<puerto>` delante de cada comando.
 
-```bash
-source .venv/bin/activate
-mkdir -p reportes/api
-python -m pytest tests/api --junitxml=reportes/api/junit.xml --html=reportes/api/reporte.html --self-contained-html
-```
+| Qué | Sin imágenes (por defecto) | Con imágenes | Reporte |
+|---|---|---|---|
+| Etiquetas y trazabilidad (como el job `estatico`) | `npm run trazabilidad:verificar` | — | Consola: `334 casos, 0 errores` |
+| API funcional y técnica, núcleo y G4 | `npm run test:api` | `npm run test:api:con-imagenes` | `reportes/api/reporte.html` y `junit.xml` |
+| Contrato (Schemathesis, 19 operaciones) | `npm run test:contrato` | `EVIDENCIA=con-imagenes npm run test:contrato` | `reportes/contrato/html/`, `junit.xml` y, con imágenes, `peticiones.har` |
+| Web, una vez | `npm run test:web` | `npm run test:web:con-imagenes` | `npx playwright show-report reportes/web/html` |
+| Web, 3 veces seguidas (como el pipeline) | `npm run test:web:3x` | `EVIDENCIA=con-imagenes npm run test:web:3x` | Igual que la anterior |
+| Matriz HU → CA → CP → resultado | `npm run trazabilidad` (lee `reportes/` y escribe `docs/trazabilidad.md` con "Run #local"; la versión que se entrega sale del artefacto `trazabilidad` de un run de `main`, ver `docs/pipeline.md`) | — | `docs/trazabilidad.md` |
 
-```bash
-./scripts/correr-contrato.sh
-```
+Sin imágenes, la evidencia es solo de los fallos y de los defectos conocidos. Con imágenes, se guarda la evidencia de cada caso:
+- en la web, captura, video y traza;
+- en la API, peticiones y respuestas, con el token enmascarado.
 
-```bash
-npm run test:web:3x
-```
-
-```bash
-npx playwright show-report reportes/web/html
-```
+Un subconjunto se corre así: `npm run test:web -- --grep CP-NW19` o `python -m pytest tests/api -k cpna97`.
 
 `SLOWMO=700 npx playwright test --headed --grep "CP-W10"` muestra un recorrido en el navegador, a una velocidad que se puede seguir. `./scripts/preparar-demo.sh` deja lista la demo en vivo. Si Qolqe no está levantado, Playwright lo inicia solo con `.demo-data/e2e.db`.
+
+### Ejecutar el workflow a pedido, con imágenes
+
+- **Desde GitHub:** *Actions → Pruebas núcleo y G4 → Run workflow*, rama `main`, *evidencia*: `con-imagenes`, *Run workflow*.
+- **Desde la terminal:** `gh workflow run pruebas.yml -R Joharjbe/qolqe-wallet --ref main -f evidencia=con-imagenes`
+
+Los push y los PR usan `sin-imagenes`. Los artefactos con imágenes se guardan 7 días y los demás, 14. Qué hace cada job y por qué: [`docs/pipeline.md`](docs/pipeline.md).
+
+### Kiwi TCMS (gestión de casos)
+
+Guía completa, con la creación del usuario y la demo, en [`docs/gestion-casos.md`](docs/gestion-casos.md). En resumen:
+
+```bash
+cd herramientas/kiwi && ./generar-certificado.sh && docker compose up -d && cd ../..
+docker exec -it qolqe_kiwi_web /Kiwi/manage.py initial_setup     # crea tu propio superusuario
+.venv/bin/pip install -r requirements-gestion.txt
+# Crear ~/.tcms.conf con la URL https://localhost:8443/xml-rpc/, tu usuario y tu clave (chmod 600)
+.venv/bin/python scripts/kiwi_sincronizar.py --crear-plan
+GH_TOKEN=$(gh auth token --user Joharjbe) KIWI_PLAN_ID=<id> .venv/bin/python scripts/kiwi_sincronizar.py --ultimos 20
+```
+
+Para ver qué se crearía sin conectarse a Kiwi: `GH_TOKEN=$(gh auth token --user Joharjbe) .venv/bin/python scripts/kiwi_sincronizar.py --simular --ultimos 20`. Cada run de `main` queda como un TestRun, y cada caso acumula todas sus ejecuciones.
 
 ### Estructura
 
 ```
-qolqe/                    # App bajo prueba (sin modificar)
-features/                 # Casos en Gherkin con @HU, @CA, @CP y @DEF
-  contactos_api.feature   solicitudes_api.feature
-  web/contactos_web.feature   web/solicitudes_web.feature
+qolqe/                         # App bajo prueba (sin modificar)
+features/                      # Casos en Gherkin con @HU, @CA, @CP, @DEF y @tecnico
+  nucleo_*_api.feature         # Núcleo: registro, sesión, cuenta, transferencias, interbancaria, comisión, cierre
+  contactos_api.feature  solicitudes_api.feature  g4_tecnico_api.feature
+  web/nucleo_acceso_web.feature  web/nucleo_dinero_web.feature
+  web/contactos_web.feature  web/solicitudes_web.feature
 tests/
-  api/                    # Pasos de pytest-bdd
-  e2e/pages/              # Page Objects
-  e2e/steps/              # Pasos de Playwright
+  api/conftest.py              # Cliente, sesiones, reinicio por escenario y pasos comunes
+  api/pasos_*.py               # Pasos de pytest-bdd por área (núcleo acceso, núcleo dinero, G4)
+  api/evidencia.py             # Peticiones y respuestas en el reporte HTML (sin o con imágenes)
+  e2e/pages/                   # Page Objects y componentes compartidos (componentes.ts, PaginaQolqe.ts)
+  e2e/steps/                   # Pasos de Playwright por área, sin localizadores
+  e2e/fixtures.ts              # Páginas y datos de prueba preparados por la API
+scripts/
+  correr-contrato.sh  contrato_hooks.py   # Contrato (Schemathesis)
+  kiwi_sincronizar.py                     # Runs de GitHub → Kiwi TCMS
+  preparar-demo.sh
+schemathesis.toml              # Checks y operaciones excluidos, con su motivo
+herramientas/kiwi/             # Kiwi TCMS con Docker (HTTPS en 8443)
 .github/
-  workflows/pruebas.yml   # Pipeline
-  scripts/                # Resumen del job, matriz y portada
-docs/                     # Informe, alcance, defectos, trazabilidad, guion y presentaciones
-labs/s11-robot/           # Laboratorio S11 (Robot Framework), fuera del pipeline
-IA.md                     # Declaración de uso de IA
+  workflows/pruebas.yml        # Pipeline
+  scripts/                     # casos.py, trazabilidad.py (matriz, JUnit por CP, historial) y resumen.py
+docs/                          # Informe, arquitectura, alcance, pipeline, gestión de casos, defectos, trazabilidad y presentaciones
+labs/s11-robot/                # Laboratorio S11 (Robot Framework), fuera del pipeline
+IA.md                          # Declaración de uso de IA
 ```

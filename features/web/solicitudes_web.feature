@@ -1,7 +1,7 @@
 # language: es
 Característica: Pantalla de solicitudes de dinero (G4)
 
-  @HU-G4-01 @HU-G4-06 @HU-G4-07 @HU-G4-08 @CA1 @CA3 @CP-W10
+  @HU-G4-01 @HU-G4-06 @HU-G4-07 @CA1 @HU-G4-08 @CA3 @CP-W10
   Escenario: CP-W10 Recorrido completo de una solicitud entre dos usuarios
     Dado que "Diego" ingresó a Qolqe
     Y abre la pantalla de contactos
@@ -38,6 +38,7 @@ Característica: Pantalla de solicitudes de dinero (G4)
     Entonces ve la confirmación "entre 3 y 60 caracteres"
     Y va a la pestaña "enviadas"
     Y la solicitud "ab" no aparece
+    Y "Ana" no tiene solicitudes enviadas con el motivo "ab"
 
   @HU-G4-06 @CA2 @CP-W13
   Escenario: CP-W13 La solicitud creada queda pendiente con su vencimiento
@@ -106,3 +107,88 @@ Característica: Pantalla de solicitudes de dinero (G4)
     Cuando cancela la solicitud "Pago de la cena"
     Entonces ve el aviso "Solicitud cancelada"
     Y la solicitud "Pago de la cena" está "Cancelada"
+
+  @HU-G4-08 @CA1 @CA2 @CP-W20
+  Escenario: CP-W20 Cancelar la confirmación de aceptar no transfiere
+    Dado que "Ana" ingresó a Qolqe
+    Y abre la pantalla de solicitudes
+    Cuando pulsa aceptar en la solicitud "Almuerzo del viernes"
+    Entonces la confirmación dice "Se transferirán S/ 45.00 a Bruno D. (912345678) por \"Almuerzo del viernes\"."
+    Cuando cancela la confirmación
+    Entonces la solicitud "Almuerzo del viernes" está "Pendiente"
+    Y su saldo en inicio es "S/ 1,500.00"
+
+  @HU-G4-08 @CA4 @HU-G4-10 @CA1 @CP-W21
+  Escenario: CP-W21 Aceptar una solicitud que el solicitante ya canceló muestra el error y refresca la lista
+    Dado que "Bruno" ingresó a Qolqe
+    Y abre la pantalla de solicitudes
+    Y la solicitud "Taxi al aeropuerto" está "Pendiente"
+    Cuando "Ana" cancela por su lado la solicitud "Taxi al aeropuerto"
+    Y acepta la solicitud "Taxi al aeropuerto"
+    Entonces ve el aviso "La solicitud ya no está pendiente"
+    Y la solicitud "Taxi al aeropuerto" está "Cancelada"
+    Y su saldo en inicio es "S/ 800.00"
+
+  @HU-G4-10 @CA1 @HU-G4-07 @CA2 @CP-W22
+  Escenario: CP-W22 Una solicitud enviada vencida no ofrece cancelar
+    Dado que "Carla" ingresó a Qolqe
+    Y abre la pantalla de solicitudes
+    Cuando va a la pestaña "enviadas"
+    Y filtra por el estado "Vencidas"
+    Entonces la solicitud "Entradas al cine" está "Vencida"
+    Y la solicitud "Entradas al cine" muestra "Venció el"
+    Y la solicitud "Entradas al cine" no ofrece cancelar
+
+  @HU-G4-06 @CA1 @CP-W26
+  Escenario: CP-W26 Sin elegir contacto la pantalla lo pide y no envía nada
+    Dado que "Diego" ingresó a Qolqe
+    Y abre la pantalla de solicitudes
+    Cuando envía una solicitud de "10.00" por "Cuota del regalo" sin elegir contacto
+    Entonces ve la confirmación "Elige un contacto"
+    Y la pantalla envió 0 peticiones "POST /api/solicitudes"
+    Cuando va a la pestaña "enviadas"
+    Entonces ve el mensaje vacío "No tienes solicitudes enviadas"
+
+  @HU-G4-07 @CA1 @CP-W27
+  Escenario: CP-W27 Los contadores de pendientes se actualizan al rechazar una solicitud
+    Dado que "Ana" ingresó a Qolqe
+    Entonces el inicio indica "1" solicitud pendiente
+    Cuando abre la pantalla de solicitudes
+    Entonces la pestaña "recibidas" dice "Recibidas (1)"
+    Y la pestaña "enviadas" dice "Enviadas (1)"
+    Cuando rechaza la solicitud "Almuerzo del viernes" con el motivo "Ya lo pagué"
+    Entonces la solicitud "Almuerzo del viernes" está "Rechazada"
+    Y la pestaña "recibidas" dice "Recibidas"
+    Y la pestaña "enviadas" dice "Enviadas (1)"
+    Y el inicio no indica solicitudes pendientes
+
+  @HU-N-04 @CA3 @CP-W28
+  Escenario: CP-W28 Con la sesión vencida, la pantalla de solicitudes vuelve al ingreso
+    Dado que "Ana" ingresó a Qolqe
+    Y abre la pantalla de solicitudes
+    Cuando pasan 30 minutos
+    Y intenta ir a la pestaña "enviadas"
+    Entonces vuelve al ingreso con el aviso "Tu sesión expiró o fue cerrada. Vuelve a ingresar."
+
+  @HU-G4-01 @HU-G4-06 @CA1 @CP-W30
+  Escenario: CP-W30 Un doble clic en Agregar o en Enviar solicitud crea un solo registro
+    Dado que "Diego" ingresó a Qolqe
+    Y abre la pantalla de contactos
+    Cuando agrega con doble clic el contacto "912345678" con alias "Bruno Doble"
+    Entonces ve el aviso "Contacto \"Bruno Doble\" agregado"
+    Y el contacto "Bruno Doble" aparece en la lista
+    Y la pantalla envió 1 petición "POST /api/contactos"
+    Cuando abre la pantalla de solicitudes
+    Y solicita con doble clic "12.00" a "Bruno Doble" por "Pago a medias"
+    Entonces ve la confirmación "Solicitud enviada"
+    Y ve 1 solicitud
+    Y la pantalla envió 1 petición "POST /api/solicitudes"
+
+  @HU-G4-09 @CA1 @CP-W31
+  Escenario: CP-W31 Un motivo de rechazo de 61 caracteres muestra el error en el diálogo
+    Dado que "Ana" ingresó a Qolqe
+    Y abre la pantalla de solicitudes
+    Cuando rechaza la solicitud "Almuerzo del viernes" con un motivo de 61 caracteres
+    Entonces ve el error del diálogo "El motivo admite como máximo 60 caracteres"
+    Cuando cancela el diálogo
+    Entonces la solicitud "Almuerzo del viernes" está "Pendiente"

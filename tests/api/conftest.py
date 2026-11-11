@@ -1,5 +1,6 @@
 """Pasos de pytest-bdd contra la API de Qolqe levantada en QOLQE_URL."""
 import os
+import unicodedata
 from datetime import datetime, timedelta
 
 import httpx
@@ -17,9 +18,12 @@ CARGA_BASE = 900000000  # Usuarios de carga de la semilla, disponibles como cont
 
 
 def pytest_bdd_apply_tag(tag, function):
-    """Un escenario con @DEF-xx es un fallo esperado enlazado a su defecto en docs/defectos.md."""
+    """Un escenario con @DEF-xx es un fallo esperado enlazado a su defecto en docs/defectos.md.
+
+    Solo una aserción cuenta como el defecto: un error de conexión, un KeyError o un paso roto quedan como fallo.
+    """
     if tag.startswith("DEF-"):
-        pytest.mark.xfail(strict=True, reason=f"{tag} reportado en docs/defectos.md")(function)
+        pytest.mark.xfail(strict=True, raises=AssertionError, reason=f"{tag} reportado en docs/defectos.md")(function)
         return True
     return None
 
@@ -135,8 +139,12 @@ def transfirio_a_contacto(s, monto, alias):
 
 @given(parsers.parse("Diego envió {total:d} solicitudes a \"{alias}\""))
 def envio_solicitudes(s, total, alias):
+    contacto_id = s.contacto_id(alias, "Diego")
     for i in range(total):
-        s.solicitar_entre("Diego", "Bruno", "1.00", f"Solicitud {i}")
+        r = s.cliente.post("/api/solicitudes", headers=s.como("Diego"),
+                           json={"contacto_id": contacto_id, "monto": "1.00", "motivo": f"Solicitud {i}"})
+        assert r.status_code == 201, r.text
+        s.solicitud_id = r.json()["id"]
 
 
 @given(parsers.parse("que {solicitante} le solicitó {monto} a {destinatario}"))
@@ -184,6 +192,7 @@ def busca(s, texto):
 
 @when(parsers.parse('edita el contacto "{alias}" con alias "{nuevo}" y favorito'))
 def edita_con_favorito(s, alias, nuevo):
+    s.duenio_contacto = s.actual
     s.pedir("PUT", f"/api/contactos/{s.contacto_id(alias)}", json={"alias": nuevo, "favorito": True})
 
 
@@ -206,16 +215,6 @@ def elimina(s, alias):
 @when(parsers.parse('transfiere {monto} al contacto "{alias}"'))
 def transfiere(s, monto, alias):
     s.pedir("POST", "/api/transferencias", json={"tipo": "QOLQE", "monto": monto, "contacto_id": s.contacto_id(alias)})
-
-
-@when("se consultan los contactos sin token")
-def contactos_sin_token(s):
-    s.respuesta = s.cliente.get("/api/contactos")
-
-
-@when("se consultan las solicitudes sin token")
-def solicitudes_sin_token(s):
-    s.respuesta = s.cliente.get("/api/solicitudes")
 
 
 @when(parsers.parse('intenta {accion} el contacto "{alias}" de Ana'))
@@ -300,8 +299,15 @@ def primer_contacto(s, alias):
 
 @then("los demás contactos están ordenados por alias")
 def demas_ordenados(s):
-    alias = [c["alias"].lower() for c in s.respuesta.json()["contactos"][1:]]
-    assert alias == sorted(alias)
+    alias = [c["alias"] for c in s.respuesta.json()["contactos"][1:]]
+    assert alias == sorted(alias, key=orden_alfabetico), alias
+
+
+def orden_alfabetico(texto):
+    """Orden alfabético en español: sin distinguir mayúsculas ni tildes (el mismo criterio que CP-A47)."""
+    texto = texto.replace("ñ", "n\uffff").replace("Ñ", "N\uffff")  # La ñ es una letra propia, después de la n.
+    sin_tildes = "".join(c for c in unicodedata.normalize("NFD", texto) if not unicodedata.combining(c))
+    return sin_tildes.casefold()
 
 
 @then(parsers.parse("la búsqueda encuentra {total:d} contactos"))
@@ -368,3 +374,10 @@ def tiene_codigo(s):
 def ve_estado(s, nombre, estado):
     recibidas = s.cliente.get("/api/solicitudes", headers=s.como(nombre)).json()["recibidas"]
     assert next(x for x in recibidas if x["id"] == s.solicitud_id)["estado"] == estado
+
+
+# Pasos de cada área y hooks de evidencia en su propio módulo. Se importan al final porque usan los helpers de arriba.
+from evidencia import *
+from pasos_g4_extra import *
+from pasos_nucleo_acceso import *
+from pasos_nucleo_dinero import *

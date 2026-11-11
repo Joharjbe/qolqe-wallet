@@ -1,11 +1,33 @@
 #!/usr/bin/env bash
-# Pruebas de contrato de G4 contra Qolqe en el puerto 8000. Los checks excluidos están en schemathesis.toml.
+# Pruebas de contrato (Schemathesis) del núcleo y de G4 contra Qolqe en QOLQE_URL (por defecto el puerto 8000).
+# Los checks y operaciones excluidos, con su motivo, están en schemathesis.toml.
+# El token y los filtros por valor están en scripts/contrato_hooks.py.
+# EVIDENCIA=con-imagenes guarda además todas las peticiones y respuestas en reportes/contrato/peticiones.har.
 set -euo pipefail
-URL=${QOLQE_URL:-http://127.0.0.1:8000}
-curl -sf -X POST "$URL/api/pruebas/reiniciar" > /dev/null
-TOKEN=$(curl -sf -X POST "$URL/api/auth/login" -H "Content-Type: application/json" \
-  -d '{"celular":"987654321","pin":"4826"}' | python -c "import json,sys;print(json.load(sys.stdin)['access_token'])")
-schemathesis run "$URL/openapi.json" -H "Authorization: Bearer $TOKEN" \
-  --include-path-regex '^/api/(contactos|solicitudes)' \
+cd "$(dirname "$0")/.."
+export QOLQE_URL=${QOLQE_URL:-http://127.0.0.1:8000}
+export SCHEMATHESIS_HOOKS=scripts/contrato_hooks.py
+curl -sf -X POST "$QOLQE_URL/api/pruebas/reiniciar" > /dev/null
+
+# Núcleo: registro, ingreso y salida, sesiones, saldo, perfil, cierre, transferencias y simulación. G4: contactos y solicitudes.
+OPERACIONES='^/api/((contactos|solicitudes)(/.*)?|usuarios|auth/(login|logout)|seguridad/sesiones|cuentas/me(/saldo|/cierre)?|transferencias(/comision)?)$'
+
+FORMATOS=junit,html
+HAR=()
+if [ "${EVIDENCIA:-sin-imagenes}" = con-imagenes ]; then
+  FORMATOS=junit,html,har
+  HAR=(--report-har-path reportes/contrato/peticiones.har)
+fi
+mkdir -p reportes/contrato
+# ${HAR[@]+...} evita el error de set -u con un arreglo vacío en el bash 3.2 de macOS.
+estado=0
+schemathesis run "$QOLQE_URL/openapi.json" \
+  --include-path-regex "$OPERACIONES" \
   --max-examples 30 --seed 42 \
-  --report junit,html --report-junit-path reportes/contrato/junit.xml --report-html-path reportes/contrato/html
+  --report "$FORMATOS" --report-junit-path reportes/contrato/junit.xml --report-html-path reportes/contrato/html \
+  ${HAR[@]+"${HAR[@]}"} || estado=$?
+# Schemathesis filtra la cabecera Authorization del HAR, pero no los cuerpos: el access_token de los login se enmascara.
+if [ -f reportes/contrato/peticiones.har ]; then
+  python3 -c 'import re, sys; p = sys.argv[1]; t = open(p, encoding="utf-8").read(); open(p, "w", encoding="utf-8").write(re.sub(r"eyJ[\w-]+\.[\w-]+\.[\w-]+", "***", t))' reportes/contrato/peticiones.har
+fi
+exit "$estado"

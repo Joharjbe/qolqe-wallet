@@ -6,3 +6,7 @@ pytest-bdd==9.0.0
 pytest-html==4.2.0
 httpx>=0.27
 schemathesis==4.32.7
+# Los pasos de G4 validan el contrato con jsonschema_rs (hoy llega como dependencia de schemathesis).
+jsonschema-rs==0.60.3
+# Lint del job estatico; así se corre igual en local.
+ruff==0.17.1
