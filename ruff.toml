@@ -1,0 +1,9 @@
+# Lint del código de pruebas y del pipeline. qolqe/ es el sistema bajo prueba y no se revisa.
+target-version = "py312"
+line-length = 160
+extend-exclude = ["qolqe", "labs", "node_modules", ".features-gen", ".venv", "reportes", ".kiwi"]
+
+[lint]
+# Errores reales (pyflakes, pycodestyle E4/E7/E9 y bugbear) y modernización (pyupgrade). Se dejan fuera las reglas de estilo
+# del conjunto por defecto de ruff 0.17 (orden de imports, por ejemplo): los pasos se importan al final de conftest a propósito.
+select = ["E4", "E7", "E9", "F", "B", "UP"]

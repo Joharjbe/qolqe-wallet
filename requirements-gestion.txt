@@ -1,0 +1,4 @@
+# Gestión de casos con Kiwi TCMS (scripts/kiwi_sincronizar.py). Aparte de requirements-dev.txt: los jobs de prueba no lo usan.
+tcms-api==15.0
+kiwitcms-junit.xml-plugin==15.0
+junitparser==3.2.0

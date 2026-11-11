@@ -1,5 +1,7 @@
-# Pipeline del módulo G4: API + contrato -> web -> reportes publicados.
-name: Pruebas G4
+# Pipeline de pruebas de Qolqe (núcleo y G4). Detalle y justificación de cada job: docs/pipeline.md.
+# Etapas de rápido a lento: estatico -> api y contrato (en paralelo) -> web x3.
+# quality-gate da un solo veredicto. reportes, gestion-casos y publicar dejan la evidencia y el historial.
+name: Pruebas núcleo y G4
 
 on:
   push:
@@ -7,17 +9,122 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      evidencia:
+        description: "con-imagenes: captura, video y traza de cada prueba web y peticiones de cada caso de API. sin-imagenes: solo de los fallos."
+        type: choice
+        options:
+          - sin-imagenes
+          - con-imagenes
+        default: sin-imagenes
 
 permissions:
   contents: read
 
+# En un PR, un push nuevo cancela el run anterior del mismo PR.
+# En main y en los runs manuales cada run tiene su propio grupo: ninguno se cancela, cada uno queda trazable.
+concurrency:
+  group: pruebas-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  # En push y PR no hay inputs: se usa sin-imagenes.
+  EVIDENCIA: ${{ inputs.evidencia || 'sin-imagenes' }}
+  QOLQE_URL: http://127.0.0.1:8000
+  RETENCION: ${{ inputs.evidencia == 'con-imagenes' && 7 || 14 }}
+
 jobs:
+  # Etapa 1. Análisis estático: segundos, sin servidor ni navegador.
+  estatico:
+    name: estatico
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements-dev.txt
+            constraints.txt
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Instalar dependencias (sin navegadores)
+        run: |
+          pip install -r requirements-dev.txt ruff==0.17.1
+          npm ci
+      - name: Lint de Python con ruff (código de pruebas y del pipeline; qolqe/ no se revisa)
+        run: ruff check
+      - name: Tipos de TypeScript con tsc (Playwright no revisa tipos)
+        run: |
+          if [ -f tests/e2e/tsconfig.json ]; then
+            npx tsc --noEmit -p tests/e2e
+          else
+            echo "::warning::Falta tests/e2e/tsconfig.json: no se revisan los tipos de TypeScript."
+          fi
+      - name: Gherkin web y pasos definidos (bddgen falla si falta un paso)
+        run: npx bddgen
+      - name: Gherkin de API (pytest-bdd recolecta todos los escenarios)
+        run: python -m pytest tests/api --collect-only -q
+      - name: Etiquetas de trazabilidad (@HU, @CA y @CP en cada escenario, CP únicos, DEF conocidos)
+        run: python .github/scripts/trazabilidad.py --verificar
+
+  # Etapa 2a. API funcional y técnica contra Qolqe levantado en el runner.
+  # if !cancelled + la guarda: si estatico falla, este check obligatorio queda en rojo en vez de "omitido" (que cuenta como verde).
   api:
     name: api
+    needs: estatico
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
-    env:
-      QOLQE_URL: http://127.0.0.1:8000
+    steps:
+      - name: Requiere estatico en verde
+        id: guarda
+        if: ${{ needs.estatico.result != 'success' }}
+        run: |
+          echo "::error::estatico terminó en '${{ needs.estatico.result }}': no se ejecuta la API."
+          exit 1
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements-dev.txt
+            constraints.txt
+      - name: Instalar dependencias
+        run: pip install -r requirements-dev.txt
+      - name: Levantar Qolqe en modo de pruebas
+        run: |
+          mkdir -p reportes
+          QOLQE_BD=datos/api.db QOLQE_MODO_PRUEBA=1 nohup python -m uvicorn qolqe.main:app --host 127.0.0.1 --port 8000 > reportes/uvicorn-api.log 2>&1 &
+          curl --silent --fail --retry 60 --retry-delay 1 --retry-connrefused "$QOLQE_URL/api/salud"
+      - name: Pruebas de API funcionales y técnicas (pytest-bdd)
+        run: |
+          mkdir -p reportes/api
+          python -m pytest tests/api --junitxml=reportes/api/junit.xml --html=reportes/api/reporte.html --self-contained-html
+      # Los pasos con !cancelled() corren aunque fallen las pruebas, pero no si la guarda cortó el job.
+      - name: Resumen del job
+        if: ${{ !cancelled() && steps.guarda.outcome == 'skipped' }}
+        run: python .github/scripts/resumen.py "API" reportes/api/junit.xml
+      - name: Publicar artefacto
+        if: ${{ !cancelled() && steps.guarda.outcome == 'skipped' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: reportes-api
+          path: reportes/
+          overwrite: true
+          retention-days: ${{ env.RETENCION }}
+
+  # Etapa 2b. Contrato OpenAPI con casos generados. En paralelo con api, en otro runner y con su propia base de datos.
+  contrato:
+    name: contrato
+    needs: estatico
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -32,30 +139,36 @@ jobs:
       - name: Levantar Qolqe en modo de pruebas
         run: |
           mkdir -p reportes
-          QOLQE_BD=datos/ci.db QOLQE_MODO_PRUEBA=1 nohup python -m uvicorn qolqe.main:app --host 127.0.0.1 --port 8000 > reportes/uvicorn.log 2>&1 &
+          QOLQE_BD=datos/contrato.db QOLQE_MODO_PRUEBA=1 nohup python -m uvicorn qolqe.main:app --host 127.0.0.1 --port 8000 > reportes/uvicorn-contrato.log 2>&1 &
           curl --silent --fail --retry 60 --retry-delay 1 --retry-connrefused "$QOLQE_URL/api/salud"
-      - name: Pruebas de API (pytest-bdd)
-        run: |
-          mkdir -p reportes/api
-          python -m pytest tests/api --junitxml=reportes/api/junit.xml --html=reportes/api/reporte.html --self-contained-html
-      - name: Pruebas de contrato (Schemathesis)
+      - name: Pruebas de contrato del núcleo y de G4 (Schemathesis)
         run: ./scripts/correr-contrato.sh
       - name: Resumen del job
         if: ${{ !cancelled() }}
-        run: python .github/scripts/resumen.py "API" reportes/api/junit.xml "Contrato" reportes/contrato/junit.xml
+        run: python .github/scripts/resumen.py "Contrato" reportes/contrato/junit.xml
       - name: Publicar artefacto
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: reportes-api
+          name: reportes-contrato
           path: reportes/
+          overwrite: true
+          retention-days: ${{ env.RETENCION }}
 
+  # Etapa 3. Web E2E, la más cara: solo se ejecuta si toda la capa API (funcional, técnica y contrato) está en verde.
   web:
     name: web
-    needs: api
+    needs: [api, contrato]
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
+      - name: Requiere api y contrato en verde
+        id: guarda
+        if: ${{ needs.api.result != 'success' || needs.contrato.result != 'success' }}
+        run: |
+          echo "::error::api terminó en '${{ needs.api.result }}' y contrato en '${{ needs.contrato.result }}': no se ejecuta la web."
+          exit 1
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
         with:
@@ -68,7 +181,7 @@ jobs:
         with:
           node-version: "22"
           cache: npm
-      - name: Instalar dependencias
+      - name: Instalar dependencias y Chromium
         run: |
           pip install -r requirements.txt -c constraints.txt
           npm ci
@@ -78,27 +191,65 @@ jobs:
           npx bddgen
           npx playwright test --repeat-each=3
       - name: Resumen del job
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.guarda.outcome == 'skipped' }}
         run: python .github/scripts/resumen.py "Web x3" reportes/web/junit.xml
+      # Videos y trazas ya están dentro del reporte HTML: se excluyen de la carpeta de resultados para no subirlos dos veces.
       - name: Publicar artefacto
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.guarda.outcome == 'skipped' }}
         uses: actions/upload-artifact@v4
         with:
           name: reportes-web
-          path: reportes/
+          path: |
+            reportes/
+            !reportes/web/resultados/**/*.webm
+            !reportes/web/resultados/**/*.zip
+          overwrite: true
+          retention-days: ${{ env.RETENCION }}
 
+  # Veredicto único con los criterios de salida: todas las etapas en success.
+  # always(): siempre da un veredicto; un job omitido no cuenta como aprobado.
+  quality-gate:
+    name: quality-gate
+    needs: [estatico, api, contrato, web]
+    if: ${{ always() }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Evaluar el quality gate
+        env:
+          ESTATICO: ${{ needs.estatico.result }}
+          API: ${{ needs.api.result }}
+          CONTRATO: ${{ needs.contrato.result }}
+          WEB: ${{ needs.web.result }}
+        run: |
+          {
+            echo "## Quality gate"
+            echo ""
+            echo "| Etapa | Resultado |"
+            echo "|---|---|"
+            echo "| estatico | $ESTATICO |"
+            echo "| api | $API |"
+            echo "| contrato | $CONTRATO |"
+            echo "| web | $WEB |"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+          for resultado in "$ESTATICO" "$API" "$CONTRATO" "$WEB"; do
+            if [ "$resultado" != "success" ]; then
+              echo "**No pasa:** toda etapa debe terminar en success; failure, cancelled o skipped bloquean el merge." >> "$GITHUB_STEP_SUMMARY"
+              echo "::error::Quality gate: no pasa"
+              exit 1
+            fi
+          done
+          echo "**Pasa:** todas las pruebas pasan, los fallos conocidos son xfail con su DEF y no hay pruebas inestables." >> "$GITHUB_STEP_SUMMARY"
+
+  # Evidencia 1. Une etiquetas y JUnit: matriz del run, JUnit por CP, run.json, evidencias y vista previa del historial.
+  # Corre también en PR y aunque fallen las pruebas: el reporte es lo que explica el fallo.
   reportes:
     name: reportes
-    needs: [api, web]
-    # Solo en main. También publica si algo falló: el reporte es lo que explica el fallo.
-    if: ${{ !cancelled() && github.ref == 'refs/heads/main' && needs.api.result != 'skipped' }}
+    needs: [estatico, api, contrato, web]
+    if: ${{ !cancelled() && needs.estatico.result == 'success' }}
     runs-on: ubuntu-24.04
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.despliegue.outputs.page_url }}
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -109,11 +260,131 @@ jobs:
           pattern: reportes-*
           path: descargas
           merge-multiple: true
-      - name: Armar la matriz de trazabilidad y la portada
-        run: python .github/scripts/trazabilidad.py --reportes descargas --sitio sitio --matriz sitio/trazabilidad.md
+      - name: Armar la matriz, el JUnit por caso, run.json y la portada
+        env:
+          CONCLUSION: ${{ needs.api.result == 'success' && needs.contrato.result == 'success' && needs.web.result == 'success' && 'success' || 'failure' }}
+        run: >-
+          python .github/scripts/trazabilidad.py
+          --reportes descargas --sitio sitio --matriz sitio/trazabilidad.md
+          --junit-cp sitio/junit-cp.xml --run-json sitio/run.json --conclusion "$CONCLUSION"
+      # Vista previa: el historial publicado más este run. El historial oficial lo escribe publicar, en serie.
+      - name: Vista previa del historial
+        run: |
+          PAGES="https://${GITHUB_REPOSITORY_OWNER,,}.github.io/${GITHUB_REPOSITORY#*/}"
+          curl --silent --fail --location "$PAGES/historial.json" -o historial-previo.json || echo "{}" > historial-previo.json
+          python .github/scripts/trazabilidad.py --solo-historial --run-json sitio/run.json --historial-previo historial-previo.json --sitio sitio
       - name: Mostrar la matriz en el resumen del run
         run: cat sitio/trazabilidad.md >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/configure-pages@v5
+      - name: Guardar el sitio
+        uses: actions/upload-artifact@v4
+        with:
+          name: sitio
+          path: sitio/
+          overwrite: true
+          retention-days: ${{ env.RETENCION }}
+      # Contrato con la gestión de casos (Kiwi TCMS u otra): JUnit por CP, datos del run y evidencias.
+      - name: Guardar los resultados por caso
+        uses: actions/upload-artifact@v4
+        with:
+          name: trazabilidad
+          path: |
+            sitio/trazabilidad.md
+            sitio/junit-cp.xml
+            sitio/run.json
+            sitio/evidencias/
+          overwrite: true
+          retention-days: 90
+
+  # Evidencia 2. Cada run de main queda como un Test Run de Kiwi TCMS. Kiwi corre en la máquina del equipo y no es
+  # accesible desde Actions: el camino normal es scripts/kiwi_sincronizar.py (modo pull). Este job queda listo para
+  # un Kiwi accesible por internet y se salta con un aviso mientras no existan los secretos.
+  gestion-casos:
+    name: gestion-casos
+    needs: reportes
+    if: ${{ !cancelled() && needs.reportes.result == 'success' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Revisar la configuración de Kiwi TCMS
+        id: config
+        env:
+          KIWI_URL: ${{ secrets.KIWI_URL }}
+        run: |
+          if [ -z "$KIWI_URL" ]; then
+            echo "::notice::Gestión de casos sin configurar (faltan los secretos KIWI_URL, KIWI_USUARIO y KIWI_CLAVE). Sincronizar desde la máquina con scripts/kiwi_sincronizar.py."
+            echo "activa=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "activa=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: ${{ steps.config.outputs.activa == 'true' }}
+        uses: actions/checkout@v5
+      - if: ${{ steps.config.outputs.activa == 'true' }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - if: ${{ steps.config.outputs.activa == 'true' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: trazabilidad
+          path: trazabilidad
+      - name: Registrar este run en Kiwi TCMS
+        if: ${{ steps.config.outputs.activa == 'true' }}
+        env:
+          KIWI_URL: ${{ secrets.KIWI_URL }}
+          KIWI_USUARIO: ${{ secrets.KIWI_USUARIO }}
+          KIWI_CLAVE: ${{ secrets.KIWI_CLAVE }}
+          KIWI_PLAN_ID: ${{ vars.KIWI_PLAN_ID }}
+        run: |
+          pip install -r requirements-gestion.txt
+          printf '[tcms]\nurl = %s\nusername = %s\npassword = %s\n' "$KIWI_URL" "$KIWI_USUARIO" "$KIWI_CLAVE" > ~/.tcms.conf
+          chmod 600 ~/.tcms.conf
+          python scripts/kiwi_sincronizar.py --desde-carpeta trazabilidad
+          echo "Run #${GITHUB_RUN_NUMBER} registrado en Kiwi TCMS (plan ${KIWI_PLAN_ID})." >> "$GITHUB_STEP_SUMMARY"
+
+  # Evidencia 3. Publica el sitio en GitHub Pages y suma este run al historial. Solo en main.
+  publicar:
+    name: publicar
+    needs: reportes
+    if: ${{ !cancelled() && needs.reportes.result == 'success' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    # Un despliegue a la vez y en orden de llegada: ningún run pisa la fila de otro en el historial.
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          name: sitio
+          path: sitio
+      - id: pages
+        uses: actions/configure-pages@v5
+      # Respaldo del historial por si Pages no responde: la caché de main guarda el último historial publicado.
+      - uses: actions/cache@v4
+        with:
+          path: .historial
+          key: historial-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: historial-
+      - name: Sumar este run al historial de ejecuciones (últimos 30)
+        env:
+          BASE_URL: ${{ steps.pages.outputs.base_url }}
+        run: |
+          mkdir -p .historial
+          curl --silent --fail --location "$BASE_URL/historial.json" -o historial-pages.json || echo "{}" > historial-pages.json
+          python .github/scripts/trazabilidad.py --solo-historial --run-json sitio/run.json \
+            --historial-previo historial-pages.json .historial/historial.json --historial-max 30 --sitio sitio
+          cp sitio/historial.json .historial/historial.json
       - uses: actions/upload-pages-artifact@v3
         with:
           path: sitio

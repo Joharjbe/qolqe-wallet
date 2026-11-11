@@ -7,3 +7,18 @@ ensure_resource_availability.enabled = false  # Falso positivo: HU-G4-08 CA4 exi
 [[operations]]
 include-name = "PUT /api/contactos/{contacto_id}"
 checks.negative_data_rejection.enabled = false  # DEF-08: favorito acepta 0 y 1 como booleano
+
+# Fuera de alcance: cerrar las demás sesiones es HU-G6-10 (módulo G6), no del núcleo ni de G4.
+# Las sesiones del núcleo se cubren con GET /api/seguridad/sesiones.
+[[operations]]
+include-name = "DELETE /api/seguridad/sesiones"
+enabled = false
+
+# Falso positivo: un PIN mal formado de una cuenta bloqueada responde 423 CUENTA_BLOQUEADA, que el contrato
+# documenta y es un rechazo (HU-N-02 CA4: durante el bloqueo no se ingresa). La lista por defecto no incluye 423.
+[[operations]]
+include-name = "POST /api/auth/login"
+checks.negative_data_rejection.expected-statuses = [400, 401, 403, 404, 405, 406, 409, 415, 422, 423, 428, 429, "5xx"]
+
+# Dos fallos se descartan por valor con filter_failure en scripts/contrato_hooks.py (aquí solo se desactiva el check entero):
+# POST /api/transferencias (DEF-NEW-transferencia-campos-ignorados) y PUT /api/cuentas/me con correo "" (falso positivo).
