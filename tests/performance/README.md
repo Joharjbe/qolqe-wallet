@@ -11,7 +11,7 @@ Esta carpeta tiene todo lo necesario para repetir las pruebas: el entorno (Docke
 | `preparar.sh [N]` | Construye la imagen, genera los datos y la base `base_perf.db` (una vez, el mismo día de las corridas) |
 | `correr.sh <escenario>` | Corre un escenario completo y deja la evidencia en `resultados/<escenario>/<AAAAMMDD-HHMM>/` |
 | `docker/Dockerfile`, `Dockerfile.dockerignore`, `versiones.txt` | Imagen `qolqe-perf:p3`: Python 3.11, mismas versiones que el `.venv` y `constraints.txt` (FastAPI 0.117.1, DEF-07) |
-| `docker/config.env` | Puerto 8090, contenedor, volumen, `CPUS=1`, `MEMORIA=1g`, usuarios (M-16), V-04. Todo se puede sobrescribir por entorno |
+| `docker/config.env` | Puerto 8090, contenedor, volumen, `CPUS=1`, `MEMORIA=1g`, usuarios (M-16), V-04 (`OCIOSO_MIN=65`). Todo se puede sobrescribir por entorno |
 | `docker/comun.sh` | Funciones comunes: arrancar Qolqe con los límites, esperar `/api/salud`, restaurar la base, leer el cgroup |
 | `datos/preparar_datos.py`, `datos/preparar_bd.sql` | Generador de datos (§5.2 del diseño) |
 | `datos/usuarios.csv` | Generado: una fila por VU (`vu,celular,pin,usuario_id,suministro,contactos,buscar`) |
@@ -45,8 +45,8 @@ Qolqe corre en un contenedor con `--cpus=1 --memory=1g --memory-swap=1g` y k6 co
 
 ```bash
 cd <raíz del repo>
-# 0. Equipo libre (V-04): cerrar otras apps, enchufado, sin modo de bajo consumo. correr.sh espera a que la
-#    carga de 1 min baje de 1.5 (hasta 15 min) y la registra.
+# 0. Equipo libre (V-04): cerrar otras apps, enchufado, sin modo de bajo consumo. correr.sh espera a que el
+#    CPU ocioso del equipo (top, 3 s) llegue al 65 % (hasta 15 min) y registra ese valor y la carga de 1 min.
 # 1-2. Imagen + datos + base_perf.db (≈ 3 min con 3,000 usuarios; ver §7)
 tests/performance/preparar.sh 3000
 # 3. Referencia de 1 VU (≈ 1 min, V-06) y 4. calibración (≈ 2.5 min, M-14: imprime el TOP sugerido)
@@ -63,6 +63,8 @@ tests/performance/correr.sh resistencia           # 62 min + drenaje
 tests/performance/correr.sh demo
 ```
 
+**Cambio en V-04 (11-nov).** El diseño pedía carga promedio de 1 min < 1.5. En esta Mac la carga no baja de ~3–4 aunque no haya nada corriendo (la sostienen los procesos del sistema: `suggestd`, `mediaanalysisd`, WindowServer), así que ese criterio no se puede cumplir nunca. `correr.sh` ahora decide con el **CPU ocioso del equipo** medido con `top -l 2 -n 0 -s 3` (segunda muestra, 3 s): **≥ 65 %** (`OCIOSO_MIN`). En `corrida.json` quedan los dos valores (`v04.cpu_ocioso_%`, `v04.carga_1_5_15`, `carga_equipo_antes`) y el veredicto muestra el CPU ocioso con la carga como nota. El criterio de validez que pide el enunciado sigue siendo V-01 (CPU de k6 < 80 %), que se mide durante toda la corrida.
+
 Opcionales: escalabilidad `CPUS=2 TOP=<n> tests/performance/correr.sh estres` y confirmación de capacidad `L_CAP=<n> tests/performance/correr.sh capacidad`.
 
 **Sobre el TOP del estrés.** En el ensayo del 11-nov (§5) la calibración de 1 VU midió D ≈ 147 ms de CPU por sesión (TOP sugerido 1,100), pero bajo carga el CPU de Qolqe llegó al 100 % con ≈ 610 sesiones/min, es decir D ≈ 100 ms y L_sat ≈ 1,200 simultáneos. Con 1 VU el CPU casi no se usa y macOS puede llevar la vCPU de Docker a los núcleos de eficiencia (§6.3 del diseño), así que D sale inflado y TOP queda corto. Si la calibración da un TOP menor que 1.33 × 1,200 ≈ 1,600, conviene correr el estrés con `TOP=1800` (o con la hipótesis de 2,400) para pasar con seguridad la rodilla, y dejar anotada la razón en el informe.
@@ -77,6 +79,7 @@ Variables de `correr.sh`:
 | `USUARIOS_CSV=<ruta>` | `usuarios.csv` distinto de `datos/usuarios.csv` (también en `preparar.sh`) |
 | `TOP`, `L_CAP` | Parámetros de k6 para el estrés (M-14) y la capacidad |
 | `CPUS`, `MEMORIA` | Límites del contenedor al medir (por defecto 1 y 1g) |
+| `OCIOSO_MIN` | V-04: % mínimo de CPU ocioso del equipo para empezar (por defecto 65) |
 | `FORZAR=1` | Sigue aunque no se cumplan V-04 o V-05 (queda registrado en `corrida.json`) |
 | `PYSPY=0` | Sin py-spy en el estrés. `PYSPY_BASE_S`, `PYSPY_SATURACION_S`, `PYSPY_MESETA_S` y `PYSPY_DURACION` cambian cuándo y cuánto se perfila |
 | `ANALIZAR=0` | No ejecuta el análisis ni los gráficos al final |
@@ -85,7 +88,7 @@ Código de salida de `correr.sh`: el de k6 si no es 0 (**99** = algún umbral fa
 
 ### Qué hace `correr.sh` en cada corrida
 
-1. **V-04**: espera a que la carga del equipo baje de `CARGA_MAX`.
+1. **V-04**: espera a que el CPU ocioso del equipo llegue a `OCIOSO_MIN` (65 %) y registra también la carga de 1 min.
 2. **Base y proceso nuevos**: borra el contenedor, copia `base_perf.db` sobre `qolqe.db` (nunca llama a `reiniciar`, que borraría a los usuarios creados por la API) y arranca un contenedor nuevo con `--cpus=$CPUS --memory=$MEMORIA --memory-swap=$MEMORIA`.
 3. **V-05 y `corrida.json`**: huella de la base restaurada contra la de `base_perf.json`, `cpu.max`, `memory.max`, versiones, commit, carga del equipo y `cpu.stat` antes.
 4. **Monitores** (una fila por segundo): `docker stats` → `recursos_docker.csv`; psutil sobre el PID 1 de Qolqe desde un contenedor auxiliar (`--pid=container:qolqe-perf --cgroupns=host`, así no gasta la cuota de Qolqe) → `recursos_qolqe.csv`; psutil sobre el proceso de k6 en el host → `recursos_k6.csv`.
@@ -181,7 +184,7 @@ Código de salida: 0 = PASA, 1 = FALLA (el detalle de cada fila sale en el texto
 
 ## 9. Problemas comunes
 
-- **`V-04: el equipo no está libre`**: otra app usa el CPU. Esperar, cerrarla o, solo para probar, `FORZAR=1`.
+- **`V-04: el equipo no está libre`**: otra app usa el CPU (CPU ocioso < 65 %). Esperar, cerrarla o, solo para probar, `FORZAR=1`.
 - **`no existe base_perf.db`**: falta `preparar.sh`.
 - **`base_perf.db es del …`**: la base es de otro día; volver a correr `preparar.sh 3000`.
 - **Puerto 8090 ocupado**: `PUERTO=8091 tests/performance/correr.sh …` (nunca 8000 ni 8443).

@@ -28,7 +28,7 @@ Para probar sin Qolqe, `sintetico.py` genera corridas inventadas con el formato 
 | `peticiones.csv.gz`, `metricas_k6.csv.gz` | Versión compacta que escribe el análisis. Se usa si no están las muestras crudas (las de más de 50 MB no se versionan) |
 | `recursos_qolqe.csv` | psutil sobre Qolqe: `cpu_%`, `memoria_MB` (RSS), `ts`, `hilos`, `descriptores` y, con `--cgroup`, `cpu_cgroup_%` y `nr_throttled` |
 | `recursos_docker.csv`, `recursos_k6.csv` | `docker stats` del contenedor y psutil sobre k6 (`cpu_k6_equipo_%`, `cpu_total_equipo_%` para V-01) |
-| `corrida.json` | `inicio`/`fin` (`{hora, epoch}`), `parametros.TOP`, `parametros.ESCALA`, `codigo_salida_k6`, `carga_equipo_antes` (V-04), `base_identica` y `cpu_max` (V-05), `cpu_stat_antes`/`despues` (throttling y M-14), `calibracion` |
+| `corrida.json` | `inicio`/`fin` (`{hora, epoch}`), `parametros.TOP`, `parametros.ESCALA`, `codigo_salida_k6`, `cpu_ocioso_antes` (V-04, decide) y `carga_equipo_antes` (V-04 del diseño, solo informa), `base_identica` y `cpu_max` (V-05), `cpu_stat_antes`/`despues` (throttling y M-14), `calibracion` |
 | `resumen.json` | Umbrales que evaluó k6 (`qolqe.umbrales` de `k6/resumen.js`), solo para mostrarlos junto al veredicto propio |
 | `verificacion_dinero.txt` | La línea `TOTAL descuadres: N` (U-07) |
 | `consola.txt` | Avisos `Insufficient VUs` (V-07) |

@@ -12,7 +12,6 @@ from capacidad import capacidad
 from config import (
     CARGA_EQUIPO_MAX,
     CPU_GENERADOR_MAX,
-    CPU_MAX_ESPERADO,
     DESCARTADAS_MAX,
     DURACION_SESION_S,
     EP_OTRAS,
@@ -24,6 +23,7 @@ from config import (
     FRACCION_ATENDIDA,
     MEZCLA,
     MEZCLA_TOLERANCIA_PP,
+    OCIOSO_EQUIPO_MIN,
     OP_LOGIN,
     REFERENCIA_FRACCION,
     REQ_POR_OPERACION,
@@ -70,7 +70,7 @@ APLICA = {   # qué umbrales decide cada escenario (diseño §2.1, columna "Esce
 }
 VALIDEZ = {   # criterios de validez de una corrida (diseño §2.3)
     "V-01": "CPU de k6 y del equipo < 80 %", "V-02": "errores de datos (4xx de negocio) = 0",
-    "V-03": "mezcla lograda a ± 2 pp", "V-04": "equipo libre antes de empezar (carga < 1.5)",
+    "V-03": "mezcla lograda a ± 2 pp", "V-04": "equipo libre antes de empezar (CPU ocioso ≥ 65 %)",
     "V-05": "base restaurada idéntica y 1 CPU", "V-06": "con 1 VU, p95 ≤ 10 % del umbral",
     "V-07": "sin avisos 'Insufficient VUs'",
 }
@@ -362,12 +362,20 @@ def filas_validez(c: Corrida, v: pd.DataFrame) -> list[Fila]:
                           nota="informativo: la demo es demasiado corta" if corta else ""))
     # V-04 y V-05: los registra correr.sh en corrida.json
     carga = c.meta.get("carga_equipo_antes", c.meta.get("carga_inicial"))
-    filas.append(Fila("V-04", "carga promedio de 1 min antes de empezar", fmt(carga, 2), f"< {CARGA_EQUIPO_MAX}",
-                      _res(None if carga is None else float(carga) < CARGA_EQUIPO_MAX)))
+    ocioso = c.meta.get("cpu_ocioso_antes")
+    if ocioso is not None:   # README §4: la carga de 1 min no baja de ~3-4 en esta Mac; decide el CPU ocioso
+        filas.append(Fila("V-04", "CPU ocioso del equipo antes de empezar (top, 3 s)", fmt(ocioso, 1, "%"),
+                          f"≥ {OCIOSO_EQUIPO_MIN} %", _res(float(ocioso) >= OCIOSO_EQUIPO_MIN),
+                          nota=f"carga de 1 min: {fmt(carga, 2)} (diseño < {CARGA_EQUIPO_MAX}; solo se registra)"))
+    else:
+        filas.append(Fila("V-04", "carga promedio de 1 min antes de empezar", fmt(carga, 2), f"< {CARGA_EQUIPO_MAX}",
+                          _res(None if carga is None else float(carga) < CARGA_EQUIPO_MAX)))
     identica, cpu_max = c.meta.get("base_identica"), c.meta.get("cpu_max")
-    ok5 = None if identica is None and cpu_max is None else bool(identica in (True, None) and cpu_max in (CPU_MAX_ESPERADO, None))
+    cpus = (c.meta.get("parametros") or {}).get("CPUS", "1")
+    esperado = f"{round(float(cpus) * 100000)} 100000"   # escalabilidad (CPUS=2): 200000 100000
+    ok5 = None if identica is None and cpu_max is None else bool(identica in (True, None) and cpu_max in (esperado, None))
     filas.append(Fila("V-05", "base restaurada idéntica y cpu.max del contenedor", f"base {identica}, cpu.max {cpu_max}",
-                      f"base idéntica y {CPU_MAX_ESPERADO}", _res(ok5)))
+                      f"base idéntica y {esperado}", _res(ok5)))
     # V-06: solo en la referencia de 1 VU
     if c.escenario == "referencia":
         for ep, d in c.pet.groupby("ep"):

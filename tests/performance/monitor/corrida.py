@@ -1,16 +1,22 @@
 """Registro de cada corrida (corrida.json) y del entorno (entorno.json). Lo llaman correr.sh y preparar.sh.
 
 Enunciado §5: "Registren la hora de inicio y fin de cada prueba para cruzar los recursos con los resultados".
-  python corrida.py esperar-equipo                     V-04: espera carga de 1 min < CARGA_MAX (máx. ESPERA_MAX s)
+  python corrida.py esperar-equipo                     V-04: espera CPU ocioso ≥ OCIOSO_MIN % (máx. ESPERA_MAX s)
   python corrida.py inicio <carpeta> <escenario>       hora de inicio, versiones, cgroup, cpu.stat, V-04 y V-05
   python corrida.py fin <carpeta> <codigo_k6>          al terminar k6: hora de fin, cpu.stat y Δ (y M-14)
   python corrida.py cerrar <carpeta> <codigo_integridad>   resultado de U-07 y lista de archivos
   python corrida.py entorno <archivo.json>             especificaciones del equipo, Docker, k6 e imagen (§6.2)
-Lee CONTENEDOR, IMAGEN, CPUS, MEMORIA, CARGA_MAX y ESPERA_MAX del entorno (docker/config.env).
+Lee CONTENEDOR, IMAGEN, CPUS, MEMORIA, OCIOSO_MIN, CARGA_MAX y ESPERA_MAX del entorno (docker/config.env).
+
+V-04 (cambio del 11-nov, documentado en el README §4): en esta Mac la carga promedio de 1 min no baja de ~3-4 aunque
+el equipo esté ocioso (la sostienen los procesos del sistema), así que "carga < 1.5" del diseño no se puede cumplir.
+El criterio que decide es el CPU ocioso medido con `top -l 2 -n 0 -s 3` (segunda muestra, 3 s) ≥ OCIOSO_MIN (65 %);
+la carga de 1 min se sigue registrando en corrida.json junto al CPU ocioso.
 """
 import json
 import math
 import os
+import re
 import subprocess
 import sys
 import time
@@ -50,17 +56,35 @@ def carga() -> float:
     return round(os.getloadavg()[0], 2)
 
 
+def cpu_ocioso() -> float | None:
+    """% de CPU ocioso del equipo según top: segunda muestra de 3 s (la primera es el promedio desde el arranque)."""
+    valores = re.findall(r"([\d.]+)% idle", sh("top", "-l", "2", "-n", "0", "-s", "3"))
+    return float(valores[-1]) if valores else None
+
+
+def medir_equipo() -> dict:
+    """V-04: CPU ocioso (decide) y carga promedio de 1, 5 y 15 min (se registra)."""
+    ocioso, minimo = cpu_ocioso(), float(ENV("OCIOSO_MIN", "65"))
+    return {"criterio": f"CPU ocioso (top, 3 s) >= {minimo:g} %", "cpu_ocioso_%": ocioso, "ocioso_min_%": minimo,
+            "carga_1_5_15": [round(x, 2) for x in os.getloadavg()],
+            "carga_max_diseno": float(ENV("CARGA_MAX", "1.5")),
+            "ok": ocioso is not None and ocioso >= minimo}
+
+
 def esperar_equipo() -> int:
-    """V-04: el equipo libre antes de empezar (carga de 1 min < CARGA_MAX)."""
-    limite, espera = float(ENV("CARGA_MAX", "1.5")), int(ENV("ESPERA_MAX", "900"))
+    """V-04: el equipo libre antes de empezar (CPU ocioso ≥ OCIOSO_MIN; la carga solo se registra)."""
+    espera = int(ENV("ESPERA_MAX", "900"))
     fin = time.time() + espera
-    while carga() >= limite:
+    while not (m := medir_equipo())["ok"]:
         if time.time() > fin:
-            print(f"V-04: la carga sigue en {carga()} (≥ {limite}) después de {espera} s", file=sys.stderr)
+            print(f"V-04: CPU ocioso {m['cpu_ocioso_%']} % (< {m['ocioso_min_%']:g} %) después de {espera} s; "
+                  f"carga {m['carga_1_5_15'][0]}", file=sys.stderr)
             return 1
-        print(f"V-04: carga {carga()} ≥ {limite}; esperando…", file=sys.stderr)
-        time.sleep(15)
-    print(f"V-04: carga {carga()} < {limite}")
+        print(f"V-04: CPU ocioso {m['cpu_ocioso_%']} % < {m['ocioso_min_%']:g} % (carga {m['carga_1_5_15'][0]}); "
+              "esperando…", file=sys.stderr)
+        time.sleep(12)
+    print(f"V-04: CPU ocioso {m['cpu_ocioso_%']} % ≥ {m['ocioso_min_%']:g} % (carga de 1 min {m['carga_1_5_15'][0]}, "
+          "solo se registra)")
     return 0
 
 
@@ -89,8 +113,10 @@ def inicio(carpeta: Path, escenario: str) -> int:
                       "docker": sh("docker", "version", "--format", "{{.Server.Version}}"),
                       "imagen": ENV("IMAGEN", "qolqe-perf:p3"),
                       "imagen_id": sh("docker", "inspect", "-f", "{{.Image}}", ENV("CONTENEDOR", "qolqe-perf"))},
-        "carga_equipo_antes": carga(),                       # V-04 (carga promedio de 1 min)
-        "v04_ok": carga() < float(ENV("CARGA_MAX", "1.5")),
+        "carga_equipo_antes": carga(),                       # V-04: carga promedio de 1 min (solo se registra)
+        "v04": (v04 := medir_equipo()),                      # V-04: CPU ocioso del equipo (decide) y cargas
+        "cpu_ocioso_antes": v04["cpu_ocioso_%"],
+        "v04_ok": v04["ok"],
         "base_identica": v05["base_igual_a_base_perf"],      # V-05 (las claves planas las lee analisis/)
         "cpu_max": cpu_max,
         "memory_max": memory_max,
