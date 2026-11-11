@@ -368,3 +368,9 @@ def tiene_codigo(s):
 def ve_estado(s, nombre, estado):
     recibidas = s.cliente.get("/api/solicitudes", headers=s.como(nombre)).json()["recibidas"]
     assert next(x for x in recibidas if x["id"] == s.solicitud_id)["estado"] == estado
+
+
+# Pasos de cada área en su propio módulo. Se importan al final porque usan los helpers de arriba.
+from pasos_nucleo_acceso import *  # noqa: E402,F401,F403
+from pasos_nucleo_dinero import *  # noqa: E402,F401,F403
+from pasos_g4_extra import *  # noqa: E402,F401,F403
