@@ -159,6 +159,10 @@ def encabezado(run: dict) -> str:
     texto = (f"Run **#{run['numero']}** (intento {run['intento']}) · commit `{sha}` · {run['evento']}"
              f"{' · ' + run['rama'] if run['rama'] else ''} · evidencia: {run['evidencia']} · "
              f"veredicto: **{run.get('conclusion') or '—'}** · {run['fecha'][:16].replace('T', ' ')} (hora de Lima)")
+    if not run["run_id"]:
+        # Una corrida local no es evidencia del pipeline: el job reportes vuelve a generar la matriz en cada run.
+        texto += (" · **corrida local, fuera de GitHub Actions**: el job `reportes` del pipeline genera esta matriz"
+                  " en cada run (artefacto `trazabilidad`)")
     return texto + (f" · [ver run]({run['url']})" if run["url"] else "")
 
 
