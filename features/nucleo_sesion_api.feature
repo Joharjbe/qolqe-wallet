@@ -210,7 +210,9 @@ Característica: API de inicio y cierre de sesión (núcleo HU-N-02 y HU-N-03)
     Entonces la respuesta tiene estado 401
     Y el código de error es "NO_AUTENTICADO"
 
-  @HU-N-03 @CA1 @CP-NA45 @DEF-09
+  # NA45 y NA48 usan reglas de Seguridad (HU-G6-09 CA2 y HU-G6-10 CA1, módulo G6, fuera del alcance) como evidencia
+  # adicional del cierre de sesión. Son técnicos y no cuentan como cobertura de un CA de HU-N-03.
+  @HU-N-03 @CP-NA45 @DEF-09 @tecnico
   Escenario: CP-NA45 La sesión cerrada debe desaparecer de mis sesiones activas
     Cuando Ana abre dos sesiones
     Y Ana cierra la primera sesión
@@ -235,7 +237,7 @@ Característica: API de inicio y cierre de sesión (núcleo HU-N-02 y HU-N-03)
       | token inválido | 401    | Token inválido                   |
       | token vencido  | 401    | El token expiró                  |
 
-  @HU-N-03 @CA1 @CP-NA48
+  @HU-N-03 @CP-NA48 @tecnico
   Escenario: CP-NA48 Cerrar la sesión desde Seguridad sí invalida el token
     Cuando Ana abre dos sesiones
     Y Ana cierra la primera sesión desde seguridad
@@ -270,3 +272,8 @@ Característica: API de inicio y cierre de sesión (núcleo HU-N-02 y HU-N-03)
     Y Ana vuelve a iniciar sesión
     Entonces la respuesta tiene estado 200
     Y el nuevo inicio de sesión tiene un identificador distinto
+
+  @HU-N-02 @CA2 @CP-NA157 @tecnico
+  Escenario: CP-NA157 Celular inexistente y PIN incorrecto responden igual en estado, cuerpo y cabeceras
+    Cuando se intenta ingresar con el celular "900999999" y el PIN "4826" y luego con el celular "912345678" y el PIN "0000"
+    Entonces los dos intentos de ingreso responden igual en estado, cuerpo y cabeceras salvo la fecha

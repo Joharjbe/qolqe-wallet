@@ -1,7 +1,9 @@
 # Reporte de defectos · núcleo y G4
 
 Entorno común: Qolqe (`qolqe/` sin modificar), Python 3.12, SQLite, `QOLQE_MODO_PRUEBA=1`, Chromium; pipeline en `ubuntu-24.04`.
-Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` estricto): si se corrige, la prueba pasa a XPASS y el pipeline obliga a retirar la etiqueta. En la web el fallo esperado es `@DEF-xx @fail` (`test.fail` de Playwright). Los defectos de concurrencia solo se automatizan si se reprodujeron en 20 de 20 corridas locales; si no, quedan como evidencia manual.
+Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` estricto, `raises=AssertionError`): si se corrige, la prueba pasa a XPASS y el pipeline obliga a retirar la etiqueta; un error que no es una aserción (servidor caído, paso roto) queda como fallo y no como el defecto. En la web el fallo esperado es `@DEF-xx @fail` (`test.fail` de Playwright) y lo que el paso necesita para comparar (que el error aparezca) es una precondición: si no se cumple, el caso falla de verdad (`tests/e2e/precondicion.ts`).
+
+**Regla para la concurrencia.** Un defecto de concurrencia se automatiza solo si su escenario lo reprodujo en **200 de 200** corridas locales con `--runxfail` (los 10 escenarios con `@concurrencia`, 11-nov-2026: los 9 con DEF fallaron 200 de 200 y CP-NA131 pasó 200 de 200). Con 20 corridas no alcanzaba: CP-T20, con una sola ráfaga, no reprodujo DEF-26 en 2 de 90 corridas de la revisión, porque el alta de contacto no tiene la pausa antifraude de las transferencias y la ventana es de milisegundos. Por eso CP-T20 repite la ráfaga hasta 5 veces. Si un escenario no cumple la regla, queda como evidencia manual (CP-NA69, CP-T19). La regla se vuelve a comprobar en el runner de GitHub cuando el workflow corra ahí (pendiente).
 
 | ID | Título | Severidad | Prioridad | Estado |
 |---|---|---|---|---|
@@ -42,7 +44,7 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | Módulo / regla | G4 · HU-G4-08 CA4, R-G4-05 |
 | Severidad | Crítica |
 | Prioridad | Alta |
-| Prueba que lo detecta | `tests/api/test_solicitudes_api.py::test_cpa32_una_solicitud_vencida_no_se_puede_aceptar` y `tests/api/test_nucleo_dinero_api.py::test_cpna95_…` (junto con DEF-04) |
+| Prueba que lo detecta | `tests/api/test_solicitudes_api.py::test_cpa32_una_solicitud_vencida_no_se_puede_aceptar` y `tests/api/test_nucleo_dinero_api.py::test_cpna95_…` (la solicitud vencida de una cuenta cerrada, ver DEF-04) |
 
 **Pasos para reproducir**
 1. Reiniciar datos e iniciar sesión como Ana (987654321 / 4826).
@@ -62,7 +64,7 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | Módulo / regla | G4 · HU-G4-05 CA1; núcleo · RN-07, HU-N-07 CA2 y HU-N-06 CA4 |
 | Severidad | Crítica |
 | Prioridad | Alta |
-| Prueba que lo detecta | `tests/api/test_contactos_api.py::test_cpa18_transferir_a_un_contacto_con_cuenta_cerrada`; en el núcleo, `tests/api/test_nucleo_dinero_api.py::test_cpna112_…` (por `celular_destino`), `test_cpna94_…` (cuenta recién cerrada, por celular y por contacto) y `test_cpna95_…` (aceptar la solicitud de una cuenta cerrada) |
+| Prueba que lo detecta | `tests/api/test_contactos_api.py::test_cpa18_transferir_a_un_contacto_con_cuenta_cerrada`; en el núcleo, `tests/api/test_nucleo_dinero_api.py::test_cpna112_…` (por `celular_destino`), y `test_cpna94_…` (cuenta recién cerrada, por celular y por contacto) |
 
 **Pasos para reproducir**
 1. Reiniciar datos e iniciar sesión como Diego (998877665 / 3604), que tiene a Fabián (cuenta cerrada) como contacto.
@@ -70,7 +72,7 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 
 **Resultado esperado:** 422 `DESTINO_INACTIVO`; el saldo de Diego no cambia.
 
-**Resultado obtenido:** 201 con código de operación; el saldo de Diego baja a S/ 2,490.00. Lo mismo ocurre con `celular_destino: "934567812"` (CP-NA112) y con una cuenta que se acaba de cerrar (CP-NA94). Además, si Carla cierra su cuenta y Ana acepta la solicitud vencida de Carla, se transfieren S/ 30.00 a la cuenta cerrada (CP-NA95, combinado con DEF-03).
+**Resultado obtenido:** 201 con código de operación; el saldo de Diego baja a S/ 2,490.00. Lo mismo ocurre con `celular_destino: "934567812"` (CP-NA112) y con una cuenta que se acaba de cerrar (CP-NA94). Además, si Carla cierra su cuenta y Ana acepta la solicitud vencida de Carla, se transfieren S/ 30.00 a la cuenta cerrada. Ese efecto combinado está en CP-NA95, que lleva solo `@DEF-03`: la única solicitud de una cuenta cerrada es una vencida, porque HU-N-06 CA3 impide cerrar con pendientes, así que el caso falla por DEF-03. Si se corrige DEF-03 y no DEF-04, CP-NA95 pasa y DEF-04 sigue detectado por CP-A18, NA94 y NA112.
 
 **Evidencia:** `qolqe/api/transferencias.py`: `_resolver_destino_qolqe` busca el destino sin comprobar su estado. El dinero queda en una cuenta que nadie puede usar.
 
@@ -224,7 +226,7 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | Módulo / regla | Núcleo · HU-N-02 CA3, RN-04 |
 | Severidad | Crítica |
 | Prioridad | Alta |
-| Prueba que lo detecta | `tests/api/test_nucleo_acceso_api.py::test_cpna33_los_intentos_fallidos_simultáneos_también_deben_bloquear` (20 de 20 corridas) |
+| Prueba que lo detecta | `tests/api/test_nucleo_acceso_api.py::test_cpna33_los_intentos_fallidos_simultáneos_también_deben_bloquear` (200 de 200 corridas) |
 
 **Pasos para reproducir**
 1. Reiniciar datos.
@@ -278,7 +280,7 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | Módulo / regla | Núcleo · HU-N-01 CA3 |
 | Severidad | Media |
 | Prioridad | Media |
-| Prueba que lo detecta | `tests/api/test_nucleo_acceso_api.py::test_cpna12_registros_simultáneos_con_el_mismo_celular` (20 de 20 corridas) |
+| Prueba que lo detecta | `tests/api/test_nucleo_acceso_api.py::test_cpna12_registros_simultáneos_con_el_mismo_celular` (200 de 200 corridas) |
 
 **Pasos para reproducir:** enviar a la vez 5 `POST /api/usuarios` con el mismo celular `987123123` y datos válidos.
 
@@ -295,7 +297,7 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | Módulo / regla | Núcleo · HU-N-01 CA5 y HU-N-05 CA1 |
 | Severidad | Media |
 | Prioridad | Media |
-| Prueba que lo detecta | `tests/api/test_nucleo_acceso_api.py::test_cpna20_registros_simultáneos_con_el_mismo_correo` (20 de 20 corridas). La edición simultánea (CP-NA69) queda como evidencia manual: en 1 de cada 25 corridas el servidor serializa las peticiones. |
+| Prueba que lo detecta | `tests/api/test_nucleo_acceso_api.py::test_cpna20_registros_simultáneos_con_el_mismo_correo` (200 de 200 corridas). La edición simultánea (CP-NA69) queda como evidencia manual: en 1 de cada 25 corridas el servidor serializa las peticiones. |
 
 **Pasos para reproducir:** enviar a la vez 5 `POST /api/usuarios` con celulares distintos y el mismo correo `mismo@correo.pe`.
 
@@ -348,11 +350,13 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | Prioridad | Baja |
 | Prueba que lo detecta | `features/web/nucleo_acceso_web.feature`, CP-NW03 (`@DEF-18 @fail`, fallo esperado 3 de 3) |
 
+**Tipo:** usabilidad (consistencia de mensajes). Ningún requisito fija el idioma: `requisitos.md` solo pide un `codigo` estable y un mensaje (`detail`). La base es la propia interfaz, que está en español, y la misma regla (nombres de 2 a 80 caracteres) en Mi perfil, que muestra "Los nombres deben tener entre 2 y 80 caracteres" (CP-NW14).
+
 **Pasos para reproducir:** en `/registro.html`, registrar DNI 12345678, nombres "A", celular 987000113 y PIN 4826.
 
-**Resultado esperado:** "Los nombres deben tener entre 2 y 80 caracteres" o un mensaje equivalente en español.
+**Resultado esperado:** un mensaje en español sobre los nombres, con el texto que sea (por ejemplo, el de Mi perfil). El oráculo de CP-NW03 no exige una frase: pide que el error mencione "nombre" y no traiga el texto de Pydantic ("String should…", "characters").
 
-**Resultado obtenido:** `registro-error` muestra "String should have at least 2 characters", el texto de Pydantic que llega en `errores[0].mensaje` del 422.
+**Resultado obtenido:** `registro-error` muestra "La solicitud tiene datos inválidos: String should have at least 2 characters": el `detail` en español seguido del texto de Pydantic que llega en `errores[0].mensaje` del 422.
 
 ## DEF-19: La interbancaria no considera la comisión y el saldo queda negativo
 
@@ -395,7 +399,7 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | Módulo / regla | Núcleo · HU-N-07 CA5, RN-06 y RN-08; G4 · HU-G4-08 CA1 |
 | Severidad | Crítica |
 | Prioridad | Alta |
-| Prueba que lo detecta | `tests/api/test_nucleo_dinero_api.py::test_cpna134_…`, `test_cpna135_…` y `tests/api/test_g4_tecnico_api.py::test_cpt18_…` (20 de 20 corridas cada una) |
+| Prueba que lo detecta | `tests/api/test_nucleo_dinero_api.py::test_cpna134_…`, `test_cpna135_…` y `tests/api/test_g4_tecnico_api.py::test_cpt18_…` (200 de 200 corridas cada una) |
 
 **Pasos para reproducir**
 1. Iniciar sesión como Carla (saldo S/ 50.00) y enviar a la vez 5 transferencias Qolqe de S/ 20.00 a Bruno.
@@ -465,7 +469,7 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | Módulo / regla | G4 · HU-G4-08 CA1 y CA4 |
 | Severidad | Crítica |
 | Prioridad | Alta |
-| Prueba que lo detecta | `tests/api/test_g4_tecnico_api.py::test_cpt17_tres_aceptaciones_simultáneas_de_la_misma_solicitud_debitan_una_sola_vez` (20 de 20 corridas) |
+| Prueba que lo detecta | `tests/api/test_g4_tecnico_api.py::test_cpt17_tres_aceptaciones_simultáneas_de_la_misma_solicitud_debitan_una_sola_vez` (200 de 200 corridas) |
 
 **Pasos para reproducir:** Diego le solicita S/ 25.00 a Bruno; Bruno envía a la vez 3 `POST /api/solicitudes/{id}/aceptar`.
 
@@ -482,13 +486,13 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | Módulo / regla | G4 · HU-G4-01 CA1 (`CONTACTO_EXISTENTE`) |
 | Severidad | Media |
 | Prioridad | Media |
-| Prueba que lo detecta | `tests/api/test_g4_tecnico_api.py::test_cpt20_cinco_altas_simultáneas_del_mismo_celular_crean_un_solo_contacto` (20 de 20 corridas) |
+| Prueba que lo detecta | `tests/api/test_g4_tecnico_api.py::test_cpt20_cinco_altas_simultáneas_del_mismo_celular_crean_un_solo_contacto`: hasta 5 ráfagas de 5 altas; el defecto apareció en 200 de 200 corridas |
 
-**Pasos para reproducir:** iniciar sesión como Diego y enviar a la vez 5 `POST /api/contactos` con el celular 912345678 y alias distintos.
+**Pasos para reproducir:** iniciar sesión como Diego y enviar a la vez 5 `POST /api/contactos` con el celular 912345678 y alias distintos. Si la ráfaga sale bien (1 × 201), borrar el contacto y repetir: a veces el servidor serializa las 5 peticiones.
 
 **Resultado esperado:** 1 × 201 y 4 × 409 `CONTACTO_EXISTENTE`.
 
-**Resultado obtenido:** 5 × 201; Bruno aparece 5 veces en la lista de Diego y ocupa 5 de los 15 cupos.
+**Resultado obtenido:** en casi todas las ráfagas, más de un 201 (en la revisión, de 3 a 5); Bruno aparece repetido en la lista de Diego y ocupa varios de los 15 cupos.
 
 **Evidencia:** la tabla `contactos` de `qolqe/bd.py` no tiene `UNIQUE (usuario_id, contacto_usuario_id)` y la verificación previa no está protegida.
 
@@ -506,6 +510,8 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 **Resultado esperado:** orden alfabético por alias: álvaro, Ángel, Beto, Fabián.
 
 **Resultado obtenido:** Beto, Fabián, Ángel, álvaro.
+
+**Tipo:** usabilidad (interpretación del requisito). HU-G4-02 CA1 pide "ordenados por alias" sin fijar la intercalación. Lo tomamos como orden alfabético en español, que no separa las vocales con tilde: la misma HU ya ignora tildes al buscar (CA2) y la API ya ignora mayúsculas al ordenar (`COLLATE NOCASE`). El oráculo es el mismo en toda la suite: `orden_alfabetico` de `tests/api/conftest.py` (sin mayúsculas ni tildes, la ñ después de la n), que usan CP-A08 y CP-A47.
 
 **Evidencia:** `qolqe/api/contactos.py` ordena con `COLLATE NOCASE`, que solo iguala mayúsculas ASCII; la búsqueda sí ignora tildes (HU-G4-02 CA2), así que la lista y la búsqueda no son coherentes.
 
@@ -540,6 +546,32 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 **Resultado esperado:** 422, porque el contrato declara `cci` con `pattern ^\d{20}$` y `celular_destino` con el formato de celular.
 
 **Resultado obtenido:** 201 en los dos casos: la API ignora el campo del otro tipo sin validarlo. Clasificación: desajuste entre el código y el contrato.
+
+## Observaciones (no son defectos según los requisitos)
+
+### OBS-01: el cierre de cuenta sirve para adivinar el PIN
+
+| Campo | Valor |
+|---|---|
+| Módulo / regla | Núcleo · HU-N-06 CA1 y CA2 |
+| Riesgo | Medio: quien tiene un token puede probar PIN sin límite |
+| Prueba | `tests/api/test_nucleo_dinero_api.py::test_cpna84_…` (pasa: documenta el comportamiento actual) |
+
+**Qué pasa:** `POST /api/cuentas/me/cierre` responde 422 `PIN_INCORRECTO` con un PIN errado y, si el PIN es correcto y hay saldo, 422 `SALDO_PENDIENTE`. Los intentos errados no bloquean nada: CP-NA84 envía 4 PIN errados y después el correcto, y el ingreso sigue habilitado.
+
+**Por qué no es un DEF:** RN-04 (bloqueo al tercer intento fallido) está escrita para el ingreso (HU-N-02 CA3), y HU-N-06 solo pide confirmar con el PIN. Ningún requisito limita los intentos en el cierre. Se recomienda aplicar RN-04 también a las operaciones que piden el PIN.
+
+### OBS-02: sin Content-Type, la API toma el cuerpo como JSON
+
+| Campo | Valor |
+|---|---|
+| Módulo / regla | Núcleo y G4 · contrato (todas las operaciones con cuerpo) |
+| Riesgo | Bajo |
+| Prueba | `tests/api/test_nucleo_acceso_api.py::test_cpna160_…` (pasa: documenta el comportamiento actual) |
+
+**Qué pasa:** `POST /api/usuarios` y `POST /api/transferencias` con un cuerpo JSON y sin cabecera `Content-Type` responden 201 y hacen la operación. Con `Content-Type: text/plain` responden 422 `SOLICITUD_INVALIDA` (CP-NA159). Es el comportamiento por defecto de FastAPI.
+
+**Por qué no es un DEF:** el contrato declara `application/json` como cuerpo, pero ningún requisito pide rechazar una petición sin la cabecera. La clase 10 propone 400 o 415 para este caso; se deja como observación para que el equipo de desarrollo decida.
 
 ## Hallazgo descartado
 

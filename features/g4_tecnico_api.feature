@@ -350,7 +350,8 @@ Característica: API de contactos y solicitudes (G4): casos técnicos
       | GET     | /api/solicitudes/1/aceptar |
       | OPTIONS | /api/contactos             |
 
-  @HU-G4-07 @CA1 @CP-T28 @tecnico
+  # Una ruta inexistente no prueba un CA: se etiqueta con la HU del recurso (solicitudes) y sin @CA.
+  @HU-G4-07 @CP-T28 @tecnico
   Esquema del escenario: CP-T28 Una ruta inexistente responde 404 con el formato de error
     Dado que Ana inició sesión
     Cuando Ana envía <metodo> <ruta>
@@ -376,7 +377,7 @@ Característica: API de contactos y solicitudes (G4): casos técnicos
       | PUT     | /api/solicitudes | GET, POST   |
 
   @HU-G4-01 @HU-G4-02 @HU-G4-03 @HU-G4-04 @HU-G4-06 @HU-G4-07 @HU-G4-08 @HU-G4-09 @HU-G4-10 @CA1 @CP-T21 @tecnico
-  Esquema del escenario: CP-T21 Las respuestas cumplen el esquema y las cabeceras del contrato OpenAPI
+  Esquema del escenario: CP-T21 Las respuestas cumplen el esquema y el tipo de contenido del contrato OpenAPI
     Dado que <usuario> inició sesión
     Cuando <usuario> envía <metodo> <ruta> con el cuerpo <cuerpo>
     Entonces la respuesta tiene estado <estado>
@@ -399,7 +400,7 @@ Característica: API de contactos y solicitudes (G4): casos técnicos
       | Ana     | POST   | /api/solicitudes/1/rechazar | {}                                                         | 200    | POST /api/solicitudes/{solicitud_id}/rechazar |
       | Ana     | POST   | /api/solicitudes/3/cancelar | (sin cuerpo)                                               | 200    | POST /api/solicitudes/{solicitud_id}/cancelar |
 
-  @HU-G4-08 @CA1 @CA4 @CP-T17 @DEF-25 @tecnico
+  @HU-G4-08 @CA1 @CA4 @CP-T17 @DEF-25 @tecnico @concurrencia
   Escenario: CP-T17 Tres aceptaciones simultáneas de la misma solicitud debitan una sola vez
     Dado que Diego le solicitó 25.00 a Bruno
     Cuando Bruno acepta la misma solicitud 3 veces a la vez
@@ -407,16 +408,16 @@ Característica: API de contactos y solicitudes (G4): casos técnicos
     Y el saldo de Bruno es "775.00"
     Y el saldo de Diego es "2525.00"
 
-  @HU-G4-08 @CA1 @HU-N-07 @CA5 @CP-T18 @DEF-21 @tecnico
+  @HU-G4-08 @CA1 @HU-N-07 @CA5 @CP-T18 @DEF-21 @tecnico @concurrencia
   Escenario: CP-T18 Aceptar a la vez dos solicitudes que juntas superan el saldo no lo deja negativo
     Dado que Carla recibió solicitudes de 40.00 de Ana y de Bruno
     Cuando Carla acepta a la vez las solicitudes que recibió
     Entonces solo una de las peticiones simultáneas responde 200 y las demás 422 "SALDO_INSUFICIENTE"
     Y el saldo de Carla es "10.00"
 
-  @HU-G4-01 @CA1 @CP-T20 @DEF-26 @tecnico
+  @HU-G4-01 @CA1 @CP-T20 @DEF-26 @tecnico @concurrencia
   Escenario: CP-T20 Cinco altas simultáneas del mismo celular crean un solo contacto
     Dado que Diego inició sesión
-    Cuando Diego agrega 5 veces a la vez el celular "912345678"
+    Cuando Diego agrega 5 veces a la vez el celular "912345678" en 5 ráfagas
     Entonces solo una de las peticiones simultáneas responde 201 y las demás 409 "CONTACTO_EXISTENTE"
     Y Diego tiene el celular "912345678" una sola vez entre sus contactos

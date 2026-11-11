@@ -12,35 +12,33 @@ Característica: API de solicitudes de dinero (G4)
     Y la solicitud vence 48 horas después de creada
     Y "912345678" recibió un SMS que contiene "te solicita S/ 45.50"
 
+  # Los límites inválidos del monto (0, -1, 500.01, 1.234 y otros) están en CP-A61, y los del motivo (2 y 61) en
+  # CP-A90, los dos con el código de error y la comprobación de que no se creó nada.
   @HU-G4-06 @CA1 @CP-A21
-  Esquema del escenario: CP-A21 Valores límite del monto
+  Esquema del escenario: CP-A21 Valores límite válidos del monto
     Dado que Diego inició sesión
     Y Diego tiene el contacto "912345678" con alias "Bruno"
     Cuando solicita <monto> a "Bruno" por "Motivo valido"
-    Entonces la respuesta tiene estado <estado>
+    Entonces la respuesta tiene estado 201
+    Y la solicitud está en estado "PENDIENTE"
 
     Ejemplos:
-      | monto  | estado |
-      | 0      | 422    |
-      | 0.01   | 201    |
-      | 500    | 201    |
-      | 500.01 | 422    |
-      | 1.234  | 422    |
-      | -1     | 422    |
+      | monto |
+      | 0.01  |
+      | 500   |
 
   @HU-G4-06 @CA1 @CP-A22
-  Esquema del escenario: CP-A22 Valores límite del motivo
+  Esquema del escenario: CP-A22 Valores límite válidos del motivo
     Dado que Diego inició sesión
     Y Diego tiene el contacto "912345678" con alias "Bruno"
     Cuando solicita 10.00 a "Bruno" con un motivo de <largo> caracteres
-    Entonces la respuesta tiene estado <estado>
+    Entonces la respuesta tiene estado 201
+    Y la solicitud está en estado "PENDIENTE"
 
     Ejemplos:
-      | largo | estado |
-      | 2     | 422    |
-      | 3     | 201    |
-      | 60    | 201    |
-      | 61    | 422    |
+      | largo |
+      | 3     |
+      | 60    |
 
   @HU-G4-06 @CA1 @CP-A23
   Escenario: CP-A23 Máximo 10 solicitudes pendientes enviadas
@@ -107,7 +105,8 @@ Característica: API de solicitudes de dinero (G4)
 
   @HU-G4-08 @CA2 @CP-A30
   Escenario: CP-A30 Sobre el límite diario la solicitud sigue pendiente
-    Dado que Ana le solicitó 500.00 a Diego
+    Dado que el reloj de Qolqe marca hoy a las "12:00:00"
+    Y que Ana le solicitó 500.00 a Diego
     Y Diego ya transfirió 600.00 hoy
     Cuando Diego acepta la solicitud
     Entonces la respuesta tiene estado 422
@@ -143,17 +142,18 @@ Característica: API de solicitudes de dinero (G4)
     Y el código de error es "ESTADO_INVALIDO"
     Y el saldo de Bruno es "775.00"
 
+  # El motivo de 61 caracteres está en CP-A97 con el código de error.
   @HU-G4-09 @CA1 @CP-A34
   Esquema del escenario: CP-A34 Rechazar con motivo opcional de hasta 60 caracteres
     Dado que Diego le solicitó 25.00 a Bruno
     Cuando Bruno rechaza la solicitud con un motivo de <largo> caracteres
-    Entonces la respuesta tiene estado <estado>
+    Entonces la respuesta tiene estado 200
+    Y la solicitud está en estado "RECHAZADA"
 
     Ejemplos:
-      | largo | estado |
-      | 0     | 200    |
-      | 60    | 200    |
-      | 61    | 422    |
+      | largo |
+      | 0     |
+      | 60    |
 
   @HU-G4-09 @CA1 @CP-A35
   Escenario: CP-A35 Rechazar cambia el estado y avisa al solicitante sin mover dinero
@@ -177,17 +177,6 @@ Característica: API de solicitudes de dinero (G4)
     Entonces la respuesta tiene estado 200
     Y la solicitud está en estado "CANCELADA"
 
-  @HU-G4-10 @CA1 @CP-A38
-  Esquema del escenario: CP-A38 Solo el solicitante puede cancelar
-    Dado que Diego le solicitó 25.00 a Bruno
-    Cuando <otro> cancela la solicitud
-    Entonces la respuesta tiene estado 404
-
-    Ejemplos:
-      | otro  |
-      | Bruno |
-      | Carla |
-
   @HU-G4-10 @CA1 @CP-A39
   Escenario: CP-A39 Una solicitud ya aceptada no se puede cancelar
     Dado que Diego le solicitó 25.00 a Bruno
@@ -195,12 +184,6 @@ Característica: API de solicitudes de dinero (G4)
     Cuando Diego cancela la solicitud
     Entonces la respuesta tiene estado 409
     Y el código de error es "ESTADO_INVALIDO"
-
-  @HU-G4-07 @CA1 @CP-T03
-  Escenario: CP-T03 Sin token no se accede a las solicitudes
-    Cuando se consultan las solicitudes sin token
-    Entonces la respuesta tiene estado 401
-    Y el código de error es "NO_AUTENTICADO"
 
   @HU-G4-06 @CA1 @CP-A61
   Esquema del escenario: CP-A61 Un monto o motivo inválido informa SOLICITUD_INVALIDA y no crea la solicitud
@@ -377,7 +360,8 @@ Característica: API de solicitudes de dinero (G4)
 
   @HU-G4-08 @CA1 @CP-A94
   Escenario: CP-A94 Se puede aceptar si se alcanza exactamente el límite diario
-    Dado que Ana le solicitó 400.00 a Diego
+    Dado que el reloj de Qolqe marca hoy a las "12:00:00"
+    Y que Ana le solicitó 400.00 a Diego
     Y Diego ya transfirió 600.00 hoy
     Cuando Diego acepta la solicitud
     Entonces la respuesta tiene estado 200
@@ -401,7 +385,8 @@ Característica: API de solicitudes de dinero (G4)
 
   @HU-G4-08 @CA2 @CP-A96
   Escenario: CP-A96 Sobre el límite diario no hay SMS de aceptación ni movimientos
-    Dado que Ana le solicitó 500.00 a Diego
+    Dado que el reloj de Qolqe marca hoy a las "12:00:00"
+    Y que Ana le solicitó 500.00 a Diego
     Y Diego ya transfirió 600.00 hoy
     Cuando Diego acepta la solicitud
     Entonces la respuesta tiene estado 422

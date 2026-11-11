@@ -38,6 +38,7 @@ Característica: Pantalla de solicitudes de dinero (G4)
     Entonces ve la confirmación "entre 3 y 60 caracteres"
     Y va a la pestaña "enviadas"
     Y la solicitud "ab" no aparece
+    Y "Ana" no tiene solicitudes enviadas con el motivo "ab"
 
   @HU-G4-06 @CA2 @CP-W13
   Escenario: CP-W13 La solicitud creada queda pendiente con su vencimiento

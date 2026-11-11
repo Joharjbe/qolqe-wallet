@@ -24,16 +24,17 @@ export const USUARIOS: Record<string, { celular: string; pin: string }> = {
 export class DatosPrueba {
   constructor(private readonly api: APIRequestContext) {}
 
+  /** FIRST-Independent: si el reinicio falla (servidor sin QOLQE_MODO_PRUEBA, base bloqueada), el escenario no corre. */
   async reiniciar() {
-    await this.api.delete('/api/pruebas/reloj');
-    await this.api.post('/api/pruebas/reiniciar');
+    await this.exigir(this.api.delete('/api/pruebas/reloj'), 'volver al reloj real');
+    await this.exigir(this.api.post('/api/pruebas/reiniciar'), 'reiniciar los datos');
   }
 
   /** Fija la hora de hoy y vuelve a sembrar, para que los datos relativos (como el bloqueo de Elena) partan de ella. */
   async fijarHora(hora: string) {
-    const { ahora } = await (await this.api.get('/api/pruebas/reloj')).json();
+    const { ahora } = await (await this.exigir(this.api.get('/api/pruebas/reloj'), 'leer el reloj')).json();
     await this.exigir(this.api.put('/api/pruebas/reloj', { data: { ahora: `${ahora.slice(0, 10)}T${hora}:00` } }), 'fijar la hora');
-    await this.api.post('/api/pruebas/reiniciar');
+    await this.exigir(this.api.post('/api/pruebas/reiniciar'), 'reiniciar los datos');
   }
 
   async avanzarReloj(minutos: number) {
@@ -55,9 +56,13 @@ export class DatosPrueba {
     return (await this.api.post('/api/auth/login', { data: { celular, pin } })).status();
   }
 
-  async cantidadDeSms(nombre: string) {
-    const r = await this.api.get('/api/pruebas/notificaciones', { params: { celular: USUARIOS[nombre].celular } });
-    return ((await r.json()) as unknown[]).length;
+  async sms(nombre: string) {
+    const r = await this.exigir(this.api.get('/api/pruebas/notificaciones', { params: { celular: USUARIOS[nombre].celular } }), 'leer los SMS');
+    return ((await r.json()) as { mensaje: string }[]).map((m) => m.mensaje);
+  }
+
+  async cantidadDeSms(nombre: string, texto = '') {
+    return (await this.sms(nombre)).filter((m) => m.includes(texto)).length;
   }
 
   private async exigir(peticion: Promise<APIResponse>, accion: string) {
@@ -68,7 +73,7 @@ export class DatosPrueba {
 
   private async token(nombre: string) {
     const { celular, pin } = USUARIOS[nombre];
-    const r = await this.api.post('/api/auth/login', { data: { celular, pin } });
+    const r = await this.exigir(this.api.post('/api/auth/login', { data: { celular, pin } }), `ingresar como ${nombre}`);
     return { Authorization: `Bearer ${(await r.json()).access_token}` };
   }
 
@@ -83,7 +88,7 @@ export class DatosPrueba {
     for (let i = actual + 1; i <= total; i++) {
       const alias = `Zeta ${String(i).padStart(2, '0')}`;
       const id = await this.crearContacto(nombre, String(900000000 + i), alias);
-      if (favoritos.includes(alias)) await this.api.put(`/api/contactos/${id}`, { headers, data: { favorito: true } });
+      if (favoritos.includes(alias)) await this.exigir(this.api.put(`/api/contactos/${id}`, { headers, data: { favorito: true } }), 'marcar el favorito');
     }
   }
 
@@ -94,6 +99,12 @@ export class DatosPrueba {
     const id = contactos.find((c: { celular: string }) => c.celular === celular)?.id
       ?? await this.crearContacto(solicitante, celular, `Alias ${destinatario}`);
     await this.exigir(this.api.post('/api/solicitudes', { headers, data: { contacto_id: id, monto, motivo } }), 'crear la solicitud');
+  }
+
+  /** Motivos de las solicitudes enviadas, leídos por la API: confirman lo que la pantalla no creó. */
+  async motivosEnviados(nombre: string) {
+    const r = await this.exigir(this.api.get('/api/solicitudes', { headers: await this.token(nombre) }), 'leer las solicitudes');
+    return ((await r.json()).enviadas as { motivo: string }[]).map((s) => s.motivo);
   }
 
   async cancelarSolicitud(solicitante: string, motivo: string) {
@@ -109,22 +120,29 @@ export class DatosPrueba {
   }
 }
 
-/** Anota las peticiones que la pantalla envía a la API: algunas reglas solo existen en la interfaz. */
+/** Anota las peticiones que la pantalla envía a la API, con su cuerpo: algunas reglas solo existen en la interfaz. */
 export class Peticiones {
-  private readonly enviadas: string[] = [];
+  private readonly enviadas: { peticion: string; cuerpo: string | null }[] = [];
 
   constructor(page: Page) {
-    page.on('request', (r) => this.enviadas.push(`${r.method()} ${new URL(r.url()).pathname}`));
+    page.on('request', (r) => this.enviadas.push({ peticion: `${r.method()} ${new URL(r.url()).pathname}`, cuerpo: r.postData() }));
   }
 
   cantidad(peticion: string) {
-    return this.enviadas.filter((p) => p === peticion).length;
+    return this.enviadas.filter((p) => p.peticion === peticion).length;
+  }
+
+  /** Cuerpo JSON de la última petición de ese tipo (null si no salió ninguna). */
+  ultimoCuerpo(peticion: string): Record<string, unknown> | null {
+    const ultima = this.enviadas.filter((p) => p.peticion === peticion).at(-1);
+    return ultima?.cuerpo ? JSON.parse(ultima.cuerpo) : null;
   }
 }
 
 /** Una segunda sesión en otro navegador (contexto aislado, con su propio sessionStorage). */
 export interface OtroNavegador {
   login: LoginPage;
+  inicio: InicioPage;
   nav: Navegacion;
 }
 
@@ -145,7 +163,7 @@ export const test = base.extend<{
   otroNavegador: async ({ browser }, use) => {
     const contexto = await browser.newContext();
     const pagina = await contexto.newPage();
-    await use({ login: new LoginPage(pagina), nav: new Navegacion(pagina) });
+    await use({ login: new LoginPage(pagina), inicio: new InicioPage(pagina), nav: new Navegacion(pagina) });
     await contexto.close();
   },
   login: async ({ page }, use) => use(new LoginPage(page)),

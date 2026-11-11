@@ -186,6 +186,30 @@ def segunda_sesion(s, quien):
     s.segunda_sesion = _ingresar(s, quien)
 
 
+@given(parsers.re(r"(?P<quien>Ana|Bruno|Carla|Diego) (?P<tiene>tiene|no tiene) solicitudes pendientes"))
+def pendientes_segun_tabla(s, quien, tiene):
+    """Deja al usuario con o sin solicitudes pendientes (enviadas o recibidas), según la columna de la tabla."""
+    cabeceras = _token(s, quien)
+    datos = s.cliente.get("/api/solicitudes", headers=cabeceras, params={"estado": "PENDIENTE"}).json()
+    if tiene == "tiene" and not datos["enviadas"] + datos["recibidas"]:
+        otro = "Ana" if quien != "Ana" else "Bruno"
+        registro_solicitud(s, otro, "1.00", quien)
+    elif tiene == "no tiene":
+        for accion, lista in (("cancelar", datos["enviadas"]), ("rechazar", datos["recibidas"])):
+            for solicitud in lista:
+                r = s.cliente.post(f"/api/solicitudes/{solicitud['id']}/{accion}", headers=cabeceras)
+                assert r.status_code == 200, r.text
+    datos = s.cliente.get("/api/solicitudes", headers=cabeceras, params={"estado": "PENDIENTE"}).json()
+    assert bool(datos["enviadas"] + datos["recibidas"]) == (tiene == "tiene"), datos
+
+
+@given(parsers.re(r'el límite diario de (?P<quien>\S+) es "(?P<limite>\d+\.\d\d)"'))
+def limite_diario_es(s, quien, limite):
+    r = s.cliente.get("/api/limites", headers=_token(s, quien))
+    assert r.status_code == 200, r.text
+    assert r.json()["limite_diario"] == limite, r.text
+
+
 @given(parsers.re(r"(?:que )?(?P<solicitante>\S+) registró una solicitud pendiente de (?P<monto>\S+) para (?P<destinatario>\S+)"))
 def registro_solicitud(s, solicitante, monto, destinatario):
     celular = _celular(destinatario)

@@ -17,6 +17,15 @@ Then('el otro navegador vuelve al ingreso con el aviso {string}', async ({ otroN
   await otroNavegador.login.esperarAviso(texto);
 });
 
+Then('el otro navegador ve en inicio el saldo {string}', async ({ otroNavegador }, saldo: string) => {
+  await otroNavegador.inicio.esperarCargado();
+  await otroNavegador.inicio.esperarSaldo(saldo);
+});
+
+Given('que {string} tiene {int} solicitud(es) recibida(s) pendiente(s)', async ({ datos }, nombre: string, cantidad: number) => {
+  for (let i = 1; i <= cantidad; i++) await datos.crearSolicitud(nombre === 'Ana' ? 'Bruno' : 'Ana', nombre, '1.00', `Pendiente ${i}`);
+});
+
 Then('la cuenta de {string} sigue activa', async ({ datos }, nombre: string) => {
   expect(await datos.codigoDeIngreso(USUARIOS[nombre].celular, USUARIOS[nombre].pin)).toBe(200);
 });

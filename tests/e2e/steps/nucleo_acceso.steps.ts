@@ -12,6 +12,16 @@ When('se registra con estos datos:', async ({ registro }, tabla: DataTable) => {
 });
 
 Then('ve el error de registro {string}', async ({ registro }, texto: string) => registro.esperarError(texto));
+Then('ve el error de registro en español sobre los nombres', async ({ registro }) => registro.esperarErrorEnEspanol(/nombre/i));
+Then('el formulario de registro conserva los datos ingresados', async ({ registro }) => registro.esperarFormularioConservado());
+
+When('escribe {string} en el campo {string} del registro', async ({ registro }, texto: string, campo: string) => {
+  await registro.escribir(campo, texto);
+});
+
+Then('el campo {string} del registro queda con {string}', async ({ registro }, campo: string, valor: string) => {
+  await registro.esperarValor(campo, valor);
+});
 
 Then('no puede ingresar con el celular {string} y el PIN {string}', async ({ datos }, celular: string, pin: string) => {
   expect(await datos.codigoDeIngreso(celular, pin)).toBe(401);
@@ -47,8 +57,12 @@ Then('el navegador guarda la sesión', async ({ login }) => login.esperarSesionG
 Then('el navegador ya no guarda la sesión', async ({ login }) => login.esperarSesionGuardada(false));
 Then('vuelve a la pantalla de ingreso sin ver su saldo', async ({ login }) => login.esperarIngresoSinDatos());
 
-Then('{string} no recibió ningún SMS', async ({ datos }, nombre: string) => {
-  expect(await datos.cantidadDeSms(nombre)).toBe(0);
+Then('el ingreso envió el dispositivo {string}', async ({ peticiones }, id: string) => {
+  expect(peticiones.ultimoCuerpo('POST /api/auth/login')?.dispositivo_id).toBe(id);
+});
+
+Then('{string} recibió {int} SMS de nuevo dispositivo', async ({ datos }, nombre: string, cantidad: number) => {
+  expect(await datos.cantidadDeSms(nombre, 'nuevo dispositivo')).toBe(cantidad);
 });
 
 // ---------- Inicio ----------

@@ -231,6 +231,7 @@ Característica: API del núcleo: transferir a otro usuario Qolqe (HU-N-07)
   Esquema del escenario: CP-NA115 RN-06 valores límite del límite diario por defecto y del usuario
     Dado que el reloj de Qolqe marca hoy a las "12:00:00"
     Y el saldo de <usuario> se ajusta a "3000.00"
+    Y el límite diario de <usuario> es "<limite>"
     Y <usuario> ya hizo transferencias Qolqe a Bruno de <previas>
     Cuando <usuario> hace una transferencia Qolqe de <monto> a Bruno
     Entonces la operación termina con "<resultado>"
@@ -353,7 +354,7 @@ Característica: API del núcleo: transferir a otro usuario Qolqe (HU-N-07)
     Entonces la operación termina con "201"
     Y las dos últimas transferencias tienen la misma fecha y códigos de operación distintos
 
-  @HU-N-07 @CA3 @CA5 @CP-NA127 @DEF-22 @tecnico
+  @HU-N-07 @CA3 @CA5 @CP-NA127 @DEF-22 @tecnico @concurrencia
   Escenario: CP-NA127 RN-10 transferencias simultáneas del mismo usuario reciben códigos distintos
     Cuando Ana lanza 5 transferencias Qolqe simultáneas de 1.00 a Bruno
     Entonces las 5 transferencias simultáneas terminan con "201"
@@ -379,7 +380,7 @@ Característica: API del núcleo: transferir a otro usuario Qolqe (HU-N-07)
     Cuando Carla consulta el movimiento por el código de la última transferencia
     Entonces la operación termina con "404 MOVIMIENTO_NO_ENCONTRADO"
 
-  @HU-N-07 @CA3 @CA5 @CP-NA131 @tecnico
+  @HU-N-07 @CA3 @CA5 @CP-NA131 @tecnico @concurrencia
   Escenario: CP-NA131 Transferencias cruzadas simultáneas conservan el dinero total
     Cuando Ana y Bruno se envían 10 transferencias simultáneas de 10.00 cada uno
     Entonces las 20 transferencias simultáneas terminan con "201"
@@ -410,14 +411,14 @@ Característica: API del núcleo: transferir a otro usuario Qolqe (HU-N-07)
       | 912345678 | Bruno D. |
       | 955000222 | Pedro    |
 
-  @HU-N-07 @CA5 @CP-NA134 @DEF-21 @tecnico
+  @HU-N-07 @CA5 @CP-NA134 @DEF-21 @tecnico @concurrencia
   Escenario: CP-NA134 Transferencias simultáneas no dejan el saldo negativo
     Cuando Carla lanza 5 transferencias Qolqe simultáneas de 20.00 a Bruno
     Entonces como máximo 2 de las transferencias simultáneas terminan con "201"
     Y las demás transferencias simultáneas terminan con "422 SALDO_INSUFICIENTE"
     Y los saldos cuadran con las transferencias simultáneas aceptadas
 
-  @HU-N-07 @CA5 @CP-NA135 @DEF-21 @tecnico
+  @HU-N-07 @CA5 @CP-NA135 @DEF-21 @tecnico @concurrencia
   Escenario: CP-NA135 Transferencias simultáneas no superan el límite diario
     Dado que el reloj de Qolqe marca hoy a las "12:00:00"
     Cuando Diego lanza 5 transferencias Qolqe simultáneas de 300.00 a Bruno

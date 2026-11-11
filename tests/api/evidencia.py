@@ -7,6 +7,7 @@ escenario; la preparación de los fixtures (reiniciar datos y reloj) no es evide
 import html
 import json
 import os
+import re
 
 import httpx
 import pytest
@@ -18,6 +19,8 @@ LARGO_MAXIMO = 4000
 _CLAVE = pytest.StashKey[list]()
 _intercambios: list[dict] | None = None
 _enviar_original = httpx.Client.send
+# Un JWT (cabecera.carga.firma en base64url). Se enmascara en la evidencia y en el mensaje de un fallo.
+_JWT = re.compile(r"eyJ[\w-]+\.[\w-]+\.[\w-]+")
 
 
 def _legible(contenido: bytes | str) -> str:
@@ -25,10 +28,10 @@ def _legible(contenido: bytes | str) -> str:
     try:
         datos = json.loads(texto)
     except ValueError:
-        return texto[:LARGO_MAXIMO]
+        return _JWT.sub("***", texto)[:LARGO_MAXIMO]
     if isinstance(datos, dict) and "access_token" in datos:
         datos = {**datos, "access_token": "***"}
-    return json.dumps(datos, ensure_ascii=False, indent=2)[:LARGO_MAXIMO]
+    return _JWT.sub("***", json.dumps(datos, ensure_ascii=False, indent=2))[:LARGO_MAXIMO]
 
 
 def _enviar_y_anotar(cliente, peticion, **opciones):
@@ -83,6 +86,12 @@ def pytest_fixture_setup(fixturedef, request):
 @pytest.hookimpl(wrapper=True)
 def pytest_runtest_makereport(item, call):
     reporte = yield
+    # El mensaje de una aserción puede traer el cuerpo de un login (r.text): el token no llega al reporte publicado.
+    # Un skip real guarda una tupla (archivo, línea, motivo) y no se toca.
+    if reporte.longrepr is not None and not isinstance(reporte.longrepr, tuple):
+        texto = str(reporte.longrepr)
+        if _JWT.search(texto):
+            reporte.longrepr = _JWT.sub("***", texto)
     intercambios = item.stash.get(_CLAVE, None)
     fallo_o_defecto = reporte.failed or hasattr(reporte, "wasxfail")
     if reporte.when == "call" and intercambios and (CON_IMAGENES or fallo_o_defecto):

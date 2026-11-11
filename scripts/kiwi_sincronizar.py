@@ -5,10 +5,14 @@ descarga con `gh` el artefacto `trazabilidad` de cada run (JUnit por CP, run.jso
 el plugin oficial kiwitcms-junit.xml-plugin. Los runs viejos (#1 a #15) solo tienen reportes-api y reportes-web:
 con ellos se reconstruye el mismo JUnit por CP, con las etiquetas de los .feature de ese commit.
 
-En Kiwi: producto "Qolqe Wallet", versión = commit corto, build run-N (run-N.k si es un reintento), plan
-KIWI_PLAN_ID. Cada caso es su CP ("CP-A01 <título>"); la HU va como requisito y etiqueta, cada DEF como enlace
-de defecto en la ejecución, cada captura como adjunto de su ejecución y el reporte de API como adjunto del TestRun.
-Un run ya importado (etiqueta gh-run-<id>-<intento>) no se repite.
+En Kiwi: producto "Qolqe Wallet", plan KIWI_PLAN_ID y build run-N (run-N.k si es un reintento) dentro de la
+versión del plan, porque Kiwi solo acepta en un TestRun builds de esa versión; el commit va en el resumen del TestRun
+y en la etiqueta commit:<sha7>. Cada caso es su CP ("CP-A01 <título>"); la HU va como requisito y etiqueta, cada DEF
+como enlace de defecto en la ejecución y cada captura como adjunto de su ejecución. El reporte HTML de API no se
+sube (Kiwi rechaza archivos con <html> o <script>): las notas del TestRun enlazan Pages y los artefactos del run.
+Por defecto solo se importan los runs de main, los mismos que suma el historial de Pages (--rama "" importa todos).
+Un run ya importado (etiqueta gh-run-<id>-<intento>) no se repite; uno que se cortó a la mitad (etiqueta
+incompleto:gh-run-<id>-<intento>) se retoma en el mismo TestRun.
 
 Uso (desde la raíz del repositorio):
   GH_TOKEN=$(gh auth token --user Joharjbe) python scripts/kiwi_sincronizar.py --simular --ultimos 20
@@ -26,6 +30,7 @@ import sys
 import tarfile
 import tempfile
 import xml.etree.ElementTree as ET
+import xmlrpc.client
 from collections import Counter
 from pathlib import Path
 
@@ -72,9 +77,12 @@ def bajar_artefacto(repo: str, run_id: int, nombre: str, destino: Path) -> None:
     gh("run", "download", str(run_id), "-R", repo, "-n", nombre, "-D", str(destino))
 
 
-def listar_runs(repo: str, workflow: str, ultimos: int, numeros: list[int]) -> list[dict]:
+def listar_runs(repo: str, workflow: str, ultimos: int, numeros: list[int], rama: str) -> list[dict]:
+    """gh run list devuelve el último intento de cada run: un intento anterior solo queda si ya se importó."""
     campos = "databaseId,number,attempt,headSha,headBranch,event,conclusion,status,createdAt,updatedAt"
-    runs = json.loads(gh("run", "list", "-R", repo, "--workflow", workflow, "-L", str(max(ultimos, 100)), "--json", campos))
+    filtro = ["--branch", rama] if rama else []
+    runs = json.loads(gh("run", "list", "-R", repo, "--workflow", workflow, *filtro, "-L", str(max(ultimos, 100)),
+                         "--json", campos))
     runs = [r for r in runs if r["status"] == "completed" and (not numeros or r["number"] in numeros)]
     return sorted(runs[: ultimos if not numeros else len(runs)], key=lambda r: (r["number"], r["attempt"]))
 
@@ -159,9 +167,8 @@ def leer_carpeta(carpeta: Path) -> tuple[dict, list[dict]]:
 
 
 def adjuntos(carpeta: Path, casos: list[dict]) -> list[Path]:
-    rutas = [carpeta / e for c in casos for e in c["evidencias"]]
-    reporte_api = carpeta / "evidencias" / "api-reporte.html"
-    return [r for r in [*rutas, reporte_api] if r.exists()]
+    """Capturas por ejecución. El reporte HTML de API no se adjunta: Kiwi rechaza archivos con etiquetas HTML."""
+    return [r for r in (carpeta / e for c in casos for e in c["evidencias"]) if r.exists()]
 
 
 def nombre_build(run: dict) -> str:
@@ -174,9 +181,28 @@ def resumen_testrun(run: dict) -> str:
 
 
 def etiquetas_run(run: dict) -> list[str]:
-    valores = [f"gh-run-{run['run_id']}-{run['intento']}", f"evento:{run['evento']}", f"rama:{run.get('rama') or '-'}",
-               f"evidencia:{run['evidencia']}"]
+    valores = [f"gh-run-{run['run_id']}-{run['intento']}", f"commit:{run['sha'][:7] or '-'}", f"evento:{run['evento']}",
+               f"rama:{run.get('rama') or '-'}", f"evidencia:{run['evidencia']}"]
     return valores + ([f"conclusion:{run['conclusion']}"] if run.get("conclusion") else [])
+
+
+def notas_testrun(run: dict, repo: str) -> str:
+    duenio, nombre = repo.split("/")
+    pages = f"https://{duenio.lower()}.github.io/{nombre}/"
+    artefactos = f"{run['url']}#artifacts" if run.get("url") else "(run local, sin artefactos)"
+    return (f"Run de GitHub Actions: {run.get('url') or '-'}\nCommit: {run['sha'] or '-'}\n"
+            f"Artefactos del run (reportes y trazabilidad): {artefactos}\n"
+            f"Portada y reportes del último run de main: {pages} (API: {pages}api/ · web: {pages}web/)")
+
+
+def adjuntar(funcion, objeto_id: int, archivo: Path) -> bool:
+    """Un adjunto rechazado por Kiwi (tamaño o contenido) se avisa y no corta la importación."""
+    try:
+        funcion(objeto_id, archivo.name, base64.b64encode(archivo.read_bytes()).decode())
+        return True
+    except xmlrpc.client.Fault as error:
+        print(f"  Aviso: Kiwi no aceptó {archivo.name}: {error.faultString[:200]}")
+        return False
 
 
 def enlace_defecto(repo: str, defecto: str, anclas: dict) -> str:
@@ -194,7 +220,8 @@ def simular(run: dict, casos: list[dict], carpeta: Path, plan: str | None) -> No
     print(f"\nRun #{run['numero']}.{run['intento']} · {run['sha'][:7]} · {run['evento']} {run.get('rama', '')} · "
           f"conclusión: {run.get('conclusion') or '?'}{' · ' + run['origen'] if run.get('origen') else ''}")
     print(f'  TestRun   "{resumen_testrun(run)}"')
-    print(f"  Build {nombre_build(run)} · versión {run['sha'][:7]} · producto {PRODUCTO} · plan {plan or '(falta KIWI_PLAN_ID)'}")
+    print(f"  Build {nombre_build(run)} · versión del plan · commit {run['sha'][:7]} · producto {PRODUCTO} · "
+          f"plan {plan or '(falta KIWI_PLAN_ID)'}")
     print(f"  Etiquetas {', '.join(etiquetas_run(run))}")
     print(f"  Ejecuciones {len(casos)}: " + ", ".join(f"{k} {v}" for k, v in estados.most_common())
           + " · por grupo: " + ", ".join(f"{k} {v}" for k, v in sorted(modulos.items())))
@@ -278,20 +305,24 @@ def sincronizar(rpc, plan_id: int, run: dict, casos_run: list[dict], carpeta: Pa
         return
     plan = rpc.TestPlan.filter({"pk": plan_id})[0]
     producto = plan["product"]
-    version = obtener_o_crear(rpc.Version, {"product": producto, "value": run["sha"][:7]})
-    build = obtener_o_crear(rpc.Build, {"name": nombre_build(run), "version": version["id"]})
     inicio = run["fecha"][:19].replace("T", " ")
-    testrun = rpc.TestRun.create({
-        "summary": resumen_testrun(run)[:255], "plan": plan_id, "build": build["id"], "manager": plan["author"],
-        "default_tester": plan["author"], "start_date": inicio,
-        "notes": f"Run de GitHub Actions: {run.get('url', '')}\nPortada: https://{repo.split('/')[0].lower()}.github.io/{repo.split('/')[1]}/",
-    })
-    for etiqueta in etiquetas_run(run):
-        rpc.TestRun.add_tag(testrun["id"], etiqueta)
+    # La etiqueta definitiva va al final: si la importación se corta, el TestRun queda "incompleto" y se retoma.
+    incompleto = f"incompleto:{etiqueta_run}"
+    pendientes = rpc.TestRun.filter({"tag__name": incompleto})
+    if pendientes:
+        testrun = pendientes[0]
+        print(f"Run #{run['numero']}.{run['intento']}: se retoma el TestRun {testrun['id']} que quedó incompleto.")
+    else:
+        # Kiwi solo acepta builds de la versión del plan (NewRunForm): el commit va en el resumen y en commit:<sha7>.
+        build = obtener_o_crear(rpc.Build, {"name": nombre_build(run), "version": plan["product_version"]})
+        testrun = rpc.TestRun.create({
+            "summary": resumen_testrun(run)[:255], "plan": plan_id, "build": build["id"], "manager": plan["author"],
+            "default_tester": plan["author"], "start_date": inicio, "notes": notas_testrun(run, repo),
+        })
+        rpc.TestRun.add_tag(testrun["id"], incompleto)
 
     renombrar_casos(rpc, producto, casos_run)
-    os.environ.update(TCMS_RUN_ID=str(testrun["id"]), TCMS_PRODUCT=PRODUCTO, TCMS_PRODUCT_VERSION=run["sha"][:7],
-                      TCMS_BUILD=nombre_build(run))
+    os.environ.update(TCMS_RUN_ID=str(testrun["id"]), TCMS_PRODUCT=PRODUCTO)
     Plugin(summary_template="${name}").parse([str(carpeta / "junit-cp.xml")])
     rpc.TestRun.update(testrun["id"], {"stop_date": inicio})
 
@@ -299,13 +330,7 @@ def sincronizar(rpc, plan_id: int, run: dict, casos_run: list[dict], carpeta: Pa
     anclas = leer_defectos(RAIZ / "docs" / "defectos.md")
     por_cp = {c["cp"]: c for c in casos_run}
     idle = rpc.TestExecutionStatus.filter({"name": "IDLE"})
-    reporte_api = carpeta / "evidencias" / "api-reporte.html"
     subidos = 0
-    if reporte_api.exists() and reporte_api.stat().st_size <= LIMITE_ADJUNTO:
-        rpc.TestRun.add_attachment(testrun["id"], reporte_api.name, base64.b64encode(reporte_api.read_bytes()).decode())
-        subidos += 1
-    elif reporte_api.exists():
-        print(f"  {reporte_api.name} supera 5 MB (límite de Kiwi): queda en el artefacto y en Pages.")
     for ejecucion in rpc.TestExecution.filter({"run": testrun["id"]}):
         c = por_cp.get(normalizar_cp(ejecucion.get("case__summary", "")))
         if not c:
@@ -324,8 +349,10 @@ def sincronizar(rpc, plan_id: int, run: dict, casos_run: list[dict], carpeta: Pa
         for evidencia in c["evidencias"]:
             archivo = carpeta / evidencia
             if archivo.exists() and archivo.stat().st_size <= LIMITE_ADJUNTO:
-                rpc.TestExecution.add_attachment(ejecucion["id"], archivo.name, base64.b64encode(archivo.read_bytes()).decode())
-                subidos += 1
+                subidos += adjuntar(rpc.TestExecution.add_attachment, ejecucion["id"], archivo)
+    for etiqueta in etiquetas_run(run):
+        rpc.TestRun.add_tag(testrun["id"], etiqueta)
+    rpc.TestRun.remove_tag(testrun["id"], incompleto)
     print(f"Run #{run['numero']}.{run['intento']} → TestRun {testrun['id']} ({len(casos_run)} casos, {subidos} adjuntos).")
 
 
@@ -335,6 +362,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--repo", default="Joharjbe/qolqe-wallet")
     parser.add_argument("--workflow", default="pruebas.yml")
+    parser.add_argument("--rama", default="main", help='Rama de los runs (por defecto main, como el historial de Pages; "" = todas)')
     parser.add_argument("--ultimos", type=int, default=20, help="Cuántos runs recientes revisar (por defecto 20)")
     parser.add_argument("--run", type=int, nargs="*", default=[], help="Números de run específicos")
     parser.add_argument("--desde-carpeta", type=Path, help="Importa una carpeta con junit-cp.xml y run.json (sin GitHub)")
@@ -357,7 +385,7 @@ def main() -> None:
         carpetas = [args.desde_carpeta]
     else:
         carpetas = []
-        for run in listar_runs(args.repo, args.workflow, args.ultimos, args.run):
+        for run in listar_runs(args.repo, args.workflow, args.ultimos, args.run, args.rama):
             carpeta = descargar(args.repo, run, args.descargas)
             if carpeta is None:
                 print(f"Run #{run['number']}: sin artefactos (vencidos o el run no llegó a las pruebas); se omite.")

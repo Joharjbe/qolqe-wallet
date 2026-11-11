@@ -337,21 +337,42 @@ def acepta_varias_a_la_vez(s, nombre):
                               for i in s.solicitudes_simultaneas])
 
 
-@when(parsers.re(rf'{_NOMBRE} agrega (?P<veces>\d+) veces a la vez el celular "(?P<celular>\d+)"'))
-def agrega_a_la_vez(s, nombre, veces, celular):
+@when(parsers.re(rf'{_NOMBRE} agrega (?P<veces>\d+) veces a la vez el celular "(?P<celular>\d+)" '
+                 r"en (?P<rafagas>\d+) ráfagas"))
+def agrega_a_la_vez(s, nombre, veces, celular, rafagas):
+    """Repite la ráfaga hasta que una crea duplicados o se completan todas sin error.
+
+    El alta no tiene la pausa antifraude de las transferencias: la ventana de la carrera es de milisegundos y una
+    sola ráfaga a veces se serializa. Un sistema correcto no duplica en ninguna ráfaga; entre ráfagas correctas se
+    borra el contacto creado para volver al estado inicial. Los pasos Entonces revisan la última ráfaga.
+    """
     cabeceras = _cabeceras(s, nombre)
-    s.respuestas = _a_la_vez([("POST", "/api/contactos", cabeceras, {"celular": celular, "alias": f"Alias {i}"})
-                              for i in range(1, int(veces) + 1)])
+    for ronda in range(1, int(rafagas) + 1):
+        s.respuestas = _a_la_vez([("POST", "/api/contactos", cabeceras, {"celular": celular, "alias": f"Alias {i}"})
+                                  for i in range(1, int(veces) + 1)])
+        s.rafagas = ronda
+        creados = [c for c in _contactos(s, nombre) if c["celular"] == celular]
+        if [r.status_code for r in s.respuestas].count(201) != 1 or len(creados) != 1 or ronda == int(rafagas):
+            return
+        r = s.cliente.delete(f"/api/contactos/{creados[0]['id']}", headers=cabeceras)
+        assert r.status_code == 204, r.text
 
 
 @when(parsers.re(rf"{_NOMBRE} envía (?P<metodo>GET|POST|PUT|DELETE|PATCH|OPTIONS) (?P<ruta>/\S*)"
-                 r'(?: con el cuerpo (?P<cuerpo>.+?))?(?: y el tipo "(?P<tipo>[^"]+)")?'))
-def envia_peticion(s, nombre, metodo, ruta, cuerpo, tipo):
-    """El cuerpo va tal cual (puede ser un JSON mal formado); "(sin cuerpo)" no envía nada."""
+                 r'(?: con el cuerpo (?P<cuerpo>.+?))?(?: y el tipo "(?P<tipo>[^"]+)")?(?: y Accept "(?P<accept>[^"]+)")?'))
+def envia_peticion(s, nombre, metodo, ruta, cuerpo, tipo, accept):
+    """El cuerpo va tal cual (puede ser un JSON mal formado); "(sin cuerpo)" no envía nada.
+
+    El tipo "(ninguno)" envía el cuerpo sin cabecera Content-Type.
+    """
     if cuerpo is None or cuerpo == _SIN_CUERPO:
         _pedir(s, metodo, ruta, nombre)
         return
-    cabeceras = {**_cabeceras(s, nombre), "Content-Type": tipo or "application/json"}
+    cabeceras = dict(_cabeceras(s, nombre))
+    if tipo != "(ninguno)":
+        cabeceras["Content-Type"] = tipo or "application/json"
+    if accept:
+        cabeceras["Accept"] = accept
     s.respuesta = s.cliente.request(metodo, ruta, headers=cabeceras, content=cuerpo.encode())
 
 

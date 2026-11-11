@@ -4,6 +4,7 @@ Lo usan .github/scripts/trazabilidad.py (pipeline) y scripts/kiwi_sincronizar.py
 """
 import os
 import re
+import subprocess
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
@@ -42,6 +43,10 @@ HU_POR_OPERACION = [
     (r"^GET /api/transferencias/comision$", ["HU-N-09"]),
 ]
 ESTADOS = ["passed", "xfailed", "flaky", "failed", "skipped", "sin ejecutar"]
+# El módulo sale del prefijo del CP (CP-N* es del núcleo). El contrato cubre las operaciones de los dos módulos.
+MODULO_CONTRATO = "núcleo y G4"
+MODULOS = ("núcleo", "G4", MODULO_CONTRATO)
+GRUPO_JUNIT = {"núcleo": "NUCLEO", "G4": "G4", MODULO_CONTRATO: "NUCLEO_G4"}
 
 
 def modulo_de(id_caso: str) -> str:
@@ -156,7 +161,7 @@ def caso_contrato(operaciones: list[str]) -> dict:
     hu = sorted({h for op in operaciones for patron, hus in HU_POR_OPERACION if re.search(patron, op) for h in hus})
     return {
         "id": CP_CONTRATO, "titulo": "Contrato OpenAPI del núcleo y de G4 con casos generados (Schemathesis)",
-        "nivel": "contrato", "modulo": "G4", "tipo": "técnico", "hu": hu, "ca": [], "hu_ca": [], "defectos": [],
+        "nivel": "contrato", "modulo": MODULO_CONTRATO, "tipo": "técnico", "hu": hu, "ca": [], "hu_ca": [], "defectos": [],
         "falla_esperada": False, "etiquetas": ["tecnico"], "archivo": "scripts/correr-contrato.sh", "linea": 1,
         "pasos": ["Schemathesis genera casos desde /openapi.json para las operaciones del núcleo y de G4",
                   "Checks y exclusiones documentados en schemathesis.toml y scripts/contrato_hooks.py"],
@@ -253,8 +258,17 @@ def resultados_por_caso(casos: dict, resultados: dict) -> dict[str, dict]:
     return por_caso
 
 
+def _commit_local() -> str:
+    r = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=False)
+    return r.stdout.strip() if r.returncode == 0 else ""
+
+
 def metadatos_run(**valores) -> dict:
-    """Datos del run desde las variables de GitHub Actions. Los valores explícitos (kiwi_sincronizar) mandan."""
+    """Datos del run desde las variables de GitHub Actions. Los valores explícitos (kiwi_sincronizar) mandan.
+
+    Fuera de Actions cada corrida local tiene su propio id (local-<fecha>) y el commit de git, así varias corridas
+    locales se pueden sumar al historial sin pisarse.
+    """
     entorno = os.environ
     numero = valores.get("numero") or entorno.get("GITHUB_RUN_NUMBER", "local")
     intento = int(valores.get("intento") or entorno.get("GITHUB_RUN_ATTEMPT", 1))
@@ -262,9 +276,11 @@ def metadatos_run(**valores) -> dict:
     repo = valores.get("repo") or entorno.get("GITHUB_REPOSITORY", "")
     servidor = entorno.get("GITHUB_SERVER_URL", "https://github.com")
     fecha = valores.get("fecha") or datetime.now(LIMA).isoformat(timespec="seconds")
+    id_run = f"{run_id}-{intento}" if run_id else "local-" + re.sub(r"\D", "", fecha[:19])
+    sha = valores.get("sha") or entorno.get("GITHUB_SHA") or ("" if run_id else _commit_local())
     return {
-        "id": f"{run_id or 'local'}-{intento}", "run_id": run_id, "numero": numero, "intento": intento,
-        "sha": (valores.get("sha") or entorno.get("GITHUB_SHA", ""))[:40],
+        "id": id_run, "run_id": run_id, "numero": numero, "intento": intento,
+        "sha": sha[:40],
         "rama": valores.get("rama") or entorno.get("GITHUB_HEAD_REF") or entorno.get("GITHUB_REF_NAME", ""),
         "evento": valores.get("evento") or entorno.get("GITHUB_EVENT_NAME", "local"),
         "evidencia": valores.get("evidencia") or entorno.get("EVIDENCIA") or "sin-imagenes",

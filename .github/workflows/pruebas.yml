@@ -54,7 +54,7 @@ jobs:
           cache: npm
       - name: Instalar dependencias (sin navegadores)
         run: |
-          pip install -r requirements-dev.txt ruff==0.17.1
+          pip install -r requirements-dev.txt
           npm ci
       - name: Lint de Python con ruff (código de pruebas y del pipeline; qolqe/ no se revisa)
         run: ruff check

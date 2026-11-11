@@ -1,3 +1,4 @@
+import { expect } from '@playwright/test';
 import { Given, Then, When } from '../fixtures';
 
 // Pantalla de solicitudes de dinero (HU-G4-06 a HU-G4-10).
@@ -39,6 +40,10 @@ Then('ve la confirmación {string}', async ({ solicitudes }, texto: string) => s
 Then('la solicitud {string} está {string}', async ({ solicitudes }, motivo: string, estado: string) => solicitudes.esperarEstado(motivo, estado));
 Then('la solicitud {string} muestra {string}', async ({ solicitudes }, motivo: string, texto: string) => solicitudes.esperarDetalle(motivo, texto));
 Then('la solicitud {string} no aparece', async ({ solicitudes }, motivo: string) => solicitudes.esperarAusente(motivo));
+
+Then('{string} no tiene solicitudes enviadas con el motivo {string}', async ({ datos }, nombre: string, motivo: string) => {
+  expect(await datos.motivosEnviados(nombre)).not.toContain(motivo);
+});
 Then('la solicitud {string} no ofrece cancelar', async ({ solicitudes }, motivo: string) => solicitudes.esperarSinCancelar(motivo));
 Then('ve {int} solicitud(es)', async ({ solicitudes }, n: number) => solicitudes.esperarCantidad(n));
 Then('la pestaña {string} dice {string}', async ({ solicitudes }, vista: string, texto: string) => solicitudes.esperarPestana(vista, texto));

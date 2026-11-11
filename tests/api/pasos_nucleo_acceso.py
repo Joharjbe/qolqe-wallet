@@ -406,6 +406,39 @@ def _saldo_formato(s):
     assert re.fullmatch(r"-?\d+\.\d{2}", s.respuesta.json()["saldo"]), s.respuesta.text
 
 
+@then("el saldo consultado informa su fecha de actualización en formato ISO 8601")
+def _saldo_fecha_iso(s):
+    fecha = s.respuesta.json()["actualizado_en"]
+    assert re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}", fecha), s.respuesta.text
+    datetime.fromisoformat(fecha)
+
+
+def _actualizado_en(s, nombre):
+    r = s.cliente.get("/api/cuentas/me/saldo", headers=s.como(nombre))
+    assert r.status_code == 200, r.text
+    return r.json()["actualizado_en"]
+
+
+@given(parsers.parse("se anota la fecha de actualización del saldo de {uno} y de {otro}"))
+def _anota_actualizado(s, uno, otro):
+    s.actualizado_antes = {nombre: _actualizado_en(s, nombre) for nombre in (uno, otro)}
+
+
+@then(parsers.parse("la fecha de actualización del saldo de {uno} y de {otro} es la del comprobante y cambió"))
+def _actualizado_es_comprobante(s, uno, otro):
+    fecha = s.respuesta.json()["fecha"]
+    for nombre in (uno, otro):
+        despues = _actualizado_en(s, nombre)
+        assert datetime.fromisoformat(despues) == datetime.fromisoformat(fecha), (nombre, despues, fecha)
+        assert despues != s.actualizado_antes[nombre], (nombre, s.actualizado_antes[nombre], despues)
+
+
+@then(parsers.parse('el contrato OpenAPI solo expone la cuenta propia en "{prefijo}"'))
+def _solo_cuenta_propia(s, prefijo):
+    rutas = [r for r in s.cliente.get("/openapi.json").json()["paths"] if r.startswith("/api/cuentas")]
+    assert rutas and all(r.startswith(prefijo) for r in rutas), rutas
+
+
 @then(parsers.parse('"{celular}" tiene {cantidad:d} mensajes SMS'))
 def _cuenta_sms(s, celular, cantidad):
     assert _contar_sms(s, celular) == cantidad, s.cliente.get(
@@ -429,11 +462,6 @@ def _cierra_sesion(s, nombre):
 @when("con el token cerrado se consulta el saldo")
 def _token_cerrado_saldo(s):
     s.respuesta = s.cliente.get("/api/cuentas/me/saldo", headers=s.cab_cerrada)
-
-
-@when("con el token cerrado se edita el nombre")
-def _token_cerrado_edita(s):
-    s.respuesta = s.cliente.put("/api/cuentas/me", headers=s.cab_cerrada, json={"nombres": "Ana Cambiada"})
 
 
 @when(parsers.parse("{nombre} cierra la primera sesión"))
@@ -525,25 +553,10 @@ def _consulta_perfil(s, nombre):
     s.pedir("GET", "/api/cuentas/me", nombre)
 
 
-@when("se consulta el saldo actual")
-def _consulta_saldo_actual(s):
-    s.respuesta = s.cliente.get("/api/cuentas/me/saldo", headers=s.cab)
-
-
-@when("se consulta el perfil actual")
-def _consulta_perfil_actual(s):
-    s.respuesta = s.cliente.get("/api/cuentas/me", headers=s.cab)
-
-
 @given(parsers.parse('que se fija el saldo de {nombre} en "{saldo}"'))
 def _fija_saldo(s, nombre, saldo):
     celular = conftest.USUARIOS[nombre][0]
     assert s.cliente.put("/api/pruebas/saldo", json={"celular": celular, "saldo": saldo}).status_code == 200
-
-
-@when(parsers.parse("con el token de {nombre} se consulta la cuenta {cuenta_id:d}"))
-def _consulta_cuenta_ajena(s, nombre, cuenta_id):
-    s.respuesta = s.pedir("GET", f"/api/cuentas/{cuenta_id}", nombre)
 
 
 @then(parsers.parse('el saldo actual es "{saldo}"'))
@@ -774,3 +787,50 @@ def _perfil_conserva_identidad(s, nombre, dni, celular):
 def _registro_simultaneo_resultado(s, ok, conflicto):
     est = s.resultado_simultaneo
     assert est.get(201, 0) == ok and est.get(409, 0) == conflicto and est.get(500, 0) == 0, dict(est)
+
+
+# ================= Casos técnicos de cabeceras, enumeración y datos expuestos =================
+
+@when(parsers.parse('se intenta ingresar con el celular "{celular1}" y el PIN "{pin1}" y luego con el celular '
+                    '"{celular2}" y el PIN "{pin2}"'))
+def _dos_intentos(s, celular1, pin1, celular2, pin2):
+    s.intentos = [_login(s, celular1, pin1), _login(s, celular2, pin2)]
+
+
+@then("los dos intentos de ingreso responden igual en estado, cuerpo y cabeceras salvo la fecha")
+def _intentos_iguales(s):
+    uno, otro = s.intentos
+    assert uno.status_code == otro.status_code == 401, (uno.text, otro.text)
+    assert uno.content == otro.content, (uno.text, otro.text)
+    sin_fecha = [{k: v for k, v in r.headers.items() if k.lower() != "date"} for r in s.intentos]
+    assert sin_fecha[0] == sin_fecha[1], sin_fecha
+
+
+@when("Ana ingresa, consulta su perfil y su saldo y edita sus nombres")
+def _recorre_cuenta(s):
+    login = _login(s, *conftest.USUARIOS["Ana"])
+    assert login.status_code == 200, login.text
+    cab = _cabecera(login.json()["access_token"])
+    s.respuestas_expuestas = [login, s.cliente.get("/api/cuentas/me", headers=cab),
+                              s.cliente.get("/api/cuentas/me/saldo", headers=cab),
+                              s.cliente.put("/api/cuentas/me", headers=cab, json={"nombres": "Ana Torres Quispe"})]
+    assert [r.status_code for r in s.respuestas_expuestas] == [200, 200, 200, 200]
+
+
+@when(parsers.parse('se registra un usuario con el DNI "{dni}" y el celular "{celular}"'))
+def _registra_para_exponer(s, dni, celular):
+    r = s.cliente.post("/api/usuarios", json={"dni": dni, "nombres": "Prueba Dni", "celular": celular, "pin": "4826"})
+    assert r.status_code == 201, r.text
+    s.respuestas_expuestas.append(r)
+
+
+@then(parsers.parse('ninguna de esas respuestas contiene los DNI "{dni1}" ni "{dni2}"'))
+def _sin_dni_completo(s, dni1, dni2):
+    for r in s.respuestas_expuestas:
+        assert dni1 not in r.text and dni2 not in r.text, (r.request.url.path, r.text)
+
+
+@then(parsers.parse('el celular "{celular}" no puede ingresar con el PIN "{pin}"'))
+def _no_quedo_registrado(s, celular, pin):
+    r = _login(s, celular, pin)
+    assert (r.status_code, r.json()["codigo"]) == (401, "CREDENCIALES_INVALIDAS"), r.text

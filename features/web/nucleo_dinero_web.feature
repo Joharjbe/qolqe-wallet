@@ -4,18 +4,25 @@ Característica: Cierre de cuenta y transferencias en la web (módulo común)
   comprobante, movimientos de inicio) y cómo comunica los errores de la API.
   Las reglas RN-05 a RN-10 se prueban en la API.
 
-  @HU-N-06 @CA1 @CP-NW16
-  Escenario: CP-NW16 Con un PIN incorrecto el diálogo muestra el error y la cuenta sigue activa
-    Dado que "Carla" tiene saldo "0.00"
+  @HU-N-06 @CA1 @CA2 @CA3 @CP-NW16
+  Esquema del escenario: CP-NW16 Si el cierre no procede, el diálogo muestra el error y la cuenta sigue activa
+    Dado que "Carla" tiene saldo "<saldo>"
+    Y que "Carla" tiene <pendientes> solicitudes recibidas pendientes
     Y que "Carla" ingresó a Qolqe
     Y abre la pantalla de perfil
-    Cuando intenta cerrar su cuenta con el PIN "0000"
-    Entonces ve el error del diálogo "El PIN no es correcto"
+    Cuando intenta cerrar su cuenta con el PIN "<pin>"
+    Entonces ve el error del diálogo "<mensaje>"
     Cuando cancela el diálogo
     Entonces el perfil muestra nombres "Carla Ramos Huamán" y correo "carla.ramos@correo.pe"
     Y la cuenta de "Carla" sigue activa
 
-  @HU-N-06 @CA4 @CP-NW17
+    Ejemplos:
+      | caso                | saldo | pendientes | pin  | mensaje                                         |
+      | PIN incorrecto      | 0.00  | 0          | 0000 | El PIN no es correcto                           |
+      | saldo pendiente     | 10.00 | 0          | 5917 | Para cerrar tu cuenta el saldo debe ser S/ 0.00 |
+      | solicitud pendiente | 0.00  | 1          | 5917 | Tienes solicitudes de dinero pendientes         |
+
+  @HU-N-06 @CA4 @HU-N-02 @CA5 @CP-NW17
   Escenario: CP-NW17 Cerrar la cuenta desde Mi perfil impide volver a ingresar
     Dado que "Carla" tiene saldo "0.00"
     Y que "Carla" ingresó a Qolqe

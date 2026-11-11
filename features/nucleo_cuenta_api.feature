@@ -10,16 +10,20 @@ Característica: API de saldo, perfil y edición (núcleo HU-N-04 y HU-N-05)
     Y el saldo consultado es "1500.00"
     Y la moneda consultada es "PEN"
     Y el saldo consultado cumple el formato de centavos
+    Y el saldo consultado informa su fecha de actualización en formato ISO 8601
 
   @HU-N-04 @CA1 @CP-NA53
   Escenario: CP-NA53 El saldo y su fecha cambian con cada operación
-    Dado que Bruno inició sesión
+    Dado que el reloj de Qolqe marca hoy a las "10:00:00"
+    Y que Bruno inició sesión
     Y que Ana inició sesión
+    Y se anota la fecha de actualización del saldo de Bruno y de Ana
     Cuando el reloj se adelanta 10 minutos
     Y Bruno transfiere 10.50 soles a Ana
     Entonces la respuesta tiene estado 201
     Y el saldo de Bruno es "789.50"
     Y el saldo de Ana es "1510.50"
+    Y la fecha de actualización del saldo de Bruno y de Ana es la del comprobante y cambió
 
   @HU-N-04 @CA1 @CP-NA54
   Esquema del escenario: CP-NA54 Formato del saldo en los bordes
@@ -35,14 +39,14 @@ Característica: API de saldo, perfil y edición (núcleo HU-N-04 y HU-N-05)
       | 0.10      | 0.10      |
       | 123456.78 | 123456.78 |
 
+  # La cuenta se lee solo por /api/cuentas/me: la API no tiene una ruta con el id de otra cuenta que se pueda cambiar.
   @HU-N-04 @CA1 @CP-NA55 @tecnico
-  Escenario: CP-NA55 Cada token ve solo su propio saldo
+  Escenario: CP-NA55 Cada token ve solo su propio saldo y no hay ruta para la cuenta de otro
     Dado que Ana inició sesión
     Y que Bruno inició sesión
     Entonces el saldo de Ana es "1500.00"
     Y el saldo de Bruno es "800.00"
-    Cuando con el token de Bruno se consulta la cuenta 1
-    Entonces la respuesta tiene estado 404
+    Y el contrato OpenAPI solo expone la cuenta propia en "/api/cuentas/me"
 
   @HU-N-04 @CA2 @CP-NA56
   Escenario: CP-NA56 Consultar mi perfil con el DNI enmascarado
@@ -240,14 +244,16 @@ Característica: API de saldo, perfil y edición (núcleo HU-N-04 y HU-N-05)
   Esquema del escenario: CP-NA73 Sin cambio del correo guardado no hay SMS
     Dado que Ana inició sesión
     Cuando Ana envía el cambio de perfil "<variante>"
-    Entonces "987654321" tiene 0 mensajes SMS
+    Entonces la operación termina con "<resultado>"
+    Y el correo guardado de Ana es "ana.torres@correo.pe"
+    Y "987654321" tiene 0 mensajes SMS
 
     Ejemplos:
-      | variante               |
-      | solo nombres           |
-      | mismo correo otra caja |
-      | correo de otro         |
-      | correo inválido        |
+      | variante               | resultado             |
+      | solo nombres           | 200                   |
+      | mismo correo otra caja | 200                   |
+      | correo de otro         | 409 CORREO_REGISTRADO |
+      | correo inválido        | 422 CORREO_INVALIDO   |
 
   @HU-N-05 @CA3 @CP-NA74
   Esquema del escenario: CP-NA74 Quitar o agregar correo también avisa
@@ -260,3 +266,9 @@ Característica: API de saldo, perfil y edición (núcleo HU-N-04 y HU-N-05)
       | caso                          | celular   | texto                 |
       | Ana quita el correo           | 987654321 | se cambió a (sin correo) |
       | usuario de carga agrega correo | 900000001 | se cambió a carga1@correo.pe |
+
+  @HU-N-04 @CA2 @CP-NA158 @tecnico
+  Escenario: CP-NA158 El DNI completo no aparece en ninguna respuesta de la cuenta
+    Cuando Ana ingresa, consulta su perfil y su saldo y edita sus nombres
+    Y se registra un usuario con el DNI "12345678" y el celular "987000173"
+    Entonces ninguna de esas respuestas contiene los DNI "45678912" ni "12345678"

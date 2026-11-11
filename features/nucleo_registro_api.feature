@@ -86,14 +86,14 @@ Característica: API de registro de usuarios (núcleo HU-N-01)
   @HU-N-01 @CA2 @CP-NA08
   Esquema del escenario: CP-NA08 Longitud del DNI
     Cuando se registra a <celular> con DNI "<dni>"
-    Entonces la respuesta tiene estado <estado>
+    Entonces la operación termina con "<resultado>"
 
     Ejemplos:
-      | celular   | dni       | estado |
-      | 987000201 | 1234567   | 422    |
-      | 987000202 | 12345678  | 201    |
-      | 987000203 | 123456789 | 422    |
-      | 987000204 | 00000000  | 201    |
+      | celular   | dni       | resultado        |
+      | 987000201 | 1234567   | 422 DNI_INVALIDO |
+      | 987000202 | 12345678  | 201              |
+      | 987000203 | 123456789 | 422 DNI_INVALIDO |
+      | 987000204 | 00000000  | 201              |
 
   @HU-N-01 @CA2 @CP-NA09
   Esquema del escenario: CP-NA09 DNI con caracteres no numéricos
@@ -110,17 +110,17 @@ Característica: API de registro de usuarios (núcleo HU-N-01)
   @HU-N-01 @CA3 @CP-NA10
   Esquema del escenario: CP-NA10 Formato del celular
     Cuando se registra con el celular "<celular>"
-    Entonces la respuesta tiene estado <estado>
+    Entonces la operación termina con "<resultado>"
 
     Ejemplos:
-      | celular      | estado |
-      | 98700011     | 422    |
-      | 9870001112   | 422    |
-      | 887000111    | 422    |
-      | 98700011a    | 422    |
-      | +51987000111 | 422    |
-      | 900000000    | 201    |
-      | 999999999    | 201    |
+      | celular      | resultado            |
+      | 98700011     | 422 CELULAR_INVALIDO |
+      | 9870001112   | 422 CELULAR_INVALIDO |
+      | 887000111    | 422 CELULAR_INVALIDO |
+      | 98700011a    | 422 CELULAR_INVALIDO |
+      | +51987000111 | 422 CELULAR_INVALIDO |
+      | 900000000    | 201                  |
+      | 999999999    | 201                  |
 
   @HU-N-01 @CA3 @CP-NA11
   Esquema del escenario: CP-NA11 Celular ya registrado, incluso con la cuenta cerrada
@@ -141,29 +141,29 @@ Característica: API de registro de usuarios (núcleo HU-N-01)
   @HU-N-01 @CA4 @CP-NA13
   Esquema del escenario: CP-NA13 Longitud del PIN
     Cuando se registra a <celular> con PIN "<pin>"
-    Entonces la respuesta tiene estado <estado>
+    Entonces la operación termina con "<resultado>"
 
     Ejemplos:
-      | celular   | pin   | estado |
-      | 987000301 | 482   | 422    |
-      | 987000302 | 4826  | 201    |
-      | 987000303 | 48265 | 422    |
+      | celular   | pin   | resultado        |
+      | 987000301 | 482   | 422 PIN_INVALIDO |
+      | 987000302 | 4826  | 201              |
+      | 987000303 | 48265 | 422 PIN_INVALIDO |
 
   @HU-N-01 @CA4 @CP-NA14
   Esquema del escenario: CP-NA14 Clases de PIN inválidas y válidas cercanas
     Cuando se registra a <celular> con PIN "<pin>"
-    Entonces la respuesta tiene estado <estado>
+    Entonces la operación termina con "<resultado>"
 
     Ejemplos:
-      | celular   | pin  | estado |
-      | 987000310 | 12a4 | 422    |
-      | 987000311 | 0000 | 422    |
-      | 987000312 | 9999 | 422    |
-      | 987000313 | 0123 | 422    |
-      | 987000314 | 6789 | 422    |
-      | 987000315 | 1235 | 201    |
-      | 987000316 | 1212 | 201    |
-      | 987000317 | 2580 | 201    |
+      | celular   | pin  | resultado        |
+      | 987000310 | 12a4 | 422 PIN_INVALIDO |
+      | 987000311 | 0000 | 422 PIN_INVALIDO |
+      | 987000312 | 9999 | 422 PIN_INVALIDO |
+      | 987000313 | 0123 | 422 PIN_INVALIDO |
+      | 987000314 | 6789 | 422 PIN_INVALIDO |
+      | 987000315 | 1235 | 201              |
+      | 987000316 | 1212 | 201              |
+      | 987000317 | 2580 | 201              |
 
   @HU-N-01 @CA4 @CP-NA15 @DEF-12
   Esquema del escenario: CP-NA15 Se acepta un PIN con secuencia descendente
@@ -194,12 +194,12 @@ Característica: API de registro de usuarios (núcleo HU-N-01)
   @HU-N-01 @CA5 @CP-NA17
   Esquema del escenario: CP-NA17 Longitud máxima del correo
     Cuando se registra a <celular> con un correo de <largo> caracteres
-    Entonces la respuesta tiene estado <estado>
+    Entonces la operación termina con "<resultado>"
 
     Ejemplos:
-      | celular   | largo | estado |
-      | 987000411 | 100   | 201    |
-      | 987000412 | 101   | 422    |
+      | celular   | largo | resultado           |
+      | 987000411 | 100   | 201                 |
+      | 987000412 | 101   | 422 CORREO_INVALIDO |
 
   @HU-N-01 @CA5 @CP-NA18
   Esquema del escenario: CP-NA18 Correo ya usado, sin distinguir mayúsculas
@@ -249,3 +249,35 @@ Característica: API de registro de usuarios (núcleo HU-N-01)
     Cuando se registra con el celular "987654321"
     Entonces la respuesta tiene estado 409
     Y "987654321" tiene 0 mensajes SMS
+
+  # Validaciones de cabecera de la clase 10, según el contrato de Qolqe (solo declara application/json).
+  @HU-N-01 @HU-N-07 @CA1 @CP-NA159 @tecnico
+  Esquema del escenario: CP-NA159 Un cuerpo con Content-Type text/plain no registra ni transfiere
+    Dado que Ana inició sesión
+    Y se registran los saldos, contactos y solicitudes de los cuatro usuarios
+    Cuando Ana envía POST <ruta> con el cuerpo <cuerpo> y el tipo "text/plain"
+    Entonces la operación termina con "422 SOLICITUD_INVALIDA"
+    Y el error de validación nombra el campo "body"
+    Y ningún saldo, contacto ni solicitud cambió
+    Y el celular "987000174" no puede ingresar con el PIN "4826"
+
+    Ejemplos:
+      | ruta                | cuerpo                                                                                    |
+      | /api/usuarios       | {"dni": "12345678", "nombres": "Prueba Tipos", "celular": "987000174", "pin": "4826"}    |
+      | /api/transferencias | {"tipo": "QOLQE", "monto": "1.00", "celular_destino": "912345678"}                        |
+
+  # Sin Content-Type, FastAPI toma el cuerpo como JSON (OBS-02 en docs/defectos.md: ningún requisito lo prohíbe).
+  # Ante Accept: application/xml la API responde en JSON, lo único que declara su contrato (RFC 9110 permite ignorar Accept).
+  @HU-N-01 @HU-N-07 @CA1 @CP-NA160 @tecnico
+  Esquema del escenario: CP-NA160 Sin Content-Type o con Accept XML la API responde en JSON según el contrato
+    Dado que Ana inició sesión
+    Cuando Ana envía POST <ruta> con el cuerpo <cuerpo> y el tipo "<tipo>" y Accept "<accept>"
+    Entonces la respuesta tiene estado 201
+    Y la respuesta cumple el contrato OpenAPI de "POST <ruta>"
+
+    Ejemplos:
+      | ruta                | tipo             | accept           | cuerpo                                                                                 |
+      | /api/usuarios       | (ninguno)        | application/json | {"dni": "12345678", "nombres": "Prueba Tipos", "celular": "987000175", "pin": "4826"} |
+      | /api/usuarios       | application/json | application/xml  | {"dni": "12345678", "nombres": "Prueba Tipos", "celular": "987000175", "pin": "4826"} |
+      | /api/transferencias | (ninguno)        | application/json | {"tipo": "QOLQE", "monto": "1.00", "celular_destino": "912345678"}                     |
+      | /api/transferencias | application/json | application/xml  | {"tipo": "QOLQE", "monto": "1.00", "celular_destino": "912345678"}                     |

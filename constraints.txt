@@ -2,3 +2,5 @@
 # por lo que el commit de qolqe/bd.py puede llegar tarde (DEF-07 en docs/defectos.md).
 # Se fija la versión para que el pipeline sea repetible; qolqe/ no se modifica.
 fastapi==0.117.1
+# Schemathesis solo pide hypothesis>=6.130.12,<7: se fija para que --seed 42 genere con la misma versión.
+hypothesis==6.170.14

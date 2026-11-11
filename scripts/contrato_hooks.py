@@ -19,6 +19,8 @@ ANA = {"celular": "987654321", "pin": "4826"}
 INVALIDAN_EL_TOKEN = {"/api/auth/logout", "/api/cuentas/me/cierre"}
 # PIN distinto al de los ejemplos del contrato (4826): un ejemplo no debe cerrar la cuenta desechable.
 PIN_DESECHABLE = "2580"
+# Generador propio: el módulo global random lo controla Hypothesis, y usarlo aquí cambiaría su generación.
+_AZAR = random.Random()
 
 
 def _token(credenciales: dict) -> str | None:
@@ -28,9 +30,9 @@ def _token(credenciales: dict) -> str | None:
 
 def _registrar_desechable() -> dict:
     while True:
-        celular = f"9{random.randint(10_000_000, 99_999_999)}"
+        celular = f"9{_AZAR.randint(10_000_000, 99_999_999)}"
         r = httpx.post(f"{URL}/api/usuarios", timeout=30, json={
-            "dni": f"{random.randint(10_000_000, 99_999_999)}", "nombres": "Usuario Contrato",
+            "dni": f"{_AZAR.randint(10_000_000, 99_999_999)}", "nombres": "Usuario Contrato",
             "celular": celular, "pin": PIN_DESECHABLE,
         })
         if r.status_code == 201:

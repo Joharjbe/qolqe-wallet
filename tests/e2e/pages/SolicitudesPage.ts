@@ -33,9 +33,16 @@ export class SolicitudesPage extends PaginaQolqe {
     await expect(this.page.getByTestId('solicitud-mensaje')).toContainText(texto);
   }
 
+  /**
+   * La pestaña se marca al instante, pero la lista se vuelve a pintar cuando responde la API. Se espera un contenido
+   * propio de la vista nueva (una fila "Para …" en enviadas, "De …" en recibidas, o su mensaje vacío).
+   */
   async irAPestana(vista: string) {
     await this.pulsarPestana(vista);
     await expect(this.page.getByTestId(`pestana-${vista}`)).toHaveAttribute('aria-selected', 'true');
+    const fila = this.page.getByTestId('solicitud-persona').filter({ hasText: vista === 'enviadas' ? /^Para / : /^De / });
+    const vacia = this.page.getByTestId('lista-vacia').filter({ hasText: `No tienes solicitudes ${vista}` });
+    await expect(fila.or(vacia).first()).toBeVisible();
   }
 
   async pulsarPestana(vista: string) {

@@ -24,19 +24,49 @@ Característica: Registro, ingreso, salida y perfil en la web (módulo común)
     Y la pantalla envió 0 peticiones "POST /api/usuarios"
     Y no puede ingresar con el celular "987000112" y el PIN "4826"
 
+  # La misma regla en Mi perfil muestra "Los nombres deben tener entre 2 y 80 caracteres" (CP-NW14).
   @HU-N-01 @CA1 @CP-NW03 @DEF-18 @fail
   Escenario: CP-NW03 Con nombres de 1 letra el error se muestra en español
     Cuando se registra con estos datos:
       | dni      | nombres | celular   | pin  |
       | 12345678 | A       | 987000113 | 4826 |
-    Entonces ve el error de registro "Los nombres deben tener entre 2 y 80 caracteres"
+    Entonces ve el error de registro en español sobre los nombres
 
   @HU-N-01 @CA3 @CP-NW04
   Escenario: CP-NW04 Con un celular ya registrado se muestra el error y se conserva el formulario
     Cuando se registra con estos datos:
-      | dni      | nombres         | celular   | pin  |
-      | 12345678 | Lucía Fernández | 987654321 | 4826 |
+      | dni      | nombres         | celular   | correo          | pin  |
+      | 12345678 | Lucía Fernández | 987654321 | lucia@correo.pe | 4826 |
     Entonces ve el error de registro "El celular ya está registrado"
+    Y el formulario de registro conserva los datos ingresados
+
+  @HU-N-01 @CA2 @CA4 @CA5 @CP-NW25
+  Esquema del escenario: CP-NW25 El registro muestra el error de la API y no crea la cuenta
+    Cuando se registra con estos datos:
+      | dni   | nombres         | celular   | correo   | pin   |
+      | <dni> | Lucía Fernández | <celular> | <correo> | <pin> |
+    Entonces ve el error de registro "<mensaje>"
+    Y no puede ingresar con el celular "<celular>" y el PIN "<pin>"
+
+    Ejemplos:
+      | caso              | dni      | celular   | correo               | pin  | mensaje                                         |
+      | DNI de 7 dígitos  | 1234567  | 987000121 |                      | 4826 | El DNI debe tener exactamente 8 dígitos         |
+      | PIN secuencial    | 12345678 | 987000122 |                      | 1234 | El PIN no puede ser una secuencia de dígitos    |
+      | PIN repetido      | 12345678 | 987000123 |                      | 1111 | El PIN no puede tener todos los dígitos iguales |
+      | correo inválido   | 12345678 | 987000124 | malo@                | 4826 | El correo no tiene un formato válido            |
+      | correo registrado | 12345678 | 987000125 | ANA.TORRES@correo.pe | 4826 | El correo ya está registrado en otra cuenta     |
+
+  # El tope de dígitos (maxlength) solo existe en la pantalla: la API recibe lo que se le envíe.
+  @HU-N-01 @CA2 @CA3 @CA4 @CP-NW26
+  Esquema del escenario: CP-NW26 Los campos numéricos del registro no admiten más dígitos que los permitidos
+    Cuando escribe "<escrito>" en el campo "<campo>" del registro
+    Entonces el campo "<campo>" del registro queda con "<queda>"
+
+    Ejemplos:
+      | campo   | escrito    | queda     |
+      | dni     | 123456789  | 12345678  |
+      | celular | 9870001112 | 987000111 |
+      | pin     | 48265      | 4826      |
 
   @HU-N-02 @CA1 @CP-NW05
   Escenario: CP-NW05 El ingreso correcto lleva al inicio
@@ -71,14 +101,21 @@ Característica: Registro, ingreso, salida y perfil en la web (módulo común)
       | tercer intento fallido | Carla   | 2      | 0000 | Superaste los intentos permitidos. Tu cuenta está bloqueada hasta las 10:15.        |
       | cuenta ya bloqueada    | Elena   | 0      | 8152 | Tu cuenta está bloqueada hasta las 10:15. Puedes solicitar un código de desbloqueo. |
 
+  # Sin dispositivo_id tampoco hay SMS (CP-NA43): por eso se revisa que el ingreso envíe el id recordado.
   @HU-N-02 @CA6 @CP-NW08
-  Escenario: CP-NW08 La pantalla de ingreso muestra el dispositivo recordado y no alerta
-    Dado que el navegador recuerda el dispositivo "a1b2c3d4e5f60718" llamado "Celular de Ana"
+  Esquema del escenario: CP-NW08 El ingreso envía el dispositivo recordado y solo alerta si no es de confianza
+    Dado que el navegador recuerda el dispositivo "<id>" llamado "<nombre>"
     Cuando abre la pantalla de ingreso
-    Entonces ve el dispositivo "Ingresando desde: Celular de Ana"
+    Entonces ve el dispositivo "Ingresando desde: <nombre>"
     Cuando ingresa como "Ana"
     Entonces está en el inicio con el saludo "Hola, Ana"
-    Y "Ana" no recibió ningún SMS
+    Y el ingreso envió el dispositivo "<id>"
+    Y "Ana" recibió <sms> SMS de nuevo dispositivo
+
+    Ejemplos:
+      | caso                     | id               | nombre         | sms |
+      | dispositivo de confianza | a1b2c3d4e5f60718 | Celular de Ana | 0   |
+      | dispositivo nuevo        | ffffffffffffffff | Laptop nueva   | 1   |
 
   @HU-N-03 @CA1 @CP-NW09
   Escenario: CP-NW09 Cerrar sesión desde el menú borra la sesión del navegador
@@ -90,6 +127,15 @@ Característica: Registro, ingreso, salida y perfil en la web (módulo común)
     Entonces vuelve a la pantalla de ingreso sin ver su saldo
     Cuando regresa a la página anterior
     Entonces vuelve a la pantalla de ingreso sin ver su saldo
+
+  @HU-N-03 @CA2 @CP-NW27
+  Escenario: CP-NW27 Cerrar sesión en un navegador no cierra la sesión del otro
+    Dado que "Ana" también ingresó en otro navegador
+    Y que "Ana" ingresó a Qolqe
+    Cuando cierra sesión
+    Entonces vuelve al ingreso con el aviso "Cerraste sesión correctamente."
+    Cuando en el otro navegador abre el inicio
+    Entonces el otro navegador ve en inicio el saldo "S/ 1,500.00"
 
   @HU-N-04 @CA1 @CP-NW10
   Escenario: CP-NW10 El inicio muestra el saldo con formato y permite ocultarlo

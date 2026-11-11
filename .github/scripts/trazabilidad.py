@@ -13,12 +13,15 @@ import shutil
 import sys
 import xml.etree.ElementTree as ET
 from collections import Counter
+from itertools import pairwise
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from casos import (
     CP_CONTRATO,
     ESTADOS,
+    GRUPO_JUNIT,
+    MODULOS,
     caso_contrato,
     hu_de_operacion,
     leer_casos,
@@ -110,7 +113,7 @@ def filas_resumen(casos: dict, por_caso: dict) -> list[list[str]]:
     for id_caso, c in casos.items():
         grupos[(c["modulo"], c["nivel"], c["tipo"], por_caso[id_caso]["estado"])] += 1
     filas = []
-    for modulo in ("núcleo", "G4"):
+    for modulo in MODULOS:
         for nivel in NIVELES:
             for tipo in ("funcional", "técnico"):
                 cuenta = [grupos[(modulo, nivel, tipo, e)] for e in ESTADOS]
@@ -154,7 +157,8 @@ def filas_defectos(casos: dict, por_caso: dict) -> list[list[str]]:
 def encabezado(run: dict) -> str:
     sha = run["sha"][:7] or "sin commit"
     texto = (f"Run **#{run['numero']}** (intento {run['intento']}) · commit `{sha}` · {run['evento']}"
-             f"{' · ' + run['rama'] if run['rama'] else ''} · evidencia: {run['evidencia']} · {run['fecha'][:16].replace('T', ' ')} (hora de Lima)")
+             f"{' · ' + run['rama'] if run['rama'] else ''} · evidencia: {run['evidencia']} · "
+             f"veredicto: **{run.get('conclusion') or '—'}** · {run['fecha'][:16].replace('T', ' ')} (hora de Lima)")
     return texto + (f" · [ver run]({run['url']})" if run["url"] else "")
 
 
@@ -233,7 +237,7 @@ def escribir_junit_cp(ruta: Path, casos: dict, por_caso: dict, resultados: dict,
     raiz = ET.Element("testsuites", name=f"Qolqe · run #{run['numero']}.{run['intento']}")
     suites = {}
     for id_caso, c in sorted(casos.items()):
-        grupo = f"{'NUCLEO' if c['modulo'] == 'núcleo' else 'G4'}.{c['nivel']}"
+        grupo = f"{GRUPO_JUNIT[c['modulo']]}.{c['nivel']}"
         suite = suites.get(grupo)
         if suite is None:
             suite = suites[grupo] = ET.SubElement(raiz, "testsuite", name=grupo)
@@ -305,6 +309,36 @@ def clave_run(r: dict) -> tuple:
     return (numero, int(r.get("intento", 1)), r.get("fecha", ""))
 
 
+def clasificar_cambios(ultimos: list[dict]) -> tuple[bool, str | None]:
+    """Separa un caso inestable de una regresión (o una corrección) que cambió el resultado una sola vez.
+
+    Inestable: fue flaky en algún run, el mismo commit dio a la vez un resultado esperado y uno fallido (por ejemplo, un
+    re-run), o alternó dos o más veces. Un único cambio entre esperado (passed/xfailed) y fallido devuelve el run del cambio.
+    """
+    if any(u["estado"] == "flaky" for u in ultimos):
+        return True, None
+    secuencia = [u for u in ultimos if u["estado"] in ("passed", "xfailed", "failed")]
+    por_commit = {}
+    for u in secuencia:
+        if u.get("sha"):
+            por_commit.setdefault(u["sha"], set()).add(u["estado"] == "failed")
+    if any(len(v) > 1 for v in por_commit.values()):
+        return True, None
+    cambios = [b for a, b in pairwise(secuencia) if (a["estado"] == "failed") != (b["estado"] == "failed")]
+    if len(cambios) >= 2:
+        return True, None
+    if cambios:
+        u = cambios[0]
+        return False, f"#{u['run']}" + (f".{u['intento']}" if int(u.get("intento", 1)) > 1 else "")
+    return False, None
+
+
+def etiqueta_run(r: dict) -> str:
+    if str(r["numero"]).isdigit():
+        return f"#{r['numero']}" + (f".{r['intento']}" if int(r.get("intento", 1)) > 1 else "")
+    return f"{r['numero']} {r.get('fecha', '')[11:16]}"
+
+
 def armar_historial(runs: list[dict], maximo: int) -> dict:
     runs = sorted(runs, key=clave_run)[-maximo:]
     casos = {}
@@ -313,7 +347,8 @@ def armar_historial(runs: list[dict], maximo: int) -> dict:
             c = casos.setdefault(id_caso, {"conteo": dict.fromkeys(ESTADOS, 0), "ultimos": []})
             c.update({k: datos.get(k) for k in ("titulo", "modulo", "nivel", "tipo", "hu", "defectos")})
             c["conteo"][datos["estado"]] += 1
-            c["ultimos"].append({"run": r["numero"], "intento": r.get("intento", 1), "estado": datos["estado"]})
+            c["ultimos"].append({"id": r["id"], "run": r["numero"], "intento": r.get("intento", 1), "sha": r.get("sha", ""),
+                                 "estado": datos["estado"]})
             if datos["estado"] != "sin ejecutar":
                 c.setdefault("primera_vez", {"run": r["numero"], "fecha": r["fecha"]})
                 c["ultima_vez"] = {"run": r["numero"], "fecha": r["fecha"]}
@@ -321,9 +356,9 @@ def armar_historial(runs: list[dict], maximo: int) -> dict:
         ejecutados = sum(v for k, v in c["conteo"].items() if k not in ("sin ejecutar", "skipped"))
         esperados = c["conteo"]["passed"] + c["conteo"]["xfailed"]
         c["estabilidad"] = round(100 * esperados / ejecutados, 1) if ejecutados else None
-        vistos = {u["estado"] for u in c["ultimos"]}
-        c["inestable"] = "flaky" in vistos or ({"passed", "failed"} <= vistos)
-    resumen = [{k: r[k] for k in ("id", "numero", "intento", "sha", "rama", "evento", "evidencia", "fecha", "url")} | {"totales": r["totales"]}
+        c["inestable"], c["cambio_en"] = clasificar_cambios(c["ultimos"])
+    resumen = [{k: r.get(k, "") for k in ("id", "numero", "intento", "sha", "rama", "evento", "evidencia", "conclusion", "fecha", "url")}
+               | {"totales": r["totales"]}
                for r in runs]
     return {"maximo": maximo, "runs": runs, "resumen": resumen, "casos": dict(sorted(casos.items()))}
 
@@ -332,18 +367,19 @@ def escribir_historial(sitio: Path, historial: dict, columnas: int = 15) -> None
     sitio.mkdir(parents=True, exist_ok=True)
     (sitio / "historial.json").write_text(json.dumps(historial, ensure_ascii=False, indent=1), encoding="utf-8")
     ultimos = historial["runs"][-columnas:]
-    cab_runs = "".join(f'<th title="{html.escape(r["fecha"][:16])} · {html.escape(r["sha"][:7])}">#{r["numero"]}'
-                       f'{"." + str(r["intento"]) if int(r.get("intento", 1)) > 1 else ""}</th>' for r in ultimos)
+    cab_runs = "".join(f'<th title="{html.escape(r["fecha"][:16])} · {html.escape(r["sha"][:7])}">{html.escape(etiqueta_run(r))}</th>'
+                       for r in ultimos)
     filas = []
     for id_caso, c in historial["casos"].items():
-        por_run = {(u["run"], u["intento"]): u["estado"] for u in c["ultimos"]}
-        celdas = "".join(
-            f'<td><span class="celda {por_run.get((r["numero"], r.get("intento", 1)), "sin ejecutar").split()[0]}">'
-            f'{SIMBOLO[por_run.get((r["numero"], r.get("intento", 1)), "sin ejecutar")]}</span></td>' for r in ultimos)
+        # Cada intento es su propia columna: un re-run no reemplaza al intento anterior.
+        por_run = {u.get("id") or (u["run"], u["intento"]): u["estado"] for u in c["ultimos"]}
+        estados = [por_run.get(r["id"], por_run.get((r["numero"], r.get("intento", 1)), "sin ejecutar")) for r in ultimos]
+        celdas = "".join(f'<td><span class="celda {e.split()[0]}">{SIMBOLO[e]}</span></td>' for e in estados)
         conteo = c["conteo"]
         estabilidad = "—" if c["estabilidad"] is None else f"{c['estabilidad']} %"
         primera, ultima = c.get("primera_vez", {}), c.get("ultima_vez", {})
-        marca = ' <span class="flaky">inestable</span>' if c["inestable"] else ""
+        marca = (' <span class="flaky">inestable</span>' if c["inestable"]
+                 else f' <span class="xfailed">cambió en {html.escape(c["cambio_en"])}</span>' if c.get("cambio_en") else "")
         filas.append(
             f"<tr><td>{html.escape(id_caso)}</td><td>{html.escape(c['titulo'] or '')}</td><td>{html.escape(c['modulo'] or '')}</td>"
             f"<td>{html.escape(c['nivel'] or '')}</td><td>{html.escape(c['tipo'] or '')}</td>{celdas}"
@@ -357,8 +393,11 @@ def escribir_historial(sitio: Path, historial: dict, columnas: int = 15) -> None
         f"<th>Caso</th><th>Título</th><th>Módulo</th><th>Nivel</th><th>Tipo</th>{cab_runs}"
         f"<th>pasó/falló/xfail/flaky</th><th>Estabilidad</th><th>Primera · última vez</th></tr></thead>"
         f"<tbody>{''.join(filas)}</tbody></table></div>"
-        "<p><small>Estabilidad: porcentaje de runs ejecutados con el resultado esperado (passed o xfailed con su DEF). "
-        "Un caso es inestable si alternó entre pasar y fallar o fue flaky en algún run.</small></p>")
+        "<p><small>Cada intento de un run es una columna (#N.2 es el re-run de #N): un re-run no borra el intento anterior. "
+        "Estabilidad: porcentaje de ejecuciones con el resultado esperado (passed o xfailed con su DEF). "
+        "<em>inestable</em>: fue flaky en algún run, el mismo commit pasó y falló (por ejemplo, en un re-run) o alternó dos o "
+        "más veces. <em>cambió en #N</em>: un solo cambio entre esperado y fallido, típico de una regresión o de una "
+        "corrección.</small></p>")
     (sitio / "historial.html").write_text(pagina("Qolqe · Historial de ejecuciones", cuerpo), encoding="utf-8")
 
 

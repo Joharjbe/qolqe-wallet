@@ -20,8 +20,14 @@ if [ "${EVIDENCIA:-sin-imagenes}" = con-imagenes ]; then
 fi
 mkdir -p reportes/contrato
 # ${HAR[@]+...} evita el error de set -u con un arreglo vacío en el bash 3.2 de macOS.
+estado=0
 schemathesis run "$QOLQE_URL/openapi.json" \
   --include-path-regex "$OPERACIONES" \
   --max-examples 30 --seed 42 \
   --report "$FORMATOS" --report-junit-path reportes/contrato/junit.xml --report-html-path reportes/contrato/html \
-  ${HAR[@]+"${HAR[@]}"}
+  ${HAR[@]+"${HAR[@]}"} || estado=$?
+# Schemathesis filtra la cabecera Authorization del HAR, pero no los cuerpos: el access_token de los login se enmascara.
+if [ -f reportes/contrato/peticiones.har ]; then
+  python3 -c 'import re, sys; p = sys.argv[1]; t = open(p, encoding="utf-8").read(); open(p, "w", encoding="utf-8").write(re.sub(r"eyJ[\w-]+\.[\w-]+\.[\w-]+", "***", t))' reportes/contrato/peticiones.har
+fi
+exit "$estado"

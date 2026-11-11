@@ -80,17 +80,20 @@ Característica: API del núcleo: cerrar mi cuenta (HU-N-06)
   @HU-N-06 @CA1 @CA2 @CA3 @CP-NA86 @tecnico
   Esquema del escenario: CP-NA86 Tabla de decisión del cierre: PIN, saldo y solicitudes pendientes
     Dado que el saldo de <usuario> se ajusta a "<saldo>"
+    Y <usuario> <pendientes> solicitudes pendientes
     Cuando <usuario> pide cerrar su cuenta con el PIN "<pin>"
     Entonces la operación termina con "<resultado>"
     Y la cuenta de <usuario> figura como "<estado>"
 
     Ejemplos:
       | regla | usuario | saldo  | pin  | pendientes | resultado                  | estado  |
-      | R1    | Bruno   | 800.00 | 0000 | sí         | 422 PIN_INCORRECTO         | ACTIVA  |
-      | R2    | Carla   | 0.00   | 0000 | no         | 422 PIN_INCORRECTO         | ACTIVA  |
-      | R3    | Bruno   | 800.00 | 7391 | sí         | 422 SALDO_PENDIENTE        | ACTIVA  |
-      | R4    | Bruno   | 0.00   | 7391 | sí         | 409 SOLICITUDES_PENDIENTES | ACTIVA  |
-      | R5    | Carla   | 0.00   | 5917 | no         | 204                        | CERRADA |
+      | R1    | Bruno   | 800.00 | 0000 | tiene      | 422 PIN_INCORRECTO         | ACTIVA  |
+      | R2    | Carla   | 0.00   | 0000 | no tiene   | 422 PIN_INCORRECTO         | ACTIVA  |
+      | R3    | Bruno   | 800.00 | 7391 | tiene      | 422 SALDO_PENDIENTE        | ACTIVA  |
+      | R4    | Bruno   | 0.00   | 7391 | tiene      | 409 SOLICITUDES_PENDIENTES | ACTIVA  |
+      | R5    | Carla   | 0.00   | 5917 | no tiene   | 204                        | CERRADA |
+      | R6    | Carla   | 0.00   | 5917 | tiene      | 409 SOLICITUDES_PENDIENTES | ACTIVA  |
+      | R7    | Bruno   | 0.00   | 7391 | no tiene   | 204                        | CERRADA |
 
   @HU-N-06 @CA3 @CP-NA87
   Esquema del escenario: CP-NA87 Una solicitud pendiente, enviada o recibida, impide cerrar la cuenta
@@ -181,7 +184,9 @@ Característica: API del núcleo: cerrar mi cuenta (HU-N-06)
       | celular  | Bruno  | 10.00 | Carla                     | 800.00  |
       | contacto | Ana    | 1.00  | su contacto "Prima Carla" | 1500.00 |
 
-  @HU-N-06 @CA4 @CP-NA95 @DEF-04 @DEF-03
+  # La única solicitud de una cuenta cerrada es la vencida (CA3 impide cerrar con pendientes): el caso detecta DEF-03.
+  # Si se corrige DEF-03 pero no DEF-04, este caso pasa; DEF-04 sigue detectado por CP-NA94 y CP-NA112.
+  @HU-N-06 @CA4 @CP-NA95 @DEF-03
   Escenario: CP-NA95 Aceptar la solicitud de una cuenta cerrada no le transfiere dinero
     Dado que el saldo de Carla se ajusta a "0.00"
     Y Carla ya cerró su cuenta con su PIN

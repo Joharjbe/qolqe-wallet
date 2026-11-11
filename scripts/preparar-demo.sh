@@ -21,12 +21,23 @@ if ! curl -sf "http://127.0.0.1:$PUERTO/api/salud" > /dev/null; then
 fi
 curl -sf -X POST "http://127.0.0.1:$PUERTO/api/pruebas/reiniciar" > /dev/null
 
+# Kiwi TCMS (docs/gestion-casos.md): solo si Docker está abierto; la demo sigue sin él.
+KIWI=https://localhost:8443
+if docker info > /dev/null 2>&1; then
+  (cd herramientas/kiwi && docker compose up -d > /dev/null)
+else
+  echo "Docker no responde: se omite Kiwi TCMS ($KIWI)."
+fi
+
 REPO=https://github.com/Joharjbe/qolqe-wallet
+PAGES=https://joharjbe.github.io/qolqe-wallet
 for url in \
   "$REPO/actions/workflows/pruebas.yml" \
-  "https://joharjbe.github.io/qolqe-wallet/" \
-  "https://joharjbe.github.io/qolqe-wallet/web/" \
-  "$REPO/pull/3" \
+  "$PAGES/" \
+  "$PAGES/historial.html" \
+  "$PAGES/web/" \
+  "$REPO/pulls?q=is%3Apr" \
+  "$KIWI/" \
   "http://127.0.0.1:$PUERTO/login"; do
   command -v open > /dev/null && open "$url" || echo "Abrir: $url"
 done

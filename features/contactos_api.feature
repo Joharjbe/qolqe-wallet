@@ -25,20 +25,19 @@ Característica: API de contactos (G4)
       | Diego   | 934567812  | 404    | CELULAR_NO_REGISTRADO |
       | Ana     | 912345678  | 409    | CONTACTO_EXISTENTE    |
 
+  # Los valores y clases inválidos del alias (Ab, 21 caracteres, Bruno_01 y otros) están en CP-A78 con su código.
   @HU-G4-01 @CA1 @CP-A03
-  Esquema del escenario: CP-A03 Valores límite y clases del alias
+  Esquema del escenario: CP-A03 Valores límite y clases válidas del alias
     Dado que Diego inició sesión
     Cuando agrega el contacto "912345678" con alias "<alias>"
-    Entonces la respuesta tiene estado <estado>
+    Entonces la respuesta tiene estado 201
+    Y el contacto creado tiene alias "<alias>" y nombre enmascarado "Bruno D."
 
     Ejemplos:
-      | alias                 | estado |
-      | Ab                    | 422    |
-      | Abc                   | 201    |
-      | Abcdefghijklmnopqrst  | 201    |
-      | Abcdefghijklmnopqrstu | 422    |
-      | José 2                | 201    |
-      | Bruno_01              | 422    |
+      | alias                |
+      | Abc                  |
+      | Abcdefghijklmnopqrst |
+      | José 2               |
 
   @HU-G4-01 @CA1 @CP-A04 @DEF-01
   Escenario: CP-A04 El alias admite la letra ñ
@@ -105,6 +104,7 @@ Característica: API de contactos (G4)
     Cuando edita el contacto "Prima Carla" con alias "PRIMA carla" y favorito
     Entonces la respuesta tiene estado 200
     Y el contacto creado tiene alias "PRIMA carla" y nombre enmascarado "Carla R."
+    Y el contacto queda con alias "PRIMA carla" y es favorito
 
   @HU-G4-03 @CA1 @CP-A12
   Escenario: CP-A12 Límite de 5 favoritos
@@ -159,12 +159,6 @@ Característica: API de contactos (G4)
     Cuando transfiere 10.00 al contacto "Fabián"
     Entonces la respuesta tiene estado 422
     Y el código de error es "DESTINO_INACTIVO"
-
-  @HU-G4-02 @CA1 @CP-T01
-  Escenario: CP-T01 Sin token no se accede a los contactos
-    Cuando se consultan los contactos sin token
-    Entonces la respuesta tiene estado 401
-    Y el código de error es "NO_AUTENTICADO"
 
   @HU-G4-03 @HU-G4-04 @CA1 @CP-T02
   Esquema del escenario: CP-T02 El contacto de otro usuario responde como inexistente
@@ -531,7 +525,8 @@ Característica: API de contactos (G4)
 
   @HU-G4-05 @CA1 @CP-A88
   Escenario: CP-A88 Transferir a un contacto respeta el límite diario
-    Dado que Diego inició sesión
+    Dado que el reloj de Qolqe marca hoy a las "12:00:00"
+    Y que Diego inició sesión
     Y Diego tiene el contacto "912345678" con alias "Bruno"
     Y Diego ya transfirió 600.00 hoy
     Cuando transfiere 400.01 al contacto "Bruno"
