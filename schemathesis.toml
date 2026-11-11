@@ -21,4 +21,4 @@ include-name = "POST /api/auth/login"
 checks.negative_data_rejection.expected-statuses = [400, 401, 403, 404, 405, 406, 409, 415, 422, 423, 428, 429, "5xx"]
 
 # Dos fallos se descartan por valor con filter_failure en scripts/contrato_hooks.py (aquí solo se desactiva el check entero):
-# POST /api/transferencias (DEF-NEW-transferencia-campos-ignorados) y PUT /api/cuentas/me con correo "" (falso positivo).
+# POST /api/transferencias (DEF-29) y PUT /api/cuentas/me con correo "" (falso positivo).

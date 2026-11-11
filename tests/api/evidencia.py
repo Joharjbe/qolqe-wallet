@@ -95,4 +95,4 @@ def pytest_html_report_title(report):
     report.title = f"Qolqe · API · evidencia: {EVIDENCIA}"
 
 
-__all__ = ["pytest_runtest_call", "pytest_fixture_setup", "pytest_runtest_makereport", "pytest_html_report_title"]
+__all__ = ["pytest_fixture_setup", "pytest_html_report_title", "pytest_runtest_call", "pytest_runtest_makereport"]

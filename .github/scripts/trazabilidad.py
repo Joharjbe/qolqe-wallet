@@ -16,9 +16,19 @@ from collections import Counter
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from casos import (  # noqa: E402
-    CP_CONTRATO, ESTADOS, caso_contrato, hu_de_operacion, leer_casos, leer_defectos, leer_historias,
-    leer_resultados, metadatos_run, resultados_por_caso, resumen_estados,
+from casos import (
+    CP_CONTRATO,
+    ESTADOS,
+    caso_contrato,
+    hu_de_operacion,
+    leer_casos,
+    leer_criterios,
+    leer_defectos,
+    leer_historias,
+    leer_resultados,
+    metadatos_run,
+    resultados_por_caso,
+    resumen_estados,
 )
 
 NIVELES = ["api", "web", "contrato"]
@@ -46,7 +56,7 @@ def texto_resultado(caso: dict, datos: dict) -> str:
     return estado if estado == "skipped" else f"passed ({total}/{total})"
 
 
-def verificar(casos: dict, problemas: list[str], historias: dict, defectos: dict) -> int:
+def verificar(casos: dict, problemas: list[str], historias: dict, defectos: dict, criterios: dict) -> int:
     errores, avisos = list(problemas), []
     for id_caso, c in sorted(casos.items()):
         donde = f"{c['archivo']}:{c['linea']} {id_caso}"
@@ -59,6 +69,12 @@ def verificar(casos: dict, problemas: list[str], historias: dict, defectos: dict
                 errores.append(f"{donde}: @{hu} no existe en docs/requisitos.md")
         if not c["ca"]:
             (avisos if c["tipo"] == "técnico" else errores).append(f"{donde}: falta la etiqueta @CA")
+        for par in c["hu_ca"]:
+            hu, _, ca = par.rpartition(":")
+            if not hu:
+                errores.append(f"{donde}: @{ca} va antes de cualquier @HU")
+            elif hu in criterios and ca not in criterios[hu]:
+                errores.append(f"{donde}: @{hu} no tiene {ca} en docs/requisitos.md (cada @CA va después de sus @HU)")
         if c["nivel"] == "web" and c["falla_esperada"] and not c["defectos"]:
             errores.append(f"{donde}: @fail sin @DEF-xx que explique el fallo esperado")
         if c["nivel"] == "web" and c["defectos"] and not c["falla_esperada"]:
@@ -375,7 +391,7 @@ def main() -> None:
     historias = leer_historias(args.requisitos)
     defectos = leer_defectos(args.defectos)
     if args.verificar:
-        sys.exit(verificar(casos, problemas, historias, defectos))
+        sys.exit(verificar(casos, problemas, historias, defectos, leer_criterios(args.requisitos)))
 
     resultados = leer_resultados(args.reportes)
     casos[CP_CONTRATO] = caso_contrato(list(resultados["operaciones"]))

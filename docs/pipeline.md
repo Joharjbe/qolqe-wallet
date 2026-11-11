@@ -54,7 +54,7 @@ La variable `EVIDENCIA` la leen `playwright.config.ts`, `tests/api/evidencia.py`
 - **Estados por CP:** `passed`, `xfailed` (fallo esperado con su DEF), `flaky` (alternó en las repeticiones), `failed`, `skipped` y `sin ejecutar`. Un esquema cuenta cada ejemplo; la web, cada repetición (`passed (3/3)`).
 - **Salidas de cada run:** `trazabilidad.md` y la portada, `junit-cp.xml` (un `<testcase>` por CP con propiedades `hu`, `ca`, `defecto`, `modulo`, `nivel`, `tipo`, `estado`, `ejecuciones` y `evidencia`), `run.json` (número, intento, commit, rama, evento, evidencia, fecha, conclusión, totales y estado de cada CP) y `evidencias/` (captura por CP y el reporte de API).
 - **Historial:** `publicar` descarga el `historial.json` publicado en Pages y el de la caché de `main` (respaldo si Pages no responde), los une por id de run, suma el run actual (un reintento reemplaza a su intento anterior) y guarda los últimos 30. Publica `historial.html` (grilla CP × runs, conteos pasó/falló/xfail/flaky, estabilidad, primera y última vez) y `historial.json`. Estabilidad = porcentaje de runs ejecutados con el resultado esperado (passed o xfailed). El primer run parte vacío.
-- **`--verificar`** (job `estatico`): error si un escenario no tiene @HU o @CP, si el CP del título no coincide con la etiqueta, si un CP se repite, si una HU no existe en `requisitos.md`, si falta @CA en un caso funcional o si un `@fail` no tiene `@DEF`. Aviso si falta @CA en un caso técnico, si un DEF todavía no está en `docs/defectos.md`, si una HU no tiene casos o si un CP tiene sufijo de letra.
+- **`--verificar`** (job `estatico`): error si un escenario no tiene @HU o @CP, si el CP del título no coincide con la etiqueta, si un CP se repite, si una HU no existe en `requisitos.md`, si falta @CA en un caso funcional, si un par @HU @CA no existe en `requisitos.md` (cada @CA va después de sus @HU) o si un `@fail` no tiene `@DEF`. Aviso si falta @CA en un caso técnico, si un DEF todavía no está en `docs/defectos.md`, si una HU no tiene casos o si un CP tiene sufijo de letra.
 - `docs/trazabilidad.md` se sigue generando en local con `python .github/scripts/trazabilidad.py` y se versiona al cerrar cada entrega.
 
 ## Contrato: alcance, exclusiones y hallazgos
@@ -65,12 +65,12 @@ La variable `EVIDENCIA` la leen `playwright.config.ts`, `tests/api/evidencia.py`
 |---|---|---|
 | `POST /api/auth/login` responde 423 a un PIN mal formado cuando la cuenta está bloqueada | Falso positivo: 423 `CUENTA_BLOQUEADA` está en el contrato y es un rechazo (HU-N-02 CA4); la lista por defecto de Schemathesis no lo incluye | `schemathesis.toml`: 423 se acepta como rechazo solo en esa operación |
 | `PUT /api/cuentas/me` acepta `correo: ""` | Falso positivo: la descripción del campo en el contrato dice "`null` o vacío lo quita" (lo prueba CP-NA67); `format: email` no puede expresarlo | `filter_failure` en `contrato_hooks.py`, solo ST201 con `correo == ""` |
-| `POST /api/transferencias` acepta un `cci` inválido en QOLQE y un `celular_destino` inválido en INTERBANCARIA | **Defecto: DEF-NEW-transferencia-campos-ignorados** | `filter_failure` en `contrato_hooks.py`, solo ST201 con esa combinación; el resto del check sigue activo |
+| `POST /api/transferencias` acepta un `cci` inválido en QOLQE y un `celular_destino` inválido en INTERBANCARIA | **Defecto: DEF-29** | `filter_failure` en `contrato_hooks.py`, solo ST201 con esa combinación; el resto del check sigue activo |
 | `DELETE /api/seguridad/sesiones` | Fuera de alcance: HU-G6-10 (módulo G6) | `enabled = false` en `schemathesis.toml` |
 
 Las fallas descartadas siguen visibles: Schemathesis las cuenta como "dropped by `filter_failure`" en la consola y en el HTML. Con la semilla 42 y con las semillas 1, 7 y 2026 (50 ejemplos) la corrida queda en verde.
 
-### DEF-NEW-transferencia-campos-ignorados: la transferencia acepta un campo del otro tipo que no cumple su formato
+### DEF-29: la transferencia acepta un campo del otro tipo que no cumple su formato
 
 Para pasar a `docs/defectos.md` con el número que toque.
 

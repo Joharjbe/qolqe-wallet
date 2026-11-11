@@ -31,9 +31,15 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ / ".github" / "scripts"))
-import trazabilidad  # noqa: E402
-from casos import (  # noqa: E402
-    CP_CONTRATO, caso_contrato, leer_casos, leer_defectos, leer_resultados, metadatos_run, normalizar_cp,
+import trazabilidad
+from casos import (
+    CP_CONTRATO,
+    caso_contrato,
+    leer_casos,
+    leer_defectos,
+    leer_resultados,
+    metadatos_run,
+    normalizar_cp,
     resultados_por_caso,
 )
 
@@ -53,7 +59,7 @@ def entorno_gh() -> dict:
 
 
 def gh(*argumentos: str) -> str:
-    r = subprocess.run(["gh", *argumentos], env=entorno_gh(), capture_output=True, text=True)
+    r = subprocess.run(["gh", *argumentos], env=entorno_gh(), capture_output=True, text=True, check=False)
     if r.returncode != 0:
         sys.exit(f"gh {' '.join(argumentos[:3])} falló: {r.stderr.strip()}")
     return r.stdout

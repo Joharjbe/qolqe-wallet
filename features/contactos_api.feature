@@ -160,13 +160,13 @@ Característica: API de contactos (G4)
     Entonces la respuesta tiene estado 422
     Y el código de error es "DESTINO_INACTIVO"
 
-  @HU-G4-02 @CP-T01
+  @HU-G4-02 @CA1 @CP-T01
   Escenario: CP-T01 Sin token no se accede a los contactos
     Cuando se consultan los contactos sin token
     Entonces la respuesta tiene estado 401
     Y el código de error es "NO_AUTENTICADO"
 
-  @HU-G4-03 @HU-G4-04 @CP-T02
+  @HU-G4-03 @HU-G4-04 @CA1 @CP-T02
   Esquema del escenario: CP-T02 El contacto de otro usuario responde como inexistente
     Dado que Carla inició sesión
     Cuando intenta <accion> el contacto "Bruno" de Ana
@@ -316,7 +316,7 @@ Característica: API de contactos (G4)
     Cuando consulta sus contactos
     Entonces los contactos de la página están en el orden "Beto, zoila, carla, Fabián"
 
-  @HU-G4-02 @CA1 @CP-A47 @DEF-NEW-orden-tildes
+  @HU-G4-02 @CA1 @CP-A47 @DEF-27
   Escenario: CP-A47 Los alias que empiezan con tilde se ordenan con su letra
     Dado que Diego inició sesión
     Y Diego tiene el contacto "956781234" con alias "Ángel"

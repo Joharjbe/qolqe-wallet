@@ -370,8 +370,8 @@ def ve_estado(s, nombre, estado):
     assert next(x for x in recibidas if x["id"] == s.solicitud_id)["estado"] == estado
 
 
-# Pasos de cada área en su propio módulo. Se importan al final porque usan los helpers de arriba.
-from pasos_nucleo_acceso import *  # noqa: E402,F401,F403
-from pasos_nucleo_dinero import *  # noqa: E402,F401,F403
-from pasos_g4_extra import *  # noqa: E402,F401,F403
-from evidencia import *  # noqa: E402,F401,F403
+# Pasos de cada área y hooks de evidencia en su propio módulo. Se importan al final porque usan los helpers de arriba.
+from evidencia import *
+from pasos_g4_extra import *
+from pasos_nucleo_acceso import *
+from pasos_nucleo_dinero import *

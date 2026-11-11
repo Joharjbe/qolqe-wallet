@@ -9,7 +9,7 @@ from collections import Counter
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from casos import estado_testcase  # noqa: E402
+from casos import estado_testcase
 
 
 def contar(ruta: Path) -> tuple[Counter, float]:

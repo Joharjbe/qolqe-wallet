@@ -62,6 +62,21 @@ def leer_historias(requisitos: Path) -> dict[str, str]:
     return historias
 
 
+def leer_criterios(requisitos: Path) -> dict[str, set[str]]:
+    """CA de cada HU en docs/requisitos.md: --verificar revisa que cada par @HU @CA exista."""
+    criterios, hu = {}, None
+    if requisitos.exists():
+        for linea in requisitos.read_text(encoding="utf-8").splitlines():
+            if m := re.match(r"### (HU-(?:N|G4)-\d{2}) ", linea):
+                hu = m[1]
+                criterios[hu] = set()
+            elif linea.startswith("#"):
+                hu = None
+            elif hu and (m := re.match(r"- \*\*(CA\d+)\.", linea)):
+                criterios[hu].add(m[1])
+    return criterios
+
+
 def leer_defectos(defectos: Path) -> dict[str, str]:
     """DEF-xx → ancla de su sección en docs/defectos.md (el slug que genera GitHub para el título)."""
     resultado = {}

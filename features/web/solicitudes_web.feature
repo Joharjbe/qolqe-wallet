@@ -1,7 +1,7 @@
 # language: es
 Característica: Pantalla de solicitudes de dinero (G4)
 
-  @HU-G4-01 @HU-G4-06 @HU-G4-07 @HU-G4-08 @CA1 @CA3 @CP-W10
+  @HU-G4-01 @HU-G4-06 @HU-G4-07 @CA1 @HU-G4-08 @CA3 @CP-W10
   Escenario: CP-W10 Recorrido completo de una solicitud entre dos usuarios
     Dado que "Diego" ingresó a Qolqe
     Y abre la pantalla de contactos

@@ -85,7 +85,7 @@ Característica: API del núcleo: transferir a otro usuario Qolqe (HU-N-07)
       | null                 | 422 DESTINO_REQUERIDO      |
       | 99999999999999999999 | 422 SOLICITUD_INVALIDA     |
 
-  @HU-N-07 @CA1 @CP-NA104 @tecnico @DEF-NEW-contacto-booleano
+  @HU-N-07 @CA1 @CP-NA104 @DEF-28 @tecnico
   Escenario: CP-NA104 Un contacto_id booleano se rechaza como tipo inválido
     Cuando llega un pedido POST a "/api/transferencias" con el token de Ana y el cuerpo {"tipo": "QOLQE", "contacto_id": true, "monto": "1"}
     Entonces la operación termina con "422 SOLICITUD_INVALIDA"
@@ -353,7 +353,7 @@ Característica: API del núcleo: transferir a otro usuario Qolqe (HU-N-07)
     Entonces la operación termina con "201"
     Y las dos últimas transferencias tienen la misma fecha y códigos de operación distintos
 
-  @HU-N-07 @CA3 @CA5 @CP-NA127 @tecnico @DEF-22
+  @HU-N-07 @CA3 @CA5 @CP-NA127 @DEF-22 @tecnico
   Escenario: CP-NA127 RN-10 transferencias simultáneas del mismo usuario reciben códigos distintos
     Cuando Ana lanza 5 transferencias Qolqe simultáneas de 1.00 a Bruno
     Entonces las 5 transferencias simultáneas terminan con "201"
@@ -366,14 +366,14 @@ Característica: API del núcleo: transferir a otro usuario Qolqe (HU-N-07)
     Entonces la operación termina con "200"
     Y el movimiento consultado es "TRANSFERENCIA_ENVIADA" por "-100.00"
 
-  @HU-N-07 @CA3 @CP-NA129 @tecnico @DEF-24
+  @HU-N-07 @CA3 @CP-NA129 @DEF-24 @tecnico
   Escenario: CP-NA129 El destinatario consulta por código su propio movimiento recibido
     Dado Ana ya hizo transferencias Qolqe a Bruno de 100.00
     Cuando Bruno consulta el movimiento por el código de la última transferencia
     Entonces la operación termina con "200"
     Y el movimiento consultado es "TRANSFERENCIA_RECIBIDA" por "100.00"
 
-  @HU-N-07 @CA3 @CP-NA130 @tecnico @DEF-24
+  @HU-N-07 @CA3 @CP-NA130 @DEF-24 @tecnico
   Escenario: CP-NA130 Un tercero no puede ver por código el movimiento de otros
     Dado Ana ya hizo transferencias Qolqe a Bruno de 100.00
     Cuando Carla consulta el movimiento por el código de la última transferencia
@@ -410,14 +410,14 @@ Característica: API del núcleo: transferir a otro usuario Qolqe (HU-N-07)
       | 912345678 | Bruno D. |
       | 955000222 | Pedro    |
 
-  @HU-N-07 @CA5 @CP-NA134 @tecnico @DEF-21
+  @HU-N-07 @CA5 @CP-NA134 @DEF-21 @tecnico
   Escenario: CP-NA134 Transferencias simultáneas no dejan el saldo negativo
     Cuando Carla lanza 5 transferencias Qolqe simultáneas de 20.00 a Bruno
     Entonces como máximo 2 de las transferencias simultáneas terminan con "201"
     Y las demás transferencias simultáneas terminan con "422 SALDO_INSUFICIENTE"
     Y los saldos cuadran con las transferencias simultáneas aceptadas
 
-  @HU-N-07 @CA5 @CP-NA135 @tecnico @DEF-21
+  @HU-N-07 @CA5 @CP-NA135 @DEF-21 @tecnico
   Escenario: CP-NA135 Transferencias simultáneas no superan el límite diario
     Dado que el reloj de Qolqe marca hoy a las "12:00:00"
     Cuando Diego lanza 5 transferencias Qolqe simultáneas de 300.00 a Bruno

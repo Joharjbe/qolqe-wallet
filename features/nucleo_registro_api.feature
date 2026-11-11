@@ -211,8 +211,8 @@ Característica: API de registro de usuarios (núcleo HU-N-01)
       | celular   | correo                | estado | codigo            |
       | 987000420 | ANA.TORRES@CORREO.PE  | 409    | CORREO_REGISTRADO |
 
-  @HU-N-01 @CA5 @CP-NA18b
-  Escenario: CP-NA18b El correo de una cuenta cerrada queda libre
+  @HU-N-01 @CA5 @CP-NA75
+  Escenario: CP-NA75 El correo de una cuenta cerrada queda libre
     Cuando se registra a 987000421 con correo "fabian.rojas@correo.pe"
     Entonces la respuesta tiene estado 201
 

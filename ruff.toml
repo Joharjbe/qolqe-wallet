@@ -4,6 +4,12 @@ line-length = 160
 extend-exclude = ["qolqe", "labs", "node_modules", ".features-gen", ".venv", "reportes", ".kiwi"]
 
 [lint]
-# Errores reales (pyflakes, pycodestyle E4/E7/E9 y bugbear) y modernización (pyupgrade). Se dejan fuera las reglas de estilo
-# del conjunto por defecto de ruff 0.17 (orden de imports, por ejemplo): los pasos se importan al final de conftest a propósito.
-select = ["E4", "E7", "E9", "F", "B", "UP"]
+# Reglas por defecto de ruff más errores reales (pyflakes, pycodestyle E4/E7/E9), bugbear y pyupgrade.
+extend-select = ["E4", "E7", "E9", "F", "B", "UP"]
+
+[lint.per-file-ignores]
+# Los pasos de cada área se importan al final de conftest con *, porque usan los helpers definidos arriba.
+"tests/api/conftest.py" = ["E402", "F403"]
+# Los scripts agregan .github/scripts a sys.path antes de importar casos.py.
+".github/scripts/*.py" = ["E402"]
+"scripts/kiwi_sincronizar.py" = ["E402"]

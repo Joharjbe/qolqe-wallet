@@ -63,7 +63,7 @@ def _dato_invalido_aceptado(failure) -> bool:
 
 @schemathesis.hook("filter_failure").apply_to(name="POST /api/transferencias")
 def defecto_campo_de_otro_tipo(context, failure, case, response):
-    """DEF-NEW-transferencia-campos-ignorados: la API ignora el campo del otro tipo aunque no cumpla su formato
+    """DEF-29: la API ignora el campo del otro tipo aunque no cumpla su formato
     (cci en QOLQE, celular_destino en INTERBANCARIA). Solo se descarta ese fallo; cualquier otro dato inválido
     aceptado en esta operación sigue fallando."""
     body = case.body if isinstance(case.body, dict) else {}

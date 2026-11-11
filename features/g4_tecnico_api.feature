@@ -103,7 +103,7 @@ Característica: API de contactos y solicitudes (G4): casos técnicos
       | POST   | /api/solicitudes/1/rechazar |
       | POST   | /api/solicitudes/3/cancelar |
 
-  @HU-G4-03 @HU-G4-04 @HU-G4-08 @HU-G4-09 @HU-G4-10 @CA1 @CA4 @CP-T08 @tecnico
+  @HU-G4-03 @HU-G4-04 @HU-G4-09 @HU-G4-10 @CA1 @HU-G4-08 @CA4 @CP-T08 @tecnico
   Esquema del escenario: CP-T08 Un id inexistente o una solicitud ajena responde 404 sin cambiar datos
     Dado que <usuario> inició sesión
     Y se registran los saldos, contactos y solicitudes de los cuatro usuarios
@@ -399,7 +399,7 @@ Característica: API de contactos y solicitudes (G4): casos técnicos
       | Ana     | POST   | /api/solicitudes/1/rechazar | {}                                                         | 200    | POST /api/solicitudes/{solicitud_id}/rechazar |
       | Ana     | POST   | /api/solicitudes/3/cancelar | (sin cuerpo)                                               | 200    | POST /api/solicitudes/{solicitud_id}/cancelar |
 
-  @HU-G4-08 @CA1 @CA4 @CP-T17 @DEF-NEW-doble-aceptacion @tecnico
+  @HU-G4-08 @CA1 @CA4 @CP-T17 @DEF-25 @tecnico
   Escenario: CP-T17 Tres aceptaciones simultáneas de la misma solicitud debitan una sola vez
     Dado que Diego le solicitó 25.00 a Bruno
     Cuando Bruno acepta la misma solicitud 3 veces a la vez
@@ -407,14 +407,14 @@ Característica: API de contactos y solicitudes (G4): casos técnicos
     Y el saldo de Bruno es "775.00"
     Y el saldo de Diego es "2525.00"
 
-  @HU-G4-08 @HU-N-07 @CA1 @CA5 @CP-T18 @DEF-21 @tecnico
+  @HU-G4-08 @CA1 @HU-N-07 @CA5 @CP-T18 @DEF-21 @tecnico
   Escenario: CP-T18 Aceptar a la vez dos solicitudes que juntas superan el saldo no lo deja negativo
     Dado que Carla recibió solicitudes de 40.00 de Ana y de Bruno
     Cuando Carla acepta a la vez las solicitudes que recibió
     Entonces solo una de las peticiones simultáneas responde 200 y las demás 422 "SALDO_INSUFICIENTE"
     Y el saldo de Carla es "10.00"
 
-  @HU-G4-01 @CA1 @CP-T20 @DEF-NEW-contacto-duplicado-concurrente @tecnico
+  @HU-G4-01 @CA1 @CP-T20 @DEF-26 @tecnico
   Escenario: CP-T20 Cinco altas simultáneas del mismo celular crean un solo contacto
     Dado que Diego inició sesión
     Cuando Diego agrega 5 veces a la vez el celular "912345678"

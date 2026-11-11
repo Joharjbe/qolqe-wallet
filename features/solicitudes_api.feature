@@ -196,7 +196,7 @@ Característica: API de solicitudes de dinero (G4)
     Entonces la respuesta tiene estado 409
     Y el código de error es "ESTADO_INVALIDO"
 
-  @HU-G4-07 @CP-T03
+  @HU-G4-07 @CA1 @CP-T03
   Escenario: CP-T03 Sin token no se accede a las solicitudes
     Cuando se consultan las solicitudes sin token
     Entonces la respuesta tiene estado 401

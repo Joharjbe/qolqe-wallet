@@ -1,7 +1,9 @@
 """Pasos de pytest-bdd del núcleo: registro, sesión, saldo y perfil (HU-N-01 a HU-N-05)."""
 import re
 import threading
+import time
 from collections import Counter
+from datetime import datetime, timedelta
 
 import conftest  # Helpers compartidos: URL, USUARIOS, Sesiones.
 import httpx
@@ -371,7 +373,6 @@ def _token_identifica(s, uid, celular):
 
 @then("la sesión creada figura como actual y vence a los 30 minutos")
 def _sesion_actual(s):
-    from datetime import datetime, timedelta
     sesiones = s.cliente.get("/api/seguridad/sesiones", headers=s.cab).json()
     actual = next(x for x in sesiones if x["id"] == s.login["sesion_id"])
     assert actual["actual"] is True, actual
@@ -600,12 +601,10 @@ def _consulta_con_credencial(s, ruta, variante):
         token = _entrar(s, "Ana").json()["access_token"]
         headers = _cabecera(token[:-2] + ("aa" if token[-2:] != "aa" else "bb"))
     elif variante == "otra clave":
-        import time
         token = jwt.encode({"sub": "1", "jti": "x" * 32, "exp": int(time.time()) + 600},
                            "una-clave-distinta-de-treinta-y-dos-bytes", algorithm="HS256")
         headers = _cabecera(token)
     elif variante == "algoritmo none":
-        import time
         token = jwt.encode({"sub": "1", "jti": "x" * 32, "exp": int(time.time()) + 600}, None, algorithm="none")
         headers = _cabecera(token)
     # "sin token": headers se queda en None.
@@ -630,7 +629,6 @@ def _consulta_saldo_tras(s, variante):
 
 @when(parsers.parse('se consulta el perfil con un token forjado con sub "{sub}"'))
 def _perfil_token_forjado(s, sub):
-    import time
     token = jwt.encode({"sub": sub, "jti": "y" * 32, "exp": int(time.time()) + 600},
                        CLAVE_POR_DEFECTO, algorithm="HS256")
     # Cliente aparte: si la API responde 500 corta la conexión y no debe afectar al cliente del escenario.
