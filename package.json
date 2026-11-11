@@ -3,10 +3,20 @@
   "private": true,
   "scripts": {
     "test:web": "bddgen && playwright test",
-    "test:web:3x": "bddgen && playwright test --repeat-each=3"
+    "test:web:3x": "bddgen && playwright test --repeat-each=3",
+    "test:web:con-imagenes": "EVIDENCIA=con-imagenes npm run test:web",
+    "test:web:sin-imagenes": "EVIDENCIA=sin-imagenes npm run test:web",
+    "test:api": "mkdir -p reportes/api && python -m pytest tests/api --junitxml=reportes/api/junit.xml --html=reportes/api/reporte.html --self-contained-html",
+    "test:api:con-imagenes": "EVIDENCIA=con-imagenes npm run test:api",
+    "test:api:sin-imagenes": "EVIDENCIA=sin-imagenes npm run test:api",
+    "test:contrato": "./scripts/correr-contrato.sh",
+    "tipos": "tsc --noEmit -p tests/e2e",
+    "trazabilidad": "python .github/scripts/trazabilidad.py",
+    "trazabilidad:verificar": "python .github/scripts/trazabilidad.py --verificar"
   },
   "devDependencies": {
     "@playwright/test": "1.64.1",
-    "playwright-bdd": "9.2.1"
+    "playwright-bdd": "9.2.1",
+    "typescript": "5.9.3"
   }
 }

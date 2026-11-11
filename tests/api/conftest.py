@@ -374,3 +374,4 @@ def ve_estado(s, nombre, estado):
 from pasos_nucleo_acceso import *  # noqa: E402,F401,F403
 from pasos_nucleo_dinero import *  # noqa: E402,F401,F403
 from pasos_g4_extra import *  # noqa: E402,F401,F403
+from evidencia import *  # noqa: E402,F401,F403

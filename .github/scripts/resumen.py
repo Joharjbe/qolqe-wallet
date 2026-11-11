@@ -5,29 +5,31 @@ Uso: resumen.py "Etiqueta" archivo.xml ["Etiqueta" archivo.xml ...]
 import os
 import sys
 import xml.etree.ElementTree as ET
+from collections import Counter
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).parent))
+from casos import estado_testcase  # noqa: E402
 
-def contar(ruta: Path) -> tuple[int, int, int, int, float]:
-    if not ruta.exists():
-        return 0, 0, 0, 0, 0.0
+
+def contar(ruta: Path) -> tuple[Counter, float]:
     casos = list(ET.parse(ruta).getroot().iter("testcase"))
-    fallidos = sum(1 for c in casos if c.find("failure") is not None or c.find("error") is not None)
-    esperados = sum(1 for c in casos if c.find("skipped") is not None and "xfail" in c.find("skipped").get("type", ""))
-    omitidos = sum(1 for c in casos if c.find("skipped") is not None) - esperados
-    return len(casos), fallidos, esperados, omitidos, sum(float(c.get("time", 0)) for c in casos)
+    return Counter(estado_testcase(c) for c in casos), sum(float(c.get("time", 0) or 0) for c in casos)
 
 
 def main() -> None:
-    filas = ["| Suite | Total | Pasan | Fallos esperados | Omitidas | Fallan | Tiempo |", "|---|---:|---:|---:|---:|---:|---:|"]
+    filas = [f"Evidencia: **{os.environ.get('EVIDENCIA', 'sin-imagenes')}**\n",
+             "| Suite | Total | Pasan | Fallos esperados | Inestables | Omitidas | Fallan | Tiempo |",
+             "|---|---:|---:|---:|---:|---:|---:|---:|"]
     argumentos = sys.argv[1:]
-    for etiqueta, ruta in zip(argumentos[::2], argumentos[1::2]):
+    for etiqueta, ruta in zip(argumentos[::2], argumentos[1::2], strict=True):
         ruta = Path(ruta)
         if not ruta.exists():
-            filas.append(f"| {etiqueta} | sin reporte | | | | | |")
+            filas.append(f"| {etiqueta} | sin reporte | | | | | | |")
             continue
-        total, fallidos, esperados, omitidos, tiempo = contar(ruta)
-        filas.append(f"| {etiqueta} | {total} | {total - fallidos - esperados - omitidos} | {esperados} | {omitidos} | {fallidos} | {tiempo:.1f} s |")
+        conteo, tiempo = contar(ruta)
+        filas.append(f"| {etiqueta} | {sum(conteo.values())} | {conteo['passed']} | {conteo['xfailed']} | {conteo['flaky']} "
+                     f"| {conteo['skipped']} | {conteo['failed']} | {tiempo:.1f} s |")
     texto = "\n".join(filas) + "\n"
     print(texto)
     destino = os.environ.get("GITHUB_STEP_SUMMARY")

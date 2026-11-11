@@ -1,0 +1,54 @@
+# Kiwi TCMS Community Edition para la gestión de casos de Qolqe (docs/gestion-casos.md).
+# Basado en el docker-compose.yml oficial (github.com/kiwitcms/Kiwi). Cambios: puertos solo en localhost,
+# HTTPS en 8443 con un certificado para localhost, imagen amd64 explícita (en Apple Silicon corre con Rosetta)
+# y espera a que MariaDB esté lista. Imágenes fijadas por digest (Kiwi 17.0, descargadas el 11-nov-2026) para que la demo sea repetible.
+# Uso: ./generar-certificado.sh && docker compose up -d
+# Primera vez: docker exec -it qolqe_kiwi_web /Kiwi/manage.py initial_setup
+# Las claves de abajo son solo de la base de datos interna del contenedor; se pueden cambiar con variables de entorno.
+name: qolqe-kiwi
+
+services:
+  db:
+    container_name: qolqe_kiwi_db
+    image: mariadb:latest@sha256:f4054da26e3a9dd6c8b5cc97363e544408b15c0fb369d7359c25dc04826eb6e1
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${KIWI_DB_ROOT_PASSWORD:-kiwi-1s-aw3s0m3}
+      MYSQL_DATABASE: kiwi
+      MYSQL_USER: kiwi
+      MYSQL_PASSWORD: ${KIWI_DB_PASSWORD:-kiwi}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  web:
+    container_name: qolqe_kiwi_web
+    image: pub.kiwitcms.eu/kiwitcms/kiwi:latest@sha256:de2eae9589aaa170007f8032b8960e144e18ffc54f89bcbe1f4029e80bd48e9b
+    platform: linux/amd64
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8443:8443"
+    volumes:
+      - uploads:/Kiwi/uploads
+      - ./ssl/localhost.crt:/Kiwi/ssl/localhost.crt:ro
+      - ./ssl/localhost.key:/Kiwi/ssl/localhost.key:ro
+    environment:
+      KIWI_DB_HOST: db
+      KIWI_DB_PORT: 3306
+      KIWI_DB_NAME: kiwi
+      KIWI_DB_USER: kiwi
+      KIWI_DB_PASSWORD: ${KIWI_DB_PASSWORD:-kiwi}
+    cap_drop:
+      - ALL
+
+volumes:
+  db_data:
+  uploads:
