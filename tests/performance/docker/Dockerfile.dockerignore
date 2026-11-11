@@ -1,0 +1,8 @@
+# Contexto mínimo de la imagen (BuildKit lee <Dockerfile>.dockerignore junto al Dockerfile).
+# Así quedan fuera .venv, node_modules, datos/*.db y los resultados.
+**
+!requirements.txt
+!constraints.txt
+!tests/performance/docker/versiones.txt
+!qolqe/**
+qolqe/**/__pycache__

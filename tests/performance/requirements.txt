@@ -1,0 +1,8 @@
+# Dependencias de Python de las pruebas de rendimiento (Parte 3), en el host y fuera de la imagen de Qolqe.
+# Instalar en el .venv del repo:  .venv/bin/python -m pip install -r tests/performance/requirements.txt
+# Monitores de recursos (monitor/monitor.py): la misma versión que usa la imagen (docker/versiones.txt).
+psutil==7.2.2
+# Análisis y gráficos (analisis/): tablas por ventana, percentiles por rango más cercano y PNG para el informe.
+numpy==2.4.6
+pandas==3.1.1
+matplotlib==3.11.2
