@@ -78,3 +78,54 @@ Característica: Pantalla de contactos (G4)
     Cuando transfiere "100.00" al contacto "Bruno"
     Entonces el comprobante muestra destino "Bruno D. (912345678)", total "S/ 100.00" y saldo "S/ 1,400.00"
     Y su saldo en inicio es "S/ 1,400.00"
+
+  @HU-G4-02 @CA1 @CP-W23
+  Escenario: CP-W23 La paginación deshabilita los extremos y se reajusta al vaciar la última página
+    Dado que "Diego" tiene 11 contactos
+    Y que "Diego" ingresó a Qolqe
+    Y abre la pantalla de contactos
+    Entonces el botón "Anterior" está deshabilitado
+    Y el botón "Siguiente" está habilitado
+    Cuando pasa a la página siguiente
+    Entonces la página muestra 1 contacto con el texto "11 de 15 contactos" y "Página 2 de 2"
+    Y el botón "Siguiente" está deshabilitado
+    Cuando elimina el contacto "Zeta 11" y confirma
+    Entonces ve el aviso "Contacto eliminado"
+    Y la página muestra 10 contactos con el texto "10 de 15 contactos" y "Página 1 de 1"
+    Y el botón "Anterior" está deshabilitado
+    Y el botón "Siguiente" está deshabilitado
+
+  @HU-G4-03 @HU-G4-02 @CA1 @CP-W24
+  Escenario: CP-W24 La estrella marca un favorito, lo sube al inicio y respeta el máximo de 5
+    Dado que "Diego" tiene 7 contactos y sus favoritos son "Zeta 04, Zeta 05, Zeta 06, Zeta 07"
+    Y que "Diego" ingresó a Qolqe
+    Y abre la pantalla de contactos
+    Cuando pulsa la estrella de "Zeta 03"
+    Entonces ve el aviso "Zeta 03 ahora es favorito"
+    Y el primer contacto de la lista es "Zeta 03"
+    Y el contacto "Zeta 03" está marcado como favorito
+    Cuando pulsa la estrella de "Zeta 02"
+    Entonces ve el aviso "Solo puedes tener 5 contactos favoritos"
+    Y el contacto "Zeta 02" sigue sin ser favorito
+
+  @HU-G4-03 @CA1 @CP-W25
+  Escenario: CP-W25 Un error al editar se muestra en el diálogo y cancelar no guarda nada
+    Dado que "Ana" ingresó a Qolqe
+    Y abre la pantalla de contactos
+    Cuando edita "Prima Carla" con el alias "bruno"
+    Entonces ve el error del diálogo "Ya tienes un contacto con ese alias"
+    Cuando cancela el diálogo
+    Entonces el contacto "Prima Carla" muestra "Carla R. · 956781234" y no está marcado como favorito
+    Y el contacto "bruno" no aparece en la lista
+
+  @HU-G4-05 @HU-N-09 @CA1 @CP-W29
+  Escenario: CP-W29 Transferir eligiendo el contacto en la pantalla de transferencias
+    Dado que "Ana" ingresó a Qolqe
+    Y abre la pantalla de transferencias
+    Entonces el selector de contactos ofrece "★ Bruno (912345678)"
+    Cuando elige el contacto "★ Bruno (912345678)"
+    Entonces el celular de destino queda bloqueado
+    Cuando prepara una transferencia de "50" al contacto elegido
+    Entonces la confirmación muestra destino "★ Bruno (912345678)", monto "S/ 50.00", comisión "S/ 0.00" y total "S/ 50.00"
+    Cuando confirma la transferencia
+    Entonces el comprobante muestra destino "Bruno D. (912345678)", total "S/ 50.00" y saldo "S/ 1,450.00"
