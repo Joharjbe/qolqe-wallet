@@ -75,20 +75,36 @@ El enunciado da 5 a 10 min de transición, y `correr.sh` puede esperar hasta 15 
    ```
 
    `SIN_BUILD=1` reutiliza la imagen de las corridas (`qolqe-perf:p3`, `sha256:5edc50cc…`; si `docker images qolqe-perf:p3` no la muestra, quitar `SIN_BUILD=1`). Así `base_perf.db` es del día: si no, `correr.sh` avisa que la base es de otra fecha, porque los vencimientos y la ventana de 30 días dependen de la fecha. Hay que usar el **mismo** `USUARIOS_CSV` en la preparación y en la demo, porque la base del volumen se genera con esos usuarios.
-2. **En la transición:** cerrar las demás apps y mirar el CPU ocioso (`top -l 2 -n 0 -s 3`). Dejar abiertas dos terminales:
-   - la de la demo, con las dos variables del paso 1 exportadas (en una terminal nueva, repetir el `export`);
-   - otra con `docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"`, **sin nombre de contenedor**. `correr.sh demo` borra y vuelve a crear `qolqe-perf`, y `docker stats qolqe-perf` se queda pegado al contenedor viejo y muestra `--` toda la demo. Sin nombre sigue al contenedor nuevo (también muestra `qolqe-perf-monitor` y los de Kiwi, si están arriba).
-3. **Correr** en la terminal de la demo:
+2. **En la transición:** cerrar las demás apps y mirar el CPU ocioso (`top -l 2 -n 0 -s 3`). Opcional: detener Kiwi, que comparte el CPU de la VM de Docker (`docker stop qolqe_kiwi_web qolqe_kiwi_db`; después de clase, `docker start qolqe_kiwi_db qolqe_kiwi_web`). **Comprobación previa (≈ 10 s)**, desde la raíz del repo:
 
    ```bash
-   ESPERA_MAX=20 tests/performance/correr.sh demo
+   docker image inspect qolqe-perf:p3 --format '{{.Id}}'   # sha256:5edc50cc…
+   k6 version                                              # k6 v2.3.0
+   k6 inspect --execution-requirements -e ESCENARIO=demo -e USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv" \
+     tests/performance/k6/qolqe.js | grep -E '"totalDuration"|"maxVUs"'   # "2m25s" y 200
    ```
 
-   Si en 20 s el CPU ocioso no llega al 65 %, correr `FORZAR=1 ESPERA_MAX=10 tests/performance/correr.sh demo`: sigue con un aviso y lo deja registrado en `corrida.json`. Cuando la consola imprima `web dashboard: http://127.0.0.1:5665` (≈ 10 s después de lanzar), abrir o recargar `http://localhost:5665`: k6 solo escucha en ese puerto mientras corre (`k6/correr_k6.sh` fija `K6_WEB_DASHBOARD_OPEN=false`), así que una pestaña abierta antes muestra «no se puede conectar» y no se recarga sola. Al terminar no hay que recargarla: conserva el último estado.
+   Si `k6 inspect` dice «No se pudo leer …», falta el `usuarios.csv` de la demo: repetir el paso 1. Dejar abiertas dos terminales:
+   - la de la demo, en la raíz del repo (el comando del paso 3 lleva las dos variables y no depende del `export` del paso 1);
+   - otra con `docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"`, **sin nombre de contenedor**. `correr.sh demo` borra y vuelve a crear `qolqe-perf`, y `docker stats qolqe-perf` se queda pegado al contenedor viejo y muestra `--` toda la demo. Sin nombre sigue al contenedor nuevo (también muestra `qolqe-perf-monitor` y los de Kiwi, si están arriba).
+3. **Correr** en la terminal de la demo (un solo comando; en la lámina se muestra la versión corta):
+
+   ```bash
+   RESULTADOS="$HOME/demo-qolqe" USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv" ESPERA_MAX=20 tests/performance/correr.sh demo
+   ```
+
+   Si termina con `V-04: el equipo no está libre` (≈ 35 s: V-04 mide a los 3, 18 y 33 s), o si en el paso 2 `top` dio menos de 65 % de CPU ocioso, lanzar directamente:
+
+   ```bash
+   RESULTADOS="$HOME/demo-qolqe" USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv" FORZAR=1 ESPERA_MAX=0 tests/performance/correr.sh demo
+   ```
+
+   Con `ESPERA_MAX=0` hace una sola medición de 3 s y, con `FORZAR=1`, sigue con un aviso y lo deja registrado en `corrida.json` (con `ESPERA_MAX=10` esperaría otros ≈ 18 s). Cuando la consola imprima `web dashboard: http://127.0.0.1:5665` (≈ 10 s después de lanzar), abrir o recargar `http://localhost:5665`: k6 solo escucha en ese puerto mientras corre (`k6/correr_k6.sh` fija `K6_WEB_DASHBOARD_OPEN=false`), así que una pestaña abierta antes muestra «no se puede conectar» y no se recarga sola. Al terminar no hay que recargarla: conserva el último estado.
 4. **Qué se debe ver** (así pasó en el ensayo `resultados/demo/20261111-2125`):
 
    | Momento | En la terminal | Lectura |
    |---|---|---|
+   | 0 s | `[perf] Escenario demo → …/demo-qolqe/demo/<marca>` | Las variables están bien. Si dice `tests/performance/resultados/demo/…`, faltan: Ctrl+C, relanzar con el comando completo del paso 3 y, después de clase, borrar esa carpeta del repo |
    | ≈ 10 s | Cabecera de k6 con `web dashboard: http://127.0.0.1:5665` y los dos escenarios (`demo_hora_punta` y `demo_sin_pausa`) | k6 arrancó |
    | 0:00–1:40 | `demo_hora_punta` con los VUs subiendo hasta ≈ 84 y ningún aviso | Little: 0.83 sesiones/s × 100 s; no llega a 100 porque la sesión dura 120 s |
    | 1:40–2:25 | `demo_sin_pausa` y ≈ 380 líneas `level=warning … 500 http_5xx`, `EOF` o `request timeout` | **Esperado**: 50 VUs sin think time saturan Qolqe («estrés disfrazado», S13) |
