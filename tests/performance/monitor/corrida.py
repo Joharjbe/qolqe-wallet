@@ -1,7 +1,8 @@
 """Registro de cada corrida (corrida.json) y del entorno (entorno.json). Lo llaman correr.sh y preparar.sh.
 
 Enunciado §5: "Registren la hora de inicio y fin de cada prueba para cruzar los recursos con los resultados".
-  python corrida.py esperar-equipo                     V-04: espera CPU ocioso ≥ OCIOSO_MIN % (máx. ESPERA_MAX s)
+  python corrida.py esperar-equipo [carpeta]           V-04: espera CPU ocioso ≥ OCIOSO_MIN % (máx. ESPERA_MAX s);
+                                                       con carpeta deja la medición en v04.json para corrida.json
   python corrida.py inicio <carpeta> <escenario>       hora de inicio, versiones, cgroup, cpu.stat, V-04 y V-05
   python corrida.py fin <carpeta> <codigo_k6>          al terminar k6: hora de fin, cpu.stat y Δ (y M-14)
   python corrida.py cerrar <carpeta> <codigo_integridad>   resultado de U-07 y lista de archivos
@@ -71,11 +72,14 @@ def medir_equipo() -> dict:
             "ok": ocioso is not None and ocioso >= minimo}
 
 
-def esperar_equipo() -> int:
-    """V-04: el equipo libre antes de empezar (CPU ocioso ≥ OCIOSO_MIN; la carga solo se registra)."""
+def esperar_equipo(carpeta: Path | None = None) -> int:
+    """V-04: el equipo libre antes de empezar (CPU ocioso ≥ OCIOSO_MIN; la carga solo se registra).
+    Con carpeta, guarda la medición con la que se decidió en carpeta/v04.json: inicio() la pasa a corrida.json."""
     espera = int(ENV("ESPERA_MAX", "900"))
     fin = time.time() + espera
     while not (m := medir_equipo())["ok"]:
+        if carpeta:
+            (carpeta / "v04.json").write_text(json.dumps(m | {"hora": ahora()["hora"]}, ensure_ascii=False))
         if time.time() > fin:
             print(f"V-04: CPU ocioso {m['cpu_ocioso_%']} % (< {m['ocioso_min_%']:g} %) después de {espera} s; "
                   f"carga {m['carga_1_5_15'][0]}", file=sys.stderr)
@@ -83,9 +87,20 @@ def esperar_equipo() -> int:
         print(f"V-04: CPU ocioso {m['cpu_ocioso_%']} % < {m['ocioso_min_%']:g} % (carga {m['carga_1_5_15'][0]}); "
               "esperando…", file=sys.stderr)
         time.sleep(12)
+    if carpeta:
+        (carpeta / "v04.json").write_text(json.dumps(m | {"hora": ahora()["hora"]}, ensure_ascii=False))
     print(f"V-04: CPU ocioso {m['cpu_ocioso_%']} % ≥ {m['ocioso_min_%']:g} % (carga de 1 min {m['carga_1_5_15'][0]}, "
           "solo se registra)")
     return 0
+
+
+def _v04_espera(carpeta: Path) -> dict | None:
+    archivo = carpeta / "v04.json"
+    if not archivo.exists():
+        return None
+    datos = json.loads(archivo.read_text())
+    archivo.unlink()   # queda dentro de corrida.json
+    return datos
 
 
 def inicio(carpeta: Path, escenario: str) -> int:
@@ -113,9 +128,12 @@ def inicio(carpeta: Path, escenario: str) -> int:
                       "docker": sh("docker", "version", "--format", "{{.Server.Version}}"),
                       "imagen": ENV("IMAGEN", "qolqe-perf:p3"),
                       "imagen_id": sh("docker", "inspect", "-f", "{{.Image}}", ENV("CONTENEDOR", "qolqe-perf"))},
-        "carga_equipo_antes": carga(),                       # V-04: carga promedio de 1 min (solo se registra)
-        "v04": (v04 := medir_equipo()),                      # V-04: CPU ocioso del equipo (decide) y cargas
-        "cpu_ocioso_antes": v04["cpu_ocioso_%"],
+        # V-04: la medición con la que esperar-equipo decidió empezar (v04.json); sin ella (humo, ensayo), una nueva.
+        # Se agrega una segunda medición al arrancar Qolqe, solo informativa (el CPU ocioso varía de un segundo a otro).
+        "v04": (v04 := _v04_espera(carpeta) or medir_equipo()),
+        "v04_al_iniciar": medir_equipo(),
+        "carga_equipo_antes": v04["carga_1_5_15"][0],        # V-04 del diseño: carga promedio de 1 min (solo se registra)
+        "cpu_ocioso_antes": v04["cpu_ocioso_%"],             # V-04 que decide
         "v04_ok": v04["ok"],
         "base_identica": v05["base_igual_a_base_perf"],      # V-05 (las claves planas las lee analisis/)
         "cpu_max": cpu_max,
@@ -201,7 +219,7 @@ def entorno(archivo: Path) -> int:
 if __name__ == "__main__":
     orden, *resto = sys.argv[1:] or ["-h"]
     if orden == "esperar-equipo":
-        sys.exit(esperar_equipo())
+        sys.exit(esperar_equipo(Path(resto[0]) if resto else None))
     elif orden == "inicio":
         sys.exit(inicio(Path(resto[0]), resto[1]))
     elif orden == "fin":

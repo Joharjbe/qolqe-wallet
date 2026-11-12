@@ -65,7 +65,7 @@ trap 'INTERRUMPIDA=1; aviso "interrumpida: k6 se detiene ordenado y se completa 
 
 # ---------------------------------------------------------------- V-04: equipo libre (no aplica al humo ni al ensayo)
 if [ -z "$MOTIVO" ]; then
-  "$PY" "$PERF/monitor/corrida.py" esperar-equipo \
+  "$PY" "$PERF/monitor/corrida.py" esperar-equipo "$DIR" \
     || { [ "${FORZAR:-0}" = 1 ] && aviso "V-04 no se cumple (FORZAR=1)" || fallo "V-04: el equipo no está libre"; }
 fi
 
