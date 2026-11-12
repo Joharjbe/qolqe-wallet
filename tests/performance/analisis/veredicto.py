@@ -69,9 +69,9 @@ APLICA = {   # qué umbrales decide cada escenario (diseño §2.1, columna "Esce
     "calibracion": {"U-07"},
 }
 VALIDEZ = {   # criterios de validez de una corrida (diseño §2.3)
-    "V-01": "CPU de k6 y del equipo < 80 %", "V-02": "errores de datos (4xx de negocio) = 0",
+    "V-01": "CPU del generador k6 < 80 % (equipo: informativo)", "V-02": "errores de datos (4xx de negocio) = 0",
     "V-03": "mezcla lograda a ± 2 pp", "V-04": "equipo libre antes de empezar (CPU ocioso ≥ 65 %)",
-    "V-05": "base restaurada idéntica y 1 CPU", "V-06": "con 1 VU, p95 ≤ 10 % del umbral",
+    "V-05": "base restaurada idéntica y cuota de CPU esperada", "V-06": "con 1 VU, p95 ≤ 10 % del umbral",
     "V-07": "sin avisos 'Insufficient VUs'",
 }
 DONDE = {"U-01": "carga y resistencia", "U-02": "carga y resistencia", "U-03": "carga y resistencia",
@@ -329,15 +329,26 @@ def mezcla_lograda(c: Corrida, etiqueta, valores) -> pd.DataFrame:
 def filas_validez(c: Corrida, v: pd.DataFrame) -> list[Fila]:
     titulo, etiqueta, valores = c.perfil.medidas[0]
     filas = []
-    # V-01: CPU de k6 (÷ núcleos) y del equipo < 80 % en todas las ventanas
-    cols = [col for col in ("cpu_k6_equipo", "cpu_equipo") if col in v]
-    if cols:
-        peor = float(np.nanmax(v[cols].to_numpy()))
-        pico = max(float(np.nanmax(v[f"{col}_max"])) for col in cols if f"{col}_max" in v)
-        filas.append(Fila("V-01", "CPU de k6 y del equipo (máximo de las ventanas)", fmt(peor, 1, "%"), f"< {CPU_GENERADOR_MAX} %",
-                          _res(peor < CPU_GENERADOR_MAX), nota=f"pico de 1 s: {fmt(pico, 1)} %"))
+    # V-01: CPU del generador (k6, % de los núcleos del equipo) < 80 % en todas las ventanas: es el criterio del
+    # enunciado (§5) y el que decide. El CPU total del equipo se informa aparte: en esta Mac lo mueven procesos de
+    # macOS (mediaanalysisd, suggestd, WindowServer) que no son ni k6 ni Qolqe (README §4, cambio del 11-nov).
+    if "cpu_k6_equipo" in v:
+        peor = float(np.nanmax(v["cpu_k6_equipo"]))
+        pico = float(np.nanmax(v["cpu_k6_equipo_max"])) if "cpu_k6_equipo_max" in v else math.nan
+        nucleo = float(np.nanmax(v["cpu_k6_max"])) if "cpu_k6_max" in v else math.nan
+        filas.append(Fila("V-01", "CPU del generador k6 (% del equipo, máximo de las ventanas)", fmt(peor, 1, "%"),
+                          f"< {CPU_GENERADOR_MAX} %", _res(peor < CPU_GENERADOR_MAX),
+                          nota=f"pico de 1 s: {fmt(pico, 1)} % del equipo ({fmt(nucleo, 0)} % de un núcleo)"))
     else:
-        filas.append(Fila("V-01", "CPU de k6 y del equipo", "—", f"< {CPU_GENERADOR_MAX} %", SIN_DATO, nota="falta recursos_k6.csv"))
+        filas.append(Fila("V-01", "CPU del generador k6", "—", f"< {CPU_GENERADOR_MAX} %", SIN_DATO, nota="falta recursos_k6.csv"))
+    if "cpu_equipo" in v:
+        peor = float(np.nanmax(v["cpu_equipo"]))
+        altas = v.loc[v["cpu_equipo"] >= CPU_GENERADOR_MAX]
+        donde = ", ".join(f"{fmt(m, 1)}" for m in altas["minuto"]) if "minuto" in altas else fmt(len(altas))
+        filas.append(Fila("V-01", "CPU total del equipo (máximo de las ventanas)", fmt(peor, 1, "%"), f"< {CPU_GENERADOR_MAX} %",
+                          _res(peor < CPU_GENERADOR_MAX), decide=False,
+                          nota=("informativo: lo mueven procesos de macOS; " +
+                                (f"ventanas ≥ {CPU_GENERADOR_MAX} % en el minuto {donde}" if len(altas) else "ninguna ventana ≥ 80 %"))))
     # V-02: errores de datos (4xx de negocio) separados de los de rendimiento
     en = c.mascara(c.otras, etiqueta, valores)
     por_op = c.otras[(c.otras["metrica"] == "operacion_error_datos") & en]

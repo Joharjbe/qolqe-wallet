@@ -1,0 +1,33 @@
+{
+ "fecha": {
+  "hora": "2026-11-11T17:45:05-05:00",
+  "epoch": 1794437105.814
+ },
+ "equipo": {
+  "modelo": "MacBookPro18,3",
+  "cpu": "Apple M1 Pro",
+  "nucleos": "10",
+  "nucleos_rendimiento": "8",
+  "nucleos_eficiencia": "2",
+  "memoria_GB": 16.0,
+  "macos": "27.2.1",
+  "maxfiles": "maxfiles    256            unlimited",
+  "somaxconn": "128"
+ },
+ "docker": {
+  "motor": "29.8.2",
+  "vm": "cpus=10 memoria=8319504384 kernel=7.0.14-linuxkit cgroup=v2"
+ },
+ "k6": "k6 v2.3.0 (commit/devel, go1.27.1, darwin/arm64)",
+ "imagen": {
+  "nombre": "qolqe-perf:p3",
+  "id": "sha256:5edc50cce9c7471872c7aa166f6b1e790e6e0f1cab7bff601486b753e568c577",
+  "python": "Python 3.11.15"
+ },
+ "python_host": "Python 3.11.6",
+ "limites_qolqe": {
+  "cpus": "1",
+  "memoria": "1g"
+ },
+ "commit": "11b3537bbf6805e1eba8a920c88256d3af523830"
+}

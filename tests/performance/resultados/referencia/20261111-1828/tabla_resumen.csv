@@ -1,0 +1,22 @@
+subconjunto,endpoint,ep,grupo,peticiones,promedio_ms,p50_ms,p90_ms,p95_ms,p99_ms,max_ms,error_rendimiento_%,error_datos_%,throughput_req_s
+toda la corrida,POST /api/auth/login,login,consulta,5,83.24,87.47,91.67,91.67,91.67,91.67,0.00,0.00,0.08
+toda la corrida,GET /api/limites/alertas,alertas,consulta,5,11.64,10.95,15.18,15.18,15.18,15.18,0.00,0.00,0.08
+toda la corrida,GET /api/transferencias/comision,comision,consulta,5,9.64,11.46,12.44,12.44,12.44,12.44,0.00,0.00,0.08
+toda la corrida,GET /api/contactos?buscar,contactos_buscar,consulta,5,5.58,5.83,6.04,6.04,6.04,6.04,0.00,0.00,0.08
+toda la corrida,GET /api/contactos,contactos_listar,consulta,5,13.06,12.74,16.81,16.81,16.81,16.81,0.00,0.00,0.08
+toda la corrida,GET /api/servicios/deudas,deudas,consulta,10,5.64,5.69,6.22,6.85,6.85,6.85,0.00,0.00,0.16
+toda la corrida,GET /api/seguridad/dispositivos,dispositivos,consulta,5,11.99,10.44,18.69,18.69,18.69,18.69,0.00,0.00,0.08
+toda la corrida,GET /api/servicios/empresas,empresas,consulta,10,10.95,9.79,14.18,14.78,14.78,14.78,0.00,0.00,0.16
+toda la corrida,GET /api/limites,limites,consulta,5,12.18,11.73,14.62,14.62,14.62,14.62,0.00,0.00,0.08
+toda la corrida,GET /api/movimientos,movimientos,consulta,5,32.96,32.70,35.09,35.09,35.09,35.09,0.00,0.00,0.08
+toda la corrida,GET /api/cuentas/me,perfil,consulta,5,3.92,4.16,4.64,4.64,4.64,4.64,0.00,0.00,0.08
+toda la corrida,GET /api/recargas/configuracion,recargas_config,consulta,5,8.48,9.10,10.52,10.52,10.52,10.52,0.00,0.00,0.08
+toda la corrida,GET /api/cuentas/me/saldo,saldo,consulta,5,11.52,10.17,17.13,17.13,17.13,17.13,0.00,0.00,0.08
+toda la corrida,GET /api/seguridad/sesiones,sesiones,consulta,5,10.70,11.02,13.48,13.48,13.48,13.48,0.00,0.00,0.08
+toda la corrida,GET /api/solicitudes,solicitudes,consulta,5,10.90,11.16,12.39,12.39,12.39,12.39,0.00,0.00,0.08
+toda la corrida,POST /api/servicios/pagos,pagar,dinero,5,9.83,9.82,10.74,10.74,10.74,10.74,0.00,0.00,0.08
+toda la corrida,POST /api/recargas,recargar,dinero,5,12.48,12.38,13.28,13.28,13.28,13.28,0.00,0.00,0.08
+toda la corrida,POST /api/transferencias,transferir,dinero,5,119.23,124.28,135.87,135.87,135.87,135.87,0.00,0.00,0.08
+toda la corrida,,grupo consulta,,85,15.23,10.46,32.39,69.78,91.67,91.67,0.00,0.00,1.37
+toda la corrida,,grupo dinero,,15,47.18,12.38,133.96,135.87,135.87,135.87,0.00,0.00,0.24
+toda la corrida,,total,,100,20.03,10.54,35.09,89.84,133.96,135.87,0.00,0.00,1.61

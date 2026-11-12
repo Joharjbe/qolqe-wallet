@@ -40,8 +40,12 @@ ESCALA="${ESCALA:-1}"
 MOTIVO=""
 [ "$ESCALA" != 1 ] && MOTIVO="Ensayo comprimido (ESCALA=${ESCALA}): duraciones, fases y think time × ${ESCALA}, con la misma tasa de llegada; valida la cadena completa, no es evidencia." && TIPO=ensayo
 [ -n "${HUMO:-}" ] && MOTIVO="Corrida de humo (HUMO=${HUMO} s): k6 se cortó para validar la cadena completa; no es evidencia." && TIPO=humo
-if [ -n "$MOTIVO" ] && [ "$RESULTADOS" = "$PERF/resultados" ]; then DIR="$RESULTADOS/descartadas/${ESCENARIO}_${MARCA}_${TIPO}"
-else DIR="$RESULTADOS/$ESCENARIO/$MARCA"; fi
+# Escalabilidad (§10.2, Opc. 1): el estrés con CPUS≠1 va a resultados/escalabilidad/ para que --todo no lo tome
+# como "la última corrida del estrés" en el comparativo.
+CARPETA_ESC="$ESCENARIO"
+[ "$ESCENARIO" = estres ] && [ "${CPUS:-1}" != 1 ] && CARPETA_ESC=escalabilidad
+if [ -n "$MOTIVO" ] && [ "$RESULTADOS" = "$PERF/resultados" ]; then DIR="$RESULTADOS/descartadas/${CARPETA_ESC}_${MARCA}_${TIPO}"
+else DIR="$RESULTADOS/$CARPETA_ESC/$MARCA"; fi
 [ -e "$DIR" ] && DIR="$DIR$(TZ=America/Lima date +%S)"
 mkdir -p "$DIR"
 [ -n "$MOTIVO" ] && echo "$MOTIVO" > "$DIR/motivo.txt"

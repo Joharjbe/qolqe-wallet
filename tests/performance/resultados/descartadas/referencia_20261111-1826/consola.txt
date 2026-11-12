@@ -1,0 +1,230 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: /Users/johar/Documents/26_2/4_PRUEBAS/qolqe-wallet-p3/tests/performance/k6/qolqe.js
+ web dashboard: http://127.0.0.1:5665
+        output: csv (/Users/johar/Documents/26_2/4_PRUEBAS/qolqe-wallet-p3/tests/performance/resultados/referencia/20261111-1826/muestras.csv.gz)
+
+     scenarios: (100.00%) 1 scenario, 1 max VUs, 3m30s max duration (incl. graceful stop):
+              * recorrido: 5 iterations for each of 1 VUs (maxDuration: 3m0s, exec: recorrido, gracefulStop: 30s)
+
+
+running (0m01.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+recorrido   [   0% ] 1 VUs  0m01.0s/3m0s  0/5 iters, 5 per VU
+
+running (0m02.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+recorrido   [   0% ] 1 VUs  0m02.0s/3m0s  0/5 iters, 5 per VU
+
+running (0m03.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+recorrido   [   0% ] 1 VUs  0m03.0s/3m0s  0/5 iters, 5 per VU
+
+running (0m04.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+recorrido   [   0% ] 1 VUs  0m04.0s/3m0s  0/5 iters, 5 per VU
+
+running (0m05.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+recorrido   [   0% ] 1 VUs  0m05.0s/3m0s  0/5 iters, 5 per VU
+
+running (0m06.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+recorrido   [   0% ] 1 VUs  0m06.0s/3m0s  0/5 iters, 5 per VU
+
+running (0m07.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+recorrido   [   0% ] 1 VUs  0m07.0s/3m0s  0/5 iters, 5 per VU
+
+running (0m08.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+recorrido   [   0% ] 1 VUs  0m08.0s/3m0s  0/5 iters, 5 per VU
+
+running (0m09.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+recorrido   [   0% ] 1 VUs  0m09.0s/3m0s  0/5 iters, 5 per VU
+
+running (0m10.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+recorrido   [   0% ] 1 VUs  0m10.0s/3m0s  0/5 iters, 5 per VU
+
+running (0m11.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+recorrido   [   0% ] 1 VUs  0m11.0s/3m0s  0/5 iters, 5 per VU
+
+running (0m12.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+recorrido   [   0% ] 1 VUs  0m12.0s/3m0s  0/5 iters, 5 per VU
+
+running (0m13.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+recorrido   [  20% ] 1 VUs  0m13.0s/3m0s  1/5 iters, 5 per VU
+
+running (0m14.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+recorrido   [  20% ] 1 VUs  0m14.0s/3m0s  1/5 iters, 5 per VU
+
+running (0m15.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+recorrido   [  20% ] 1 VUs  0m15.0s/3m0s  1/5 iters, 5 per VU
+
+running (0m16.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+recorrido   [  20% ] 1 VUs  0m16.0s/3m0s  1/5 iters, 5 per VU
+
+running (0m17.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+recorrido   [  20% ] 1 VUs  0m17.0s/3m0s  1/5 iters, 5 per VU
+
+running (0m18.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+recorrido   [  20% ] 1 VUs  0m18.0s/3m0s  1/5 iters, 5 per VU
+
+running (0m19.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+recorrido   [  20% ] 1 VUs  0m19.0s/3m0s  1/5 iters, 5 per VU
+
+running (0m20.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+recorrido   [  20% ] 1 VUs  0m20.0s/3m0s  1/5 iters, 5 per VU
+
+running (0m21.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+recorrido   [  20% ] 1 VUs  0m21.0s/3m0s  1/5 iters, 5 per VU
+
+running (0m22.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+recorrido   [  20% ] 1 VUs  0m22.0s/3m0s  1/5 iters, 5 per VU
+
+running (0m23.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+recorrido   [  20% ] 1 VUs  0m23.0s/3m0s  1/5 iters, 5 per VU
+
+running (0m24.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+recorrido   [  20% ] 1 VUs  0m24.0s/3m0s  1/5 iters, 5 per VU
+
+running (0m25.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+recorrido   [  40% ] 1 VUs  0m25.0s/3m0s  2/5 iters, 5 per VU
+
+running (0m26.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+recorrido   [  40% ] 1 VUs  0m26.0s/3m0s  2/5 iters, 5 per VU
+
+running (0m27.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+recorrido   [  40% ] 1 VUs  0m27.0s/3m0s  2/5 iters, 5 per VU
+
+running (0m28.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+recorrido   [  40% ] 1 VUs  0m28.0s/3m0s  2/5 iters, 5 per VU
+
+running (0m29.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+recorrido   [  40% ] 1 VUs  0m29.0s/3m0s  2/5 iters, 5 per VU
+
+running (0m30.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+recorrido   [  40% ] 1 VUs  0m30.0s/3m0s  2/5 iters, 5 per VU
+
+running (0m31.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+recorrido   [  40% ] 1 VUs  0m31.0s/3m0s  2/5 iters, 5 per VU
+
+running (0m32.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+recorrido   [  40% ] 1 VUs  0m32.0s/3m0s  2/5 iters, 5 per VU
+
+running (0m33.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+recorrido   [  40% ] 1 VUs  0m33.0s/3m0s  2/5 iters, 5 per VU
+
+running (0m34.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+recorrido   [  40% ] 1 VUs  0m34.0s/3m0s  2/5 iters, 5 per VU
+
+running (0m35.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+recorrido   [  40% ] 1 VUs  0m35.0s/3m0s  2/5 iters, 5 per VU
+
+running (0m36.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+recorrido   [  40% ] 1 VUs  0m36.0s/3m0s  2/5 iters, 5 per VU
+
+running (0m37.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+recorrido   [  40% ] 1 VUs  0m37.0s/3m0s  2/5 iters, 5 per VU
+
+running (0m38.0s), 1/1 VUs, 3 complete and 0 interrupted iterations
+recorrido   [  60% ] 1 VUs  0m38.0s/3m0s  3/5 iters, 5 per VU
+
+running (0m39.0s), 1/1 VUs, 3 complete and 0 interrupted iterations
+recorrido   [  60% ] 1 VUs  0m39.0s/3m0s  3/5 iters, 5 per VU
+
+running (0m40.0s), 1/1 VUs, 3 complete and 0 interrupted iterations
+recorrido   [  60% ] 1 VUs  0m40.0s/3m0s  3/5 iters, 5 per VU
+
+running (0m41.0s), 1/1 VUs, 3 complete and 0 interrupted iterations
+recorrido   [  60% ] 1 VUs  0m41.0s/3m0s  3/5 iters, 5 per VU
+
+running (0m42.0s), 1/1 VUs, 3 complete and 0 interrupted iterations
+recorrido   [  60% ] 1 VUs  0m42.0s/3m0s  3/5 iters, 5 per VU
+
+running (0m43.0s), 1/1 VUs, 3 complete and 0 interrupted iterations
+recorrido   [  60% ] 1 VUs  0m43.0s/3m0s  3/5 iters, 5 per VU
+
+running (0m44.0s), 1/1 VUs, 3 complete and 0 interrupted iterations
+recorrido   [  60% ] 1 VUs  0m44.0s/3m0s  3/5 iters, 5 per VU
+
+running (0m45.0s), 1/1 VUs, 3 complete and 0 interrupted iterations
+recorrido   [  60% ] 1 VUs  0m45.0s/3m0s  3/5 iters, 5 per VU
+
+running (0m46.0s), 1/1 VUs, 3 complete and 0 interrupted iterations
+recorrido   [  60% ] 1 VUs  0m46.0s/3m0s  3/5 iters, 5 per VU
+
+running (0m47.0s), 1/1 VUs, 3 complete and 0 interrupted iterations
+recorrido   [  60% ] 1 VUs  0m47.0s/3m0s  3/5 iters, 5 per VU
+
+running (0m48.0s), 1/1 VUs, 3 complete and 0 interrupted iterations
+recorrido   [  60% ] 1 VUs  0m48.0s/3m0s  3/5 iters, 5 per VU
+
+running (0m49.0s), 1/1 VUs, 3 complete and 0 interrupted iterations
+recorrido   [  60% ] 1 VUs  0m49.0s/3m0s  3/5 iters, 5 per VU
+
+running (0m50.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+recorrido   [  80% ] 1 VUs  0m50.0s/3m0s  4/5 iters, 5 per VU
+
+running (0m51.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+recorrido   [  80% ] 1 VUs  0m51.0s/3m0s  4/5 iters, 5 per VU
+
+running (0m52.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+recorrido   [  80% ] 1 VUs  0m52.0s/3m0s  4/5 iters, 5 per VU
+
+running (0m53.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+recorrido   [  80% ] 1 VUs  0m53.0s/3m0s  4/5 iters, 5 per VU
+
+running (0m54.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+recorrido   [  80% ] 1 VUs  0m54.0s/3m0s  4/5 iters, 5 per VU
+
+running (0m55.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+recorrido   [  80% ] 1 VUs  0m55.0s/3m0s  4/5 iters, 5 per VU
+
+running (0m56.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+recorrido   [  80% ] 1 VUs  0m56.0s/3m0s  4/5 iters, 5 per VU
+
+running (0m57.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+recorrido   [  80% ] 1 VUs  0m57.0s/3m0s  4/5 iters, 5 per VU
+
+running (0m58.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+recorrido   [  80% ] 1 VUs  0m58.0s/3m0s  4/5 iters, 5 per VU
+
+running (0m59.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+recorrido   [  80% ] 1 VUs  0m59.0s/3m0s  4/5 iters, 5 per VU
+
+running (1m00.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+recorrido   [  80% ] 1 VUs  1m00.0s/3m0s  4/5 iters, 5 per VU
+
+running (1m01.0s), 1/1 VUs, 4 complete and 0 interrupted iterations
+recorrido   [  80% ] 1 VUs  1m01.0s/3m0s  4/5 iters, 5 per VU
+
+Qolqe · escenario referencia · 2026-11-11T18:27:06.936-05:00 → 2026-11-11T18:28:08.809-05:00 · http://127.0.0.1:8090
+Umbrales (k6 termina con código 99 si alguno falla):
+  ✓ validez: sin errores de rendimiento   rate==0        medido       0.00 % (n=65)   operacion_fallida
+  ✓ V-02 sin errores de datos             count==0       medido            0   errores_datos
+  ✗ V-06 login ≤ 10 % de U-01             p(95)<=80      medido      91.4 ms (n=5)   http_req_duration{ep:login}
+  ✓ V-06 saldo ≤ 10 % de U-01             p(95)<=80      medido      10.9 ms (n=5)   http_req_duration{ep:saldo}
+  ✓ V-06 perfil ≤ 10 % de U-01            p(95)<=80      medido       4.2 ms (n=5)   http_req_duration{ep:perfil}
+  ✓ V-06 movimientos ≤ 10 % de U-01       p(95)<=80      medido      79.1 ms (n=5)   http_req_duration{ep:movimientos}
+  ✓ V-06 comision ≤ 10 % de U-01          p(95)<=80      medido      11.4 ms (n=5)   http_req_duration{ep:comision}
+  ✓ V-06 contactos_listar ≤ 10 % de U-01  p(95)<=80      medido      12.6 ms (n=5)   http_req_duration{ep:contactos_listar}
+  ✓ V-06 contactos_buscar ≤ 10 % de U-01  p(95)<=80      medido       5.5 ms (n=5)   http_req_duration{ep:contactos_buscar}
+  ✓ V-06 recargas_config ≤ 10 % de U-01   p(95)<=80      medido       8.7 ms (n=5)   http_req_duration{ep:recargas_config}
+  ✓ V-06 empresas ≤ 10 % de U-01          p(95)<=80      medido      12.0 ms (n=10)   http_req_duration{ep:empresas}
+  ✓ V-06 deudas ≤ 10 % de U-01            p(95)<=80      medido       6.8 ms (n=10)   http_req_duration{ep:deudas}
+  ✓ V-06 limites ≤ 10 % de U-01           p(95)<=80      medido      14.2 ms (n=5)   http_req_duration{ep:limites}
+  ✓ V-06 alertas ≤ 10 % de U-01           p(95)<=80      medido      11.1 ms (n=5)   http_req_duration{ep:alertas}
+  ✓ V-06 solicitudes ≤ 10 % de U-01       p(95)<=80      medido      11.8 ms (n=5)   http_req_duration{ep:solicitudes}
+  ✓ V-06 dispositivos ≤ 10 % de U-01      p(95)<=80      medido      10.0 ms (n=5)   http_req_duration{ep:dispositivos}
+  ✓ V-06 sesiones ≤ 10 % de U-01          p(95)<=80      medido      13.6 ms (n=5)   http_req_duration{ep:sesiones}
+  ✓ V-06 transferir ≤ 10 % de U-02        p(95)<=150     medido     124.2 ms (n=5)   http_req_duration{ep:transferir}
+  ✓ V-06 recargar ≤ 10 % de U-02          p(95)<=150     medido      13.0 ms (n=5)   http_req_duration{ep:recargar}
+  ✓ V-06 pagar ≤ 10 % de U-02             p(95)<=150     medido       9.6 ms (n=5)   http_req_duration{ep:pagar}
+Veredicto: 19 de 20 umbrales cumplidos con muestras → FALLA   (✓ cumple · ✗ falla · ○ sin muestras)
+Peticiones 101 (1.63 req/s en toda la corrida) · sesiones 5 · descartadas 0 · VUs máx. 1
+Operaciones fallidas (rendimiento) 0.00 % · errores de rendimiento 0 · errores de datos 0 · dinero confirmado 15 · dinero sin respuesta 0
+http_req_duration total: p50 7.4 ms · p95 85.1 ms · http_req_connecting p95 0.00 ms
+
+running (1m01.9s), 0/1 VUs, 5 complete and 0 interrupted iterations
+recorrido ✓ [ 100% ] 1 VUs  1m01.9s/3m0s  5/5 iters, 5 per VU
+time="2026-11-11T18:28:08-05:00" level=error msg="thresholds on metrics 'http_req_duration{ep:login}' have been crossed"

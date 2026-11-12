@@ -66,6 +66,7 @@ Si falta la columna `ts` en un monitor, se reconstruye la hora con `hora` (se pr
 | U-08: el throughput de cada ventana de 30 s se acepta si es ≥ (1 − máx(2 %, 3 σ)) de lo ofrecido, con σ medida en la fase base | En 30 s el conteo varía más que en 15 min; el 98 % de S-04 se pensó para 750 sesiones |
 | U-08: el p95 de un endpoint en una ventana solo decide con ≥ 20 muestras | Con menos, el p95 es el máximo (S-03 se mantiene con el grupo) |
 | V-03 en la demo es informativo | Con ~80 sesiones la mezcla varía más de ± 2 pp |
+| V-01 decide con el CPU de k6 (% de los núcleos del equipo, por ventana); el CPU total del equipo es una fila informativa con los minutos en que pasó del 80 % (11-nov) | El enunciado (§5) pide que la **herramienta** no pase del ~80 %. En esta Mac el CPU total lo suben procesos de macOS (`mediaanalysisd`, `suggestd`, WindowServer) que no son ni k6 ni Qolqe; en el pico llegó a 90 % durante 1.5 min con k6 en 0.3 %. Esas ventanas se señalan y su efecto en los tiempos se comenta en el informe |
 | Comparativo del estrés: peticiones hasta la ventana de capacidad | Más allá, Qolqe ya no cumple y el p95 solo dice que colapsó |
 
 ## Ensayo comprimido (`ESCALA`)

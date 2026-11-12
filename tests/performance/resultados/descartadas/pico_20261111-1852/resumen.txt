@@ -1,0 +1,57 @@
+
+Qolqe · escenario pico · 2026-11-11T18:53:36.696-05:00 → 2026-11-11T19:14:39.933-05:00 · http://127.0.0.1:8090
+Umbrales (k6 termina con código 99 si alguno falla):
+  ✓ U-06 consultas e inicio de sesión (grupo)                    p(95)<1600     medido      89.7 ms (n=12444)   http_req_duration{campana:si,grupo:consulta}
+  ✓ U-06 login (S-03)                                            p(95)<1600     medido     103.7 ms (n=1250)   http_req_duration{campana:si,ep:login}
+  ✓ U-06 saldo (S-03)                                            p(95)<1600     medido      10.6 ms (n=2218)   http_req_duration{campana:si,ep:saldo}
+  ✓ U-06 perfil (S-03)                                           p(95)<1600     medido       4.5 ms (n=2218)   http_req_duration{campana:si,ep:perfil}
+  ✓ U-06 movimientos (S-03)                                      p(95)<1600     medido      36.2 ms (n=1124)   http_req_duration{campana:si,ep:movimientos}
+  ✓ U-06 comision (S-03)                                         p(95)<1600     medido      10.7 ms (n=1131)   http_req_duration{campana:si,ep:comision}
+  ✓ U-06 contactos_listar (S-03)                                 p(95)<1600     medido      12.7 ms (n=742)   http_req_duration{campana:si,ep:contactos_listar}
+  ✓ U-06 contactos_buscar (S-03)                                 p(95)<1600     medido       5.8 ms (n=742)   http_req_duration{campana:si,ep:contactos_buscar}
+  ✓ U-06 recargas_config (S-03)                                  p(95)<1600     medido       8.0 ms (n=776)   http_req_duration{campana:si,ep:recargas_config}
+  ✓ U-06 empresas (S-03)                                         p(95)<1600     medido       9.9 ms (n=736)   http_req_duration{campana:si,ep:empresas}
+  ✓ U-06 deudas (S-03)                                           p(95)<1600     medido       6.0 ms (n=736)   http_req_duration{campana:si,ep:deudas}
+  ✓ U-06 otras: 5 GET al 2 % (§3.3)                              p(95)<1600     medido      11.1 ms (n=771)   http_req_duration{campana:si,op:otras}
+  ✓ U-06 operaciones de dinero (grupo)                           p(95)<3000     medido     125.8 ms (n=2196)   http_req_duration{campana:si,grupo:dinero}
+  ✓ U-06 transferir (S-03)                                       p(95)<3000     medido     130.6 ms (n=1131)   http_req_duration{campana:si,ep:transferir}
+  ✓ U-06 recargar (S-03)                                         p(95)<3000     medido      11.5 ms (n=776)   http_req_duration{campana:si,ep:recargar}
+  ✓ U-06 pagar (S-03)                                            p(95)<3000     medido      10.1 ms (n=289)   http_req_duration{campana:si,ep:pagar}
+  ✓ U-06 error en la campaña (S-05)                              rate<=0.01     medido       0.00 % (n=8748)   operacion_fallida{campana:si}
+  ✓ U-06 sesiones descartadas                                    count==0       medido            0   dropped_iterations
+  ✓ U-01 consultas e inicio de sesión (grupo)                    p(95)<800      medido      98.0 ms (n=994)   http_req_duration{fase:base,grupo:consulta}
+  ✓ U-01 login (S-03)                                            p(95)<800      medido     105.0 ms (n=100)   http_req_duration{fase:base,ep:login}
+  ✓ U-01 saldo (S-03)                                            p(95)<800      medido      13.3 ms (n=182)   http_req_duration{fase:base,ep:saldo}
+  ✓ U-01 perfil (S-03)                                           p(95)<800      medido       5.5 ms (n=183)   http_req_duration{fase:base,ep:perfil}
+  ✓ U-01 movimientos (S-03)                                      p(95)<800      medido      38.2 ms (n=90)   http_req_duration{fase:base,ep:movimientos}
+  ✓ U-01 comision (S-03)                                         p(95)<800      medido      13.1 ms (n=94)   http_req_duration{fase:base,ep:comision}
+  ✓ U-01 contactos_listar (S-03)                                 p(95)<800      medido      14.3 ms (n=55)   http_req_duration{fase:base,ep:contactos_listar}
+  ✓ U-01 contactos_buscar (S-03)                                 p(95)<800      medido       6.6 ms (n=55)   http_req_duration{fase:base,ep:contactos_buscar}
+  ✓ U-01 recargas_config (S-03)                                  p(95)<800      medido       8.4 ms (n=54)   http_req_duration{fase:base,ep:recargas_config}
+  ✓ U-01 empresas (S-03)                                         p(95)<800      medido      12.6 ms (n=55)   http_req_duration{fase:base,ep:empresas}
+  ✓ U-01 deudas (S-03)                                           p(95)<800      medido       6.3 ms (n=55)   http_req_duration{fase:base,ep:deudas}
+  ✓ U-01 otras: 5 GET al 2 % (§3.3)                              p(95)<800      medido      12.4 ms (n=71)   http_req_duration{fase:base,op:otras}
+  ✓ U-02 operaciones de dinero (grupo)                           p(95)<1500     medido     131.4 ms (n=173)   http_req_duration{fase:base,grupo:dinero}
+  ✓ U-02 transferir (S-03)                                       p(95)<1500     medido     134.2 ms (n=94)   http_req_duration{fase:base,ep:transferir}
+  ✓ U-02 recargar (S-03)                                         p(95)<1500     medido      13.6 ms (n=54)   http_req_duration{fase:base,ep:recargar}
+  ✓ U-02 pagar (S-03)                                            p(95)<1500     medido      11.4 ms (n=25)   http_req_duration{fase:base,ep:pagar}
+  ✓ U-06 recuperación U-01 consultas e inicio de sesión (grupo)  p(95)<800      medido      92.6 ms (n=2460)   http_req_duration{fase:recuperacion,grupo:consulta}
+  ✓ U-06 recuperación U-01 login (S-03)                          p(95)<800      medido     103.6 ms (n=250)   http_req_duration{fase:recuperacion,ep:login}
+  ✓ U-06 recuperación U-01 saldo (S-03)                          p(95)<800      medido      11.6 ms (n=428)   http_req_duration{fase:recuperacion,ep:saldo}
+  ✓ U-06 recuperación U-01 perfil (S-03)                         p(95)<800      medido       4.6 ms (n=428)   http_req_duration{fase:recuperacion,ep:perfil}
+  ✓ U-06 recuperación U-01 movimientos (S-03)                    p(95)<800      medido      36.1 ms (n=225)   http_req_duration{fase:recuperacion,ep:movimientos}
+  ✓ U-06 recuperación U-01 comision (S-03)                       p(95)<800      medido      11.5 ms (n=235)   http_req_duration{fase:recuperacion,ep:comision}
+  ✓ U-06 recuperación U-01 contactos_listar (S-03)               p(95)<800      medido      13.4 ms (n=148)   http_req_duration{fase:recuperacion,ep:contactos_listar}
+  ✓ U-06 recuperación U-01 contactos_buscar (S-03)               p(95)<800      medido       5.9 ms (n=148)   http_req_duration{fase:recuperacion,ep:contactos_buscar}
+  ✓ U-06 recuperación U-01 recargas_config (S-03)                p(95)<800      medido      10.3 ms (n=171)   http_req_duration{fase:recuperacion,ep:recargas_config}
+  ✓ U-06 recuperación U-01 empresas (S-03)                       p(95)<800      medido      11.3 ms (n=134)   http_req_duration{fase:recuperacion,ep:empresas}
+  ✓ U-06 recuperación U-01 deudas (S-03)                         p(95)<800      medido       6.7 ms (n=134)   http_req_duration{fase:recuperacion,ep:deudas}
+  ✓ U-06 recuperación U-01 otras: 5 GET al 2 % (§3.3)            p(95)<800      medido      12.1 ms (n=159)   http_req_duration{fase:recuperacion,op:otras}
+  ✓ U-06 recuperación U-02 operaciones de dinero (grupo)         p(95)<1500     medido     126.6 ms (n=460)   http_req_duration{fase:recuperacion,grupo:dinero}
+  ✓ U-06 recuperación U-02 transferir (S-03)                     p(95)<1500     medido     131.1 ms (n=235)   http_req_duration{fase:recuperacion,ep:transferir}
+  ✓ U-06 recuperación U-02 recargar (S-03)                       p(95)<1500     medido      11.7 ms (n=171)   http_req_duration{fase:recuperacion,ep:recargar}
+  ✓ U-06 recuperación U-02 pagar (S-03)                          p(95)<1500     medido      10.8 ms (n=54)   http_req_duration{fase:recuperacion,ep:pagar}
+Veredicto: 50 de 50 umbrales cumplidos con muestras → PASA   (✓ cumple · ✗ falla · ○ sin muestras)
+Peticiones 16897 (13.38 req/s en toda la corrida) · sesiones 1449 · descartadas 0 · VUs máx. 400
+Operaciones fallidas (rendimiento) 2.25 % · errores de rendimiento 315 · errores de datos 0 · dinero confirmado 2493 · dinero sin respuesta 0
+http_req_duration total: p50 4.5 ms · p95 99.8 ms · http_req_connecting p95 1.17 ms

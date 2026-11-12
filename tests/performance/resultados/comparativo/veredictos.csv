@@ -1,0 +1,17 @@
+ID,Criterio,referencia,calibracion,carga,pico,estres,escalabilidad,resistencia,demo
+U-01,Consultas e inicio de sesión: el 95 % en menos de 800 ms,NO APLICA,NO APLICA,PASA,NO APLICA,NO APLICA,NO APLICA,PASA,PASA
+U-02,Operaciones de dinero: el 95 % en menos de 1.5 s,NO APLICA,NO APLICA,PASA,NO APLICA,NO APLICA,NO APLICA,PASA,PASA
+U-03,"En hora punta, no más del 1 % de operaciones fallidas",NO APLICA,NO APLICA,PASA,NO APLICA,NO APLICA,NO APLICA,PASA,PASA
+U-04,Sostener el volumen de la hora punta,NO APLICA,NO APLICA,PASA,NO APLICA,NO APLICA,NO APLICA,PASA,NO APLICA
+U-05,…sin acumular retrasos,NO APLICA,NO APLICA,PASA,NO APLICA,NO APLICA,NO APLICA,PASA,NO APLICA
+U-06,Campaña: degradación razonable del servicio,NO APLICA,NO APLICA,NO APLICA,PASA,NO APLICA,NO APLICA,NO APLICA,NO APLICA
+U-07,Ninguna operación de dinero a medias ni aplicada dos veces,PASA,PASA,PASA,PASA,PASA,PASA,PASA,PASA
+U-08,Hasta cuántos usuarios simultáneos podemos crecer,NO APLICA,NO APLICA,NO APLICA,NO APLICA,MEDIDO,MEDIDO,NO APLICA,NO APLICA
+U-09,Opera de 6:00 a 24:00 sin reinicios,NO APLICA,NO APLICA,NO APLICA,NO APLICA,NO APLICA,NO APLICA,PASA,NO APLICA
+V-01,CPU del generador k6 < 80 % (equipo: informativo),PASA,PASA,PASA,PASA,PASA,PASA,PASA,PASA
+V-02,errores de datos (4xx de negocio) = 0,PASA,PASA,PASA,PASA,PASA,PASA,PASA,PASA
+V-03,mezcla lograda a ± 2 pp,,,PASA,PASA,PASA,PASA,PASA,
+V-04,equipo libre antes de empezar (CPU ocioso ≥ 65 %),PASA,PASA,PASA,PASA,PASA,PASA,PASA,PASA
+V-05,base restaurada idéntica y cuota de CPU esperada,PASA,PASA,PASA,PASA,PASA,PASA,PASA,PASA
+V-06,"con 1 VU, p95 ≤ 10 % del umbral",FALLA,,,,,,,
+V-07,sin avisos 'Insufficient VUs',,,PASA,,,,PASA,

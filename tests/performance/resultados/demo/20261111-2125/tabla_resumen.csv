@@ -1,0 +1,43 @@
+subconjunto,endpoint,ep,grupo,peticiones,promedio_ms,p50_ms,p90_ms,p95_ms,p99_ms,max_ms,error_rendimiento_%,error_datos_%,throughput_req_s
+demo_hora_punta,POST /api/auth/login,login,consulta,84,100.26,101.26,104.36,105.85,119.96,119.96,0.00,0.00,0.84
+demo_hora_punta,GET /api/limites/alertas,alertas,consulta,4,5.23,4.00,9.47,9.47,9.47,9.47,0.00,0.00,0.04
+demo_hora_punta,GET /api/transferencias/comision,comision,consulta,21,6.39,7.04,8.93,10.20,13.14,13.14,0.00,0.00,0.21
+demo_hora_punta,GET /api/contactos?buscar,contactos_buscar,consulta,37,4.13,4.70,5.58,6.18,7.03,7.03,0.00,0.00,0.37
+demo_hora_punta,GET /api/contactos,contactos_listar,consulta,37,7.39,7.73,11.04,12.39,12.81,12.81,0.00,0.00,0.37
+demo_hora_punta,GET /api/servicios/deudas,deudas,consulta,18,4.21,4.77,5.49,6.45,6.45,6.45,0.00,0.00,0.18
+demo_hora_punta,GET /api/seguridad/dispositivos,dispositivos,consulta,5,8.09,8.83,11.05,11.05,11.05,11.05,0.00,0.00,0.05
+demo_hora_punta,GET /api/servicios/empresas,empresas,consulta,18,5.84,7.21,9.56,9.92,9.92,9.92,0.00,0.00,0.18
+demo_hora_punta,GET /api/limites,limites,consulta,1,9.67,9.67,9.67,9.67,9.67,9.67,0.00,0.00,0.01
+demo_hora_punta,GET /api/movimientos,movimientos,consulta,31,27.32,30.15,34.68,37.03,38.23,38.23,0.00,0.00,0.31
+demo_hora_punta,GET /api/cuentas/me,perfil,consulta,56,3.34,3.42,4.16,4.24,5.15,5.15,0.00,0.00,0.56
+demo_hora_punta,GET /api/recargas/configuracion,recargas_config,consulta,13,4.69,4.96,7.09,8.14,8.14,8.14,0.00,0.00,0.13
+demo_hora_punta,GET /api/cuentas/me/saldo,saldo,consulta,56,7.43,8.05,11.00,13.15,13.93,13.93,0.00,0.00,0.56
+demo_hora_punta,GET /api/seguridad/sesiones,sesiones,consulta,5,7.51,8.76,8.88,8.88,8.88,8.88,0.00,0.00,0.05
+demo_hora_punta,GET /api/solicitudes,solicitudes,consulta,1,10.17,10.17,10.17,10.17,10.17,10.17,0.00,0.00,0.01
+demo_hora_punta,POST /api/servicios/pagos,pagar,dinero,9,7.41,6.17,11.10,11.10,11.10,11.10,0.00,0.00,0.09
+demo_hora_punta,POST /api/recargas,recargar,dinero,13,10.19,10.91,12.02,12.90,12.90,12.90,0.00,0.00,0.13
+demo_hora_punta,POST /api/transferencias,transferir,dinero,21,96.64,102.02,138.07,138.31,143.10,143.10,0.00,0.00,0.21
+demo_hora_punta,,grupo consulta,,387,27.89,7.46,101.69,103.04,106.14,119.96,0.00,0.00,3.87
+demo_hora_punta,,grupo dinero,,43,51.83,12.90,113.75,138.07,143.10,143.10,0.00,0.00,0.43
+demo_hora_punta,,total,,430,30.28,8.10,102.02,104.14,119.96,143.10,0.00,0.00,4.30
+demo_sin_pausa,POST /api/auth/login,login,consulta,234,7113.66,3187.94,16692.25,17885.96,25915.96,27170.08,73.08,0.00,5.20
+demo_sin_pausa,GET /api/limites/alertas,alertas,consulta,9,288.80,94.02,785.20,785.20,785.20,785.20,0.00,0.00,0.20
+demo_sin_pausa,GET /api/transferencias/comision,comision,consulta,45,629.15,199.62,1712.92,1851.67,8583.80,8583.80,0.00,0.00,1.00
+demo_sin_pausa,GET /api/contactos?buscar,contactos_buscar,consulta,26,507.16,122.17,1808.87,2852.50,2859.64,2859.64,0.00,0.00,0.58
+demo_sin_pausa,GET /api/contactos,contactos_listar,consulta,27,697.01,181.94,1846.26,1999.31,8237.78,8237.78,0.00,0.00,0.60
+demo_sin_pausa,GET /api/servicios/deudas,deudas,consulta,23,853.44,186.37,2296.83,2416.47,8393.54,8393.54,0.00,0.00,0.51
+demo_sin_pausa,GET /api/seguridad/dispositivos,dispositivos,consulta,13,510.08,213.81,1000.10,2709.99,2709.99,2709.99,0.00,0.00,0.29
+demo_sin_pausa,GET /api/servicios/empresas,empresas,consulta,23,1066.19,108.84,1397.17,7149.03,10984.87,10984.87,0.00,0.00,0.51
+demo_sin_pausa,GET /api/limites,limites,consulta,7,194.38,100.63,881.13,881.13,881.13,881.13,0.00,0.00,0.16
+demo_sin_pausa,GET /api/movimientos,movimientos,consulta,33,1044.79,297.72,2857.70,3395.85,9941.94,9941.94,0.00,0.00,0.73
+demo_sin_pausa,GET /api/cuentas/me,perfil,consulta,102,298.88,114.92,818.23,1293.87,1801.34,1805.95,0.00,0.00,2.27
+demo_sin_pausa,GET /api/recargas/configuracion,recargas_config,consulta,32,488.86,91.67,1264.96,1407.14,7044.40,7044.40,0.00,0.00,0.71
+demo_sin_pausa,GET /api/cuentas/me/saldo,saldo,consulta,103,327.46,115.41,908.11,1618.28,1927.68,2023.73,0.00,0.00,2.29
+demo_sin_pausa,GET /api/seguridad/sesiones,sesiones,consulta,6,554.98,292.40,1734.72,1734.72,1734.72,1734.72,0.00,0.00,0.13
+demo_sin_pausa,GET /api/solicitudes,solicitudes,consulta,6,274.01,97.92,1003.52,1003.52,1003.52,1003.52,0.00,0.00,0.13
+demo_sin_pausa,POST /api/servicios/pagos,pagar,dinero,10,4984.09,3197.70,11288.75,12489.41,12489.41,12489.41,30.00,0.00,0.22
+demo_sin_pausa,POST /api/recargas,recargar,dinero,25,2809.11,393.54,11713.32,12125.24,12585.59,12585.59,16.00,0.00,0.56
+demo_sin_pausa,POST /api/transferencias,transferir,dinero,35,2131.18,493.15,10668.64,11098.33,11287.06,11287.06,11.43,0.00,0.78
+demo_sin_pausa,,grupo consulta,,689,2756.12,197.00,13100.81,15688.92,18133.14,27170.08,24.82,0.00,15.32
+demo_sin_pausa,,grupo dinero,,70,2780.86,500.01,10797.61,11713.32,12585.59,12585.59,15.71,0.00,1.56
+demo_sin_pausa,,total,,759,2758.40,206.00,13007.12,15488.01,18089.12,27170.08,23.98,0.00,16.87

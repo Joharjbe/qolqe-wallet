@@ -1,0 +1,150 @@
+{
+ "escenario": "carga",
+ "humo": null,
+ "inicio": {
+  "hora": "2026-11-11T18:33:22-05:00",
+  "epoch": 1794440002.899
+ },
+ "parametros": {
+  "ESCALA": "1",
+  "BASE_URL": "http://127.0.0.1:8090",
+  "CPUS": "1",
+  "MEMORIA": "1g",
+  "USUARIOS_CSV": "/Users/johar/Documents/26_2/4_PRUEBAS/qolqe-wallet-p3/tests/performance/datos/usuarios.csv"
+ },
+ "commit": "5adb217c61122078ff32386591d7947a6ff6aae1",
+ "cambios_sin_commit": true,
+ "versiones": {
+  "k6": "k6 v2.3.0 (commit/devel, go1.27.1, darwin/arm64)",
+  "docker": "29.8.2",
+  "imagen": "qolqe-perf:p3",
+  "imagen_id": "sha256:5edc50cce9c7471872c7aa166f6b1e790e6e0f1cab7bff601486b753e568c577"
+ },
+ "carga_equipo_antes": 4.23,
+ "v04": {
+  "criterio": "CPU ocioso (top, 3 s) >= 65 %",
+  "cpu_ocioso_%": 81.52,
+  "ocioso_min_%": 65.0,
+  "carga_1_5_15": [
+   4.05,
+   4.91,
+   4.79
+  ],
+  "carga_max_diseno": 1.5,
+  "ok": true
+ },
+ "cpu_ocioso_antes": 81.52,
+ "v04_ok": true,
+ "base_identica": true,
+ "cpu_max": "100000 100000",
+ "memory_max": "1073741824",
+ "nucleos": 10,
+ "v05": {
+  "base_igual_a_base_perf": true,
+  "cpu_max": "100000 100000",
+  "cpu_max_ok": true,
+  "memory_max": "1073741824",
+  "memory_max_ok": true,
+  "contenedor_iniciado": "2026-11-11T23:33:21.375488708Z",
+  "ok": true
+ },
+ "base_perf": {
+  "fecha": "2026-11-11",
+  "n": 3000,
+  "es_de_hoy": true,
+  "huella": {
+   "usuarios": 3006,
+   "usuarios_carga": 3000,
+   "saldo_total_cent": 3000515000,
+   "contactos": 15005,
+   "deudas_pendientes": 90210,
+   "max_id_movimientos": 3000031,
+   "max_id_transferencias": 0,
+   "max_id_recargas": 1,
+   "max_id_pagos": 0,
+   "max_id_sesiones": 3000,
+   "max_id_notificaciones": 2800
+  }
+ },
+ "huella_restaurada": {
+  "usuarios": 3006,
+  "usuarios_carga": 3000,
+  "saldo_total_cent": 3000515000,
+  "contactos": 15005,
+  "deudas_pendientes": 90210,
+  "max_id_movimientos": 3000031,
+  "max_id_transferencias": 0,
+  "max_id_recargas": 1,
+  "max_id_pagos": 0,
+  "max_id_sesiones": 3000,
+  "max_id_notificaciones": 2800
+ },
+ "cpu_stat_antes": {
+  "usage_usec": 728344,
+  "user_usec": 621855,
+  "system_usec": 106488,
+  "nice_usec": 0,
+  "nr_periods": 42,
+  "nr_throttled": 1,
+  "throttled_usec": 395,
+  "nr_bursts": 0,
+  "burst_usec": 0
+ },
+ "fin": {
+  "hora": "2026-11-11T18:52:32-05:00",
+  "epoch": 1794441152.379
+ },
+ "duracion_s": 1149.5,
+ "cpu_stat_despues": {
+  "usage_usec": 125250874,
+  "user_usec": 114756745,
+  "system_usec": 10494129,
+  "nice_usec": 0,
+  "nr_periods": 10714,
+  "nr_throttled": 3,
+  "throttled_usec": 9003,
+  "nr_bursts": 0,
+  "burst_usec": 0
+ },
+ "cpu_stat_delta": {
+  "usage_usec": 124522530,
+  "user_usec": 114134890,
+  "system_usec": 10387641,
+  "nice_usec": 0,
+  "nr_periods": 10672,
+  "nr_throttled": 2,
+  "throttled_usec": 8608,
+  "nr_bursts": 0,
+  "burst_usec": 0
+ },
+ "codigo_salida_k6": 0,
+ "codigo_integridad": 0,
+ "archivos": [
+  "codigo_salida_k6.txt",
+  "consola.txt",
+  "corrida.json",
+  "errores_datos_ventanas.csv",
+  "graficos/G1_tiempo_respuesta.png",
+  "graficos/G2_throughput.png",
+  "graficos/G3_errores.png",
+  "graficos/G4_usuarios_simultaneos.png",
+  "graficos/G5_recursos.png",
+  "metricas_k6.csv.gz",
+  "muestras.csv.gz",
+  "peticiones.csv.gz",
+  "qolqe.log.gz",
+  "recursos_docker.csv",
+  "recursos_k6.csv",
+  "recursos_qolqe.csv",
+  "reporte.html",
+  "resumen.json",
+  "resumen.txt",
+  "tabla_resumen.csv",
+  "tabla_resumen.md",
+  "ventanas.csv",
+  "veredicto.csv",
+  "veredicto.md",
+  "verificacion_dinero.json",
+  "verificacion_dinero.txt"
+ ]
+}

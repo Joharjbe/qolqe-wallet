@@ -15,7 +15,7 @@ ENCABEZADOS = {"escenario": "Escenario", "marca": "Corrida", "subconjunto": "Med
                "error_datos_%": "Error datos (%)", "throughput_max_req_s": "Throughput máx. (req/s)",
                "usuarios_simultaneos_max": "Simultáneos máx.", "cpu_qolqe_max_%": "CPU Qolqe máx. (%)",
                "rss_qolqe_max_MB": "RSS máx. (MB)", "cpu_equipo_max_%": "CPU equipo máx. (%)", "capacidad_U08": "Capacidad U-08"}
-ORDEN = ["referencia", "calibracion", "carga", "pico", "estres", "resistencia", "capacidad", "demo"]
+ORDEN = ["referencia", "calibracion", "carga", "pico", "estres", "escalabilidad", "resistencia", "capacidad", "demo"]  # escalabilidad = estrés con CPUS=2
 EN_G11 = ["carga", "pico", "resistencia", "estres", "capacidad", "demo"]
 
 
@@ -29,7 +29,9 @@ def peticiones_medidas(a) -> tuple[pd.DataFrame, str, tuple[float, float]]:
         cap = a.evaluacion["extra"]["capacidad"]
         # hasta el final de la última ventana que cumple ("minuto" es su centro: + media ventana)
         hasta = cap["minuto_ultima_ok"] * 60 + c.perfil.ventana_s / 2 if not math.isnan(cap["minuto_ultima_ok"]) else 0
-        return c.pet[c.pet["fase"].isin(("base", "rampa")) & (c.pet["t"] <= hasta)], "estrés (hasta la capacidad)", normal
+        cpus = str((c.meta.get("parametros") or {}).get("CPUS", "1"))   # escalabilidad: estrés con CPUS=2
+        rotulo = "estrés (hasta la capacidad)" if cpus == "1" else f"estrés con {cpus} CPU (hasta la capacidad)"
+        return c.pet[c.pet["fase"].isin(("base", "rampa")) & (c.pet["t"] <= hasta)], rotulo, normal
     if c.escenario == "demo":
         return c.pet[c.pet["scenario"] == "demo_hora_punta"], "demo (hora punta)", normal
     return c.pet[c.pet["fase"] == "estable"], NOMBRE_ESCENARIO[c.escenario].lower() + " (estable)", normal
@@ -86,7 +88,8 @@ def tabla_escenarios(analisis: dict) -> pd.DataFrame:
         if esc not in analisis:
             continue
         a = analisis[esc]
-        pet, rotulo, _ = peticiones_medidas(a) if esc in EN_G11 else (a.corrida.pet, "toda la corrida", None)
+        medidas = esc in EN_G11 or esc == "escalabilidad"
+        pet, rotulo, _ = peticiones_medidas(a) if medidas else (a.corrida.pet, "toda la corrida", None)
         v = a.ventanas
         cap = a.evaluacion["extra"].get("capacidad", {})
         filas.append({"escenario": esc, "marca": a.corrida.marca, "subconjunto": rotulo, "peticiones": len(pet),

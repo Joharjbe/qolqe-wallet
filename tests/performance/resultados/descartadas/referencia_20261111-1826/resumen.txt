@@ -1,0 +1,27 @@
+
+Qolqe · escenario referencia · 2026-11-11T18:27:06.936-05:00 → 2026-11-11T18:28:08.809-05:00 · http://127.0.0.1:8090
+Umbrales (k6 termina con código 99 si alguno falla):
+  ✓ validez: sin errores de rendimiento   rate==0        medido       0.00 % (n=65)   operacion_fallida
+  ✓ V-02 sin errores de datos             count==0       medido            0   errores_datos
+  ✗ V-06 login ≤ 10 % de U-01             p(95)<=80      medido      91.4 ms (n=5)   http_req_duration{ep:login}
+  ✓ V-06 saldo ≤ 10 % de U-01             p(95)<=80      medido      10.9 ms (n=5)   http_req_duration{ep:saldo}
+  ✓ V-06 perfil ≤ 10 % de U-01            p(95)<=80      medido       4.2 ms (n=5)   http_req_duration{ep:perfil}
+  ✓ V-06 movimientos ≤ 10 % de U-01       p(95)<=80      medido      79.1 ms (n=5)   http_req_duration{ep:movimientos}
+  ✓ V-06 comision ≤ 10 % de U-01          p(95)<=80      medido      11.4 ms (n=5)   http_req_duration{ep:comision}
+  ✓ V-06 contactos_listar ≤ 10 % de U-01  p(95)<=80      medido      12.6 ms (n=5)   http_req_duration{ep:contactos_listar}
+  ✓ V-06 contactos_buscar ≤ 10 % de U-01  p(95)<=80      medido       5.5 ms (n=5)   http_req_duration{ep:contactos_buscar}
+  ✓ V-06 recargas_config ≤ 10 % de U-01   p(95)<=80      medido       8.7 ms (n=5)   http_req_duration{ep:recargas_config}
+  ✓ V-06 empresas ≤ 10 % de U-01          p(95)<=80      medido      12.0 ms (n=10)   http_req_duration{ep:empresas}
+  ✓ V-06 deudas ≤ 10 % de U-01            p(95)<=80      medido       6.8 ms (n=10)   http_req_duration{ep:deudas}
+  ✓ V-06 limites ≤ 10 % de U-01           p(95)<=80      medido      14.2 ms (n=5)   http_req_duration{ep:limites}
+  ✓ V-06 alertas ≤ 10 % de U-01           p(95)<=80      medido      11.1 ms (n=5)   http_req_duration{ep:alertas}
+  ✓ V-06 solicitudes ≤ 10 % de U-01       p(95)<=80      medido      11.8 ms (n=5)   http_req_duration{ep:solicitudes}
+  ✓ V-06 dispositivos ≤ 10 % de U-01      p(95)<=80      medido      10.0 ms (n=5)   http_req_duration{ep:dispositivos}
+  ✓ V-06 sesiones ≤ 10 % de U-01          p(95)<=80      medido      13.6 ms (n=5)   http_req_duration{ep:sesiones}
+  ✓ V-06 transferir ≤ 10 % de U-02        p(95)<=150     medido     124.2 ms (n=5)   http_req_duration{ep:transferir}
+  ✓ V-06 recargar ≤ 10 % de U-02          p(95)<=150     medido      13.0 ms (n=5)   http_req_duration{ep:recargar}
+  ✓ V-06 pagar ≤ 10 % de U-02             p(95)<=150     medido       9.6 ms (n=5)   http_req_duration{ep:pagar}
+Veredicto: 19 de 20 umbrales cumplidos con muestras → FALLA   (✓ cumple · ✗ falla · ○ sin muestras)
+Peticiones 101 (1.63 req/s en toda la corrida) · sesiones 5 · descartadas 0 · VUs máx. 1
+Operaciones fallidas (rendimiento) 0.00 % · errores de rendimiento 0 · errores de datos 0 · dinero confirmado 15 · dinero sin respuesta 0
+http_req_duration total: p50 7.4 ms · p95 85.1 ms · http_req_connecting p95 0.00 ms

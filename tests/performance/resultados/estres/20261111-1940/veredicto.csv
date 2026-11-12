@@ -1,0 +1,25 @@
+seccion,id,criterio,medido,umbral,resultado,n,nota,decide
+validez,V-01,"CPU del generador k6 (% del equipo, máximo de las ventanas)",1.2 %,< 80 %,PASA,,pico de 1 s: 7.9 % del equipo (79 % de un núcleo),True
+validez,V-01,CPU total del equipo (máximo de las ventanas),82.3 %,< 80 %,FALLA,,informativo: lo mueven procesos de macOS; ventanas ≥ 80 % en el minuto 2.2,False
+validez,V-02,errores de datos · rampa y meseta,0 (0.00 %),= 0 (repetir si > 0.1 %),PASA,,,True
+validez,V-03,mezcla lograda · rampa y meseta (peor operación),0.94 pp,± 2 pp,PASA,,,True
+validez,V-04,"CPU ocioso del equipo antes de empezar (top, 3 s)",80.3 %,≥ 65 %,PASA,,carga de 1 min: 5.05 (diseño < 1.5; solo se registra),True
+validez,V-05,base restaurada idéntica y cpu.max del contenedor,"base True, cpu.max 100000 100000",base idéntica y 100000 100000,PASA,,,True
+validez,V-07,avisos de k6 'Insufficient VUs',0,0,PASA,,solo decide en carga y resistencia,False
+umbral,U-01,Consultas e inicio de sesión: el 95 % en menos de 800 ms,—,—,NO APLICA,,se evalúa en carga y resistencia,True
+umbral,U-02,Operaciones de dinero: el 95 % en menos de 1.5 s,—,—,NO APLICA,,se evalúa en carga y resistencia,True
+umbral,U-03,"En hora punta, no más del 1 % de operaciones fallidas",—,—,NO APLICA,,se evalúa en carga y resistencia,True
+umbral,U-04,Sostener el volumen de la hora punta,—,—,NO APLICA,,se evalúa en carga y resistencia,True
+umbral,U-05,…sin acumular retrasos,—,—,NO APLICA,,se evalúa en carga y resistencia,True
+umbral,U-06,Campaña: degradación razonable del servicio,—,—,NO APLICA,,se evalúa en pico,True
+umbral,U-07,Ninguna operación de dinero a medias ni aplicada dos veces,0,= 0,PASA,,1 criterio (ver detalle),True
+umbral,U-08,Hasta cuántos usuarios simultáneos podemos crecer,850 usuarios simultáneos,se mide,MEDIDO,,"última ventana que cumple: min 11.8 con 876 simultáneos; primera falla sostenida: min 12.2 con 946 (p95 consulta < 800 ms (U-01); p95 dinero < 1,500 ms (U-02); error ≤ 1 % (U-03); atendido ≥ 90% de lo ofrecido (U-04); p95 login < 800 ms; p95 saldo < 800 ms; p95 movimientos < 800 ms; p95 transferir < 1,500 ms; p95 recargar < 1,500 ms)",True
+umbral,U-09,Opera de 6:00 a 24:00 sin reinicios,—,—,NO APLICA,,se evalúa en resistencia,True
+detalle,U-08,"capacidad (S-10: ventanas de 30 s, 2 fallas seguidas, redondeo a 50)",850 usuarios simultáneos,se mide,MEDIDO,,"última ventana que cumple: min 11.8 con 876 simultáneos; primera falla sostenida: min 12.2 con 946 (p95 consulta < 800 ms (U-01); p95 dinero < 1,500 ms (U-02); error ≤ 1 % (U-03); atendido ≥ 90% de lo ofrecido (U-04); p95 login < 800 ms; p95 saldo < 800 ms; p95 movimientos < 800 ms; p95 transferir < 1,500 ms; p95 recargar < 1,500 ms)",True
+detalle,U-08,tolerancia de throughput por ventana (S-04 en 30 s),9.7 %,"máx(2 %, 3 σ de la fase base)",INFO,,,False
+detalle,U-08,hipótesis previa (§8),"1,500 ± 300",se valida o se refuta,INFO,,H1: CPU por el PBKDF2 del login,False
+detalle,U-03,error de rendimiento · rampa y meseta,20.81 %,≤ 1 %,FALLA,"19,206","operacion_fallida (una muestra por operación, S-06)",False
+detalle,U-07,descuadres en C1–C6 (verificacion_dinero.txt),0,= 0,PASA,,línea TOTAL,True
+detalle,U-07,operaciones de dinero sin respuesta (status 0),98,se concilian en C6,INFO,,,False
+detalle,§2.1,p95 de http_req_connecting,0.6 ms,"≤ 10 ms (si no, se suma)",INFO,,no se suma,False
+detalle,§6.3,throttling del cgroup en la corrida,"525 períodos, 63.5 s",diagnóstico (H1),INFO,,,False

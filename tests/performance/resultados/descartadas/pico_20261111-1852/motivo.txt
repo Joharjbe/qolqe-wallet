@@ -1,0 +1,9 @@
+Pico interrumpido por el entorno: Docker Desktop recibió una orden de salir de la app a las 19:12:52 (log de Docker
+Desktop: "[ELECTRON] before-quit" y luego "engine stopping"; no fue un fallo ni un OOM). Eso pasó en el drenaje, a los
+~1,160 s, después de todas las fases medidas: los umbrales de U-06 (campaña y recuperación) ya estaban evaluados y
+pasaron 50 de 50, y los 315 errores de "conexion" (connection refused) son todos del drenaje, con Qolqe ya apagado.
+correr.sh no pudo verificar el dinero en ese momento (Docker caído). Se volvió a abrir Docker y se corrió la
+verificación a mano sobre la base que dejó la corrida (qolqe.db intacta en el volumen): TOTAL descuadres 0, U-07 PASA
+(verificacion_dinero.txt). Además, corrida.json registró V-04 con una segunda medición (64.2 % < 65 %) aunque la
+espera había decidido empezar con 67.5 %; se corrigió correr.sh para guardar la medición de la decisión.
+La corrida se repitió completa.

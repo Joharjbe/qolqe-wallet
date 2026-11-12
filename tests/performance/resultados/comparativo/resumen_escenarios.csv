@@ -1,0 +1,9 @@
+escenario,marca,subconjunto,peticiones,p95_consulta_ms,p95_dinero_ms,error_rendimiento_%,error_datos_%,throughput_max_req_s,usuarios_simultaneos_max,cpu_qolqe_max_%,rss_qolqe_max_MB,cpu_equipo_max_%,capacidad_U08
+referencia,20261111-1828,toda la corrida,100,69.78,135.87,0.00,0.00,1.63,1.00,2.59,58.10,21.05,
+calibracion,20261111-1830,toda la corrida,470,80.62,136.62,0.00,0.00,3.67,1.00,5.40,57.80,26.45,
+carga,20261111-1833,carga (estable),8796,93.20,128.16,0.00,0.00,10.22,101.03,13.31,62.70,60.85,
+pico,20261111-1918,pico (campaña),14585,78.24,123.00,0.00,0.00,30.17,303.60,31.90,66.40,90.22,
+estres,20261111-1940,estrés (hasta la capacidad),25589,74.87,120.62,0.00,0.00,85.20,1143.80,75.53,478.30,82.27,850.00
+escalabilidad,20261111-2103,estrés con 2 CPU (hasta la capacidad),55536,73.15,118.87,0.00,0.00,129.70,1656.43,112.83,719.30,42.60,1300.00
+resistencia,20261111-1958,resistencia (estable),35182,95.32,126.70,0.00,0.00,9.83,100.86,12.58,63.30,26.56,
+demo,20261111-2125,demo (hora punta),430,103.04,138.07,0.00,0.00,23.50,134.00,63.39,110.40,28.13,

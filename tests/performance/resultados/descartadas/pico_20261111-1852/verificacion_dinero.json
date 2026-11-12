@@ -1,0 +1,147 @@
+{
+ "pasa": true,
+ "chequeos": {
+  "ultimos": {
+   "columnas": [
+    "movimientos",
+    "transferencias",
+    "recargas",
+    "pagos",
+    "sesiones"
+   ],
+   "filas": [
+    [
+     3000031,
+     0,
+     1,
+     0,
+     3000
+    ]
+   ],
+   "total": 1,
+   "segundos": 0.002
+  },
+  "C1_conservacion": {
+   "columnas": [
+    "antes_cent",
+    "despues_cent",
+    "recargas_cent",
+    "pagos_cent",
+    "comisiones_cent",
+    "interbancarias_cent",
+    "descuadre_cent",
+    "movimientos_neto_cent",
+    "descuadre_libro_cent"
+   ],
+   "filas": [
+    [
+     3000515000,
+     2996288370,
+     3136500,
+     1090130,
+     0,
+     0,
+     0,
+     -4226630,
+     0
+    ]
+   ],
+   "total": 1,
+   "segundos": 0.018
+  },
+  "C2_libro_mayor": {
+   "columnas": [
+    "usuario_id",
+    "antes_cent",
+    "despues_cent",
+    "movimientos_cent",
+    "descuadre_cent"
+   ],
+   "filas": [],
+   "total": 0,
+   "segundos": 3.301
+  },
+  "C3_operacion_movimientos": {
+   "columnas": [
+    "problema",
+    "codigo",
+    "tipo",
+    "operaciones",
+    "movimientos"
+   ],
+   "filas": [],
+   "total": 0,
+   "segundos": 0.012
+  },
+  "C4_pagos": {
+   "columnas": [
+    "problema",
+    "deuda_id",
+    "n"
+   ],
+   "filas": [],
+   "total": 0,
+   "segundos": 0.01
+  },
+  "C5_reglas": {
+   "columnas": [
+    "problema",
+    "usuario_id",
+    "valor_cent"
+   ],
+   "filas": [],
+   "total": 0,
+   "segundos": 0.001
+  },
+  "C6_conteos": {
+   "columnas": [
+    "transferencias",
+    "recargas",
+    "pagos",
+    "logins",
+    "movimientos"
+   ],
+   "filas": [
+    [
+     1289,
+     867,
+     337,
+     1449,
+     3782
+    ]
+   ],
+   "total": 1,
+   "segundos": 0.001
+  }
+ },
+ "c6": [
+  {
+   "tipo": "transferencias",
+   "bd": 1289,
+   "confirmadas": 1289,
+   "sin_respuesta": 0,
+   "cortadas": 0,
+   "diferencia": 0,
+   "ok": true
+  },
+  {
+   "tipo": "recargas",
+   "bd": 867,
+   "confirmadas": 867,
+   "sin_respuesta": 0,
+   "cortadas": 0,
+   "diferencia": 0,
+   "ok": true
+  },
+  {
+   "tipo": "pagos",
+   "bd": 337,
+   "confirmadas": 337,
+   "sin_respuesta": 0,
+   "cortadas": 0,
+   "diferencia": 0,
+   "ok": true
+  }
+ ],
+ "k6_logins_ok": 1449
+}

@@ -92,20 +92,21 @@ def g8_cpu_vs_usuarios(a, ruta) -> None:
     ax = ejes[0]
     ax.plot(v["L_medida"], v["cpu_qolqe"], color=COLOR["qolqe"], marker="o", ls="none", label="CPU medido (promedio de la ventana)")
     d, fuente = d_para_estres(a)
+    cpus = float((a.corrida.meta.get("parametros") or {}).get("CPUS", 1))   # escalabilidad: CPUS=2 → techo 200 %
     if not math.isnan(d):
         usuarios = np.linspace(0, v["L_medida"].max() * 1.05, 200)
         w_s = a.corrida.perfil.duracion_sesion_s   # W = 120 s (M-02; comprimido en un ensayo)
-        ax.plot(usuarios, np.minimum(100, 100 * d * usuarios / w_s), color=TINTA, ls="--", lw=1.8,
+        ax.plot(usuarios, np.minimum(100 * cpus, 100 * d * usuarios / w_s), color=TINTA, ls="--", lw=1.8,
                 label=f"U = X·D con X = L/W y D = {d * 1000:.0f} ms ({fuente})")
-        l_sat = w_s / d
+        l_sat = cpus * w_s / d
         ax.axvline(l_sat, color=TINTA_2, ls=":", lw=1.6)
         ax.annotate(f"L_sat = W/D ≈ {l_sat:,.0f}", xy=(l_sat, 0.04), xycoords=("data", "axes fraction"), xytext=(6, 0),
                     textcoords="offset points", fontsize=12, color=TINTA_2)
     ax.set_xlim(0, v["L_medida"].max() * 1.05)
-    ax.set_ylim(0, 110)
+    ax.set_ylim(0, 110 * cpus)
     _marcar_capacidad(ax, cap)
     ax.set_xlabel("usuarios simultáneos (medidos)")
-    ax.set_ylabel("CPU de Qolqe (% de 1 CPU)")
+    ax.set_ylabel("CPU de Qolqe (% de 1 CPU)" if cpus == 1 else f"CPU de Qolqe (% de 1 CPU; cuota de {cpus:g} CPU)")
     ax.xaxis.set_major_formatter(MILES)
-    ax.legend(loc="lower right")   # arriba a la izquierda taparía la recta U = X·D
+    ax.legend(loc="upper left")   # abajo a la derecha tapaba la marca de capacidad y el rótulo de L_sat
     guardar(fig, ruta)

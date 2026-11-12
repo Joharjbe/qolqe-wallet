@@ -120,8 +120,9 @@ def inicio(carpeta: Path, escenario: str) -> int:
         "escenario": escenario,
         "humo": ENV("HUMO") or None,
         "inicio": ahora(),
-        "parametros": {k: ENV(k) for k in ("TOP", "L_CAP", "ESCALA", "HUMO", "BASE_URL", "CPUS", "MEMORIA", "USUARIOS_CSV")
-                       if ENV(k)},
+        "parametros": {k: ENV(k) for k in ("TOP", "L_CAP", "ESCALA", "HUMO", "BASE_URL", "CPUS", "MEMORIA", "USUARIOS_CSV",
+                                           "OCIOSO_MIN", "PYSPY", "PYSPY_BASE_S", "PYSPY_SATURACION_S", "PYSPY_MESETA_S",
+                                           "PYSPY_DURACION") if ENV(k)},
         "commit": sh("git", "-C", str(PERF), "rev-parse", "HEAD"),
         "cambios_sin_commit": bool(sh("git", "-C", str(PERF), "status", "--porcelain", "--", ".", ":(exclude)resultados")),
         "versiones": {"k6": sh("k6", "version").splitlines()[0] if sh("k6", "version") else "",

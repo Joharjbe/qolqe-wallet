@@ -1,0 +1,21 @@
+Verificación del dinero antes y después (U-07: descuadres = 0, diseño §5.5)
+Fecha: 2026-11-11 19:56:27   Contenedor: qolqe-perf
+Antes: /data/base_perf.db   Después: /data/qolqe.db
+
+Saldos: antes S/ 30,005,150.00, después S/ 29,942,200.00. Salidas: recargas S/ 46,050.00, pagos S/ 16,900.00, comisiones S/ 0.00, interbancarias S/ 0.00. Movimientos nuevos (neto): S/ -62,950.00.
+
+C1 Conservación del dinero     PASA   descuadre 0 cént.; libro 0 cént.
+C2 Libro mayor por usuario     PASA   0 usuarios con descuadre
+C3 Operación ↔ movimientos     PASA   0 filas
+C4 Pagos de deudas             PASA   0 filas
+C5 Reglas (DEF-21)             PASA   0 filas
+C6 Conteos y conciliación      PASA   conciliado con k6 (muestras.csv.gz)
+
+C6 por tipo (BD = filas nuevas; confirmadas = 201 recibidos; sin respuesta = status 0; cortadas = enviadas sin ninguna respuesta registrada porque k6 cortó la sesión):
+  transferencias  BD   1988   confirmadas   1986   sin respuesta   29   cortadas    0   diferencia    2   ok   (aplicadas sin confirmación: el cliente no recibió la respuesta (timeout o sesión cortada por k6 con la petición en vuelo))
+  recargas        BD   1332   confirmadas   1332   sin respuesta   68   cortadas    0   diferencia    0   ok
+  pagos           BD    521   confirmadas    521   sin respuesta    1   cortadas    0   diferencia    0   ok
+  logins nuevos (sesiones): 2695   movimientos nuevos: 5829
+
+TOTAL descuadres: 0
+Resultado U-07: PASA

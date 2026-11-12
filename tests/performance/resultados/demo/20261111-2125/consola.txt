@@ -1,0 +1,1002 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: /Users/johar/Documents/26_2/4_PRUEBAS/qolqe-wallet-p3/tests/performance/k6/qolqe.js
+ web dashboard: http://127.0.0.1:5665
+        output: csv (/Users/johar/Documents/26_2/4_PRUEBAS/qolqe-wallet-p3/tests/performance/resultados/demo/20261111-2125/muestras.csv.gz)
+
+     scenarios: (100.00%) 2 scenarios, 200 max VUs, 2m25s max duration (incl. graceful stop):
+              * demo_hora_punta: 0.83 iterations/s for 1m40s (maxVUs: 150-200, exec: sesion)
+              * demo_sin_pausa: 50 looping VUs for 45s (exec: sesionSinPausa, startTime: 1m40s)
+
+
+running (0m01.0s), 001/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [   1% ] 001/150 VUs  0m01.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m39.0s       
+
+running (0m02.0s), 002/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [   2% ] 002/150 VUs  0m02.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m38.0s       
+
+running (0m03.0s), 003/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [   3% ] 003/150 VUs  0m03.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m37.0s       
+
+running (0m04.0s), 004/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [   4% ] 004/150 VUs  0m04.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m36.0s       
+
+running (0m05.0s), 005/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [   5% ] 005/150 VUs  0m05.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m35.0s       
+
+running (0m06.0s), 005/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [   6% ] 005/150 VUs  0m06.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m34.0s       
+
+running (0m07.0s), 006/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [   7% ] 006/150 VUs  0m07.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m33.0s       
+
+running (0m08.0s), 007/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [   8% ] 007/150 VUs  0m08.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m32.0s       
+
+running (0m09.0s), 008/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [   9% ] 008/150 VUs  0m09.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m31.0s       
+
+running (0m10.0s), 009/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  10% ] 009/150 VUs  0m10.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m30.0s       
+
+running (0m11.0s), 010/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  11% ] 010/150 VUs  0m11.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m29.0s       
+
+running (0m12.0s), 010/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  12% ] 010/150 VUs  0m12.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m28.0s       
+
+running (0m13.0s), 011/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  13% ] 011/150 VUs  0m13.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m27.0s       
+
+running (0m14.0s), 012/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  14% ] 012/150 VUs  0m14.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m26.0s       
+
+running (0m15.0s), 013/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  15% ] 013/150 VUs  0m15.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m25.0s       
+
+running (0m16.0s), 014/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  16% ] 014/150 VUs  0m16.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m24.0s       
+
+running (0m17.0s), 015/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  17% ] 015/150 VUs  0m17.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m23.0s       
+
+running (0m18.0s), 015/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  18% ] 015/150 VUs  0m18.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m22.0s       
+
+running (0m19.0s), 016/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  19% ] 016/150 VUs  0m19.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m21.0s       
+
+running (0m20.0s), 017/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  20% ] 017/150 VUs  0m20.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m20.0s       
+
+running (0m21.0s), 018/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  21% ] 018/150 VUs  0m21.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m19.0s       
+
+running (0m22.0s), 019/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  22% ] 019/150 VUs  0m22.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m18.0s       
+
+running (0m23.0s), 020/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  23% ] 020/150 VUs  0m23.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m17.0s       
+
+running (0m24.0s), 020/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  24% ] 020/150 VUs  0m24.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m16.0s       
+
+running (0m25.0s), 021/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  25% ] 021/150 VUs  0m25.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m15.0s       
+
+running (0m26.0s), 022/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  26% ] 022/150 VUs  0m26.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m14.0s       
+
+running (0m27.0s), 023/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  27% ] 023/150 VUs  0m27.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m13.0s       
+
+running (0m28.0s), 024/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  28% ] 024/150 VUs  0m28.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m12.0s       
+
+running (0m29.0s), 025/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  29% ] 025/150 VUs  0m29.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m11.0s       
+
+running (0m30.0s), 025/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  30% ] 025/150 VUs  0m30.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m10.0s       
+
+running (0m31.0s), 026/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  31% ] 026/150 VUs  0m31.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m09.0s       
+
+running (0m32.0s), 027/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  32% ] 027/150 VUs  0m32.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m08.0s       
+
+running (0m33.0s), 028/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  33% ] 028/150 VUs  0m33.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m07.0s       
+
+running (0m34.0s), 029/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  34% ] 029/150 VUs  0m34.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m06.0s       
+
+running (0m35.0s), 030/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  35% ] 030/150 VUs  0m35.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m05.0s       
+
+running (0m36.0s), 030/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  36% ] 030/150 VUs  0m36.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m04.0s       
+
+running (0m37.0s), 031/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  37% ] 031/150 VUs  0m37.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m03.0s       
+
+running (0m38.0s), 032/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  38% ] 032/150 VUs  0m38.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m02.0s       
+
+running (0m39.0s), 033/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  39% ] 033/150 VUs  0m39.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m01.0s       
+
+running (0m40.0s), 034/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  40% ] 034/150 VUs  0m40.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      1m00.0s       
+
+running (0m41.0s), 035/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  41% ] 035/150 VUs  0m41.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m59.0s       
+
+running (0m42.0s), 035/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  42% ] 035/150 VUs  0m42.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m58.0s       
+
+running (0m43.0s), 036/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  43% ] 036/150 VUs  0m43.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m57.0s       
+
+running (0m44.0s), 037/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  44% ] 037/150 VUs  0m44.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m56.0s       
+
+running (0m45.0s), 038/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  45% ] 038/150 VUs  0m45.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m55.0s       
+
+running (0m46.0s), 039/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  46% ] 039/150 VUs  0m46.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m54.0s       
+
+running (0m47.0s), 040/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  47% ] 040/150 VUs  0m47.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m53.0s       
+
+running (0m48.0s), 040/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  48% ] 040/150 VUs  0m48.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m52.0s       
+
+running (0m49.0s), 041/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  49% ] 041/150 VUs  0m49.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m51.0s       
+
+running (0m50.0s), 042/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  50% ] 042/150 VUs  0m50.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m50.0s       
+
+running (0m51.0s), 043/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  51% ] 043/150 VUs  0m51.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m49.0s       
+
+running (0m52.0s), 044/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  52% ] 044/150 VUs  0m52.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m48.0s       
+
+running (0m53.0s), 045/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  53% ] 045/150 VUs  0m53.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m47.0s       
+
+running (0m54.0s), 045/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  54% ] 045/150 VUs  0m54.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m46.0s       
+
+running (0m55.0s), 046/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  55% ] 046/150 VUs  0m55.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m45.0s       
+
+running (0m56.0s), 047/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  56% ] 047/150 VUs  0m56.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m44.0s       
+
+running (0m57.0s), 048/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  57% ] 048/150 VUs  0m57.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m43.0s       
+
+running (0m58.0s), 049/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  58% ] 049/150 VUs  0m58.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m42.0s       
+
+running (0m59.0s), 050/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  59% ] 050/150 VUs  0m59.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m41.0s       
+
+running (1m00.0s), 050/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  60% ] 050/150 VUs  1m00.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m40.0s       
+
+running (1m01.0s), 051/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  61% ] 051/150 VUs  1m01.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m39.0s       
+
+running (1m02.0s), 052/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  62% ] 052/150 VUs  1m02.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m38.0s       
+
+running (1m03.0s), 053/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  63% ] 053/150 VUs  1m03.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m37.0s       
+
+running (1m04.0s), 054/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  64% ] 054/150 VUs  1m04.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m36.0s       
+
+running (1m05.0s), 055/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  65% ] 055/150 VUs  1m05.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m35.0s       
+
+running (1m06.0s), 055/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  66% ] 055/150 VUs  1m06.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m34.0s       
+
+running (1m07.0s), 056/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  67% ] 056/150 VUs  1m07.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m33.0s       
+
+running (1m08.0s), 057/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  68% ] 057/150 VUs  1m08.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m32.0s       
+
+running (1m09.0s), 058/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  69% ] 058/150 VUs  1m09.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m31.0s       
+
+running (1m10.0s), 059/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  70% ] 059/150 VUs  1m10.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m30.0s       
+
+running (1m11.0s), 060/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  71% ] 060/150 VUs  1m11.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m29.0s       
+
+running (1m12.0s), 060/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  72% ] 060/150 VUs  1m12.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m28.0s       
+
+running (1m13.0s), 061/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  73% ] 061/150 VUs  1m13.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m27.0s       
+
+running (1m14.0s), 062/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  74% ] 062/150 VUs  1m14.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m26.0s       
+
+running (1m15.0s), 063/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  75% ] 063/150 VUs  1m15.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m25.0s       
+
+running (1m16.0s), 064/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  76% ] 064/150 VUs  1m16.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m24.0s       
+
+running (1m17.0s), 065/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  77% ] 065/150 VUs  1m17.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m23.0s       
+
+running (1m18.0s), 065/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  78% ] 065/150 VUs  1m18.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m22.0s       
+
+running (1m19.0s), 066/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  79% ] 066/150 VUs  1m19.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m21.0s       
+
+running (1m20.0s), 067/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  80% ] 067/150 VUs  1m20.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m20.0s       
+
+running (1m21.0s), 068/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  81% ] 068/150 VUs  1m21.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m19.0s       
+
+running (1m22.0s), 069/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  82% ] 069/150 VUs  1m22.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m18.0s       
+
+running (1m23.0s), 070/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  83% ] 070/150 VUs  1m23.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m17.0s       
+
+running (1m24.0s), 070/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  84% ] 070/150 VUs  1m24.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m16.0s       
+
+running (1m25.0s), 071/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  85% ] 071/150 VUs  1m25.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m15.0s       
+
+running (1m26.0s), 072/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  86% ] 072/150 VUs  1m26.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m14.0s       
+
+running (1m27.0s), 073/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  87% ] 073/150 VUs  1m27.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m13.0s       
+
+running (1m28.0s), 074/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  88% ] 074/150 VUs  1m28.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m12.0s       
+
+running (1m29.0s), 075/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  89% ] 075/150 VUs  1m29.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m11.0s       
+
+running (1m30.0s), 075/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  90% ] 075/150 VUs  1m30.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m10.0s       
+
+running (1m31.0s), 076/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  91% ] 076/150 VUs  1m31.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m09.0s       
+
+running (1m32.0s), 077/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  92% ] 077/150 VUs  1m32.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m08.0s       
+
+running (1m33.0s), 078/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  93% ] 078/150 VUs  1m33.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m07.0s       
+
+running (1m34.0s), 079/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  94% ] 079/150 VUs  1m34.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m06.0s       
+
+running (1m35.0s), 080/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  95% ] 080/150 VUs  1m35.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m05.0s       
+
+running (1m36.0s), 080/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  96% ] 080/150 VUs  1m36.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m04.0s       
+
+running (1m37.0s), 081/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  97% ] 081/150 VUs  1m37.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m03.0s       
+
+running (1m38.0s), 082/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  98% ] 082/150 VUs  1m38.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m02.0s       
+
+running (1m39.0s), 083/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [  99% ] 083/150 VUs  1m39.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m01.0s       
+
+running (1m40.0s), 084/150 VUs, 0 complete and 0 interrupted iterations
+demo_hora_punta   [ 100% ] 084/150 VUs  1m40.0s/1m40s  0.83 iters/s
+demo_sin_pausa  • [   0% ] waiting      0m00.0s       
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 18 GET /api/limites: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 18 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 17 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 18 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 18 GET /api/contactos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 18 GET /api/contactos?buscar: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 49 GET /api/servicios/empresas: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 49 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 49 GET /api/recargas/configuracion: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 35 GET /api/recargas/configuracion: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 35 GET /api/recargas/configuracion: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 49 GET /api/transferencias/comision: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 35 GET /api/recargas/configuracion: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 68 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 75 GET /api/seguridad/dispositivos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 68 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 46 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 75 GET /api/servicios/empresas: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 76 GET /api/servicios/empresas: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 76 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 74 GET /api/limites: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 75 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 76 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 74 GET /api/servicios/empresas: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 75 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 76 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 76 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 52 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 75 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 52 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 62 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 22 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 62 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 71 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 69 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 29 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 22 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 71 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 62 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 29 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 69 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 71 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 74 GET /api/recargas/configuracion: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 62 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 62 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 74 GET /api/seguridad/sesiones: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 77 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 78 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 74 GET /api/transferencias/comision: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 77 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 78 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 77 GET /api/transferencias/comision: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 78 GET /api/transferencias/comision: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 77 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 10 GET /api/transferencias/comision: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 77 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 34 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 5 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 51 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 78 GET /api/seguridad/dispositivos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 34 GET /api/recargas/configuracion: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 51 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 67 GET /api/recargas/configuracion: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 34 GET /api/recargas/configuracion: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 42 GET /api/contactos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 5 GET /api/contactos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 67 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 54 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 39 GET /api/servicios/empresas: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 85 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 5 GET /api/contactos?buscar: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 67 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 78 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 39 GET /api/limites: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 87 GET /api/contactos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 67 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 39 GET /api/transferencias/comision: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 85 GET /api/solicitudes: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 87 GET /api/contactos?buscar: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 39 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 67 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 87 GET /api/servicios/empresas: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 39 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 85 GET /api/recargas/configuracion: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 87 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 54 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 20 GET /api/servicios/empresas: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 87 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 85 GET /api/contactos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 20 GET /api/contactos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 54 GET /api/transferencias/comision: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 85 GET /api/contactos?buscar: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 20 GET /api/contactos?buscar: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 20 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 54 GET /api/seguridad/sesiones: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 41 GET /api/contactos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 54 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 25 GET /api/recargas/configuracion: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 25 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 25 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 21 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 68 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 21 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 25 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 27 GET /api/transferencias/comision: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 68 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 25 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 21 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 63 GET /api/recargas/configuracion: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 41 GET /api/contactos?buscar: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 68 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 70 GET /api/servicios/empresas: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 42 GET /api/contactos?buscar: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 27 GET /api/limites/alertas: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 41 GET /api/limites/alertas: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 70 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 61 GET /api/recargas/configuracion: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 27 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 70 GET /api/transferencias/comision: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 33 GET /api/servicios/empresas: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 71 GET /api/servicios/empresas: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 61 GET /api/servicios/empresas: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 33 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 70 GET /api/solicitudes: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 72 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 61 GET /api/transferencias/comision: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 71 GET /api/contactos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 41 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 52 GET /api/cuentas/me/saldo: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 17 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 33 GET /api/cuentas/me: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 23 GET /api/movimientos: 0 timeout request timeout" source=console
+time="2026-11-11T21:27:47-05:00" level=warning msg="VU 51 GET /api/contactos: 0 timeout request timeout" source=console
+
+running (1m41.0s), 050/150 VUs, 0 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [   2% ] 50 VUs       01.0s/45s
+
+running (1m42.0s), 050/150 VUs, 0 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [   4% ] 50 VUs       02.0s/45s
+
+running (1m43.0s), 050/150 VUs, 0 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [   7% ] 50 VUs       03.0s/45s
+
+running (1m44.0s), 050/150 VUs, 0 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [   9% ] 50 VUs       04.0s/45s
+
+running (1m45.0s), 050/150 VUs, 0 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  11% ] 50 VUs       05.0s/45s
+
+running (1m46.0s), 050/150 VUs, 0 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  13% ] 50 VUs       06.0s/45s
+
+running (1m47.0s), 050/150 VUs, 0 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  15% ] 50 VUs       07.0s/45s
+
+running (1m48.0s), 050/150 VUs, 0 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  18% ] 50 VUs       08.0s/45s
+
+running (1m49.0s), 050/150 VUs, 0 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  20% ] 50 VUs       09.0s/45s
+
+running (1m50.0s), 050/150 VUs, 0 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  22% ] 50 VUs       10.0s/45s
+
+running (1m51.0s), 050/150 VUs, 0 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  24% ] 50 VUs       11.0s/45s
+
+running (1m52.0s), 050/150 VUs, 0 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  27% ] 50 VUs       12.0s/45s
+time="2026-11-11T21:28:00-05:00" level=warning msg="VU 122 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:00-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:00-05:00" level=warning msg="VU 122 POST /api/auth/login: 0 conexion EOF" source=console
+
+running (1m53.0s), 050/150 VUs, 2 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  29% ] 50 VUs       13.0s/45s
+time="2026-11-11T21:28:01-05:00" level=warning msg="VU 12 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:01-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:01-05:00" level=warning msg="VU 12 POST /api/auth/login: 0 conexion EOF" source=console
+
+running (1m54.0s), 050/150 VUs, 4 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  31% ] 50 VUs       14.0s/45s
+time="2026-11-11T21:28:01-05:00" level=warning msg="VU 99 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:01-05:00" level=warning msg="VU 131 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:01-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:01-05:00" level=warning msg="VU 131 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:01-05:00" level=warning msg="VU 1 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:01-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:01-05:00" level=warning msg="VU 1 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:01-05:00" level=warning msg="VU 103 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+
+running (1m55.0s), 050/150 VUs, 10 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  33% ] 50 VUs       15.0s/45s
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 50 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 50 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 116 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 116 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 82 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 82 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 138 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 138 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 53 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 53 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 147 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 147 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 98 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 98 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 105 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 123 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 123 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 100 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:02-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:02-05:00" level=warning msg="VU 100 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 115 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 127 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 110 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:03-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:03-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 115 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 110 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 127 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 102 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 107 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+
+running (1m56.0s), 050/150 VUs, 37 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  35% ] 50 VUs       16.0s/45s
+time="2026-11-11T21:28:03-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:03-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 107 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 102 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 114 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 143 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 92 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:03-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 114 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 143 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 46 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 92 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 46 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:03-05:00" level=warning msg="VU 89 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:04-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:04-05:00" level=warning msg="VU 89 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:04-05:00" level=warning msg="VU 4 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+
+running (1m57.0s), 050/150 VUs, 50 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  38% ] 50 VUs       17.0s/45s
+time="2026-11-11T21:28:04-05:00" level=warning msg="VU 88 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:04-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:04-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:04-05:00" level=warning msg="VU 88 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:04-05:00" level=warning msg="VU 4 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:04-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:04-05:00" level=warning msg="VU 133 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:04-05:00" level=warning msg="VU 104 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:04-05:00" level=warning msg="VU 113 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:04-05:00" level=warning msg="VU 141 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:04-05:00" level=warning msg="VU 137 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:04-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:04-05:00" level=warning msg="VU 133 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:05-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 104 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:05-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 113 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:05-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 141 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:05-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 137 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 3 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 148 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+
+running (1m58.0s), 050/150 VUs, 67 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  40% ] 50 VUs       18.0s/45s
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 135 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 130 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:05-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 3 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:05-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 130 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:05-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:05-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 148 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 135 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 83 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:05-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:05-05:00" level=warning msg="VU 83 POST /api/auth/login: 0 conexion EOF" source=console
+
+running (1m59.0s), 050/150 VUs, 75 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  42% ] 50 VUs       19.0s/45s
+
+running (2m00.0s), 050/150 VUs, 75 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  44% ] 50 VUs       20.0s/45s
+
+running (2m01.0s), 050/150 VUs, 75 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  47% ] 50 VUs       21.0s/45s
+
+running (2m02.0s), 050/150 VUs, 75 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  49% ] 50 VUs       22.0s/45s
+
+running (2m03.0s), 050/150 VUs, 75 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  51% ] 50 VUs       23.0s/45s
+
+running (2m04.0s), 050/150 VUs, 75 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  53% ] 50 VUs       24.0s/45s
+time="2026-11-11T21:28:11-05:00" level=warning msg="VU 128 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:11-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:11-05:00" level=warning msg="VU 128 POST /api/auth/login: 0 conexion EOF" source=console
+
+running (2m05.0s), 050/150 VUs, 77 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  55% ] 50 VUs       25.0s/45s
+time="2026-11-11T21:28:12-05:00" level=warning msg="VU 29 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:12-05:00" level=warning msg="VU 10 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:12-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:12-05:00" level=warning msg="VU 10 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:13-05:00" level=warning msg="VU 84 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:13-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:13-05:00" level=warning msg="VU 84 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:13-05:00" level=warning msg="VU 90 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:13-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:13-05:00" level=warning msg="VU 90 POST /api/auth/login: 0 conexion EOF" source=console
+
+running (2m06.0s), 050/150 VUs, 84 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  58% ] 50 VUs       26.0s/45s
+
+running (2m07.0s), 050/150 VUs, 84 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  60% ] 50 VUs       27.0s/45s
+time="2026-11-11T21:28:14-05:00" level=warning msg="VU 94 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:14-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:14-05:00" level=warning msg="VU 94 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:14-05:00" level=warning msg="VU 99 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:14-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:14-05:00" level=warning msg="VU 99 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:14-05:00" level=warning msg="VU 122 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:14-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:14-05:00" level=warning msg="VU 122 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:14-05:00" level=warning msg="VU 1 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:14-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:14-05:00" level=warning msg="VU 1 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:14-05:00" level=warning msg="VU 120 POST /api/recargas: 500 http_5xx Internal Server Error" source=console
+
+running (2m08.0s), 050/150 VUs, 92 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  62% ] 50 VUs       28.0s/45s
+time="2026-11-11T21:28:15-05:00" level=warning msg="VU 131 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:15-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:15-05:00" level=warning msg="VU 131 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:15-05:00" level=warning msg="VU 82 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:15-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:15-05:00" level=warning msg="VU 82 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:15-05:00" level=warning msg="VU 50 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:15-05:00" level=warning msg="VU 103 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:15-05:00" level=warning msg="VU 138 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:15-05:00" level=warning msg="VU 105 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:15-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:15-05:00" level=warning msg="VU 105 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:15-05:00" level=warning msg="VU 98 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:15-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:15-05:00" level=warning msg="VU 98 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:16-05:00" level=warning msg="VU 100 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:16-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:16-05:00" level=warning msg="VU 100 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:16-05:00" level=warning msg="VU 147 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:16-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:16-05:00" level=warning msg="VU 147 POST /api/auth/login: 0 conexion EOF" source=console
+
+running (2m09.0s), 050/150 VUs, 107 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  64% ] 50 VUs       29.0s/45s
+time="2026-11-11T21:28:16-05:00" level=warning msg="VU 123 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:16-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:16-05:00" level=warning msg="VU 123 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:16-05:00" level=warning msg="VU 102 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:16-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:16-05:00" level=warning msg="VU 102 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 107 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 107 POST /api/auth/login: 0 conexion EOF" source=console
+
+running (2m10.0s), 050/150 VUs, 117 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  67% ] 50 VUs       30.0s/45s
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 114 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 114 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 143 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 143 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 109 POST /api/servicios/pagos: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 92 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 92 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 88 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 88 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 4 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 4 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 104 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:17-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:17-05:00" level=warning msg="VU 104 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:18-05:00" level=warning msg="VU 89 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:18-05:00" level=warning msg="VU 137 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:18-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:18-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:18-05:00" level=warning msg="VU 137 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:18-05:00" level=warning msg="VU 89 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:18-05:00" level=warning msg="VU 133 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:18-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:18-05:00" level=warning msg="VU 133 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:18-05:00" level=warning msg="VU 113 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+
+running (2m11.0s), 050/150 VUs, 139 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  69% ] 50 VUs       31.0s/45s
+time="2026-11-11T21:28:18-05:00" level=warning msg="VU 3 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:18-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:18-05:00" level=warning msg="VU 113 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:18-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:18-05:00" level=warning msg="VU 3 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:18-05:00" level=warning msg="VU 130 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:18-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:18-05:00" level=warning msg="VU 130 POST /api/auth/login: 0 conexion EOF" source=console
+
+running (2m12.0s), 050/150 VUs, 145 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  71% ] 50 VUs       32.0s/45s
+
+running (2m13.0s), 050/150 VUs, 145 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  73% ] 50 VUs       33.0s/45s
+
+running (2m14.0s), 050/150 VUs, 152 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  75% ] 50 VUs       34.0s/45s
+
+running (2m15.0s), 050/150 VUs, 152 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  78% ] 50 VUs       35.0s/45s
+time="2026-11-11T21:28:22-05:00" level=warning msg="VU 148 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+
+running (2m16.0s), 050/150 VUs, 154 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  80% ] 50 VUs       36.0s/45s
+time="2026-11-11T21:28:23-05:00" level=warning msg="VU 135 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:23-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:23-05:00" level=warning msg="VU 135 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:23-05:00" level=warning msg="VU 83 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:23-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:23-05:00" level=warning msg="VU 83 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:24-05:00" level=warning msg="VU 128 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:24-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:24-05:00" level=warning msg="VU 128 POST /api/auth/login: 0 conexion EOF" source=console
+
+running (2m17.0s), 050/150 VUs, 160 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  82% ] 50 VUs       37.0s/45s
+time="2026-11-11T21:28:25-05:00" level=warning msg="VU 90 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:25-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:25-05:00" level=warning msg="VU 90 POST /api/auth/login: 0 conexion EOF" source=console
+
+running (2m18.0s), 050/150 VUs, 163 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  84% ] 50 VUs       38.0s/45s
+time="2026-11-11T21:28:25-05:00" level=warning msg="VU 127 POST /api/recargas: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:25-05:00" level=warning msg="VU 84 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:25-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:25-05:00" level=warning msg="VU 84 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:25-05:00" level=warning msg="VU 116 POST /api/transferencias: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:25-05:00" level=warning msg="VU 97 POST /api/servicios/pagos: 500 http_5xx Internal Server Error" source=console
+
+running (2m19.0s), 050/150 VUs, 169 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  87% ] 50 VUs       39.0s/45s
+time="2026-11-11T21:28:27-05:00" level=warning msg="VU 110 POST /api/transferencias: 500 http_5xx Internal Server Error" source=console
+
+running (2m20.0s), 050/150 VUs, 169 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  89% ] 50 VUs       40.0s/45s
+time="2026-11-11T21:28:27-05:00" level=warning msg="VU 147 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:27-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:27-05:00" level=warning msg="VU 105 POST /api/recargas: 500 http_5xx Internal Server Error" source=console
+
+running (2m21.0s), 050/150 VUs, 178 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  91% ] 50 VUs       41.0s/45s
+time="2026-11-11T21:28:28-05:00" level=warning msg="VU 8 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:28-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:28-05:00" level=warning msg="VU 8 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:28-05:00" level=warning msg="VU 12 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+
+running (2m22.0s), 050/150 VUs, 181 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  93% ] 50 VUs       42.0s/45s
+time="2026-11-11T21:28:29-05:00" level=warning msg="VU 82 POST /api/recargas: 500 http_5xx Internal Server Error" source=console
+
+running (2m23.0s), 050/150 VUs, 181 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  95% ] 50 VUs       43.0s/45s
+time="2026-11-11T21:28:30-05:00" level=warning msg="VU 89 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:30-05:00" level=warning msg="VU 137 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:30-05:00" level=warning msg="VU 133 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:30-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:30-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:30-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:30-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:30-05:00" level=warning msg="VU 130 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:30-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:30-05:00" level=warning msg="VU 100 POST /api/transferencias: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:30-05:00" level=warning msg="VU 122 POST /api/servicios/pagos: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:31-05:00" level=warning msg="VU 29 POST /api/transferencias: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:31-05:00" level=warning msg="VU 99 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:31-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:31-05:00" level=warning msg="VU 99 POST /api/auth/login: 0 conexion EOF" source=console
+
+running (2m24.0s), 050/150 VUs, 195 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [  98% ] 50 VUs       44.0s/45s
+time="2026-11-11T21:28:31-05:00" level=warning msg="VU 50 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:31-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+time="2026-11-11T21:28:31-05:00" level=warning msg="VU 50 POST /api/auth/login: 0 conexion EOF" source=console
+time="2026-11-11T21:28:31-05:00" level=warning msg="VU 1 POST /api/auth/login: 500 http_5xx Internal Server Error" source=console
+time="2026-11-11T21:28:31-05:00" level=warning msg="Request Failed" error="Post \"http://127.0.0.1:8090/api/auth/login\": EOF"
+
+running (2m25.0s), 050/150 VUs, 208 complete and 84 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa    [ 100% ] 50 VUs       45.0s/45s
+
+Qolqe · escenario demo · 2026-11-11T21:26:07.246-05:00 → 2026-11-11T21:28:32.254-05:00 · http://127.0.0.1:8090
+Umbrales (k6 termina con código 99 si alguno falla):
+  ✓ U-01 demo_hora_punta: consultas              p(95)<800      medido     103.0 ms (n=387)   http_req_duration{scenario:demo_hora_punta,grupo:consulta}
+  ✓ U-01 demo_hora_punta: login                  p(95)<800      medido     105.7 ms (n=84)   http_req_duration{scenario:demo_hora_punta,ep:login}
+  ✓ U-02 demo_hora_punta: dinero                 p(95)<1500     medido     136.7 ms (n=43)   http_req_duration{scenario:demo_hora_punta,grupo:dinero}
+  ✓ U-03 demo_hora_punta: operaciones fallidas   rate<=0.01     medido       0.00 % (n=276)   operacion_fallida{scenario:demo_hora_punta}
+  ✗ U-01 demo_sin_pausa: consultas               p(95)<800      medido   15647.8 ms (n=689)   http_req_duration{scenario:demo_sin_pausa,grupo:consulta}
+  ✗ U-01 demo_sin_pausa: login                   p(95)<800      medido   17857.7 ms (n=234)   http_req_duration{scenario:demo_sin_pausa,ep:login}
+  ✗ U-02 demo_sin_pausa: dinero                  p(95)<1500     medido   11522.3 ms (n=70)   http_req_duration{scenario:demo_sin_pausa,grupo:dinero}
+  ✗ U-03 demo_sin_pausa: operaciones fallidas    rate<=0.01     medido      35.07 % (n=519)   operacion_fallida{scenario:demo_sin_pausa}
+  ✓ U-05a demo_hora_punta: sesiones descartadas  count==0       medido            0   dropped_iterations{scenario:demo_hora_punta}
+Veredicto: 5 de 9 umbrales cumplidos con muestras → FALLA   (✓ cumple · ✗ falla · ○ sin muestras)
+Peticiones 1190 (8.21 req/s en toda la corrida) · sesiones 208 · descartadas 0 · VUs máx. 150
+Operaciones fallidas (rendimiento) 22.89 % · errores de rendimiento 182 · errores de datos 0 · dinero confirmado 102 · dinero sin respuesta 0
+http_req_duration total: p50 98.8 ms · p95 13452.9 ms · http_req_connecting p95 1.01 ms
+
+running (2m25.0s), 000/150 VUs, 208 complete and 134 interrupted iterations
+demo_hora_punta ✓ [ 100% ] 084/150 VUs  1m40s  0.83 iters/s
+demo_sin_pausa  ✓ [ 100% ] 50 VUs       45s   
+time="2026-11-11T21:28:32-05:00" level=error msg="thresholds on metrics 'http_req_duration{scenario:demo_sin_pausa,ep:login}, http_req_duration{scenario:demo_sin_pausa,grupo:consulta}, http_req_duration{scenario:demo_sin_pausa,grupo:dinero}, operacion_fallida{scenario:demo_sin_pausa}' have been crossed"

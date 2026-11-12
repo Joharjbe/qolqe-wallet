@@ -1,0 +1,177 @@
+{
+ "escenario": "estres",
+ "humo": null,
+ "inicio": {
+  "hora": "2026-11-11T21:03:10-05:00",
+  "epoch": 1794448990.865
+ },
+ "parametros": {
+  "TOP": "2400",
+  "ESCALA": "1",
+  "BASE_URL": "http://127.0.0.1:8090",
+  "CPUS": "2",
+  "MEMORIA": "1g",
+  "USUARIOS_CSV": "/Users/johar/Documents/26_2/4_PRUEBAS/qolqe-wallet-p3/tests/performance/datos/usuarios.csv",
+  "PYSPY_SATURACION_S": "1000",
+  "PYSPY_MESETA_S": "1250"
+ },
+ "commit": "cba543f5fc62ed9378d98877c46f29ee616cf281",
+ "cambios_sin_commit": true,
+ "versiones": {
+  "k6": "k6 v2.3.0 (commit/devel, go1.27.1, darwin/arm64)",
+  "docker": "29.8.2",
+  "imagen": "qolqe-perf:p3",
+  "imagen_id": "sha256:5edc50cce9c7471872c7aa166f6b1e790e6e0f1cab7bff601486b753e568c577"
+ },
+ "v04": {
+  "criterio": "CPU ocioso (top, 3 s) >= 65 %",
+  "cpu_ocioso_%": 93.33,
+  "ocioso_min_%": 65.0,
+  "carga_1_5_15": [
+   5.73,
+   3.97,
+   3.93
+  ],
+  "carga_max_diseno": 1.5,
+  "ok": true,
+  "hora": "2026-11-11T21:03:08-05:00"
+ },
+ "v04_al_iniciar": {
+  "criterio": "CPU ocioso (top, 3 s) >= 65 %",
+  "cpu_ocioso_%": 95.54,
+  "ocioso_min_%": 65.0,
+  "carga_1_5_15": [
+   5.76,
+   4.0,
+   3.94
+  ],
+  "carga_max_diseno": 1.5,
+  "ok": true
+ },
+ "carga_equipo_antes": 5.73,
+ "cpu_ocioso_antes": 93.33,
+ "v04_ok": true,
+ "base_identica": true,
+ "cpu_max": "200000 100000",
+ "memory_max": "1073741824",
+ "nucleos": 10,
+ "v05": {
+  "base_igual_a_base_perf": true,
+  "cpu_max": "200000 100000",
+  "cpu_max_ok": true,
+  "memory_max": "1073741824",
+  "memory_max_ok": true,
+  "contenedor_iniciado": "2026-11-12T02:03:09.364349971Z",
+  "ok": true
+ },
+ "base_perf": {
+  "fecha": "2026-11-11",
+  "n": 3000,
+  "es_de_hoy": true,
+  "huella": {
+   "usuarios": 3006,
+   "usuarios_carga": 3000,
+   "saldo_total_cent": 3000515000,
+   "contactos": 15005,
+   "deudas_pendientes": 90210,
+   "max_id_movimientos": 3000031,
+   "max_id_transferencias": 0,
+   "max_id_recargas": 1,
+   "max_id_pagos": 0,
+   "max_id_sesiones": 3000,
+   "max_id_notificaciones": 2800
+  }
+ },
+ "huella_restaurada": {
+  "usuarios": 3006,
+  "usuarios_carga": 3000,
+  "saldo_total_cent": 3000515000,
+  "contactos": 15005,
+  "deudas_pendientes": 90210,
+  "max_id_movimientos": 3000031,
+  "max_id_transferencias": 0,
+  "max_id_recargas": 1,
+  "max_id_pagos": 0,
+  "max_id_sesiones": 3000,
+  "max_id_notificaciones": 2800
+ },
+ "cpu_stat_antes": {
+  "usage_usec": 673907,
+  "user_usec": 597691,
+  "system_usec": 76215,
+  "nice_usec": 0,
+  "nr_periods": 31,
+  "nr_throttled": 0,
+  "throttled_usec": 0,
+  "nr_bursts": 0,
+  "burst_usec": 0
+ },
+ "fin": {
+  "hora": "2026-11-11T21:25:21-05:00",
+  "epoch": 1794450321.202
+ },
+ "duracion_s": 1330.3,
+ "cpu_stat_despues": {
+  "usage_usec": 646554280,
+  "user_usec": 604511287,
+  "system_usec": 42042993,
+  "nice_usec": 0,
+  "nr_periods": 12906,
+  "nr_throttled": 217,
+  "throttled_usec": 26561375,
+  "nr_bursts": 0,
+  "burst_usec": 0
+ },
+ "cpu_stat_delta": {
+  "usage_usec": 645880373,
+  "user_usec": 603913596,
+  "system_usec": 41966778,
+  "nice_usec": 0,
+  "nr_periods": 12875,
+  "nr_throttled": 217,
+  "throttled_usec": 26561375,
+  "nr_bursts": 0,
+  "burst_usec": 0
+ },
+ "codigo_salida_k6": 99,
+ "codigo_integridad": 0,
+ "archivos": [
+  "codigo_salida_k6.txt",
+  "consola.txt",
+  "corrida.json",
+  "errores_datos_ventanas.csv",
+  "graficos/G1_tiempo_respuesta.png",
+  "graficos/G2_throughput.png",
+  "graficos/G3_errores.png",
+  "graficos/G4_usuarios_simultaneos.png",
+  "graficos/G5_recursos.png",
+  "graficos/G6_p95_vs_usuarios.png",
+  "graficos/G7_throughput_vs_usuarios.png",
+  "graficos/G8_cpu_vs_usuarios.png",
+  "hilos_meseta.txt",
+  "metricas_k6.csv.gz",
+  "muestras.csv.gz",
+  "perfil_base.svg",
+  "perfil_base.svg.log",
+  "perfil_saturacion.svg",
+  "perfil_saturacion.svg.log",
+  "peticiones.csv.gz",
+  "qolqe.log.gz",
+  "recursos_docker.csv",
+  "recursos_k6.csv",
+  "recursos_qolqe.csv",
+  "reporte.html",
+  "resumen.json",
+  "resumen.txt",
+  "tabla_estres.csv",
+  "tabla_estres.md",
+  "tabla_resumen.csv",
+  "tabla_resumen.md",
+  "ventanas.csv",
+  "veredicto.csv",
+  "veredicto.md",
+  "verificacion_dinero.json",
+  "verificacion_dinero.txt"
+ ],
+ "notas_operador": "Escalabilidad (§10.2, Opc. 1): mismo estrés con CPUS=2 y TOP=2400. Se corrió con correr.sh estres y la carpeta se movió de resultados/estres/ a resultados/escalabilidad/ (desde entonces correr.sh lo hace solo). py-spy: saturación a 1,000 s y foto de hilos a 1,250 s (en el colapso, antes de la red de seguridad). k6 cortó por la red del 20 % a los ~1,315 s (código 99)."
+}

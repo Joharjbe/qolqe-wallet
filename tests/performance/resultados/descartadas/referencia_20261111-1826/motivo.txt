@@ -1,0 +1,6 @@
+Referencia de 1 VU repetida (18:28). En esta corrida V-06 falló en login (p95 94 ms) y en movimientos (91 ms por rango
+más cercano con n = 5, es decir el máximo) mientras mediaanalysisd y suggestd de macOS usaban ~150 % de CPU y el CPU
+total del equipo llegó a 98 % en picos de 1 s (V-01 del generador sí pasó: k6 < 2 % de un núcleo). Se repitió una vez
+con el equipo más quieto (82 % ocioso). La repetición (resultados/referencia/20261111-1828) mantiene el login en
+91 ms (> 80 ms = 10 % de U-01): con 1 VU el PBKDF2 corre en la vCPU casi ociosa y macOS la programa en núcleos de
+eficiencia (§6.3 del diseño). Es una limitación del entorno, no del harness; se declara en el informe.

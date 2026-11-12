@@ -1,0 +1,26 @@
+
+Qolqe · escenario carga · 2026-11-11T18:33:26.771-05:00 → 2026-11-11T18:52:32.176-05:00 · http://127.0.0.1:8090
+Umbrales (k6 termina con código 99 si alguno falla):
+  ✓ U-01 consultas e inicio de sesión (grupo)  p(95)<800      medido      93.2 ms (n=7516)   http_req_duration{fase:estable,grupo:consulta}
+  ✓ U-01 login (S-03)                          p(95)<800      medido     104.8 ms (n=750)   http_req_duration{fase:estable,ep:login}
+  ✓ U-01 saldo (S-03)                          p(95)<800      medido      12.7 ms (n=1339)   http_req_duration{fase:estable,ep:saldo}
+  ✓ U-01 perfil (S-03)                         p(95)<800      medido       5.8 ms (n=1339)   http_req_duration{fase:estable,ep:perfil}
+  ✓ U-01 movimientos (S-03)                    p(95)<800      medido      37.9 ms (n=689)   http_req_duration{fase:estable,ep:movimientos}
+  ✓ U-01 comision (S-03)                       p(95)<800      medido      12.4 ms (n=639)   http_req_duration{fase:estable,ep:comision}
+  ✓ U-01 contactos_listar (S-03)               p(95)<800      medido      14.4 ms (n=483)   http_req_duration{fase:estable,ep:contactos_listar}
+  ✓ U-01 contactos_buscar (S-03)               p(95)<800      medido       7.5 ms (n=483)   http_req_duration{fase:estable,ep:contactos_buscar}
+  ✓ U-01 recargas_config (S-03)                p(95)<800      medido       9.3 ms (n=463)   http_req_duration{fase:estable,ep:recargas_config}
+  ✓ U-01 empresas (S-03)                       p(95)<800      medido      12.4 ms (n=449)   http_req_duration{fase:estable,ep:empresas}
+  ✓ U-01 deudas (S-03)                         p(95)<800      medido       7.4 ms (n=449)   http_req_duration{fase:estable,ep:deudas}
+  ✓ U-01 otras: 5 GET al 2 % (§3.3)            p(95)<800      medido      12.2 ms (n=433)   http_req_duration{fase:estable,op:otras}
+  ✓ U-02 operaciones de dinero (grupo)         p(95)<1500     medido     128.2 ms (n=1280)   http_req_duration{fase:estable,grupo:dinero}
+  ✓ U-02 transferir (S-03)                     p(95)<1500     medido     134.2 ms (n=639)   http_req_duration{fase:estable,ep:transferir}
+  ✓ U-02 recargar (S-03)                       p(95)<1500     medido      13.3 ms (n=463)   http_req_duration{fase:estable,ep:recargar}
+  ✓ U-02 pagar (S-03)                          p(95)<1500     medido      11.5 ms (n=178)   http_req_duration{fase:estable,ep:pagar}
+  ✓ U-03 operaciones fallidas (S-06)           rate<=0.01     medido       0.00 % (n=5245)   operacion_fallida{fase:estable}
+  ✓ U-04 throughput ≥ 9.6 req/s                count>=8640    medido         8796   http_reqs{fase:estable,expected_response:true}
+  ✓ U-05a sesiones descartadas                 count==0       medido            0   dropped_iterations
+Veredicto: 19 de 19 umbrales cumplidos con muestras → PASA   (✓ cumple · ✗ falla · ○ sin muestras)
+Peticiones 9976 (8.71 req/s en toda la corrida) · sesiones 850 · descartadas 0 · VUs máx. 150
+Operaciones fallidas (rendimiento) 0.00 % · errores de rendimiento 0 · errores de datos 0 · dinero confirmado 1461 · dinero sin respuesta 0
+http_req_duration total: p50 6.2 ms · p95 101.0 ms · http_req_connecting p95 1.32 ms
