@@ -9,7 +9,7 @@ Este documento atiende tres observaciones de la profesora para la entrega final:
 | Escenarios Gherkin | 276 en 10 `.feature` | — (caso CP-T04) | 58 en 4 `.feature` |
 | Pruebas que ejecuta el runner | 766 (los esquemas se expanden) | 19 operaciones de `/openapi.json` | 71, por 3 repeticiones = 213 |
 | Definiciones de pasos | 266 | — | 139 |
-| Última corrida local completa (11-nov-2026, después de la revisión final) | 707 passed y 59 xfailed estrictos, iguales en 3 corridas | 1414 casos generados en verde (el número varía por la fase *stateful*) | 210 passed y 3 fallos esperados (CP-NW03, `@fail @DEF-18`), 0 inestables |
+| Última corrida local completa (11-nov-2026, verificación final; matriz en [`trazabilidad.md`](trazabilidad.md)) | 707 passed y 59 xfailed estrictos, iguales test por test en 4 corridas | 1373 casos generados en verde (el número varía por la fase *stateful*) | 210 passed y 3 fallos esperados (CP-NW03, `@fail @DEF-18`), 0 inestables |
 
 En total hay 335 casos: 334 escenarios más CP-T04, que es la corrida de contrato. Los conteos se comprueban con `pytest tests/api --collect-only -q`, `npx playwright test --list` y `python .github/scripts/trazabilidad.py --verificar`.
 
@@ -95,7 +95,7 @@ Reglas que se derivan:
 | Cómo se levanta Qolqe en CI | Un paso del job con uvicorn | Un paso del job con uvicorn | `webServer` de Playwright lo levanta si no está corriendo (`reuseExistingServer: true`) |
 | Cómo se descubren los casos | Cada `test_*.py` llama a `scenarios("<archivo>.feature")` | `--include-path-regex` con las operaciones del núcleo y G4: 20 coinciden y se excluye `DELETE /api/seguridad/sesiones` (HU-G6-10) | `bddgen` genera los `.spec.js` en `.features-gen/` desde `features/web/*.feature` |
 | Defectos conocidos | `@DEF-xx` se convierte en `xfail(strict=True, raises=AssertionError)` con el hook `pytest_bdd_apply_tag` de `conftest.py`. Si el defecto se corrige, la prueba falla y avisa; un error que no es una aserción (servidor caído, paso roto) es un fallo, no el defecto. | Checks u operaciones desactivados con su motivo en `schemathesis.toml`; dos fallos descartados por valor en `contrato_hooks.py` (DEF-29 y un falso positivo) | `@fail @DEF-xx`: playwright-bdd lo traduce a `test.fail()`, que falla si la prueba pasa. Lo que el paso necesita para comparar es una precondición (`tests/e2e/precondicion.ts`): si no se cumple, el caso falla de verdad |
-| Repetibilidad | Datos reiniciados por escenario; en la corrida local del 11-nov-2026 se compararon 3 corridas caso por caso y salieron iguales | `--seed 42 --max-examples 30` | `--repeat-each=3`; en CI, `retries: 1` y `failOnFlakyTests: true` ponen el run en rojo si una prueba alterna |
+| Repetibilidad | Datos reiniciados por escenario; en las corridas locales del 11-nov-2026 se compararon 4 corridas caso por caso y salieron iguales | `--seed 42 --max-examples 30` | `--repeat-each=3`; en CI, `retries: 1` y `failOnFlakyTests: true` ponen el run en rojo si una prueba alterna |
 | Evidencia (`EVIDENCIA`) | `tests/api/evidencia.py` adjunta peticiones y respuestas, con el token enmascarado: de cada caso, o solo de fallos y xfail | Con `con-imagenes`, además `peticiones.har` | Con `con-imagenes`: captura, video y traza de cada prueba. Sin imágenes: captura y traza de los fallos, video en el reintento. |
 
 ### 1.4 Dónde quedan los resultados

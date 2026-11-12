@@ -78,13 +78,13 @@ El detalle criterio por criterio, la técnica de cada grupo de casos y los casos
 |---|---:|---:|---:|---:|---:|
 | API núcleo | 154 | 404 | 370 | 34 | — |
 | API G4 | 122 | 362 | 337 | 25 | — |
-| **API total** | **276** | **766** | **707** | **59** | 203 s |
-| Contrato (CP-T04) | 19 operaciones | 1414 casos generados | 1414 | 0 | 13 s |
+| **API total** | **276** | **766** | **707** | **59** | 194 s |
+| Contrato (CP-T04) | 19 operaciones | 1373 casos generados | 1373 | 0 | 14 s |
 
-- **API.** 3 corridas seguidas dieron 707 passed y 59 xfailed, idénticas test por test, sin XPASS ni fallos. Los 59 xfail fallan por una aserción (`raises=AssertionError`).
+- **API.** 4 corridas (3 de la revisión final y la de verificación) dieron 707 passed y 59 xfailed, idénticas test por test, sin XPASS ni fallos. Los 59 xfail fallan por una aserción (`raises=AssertionError`).
 - **Concurrencia.** Los 10 escenarios con hilos dieron el mismo resultado en 200 de 200 corridas con `--runxfail`: los 9 con DEF reprodujeron su defecto siempre y CP-NA131 pasó siempre. CP-T20 repite su ráfaga hasta 5 veces porque, con una sola, el servidor a veces serializa las altas (regla en [`defectos.md`](defectos.md)).
-- **Contrato.** Las 4 fases pasaron en verde. Hubo 28 casos omitidos y 5 descartados por `filter_failure`. Ese filtro solo descarta dos hallazgos ya clasificados: DEF-29 y el falso positivo de `correo: ""`.
-  - En otras corridas se generaron 1291 y 1376 casos con el mismo veredicto: la fase con estado depende de las respuestas.
+- **Contrato.** Las 4 fases pasaron en verde. Hubo 26 casos omitidos y 5 descartados por `filter_failure`. Ese filtro solo descarta dos hallazgos ya clasificados: DEF-29 y el falso positivo de `correo: ""`.
+  - En otras corridas se generaron 1291, 1376 y 1414 casos con el mismo veredicto: la fase con estado depende de las respuestas.
 - **Evidencia anterior en GitHub.** La de las entregas 1 y 2 sigue publicada en https://joharjbe.github.io/qolqe-wallet/.
 
 ## 3. Pruebas web y CI/CD
@@ -257,7 +257,7 @@ Cada corrección se comprueba sola. La prueba del defecto pasa a XPASS y el pipe
 **Riesgos abiertos.**
 - **Rendimiento.** No se ha medido (Parte 3). Los defectos de concurrencia anticipan problemas bajo carga.
 - **Workflow nuevo.** Todavía no corrió en GitHub. `gestion-casos` y `publicar` solo se prueban en `main`.
-- **Kiwi TCMS.** La sincronización se probó con `--simular` sobre los 15 runs anteriores y con una importación real en un Kiwi 17 desechable (plan, TestRun, 331 casos, enlaces de defecto y capturas). Falta la primera sincronización en el Kiwi del alumno, con runs reales de `main`.
+- **Kiwi TCMS.** La sincronización se probó con `--simular` sobre los 15 runs anteriores y con una importación real en un Kiwi 17 desechable (plan, TestRun, 331 casos, enlaces de defecto y capturas; fue antes de agregar CP-NA157 a NA160). Falta la primera sincronización en el Kiwi del alumno, con runs reales de `main`.
 - **Concurrencia en GitHub.** Los 10 escenarios `@concurrencia` cumplen la regla de 200 de 200 en local. Falta repetir el job `api` en el runner de GitHub y revisar que ninguno dé XPASS.
 - **Sin automatizar.** Tres casos quedan como evidencia manual: CP-NA28, CP-NA69 y CP-T19. Los números retirados (CP-A19, A38, T01, T03 y T27) y su motivo están en [`alcance-y-casos.md`](alcance-y-casos.md).
 - **Deuda del código de prueba.**
@@ -265,7 +265,7 @@ Cada corrección se comprueba sola. La prueba del defecto pasa a XPASS y el pipe
   - Los usuarios de prueba están en `conftest.py` y en `fixtures.ts`.
 
 **Lecciones aprendidas.**
-- **La regla del nivel más bajo abarata.** La API ejecuta 766 casos en unos 3.4 minutos y la web, 213 ejecuciones en 2.5 minutos. Cada ejecución web cuesta unas 3 veces más (0.71 s frente a 0.26 s).
+- **La regla del nivel más bajo abarata.** La API ejecuta 766 casos en unos 3.2 minutos y la web, 213 ejecuciones en 2.5 minutos. Cada ejecución web cuesta casi 3 veces más (0.71 s frente a 0.25 s).
 - **El xfail estricto ligado a un DEF** deja el pipeline en verde con defectos conocidos, sin ocultarlos: avisa en cuanto se corrigen.
 - **Concurrencia.** Una prueba de concurrencia solo sirve si es determinista: un cliente por hilo, `Barrier` y 200 de 200 corridas iguales. Con 20 no alcanzaba: CP-T20 pasaba 20 de 20 y aun así fallaba cerca de 2 de cada 100. Cuando la ventana es corta, se repite la ráfaga; las que no cumplen se documentan a mano en lugar de volverse inestables.
 - **El contrato generado** encuentra lo que los casos escritos no prueban (DEF-29), pero cada hallazgo exige clasificarlo: en esta entrega hubo dos falsos positivos.

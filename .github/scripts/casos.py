@@ -258,16 +258,16 @@ def resultados_por_caso(casos: dict, resultados: dict) -> dict[str, dict]:
     return por_caso
 
 
-def _commit_local() -> str:
-    r = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=False)
+def _git_local(*argumentos: str) -> str:
+    r = subprocess.run(["git", *argumentos], capture_output=True, text=True, check=False)
     return r.stdout.strip() if r.returncode == 0 else ""
 
 
 def metadatos_run(**valores) -> dict:
     """Datos del run desde las variables de GitHub Actions. Los valores explícitos (kiwi_sincronizar) mandan.
 
-    Fuera de Actions cada corrida local tiene su propio id (local-<fecha>) y el commit de git, así varias corridas
-    locales se pueden sumar al historial sin pisarse.
+    Fuera de Actions cada corrida local tiene su propio id (local-<fecha>), el commit y la rama de git, así varias
+    corridas locales se pueden sumar al historial sin pisarse.
     """
     entorno = os.environ
     numero = valores.get("numero") or entorno.get("GITHUB_RUN_NUMBER", "local")
@@ -277,11 +277,12 @@ def metadatos_run(**valores) -> dict:
     servidor = entorno.get("GITHUB_SERVER_URL", "https://github.com")
     fecha = valores.get("fecha") or datetime.now(LIMA).isoformat(timespec="seconds")
     id_run = f"{run_id}-{intento}" if run_id else "local-" + re.sub(r"\D", "", fecha[:19])
-    sha = valores.get("sha") or entorno.get("GITHUB_SHA") or ("" if run_id else _commit_local())
+    sha = valores.get("sha") or entorno.get("GITHUB_SHA") or ("" if run_id else _git_local("rev-parse", "HEAD"))
+    rama_local = "" if run_id else _git_local("rev-parse", "--abbrev-ref", "HEAD")
     return {
         "id": id_run, "run_id": run_id, "numero": numero, "intento": intento,
         "sha": sha[:40],
-        "rama": valores.get("rama") or entorno.get("GITHUB_HEAD_REF") or entorno.get("GITHUB_REF_NAME", ""),
+        "rama": valores.get("rama") or entorno.get("GITHUB_HEAD_REF") or entorno.get("GITHUB_REF_NAME") or rama_local,
         "evento": valores.get("evento") or entorno.get("GITHUB_EVENT_NAME", "local"),
         "evidencia": valores.get("evidencia") or entorno.get("EVIDENCIA") or "sin-imagenes",
         "conclusion": valores.get("conclusion", ""),

@@ -157,7 +157,7 @@ En la columna de API técnico, un "—" sin nota es una regla de negocio pura: l
 | Esquema del contrato | Las respuestas cumplen el esquema y el tipo de contenido de `/openapi.json` (el contrato no declara cabeceras de respuesta) | — | T21 | — | pytest-bdd + `jsonschema_rs` |
 | Contrato generado | Sin 500 y con estados, cabeceras y esquemas según OpenAPI, también con entradas generadas, en 19 operaciones del núcleo y de G4 | CP-T04 | CP-T04 | DEF-05, DEF-29 | Schemathesis |
 | Concurrencia (`@concurrencia`) | Peticiones simultáneas, un cliente por hilo, sincronizadas con `threading.Barrier`; CP-T20 repite la ráfaga hasta 5 veces | NA12, NA20, NA33, NA127, NA131, NA134, NA135 | T17, T18, T20 | DEF-11, 14, 15, 21, 22, 25, 26 | pytest-bdd |
-| Repetibilidad | Datos y reloj reiniciados en cada escenario (en la web, si el reinicio falla el escenario no corre); API 3 corridas idénticas; web 3 repeticiones con `failOnFlakyTests` | todos | todos | — | fixtures de pytest y Playwright |
+| Repetibilidad | Datos y reloj reiniciados en cada escenario (en la web, si el reinicio falla el escenario no corre); API 4 corridas idénticas; web 3 repeticiones con `failOnFlakyTests` | todos | todos | — | fixtures de pytest y Playwright |
 
 Un caso de concurrencia se automatiza solo si da el mismo resultado en todas las corridas. Los 10 escenarios con hilos lo dieron en 200 de 200 corridas con `--runxfail`: los 9 con DEF fallaron siempre por su defecto y CP-NA131 pasó siempre. CP-T20 necesitó repetir su ráfaga: con una sola, la revisión vio 2 corridas de 90 en que el servidor serializó las altas (ver la regla en `defectos.md`). Los que no cumplen la regla quedan como evidencia manual (ver abajo).
 
