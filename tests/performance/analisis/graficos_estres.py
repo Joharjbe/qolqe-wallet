@@ -29,7 +29,7 @@ def _ventanas(a):
 
 def g6_p95_vs_usuarios(a, ruta) -> None:
     v, cap = _ventanas(a), a.evaluacion["extra"]["capacidad"]
-    fig, ejes = figura(1, f"Estrés · p95 por ventana de {a.corrida.perfil.ventana_s:g} s contra usuarios simultáneos", alto=7.5, columnas=2)
+    fig, ejes = figura(1, f"Estrés · p95 por ventana de {a.corrida.perfil.ventana_s:g} s contra usuarios simultáneos", alto=8.5, columnas=2)
     for ax, grupo, umbral, uid in ((ejes[0], "consulta", UMBRAL_CONSULTA_MS, "U-01"), (ejes[1], "dinero", UMBRAL_DINERO_MS, "U-02")):
         for serie in [grupo, *EP_CRITICOS[grupo]]:
             if f"p95_{serie}" in v and v[f"p95_{serie}"].notna().any():
@@ -45,7 +45,8 @@ def g6_p95_vs_usuarios(a, ruta) -> None:
         ax.xaxis.set_major_formatter(MILES)
         ax.yaxis.set_major_formatter(MILES)
         ax.set_title("Consultas e inicio de sesión" if grupo == "consulta" else "Operaciones de dinero")
-        ax.legend(loc="upper left")
+        # leyenda debajo del eje: dentro, la línea de 30,000 ms de las ventanas del colapso la atravesaba
+        ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.17), ncol=2)
     guardar(fig, ruta)
 
 

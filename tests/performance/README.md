@@ -55,7 +55,7 @@ tests/performance/correr.sh calibracion
 # 5-8. Los cuatro tipos de prueba
 tests/performance/correr.sh carga                 # 17 min + drenaje
 tests/performance/correr.sh pico                  # 19 min + drenaje
-TOP=<calibrado> tests/performance/correr.sh estres   # 28 min + drenaje, con perfiles de py-spy
+TOP=<máx(calibrado, 2400)> tests/performance/correr.sh estres   # 28 min + drenaje, con py-spy (ver "Sobre el TOP")
 tests/performance/correr.sh resistencia           # 62 min + drenaje
 # 9. Gráficos de todas las corridas y comparativo
 .venv/bin/python tests/performance/analisis/graficos.py --todo
@@ -78,7 +78,7 @@ El enunciado da 5 a 10 min de transición, y `correr.sh` puede esperar hasta 15 
 
 Opcionales: escalabilidad `CPUS=2 TOP=<n> tests/performance/correr.sh estres` (queda en `resultados/escalabilidad/<marca>/` y entra al comparativo como fila aparte) y confirmación de capacidad `L_CAP=<n> tests/performance/correr.sh capacidad`.
 
-**Sobre el TOP del estrés.** En el ensayo del 11-nov (§5) la calibración de 1 VU midió D ≈ 147 ms de CPU por sesión (TOP sugerido 1,100), pero bajo carga el CPU de Qolqe llegó al 100 % con ≈ 610 sesiones/min, es decir D ≈ 100 ms y L_sat ≈ 1,200 simultáneos. Con 1 VU el CPU casi no se usa y macOS puede llevar la vCPU de Docker a los núcleos de eficiencia (§6.3 del diseño), así que D sale inflado y TOP queda corto. Si la calibración da un TOP menor que 1.33 × 1,200 ≈ 1,600, conviene correr el estrés con `TOP=1800` (o con la hipótesis de 2,400) para pasar con seguridad la rodilla, y dejar anotada la razón en el informe.
+**Sobre el TOP del estrés.** Regla: usar `TOP = máx(TOP calibrado, 2,400)`, donde 2,400 es la hipótesis M-14 del diseño. Con 1 VU el CPU casi no se usa y macOS puede llevar la vCPU de Docker a los núcleos de eficiencia (§6.3 del diseño), así que la calibración puede sobrestimar D (CPU por sesión) y dejar el TOP corto, antes de la rodilla. Un ensayo comprimido del 11-nov ya lo sugería, pero no se versionó y no es evidencia (`resultados/descartadas/*_ensayo/` está en `tests/performance/.gitignore`). Con esta regla el estrés corrió con `TOP=2400` (la calibración sugería 1,100 con D = 157 ms, `calibracion/20261111-1830/calibracion.json`), y el resultado la confirmó: bajo carga D fue ≈ 103 ms en la última ventana que cumple (CPU 0.755 ÷ (876 ÷ 120), ventana 690–720 s de `estres/20261111-1940/ventanas.csv`). La razón queda anotada en el informe (§6).
 
 Variables de `correr.sh`:
 
