@@ -64,9 +64,9 @@ export const ESCENARIOS = {
     maxVUs: vus(Math.ceil(1.25 * TOP)),                  // M-15: 1.25 × L_top = 3,000 (= usuarios de M-16)
     gracefulStop: dur('2m'),
     stages: [
-      { duration: dur('3m'), target: 50 },               // base: 100 simultáneos
-      { duration: dur('23m'), target: porMinuto(TOP) },  // M-14: +100 simultáneos por minuto hasta TOP (1,200/min con 2,400)
-      { duration: dur('2m'), target: porMinuto(TOP) },   // meseta más allá del límite
+      { duration: dur('3m'), target: 50 },               // M-17: base de 180 s = 120 de llenado (M-24) + 60 con 100 simultáneos
+      { duration: dur('23m'), target: porMinuto(TOP) },  // M-14 y M-17: +100 simultáneos por minuto hasta TOP (1,200/min con 2,400)
+      { duration: dur('2m'), target: porMinuto(TOP) },   // M-17: meseta de 120 s = una sesión (M-02), más allá del límite
     ] } },
 
   // Resistencia: 60 min estables a 50 sesiones/min (M-13, S-12) + 2 min de llenado.

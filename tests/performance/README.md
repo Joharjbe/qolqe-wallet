@@ -63,6 +63,15 @@ tests/performance/correr.sh resistencia           # 62 min + drenaje
 tests/performance/correr.sh demo
 ```
 
+### Demo en clase (el día de la exposición)
+
+El enunciado da 5 a 10 min de transición, y `correr.sh` puede esperar hasta 15 min a que el equipo esté libre (V-04, `ESPERA_MAX=900`). Por eso:
+
+1. **Antes de clase, ese mismo día:** abrir Docker Desktop y correr `tests/performance/preparar.sh 3000` (≈ 2.5 min; la preparación de las corridas del 11-nov tardó 153.6 s según `resultados/entorno/preparacion.json`). Así `base_perf.db` es del día: si no, `correr.sh` avisa que la base es de otra fecha, porque los vencimientos y la ventana de 30 días dependen de la fecha.
+2. **En la transición:** cerrar las demás apps y dejar abiertos la terminal, `docker stats qolqe-perf` y `http://localhost:5665`. `correr.sh demo` borra y vuelve a crear el contenedor con la base restaurada, así que no hace falta dejarlo arriba antes.
+3. **Correr** `ESPERA_MAX=60 tests/performance/correr.sh demo` (≈ 2.5 min). Si en 60 s el CPU ocioso no llega al 65 %, correr `FORZAR=1 ESPERA_MAX=30 tests/performance/correr.sh demo`: sigue con un aviso y lo deja registrado en `corrida.json`. La demo no es evidencia del informe; su ensayo es `resultados/demo/20261111-2125`.
+4. **Si algo falla en vivo:** mostrar el ensayo (`resultados/demo/20261111-2125/reporte.html` y `consola.txt`).
+
 **Cambio en V-04 (11-nov).** El diseño pedía carga promedio de 1 min < 1.5. En esta Mac la carga no baja de ~3–4 aunque no haya nada corriendo (la sostienen los procesos del sistema: `suggestd`, `mediaanalysisd`, WindowServer), así que ese criterio no se puede cumplir nunca. `correr.sh` ahora decide con el **CPU ocioso del equipo** medido con `top -l 2 -n 0 -s 3` (segunda muestra, 3 s): **≥ 65 %** (`OCIOSO_MIN`). En `corrida.json` quedan los dos valores (`v04.cpu_ocioso_%`, `v04.carga_1_5_15`, `carga_equipo_antes`) y el veredicto muestra el CPU ocioso con la carga como nota. El criterio de validez que pide el enunciado sigue siendo V-01 (CPU de k6 < 80 %), que se mide durante toda la corrida; por la misma razón, el CPU total del equipo se informa en una fila aparte de V-01 que no invalida la corrida, con los minutos en que pasó del 80 %.
 
 Opcionales: escalabilidad `CPUS=2 TOP=<n> tests/performance/correr.sh estres` (queda en `resultados/escalabilidad/<marca>/` y entra al comparativo como fila aparte) y confirmación de capacidad `L_CAP=<n> tests/performance/correr.sh capacidad`.

@@ -177,7 +177,7 @@ Informe completo con la plantilla del curso: [`Informe_Rendimiento_Qolqe.docx`](
 |---|---|---|---|
 | Carga | 100 simultáneos, 15 min estables | ¿Cumplimos en hora punta, sin acumular retrasos? | `carga/20261111-1833` |
 | Pico | 100 → 300 → 100 (12:00–12:15) | ¿Cumplimos en el pico de la campaña? ¿Queda el dinero íntegro? | `pico/20261111-1918` |
-| Estrés | Rampa de 100 a 2,400 (k6 la cortó a los 952 s, con 1,103) | ¿Hasta cuántos usuarios podemos crecer? | `estres/20261111-1940` (2 CPU: `escalabilidad/20261111-2103`) |
+| Estrés | Rampa de 100 a 2,400 (k6 la cortó a los 952 s, después de un máximo de 1,144 simultáneos) | ¿Hasta cuántos usuarios podemos crecer? | `estres/20261111-1940` (2 CPU: `escalabilidad/20261111-2103`) |
 | Resistencia | 100 simultáneos, 60 min (proyección a 18 h) | ¿Opera de 6:00 a 24:00 sin reinicios? | `resistencia/20261111-1958` |
 
 **Resultados frente al SLA** (p95 por rango más cercano; carga y resistencia en la fase estable, pico en 12:00–12:15).
@@ -192,9 +192,17 @@ Informe completo con la plantilla del curso: [`Informe_Rendimiento_Qolqe.docx`](
 
 En la resistencia, además, el RSS proyectado a 54,000 sesiones es 92 MB (límite 700) y el p95 no deriva (0.98 × en consultas, 1.01 × en dinero). El pico vuelve a cumplir los umbrales normales en 12:10–12:15 (80 / 123 ms).
 
-**Capacidad.** **850 usuarios simultáneos** cumplen todos los criterios de hora punta con 1 CPU (≈ 25,500 sesiones/h): 8.5 veces la hora punta y 2.8 veces el pico de la campaña. Con 2 CPU, 1,300 (× 1.53, no × 2). El colapso es brusco: entre 876 y 946 simultáneos el p95 pasa de ~80 ms a 13.4 s y el throughput cae de 85.2 a 26.1 req/s.
+**Capacidad.** **850 usuarios simultáneos** cumplen todos los criterios de hora punta con 1 CPU (≈ 25,500 sesiones/h): 8.5 veces la hora punta y 2.8 veces el pico de la campaña. Con 2 CPU, 1,300 (× 1.53, no × 2). El colapso es brusco: entre 876 y 946 simultáneos el p95 pasa de 78 ms a 13.4 s y el throughput cae de 85.2 a 26.1 req/s.
 
-**Gráficos.** [Tiempo de respuesta en carga](../tests/performance/resultados/carga/20261111-1833/graficos/G1_tiempo_respuesta.png) · [throughput en carga](../tests/performance/resultados/carga/20261111-1833/graficos/G2_throughput.png) · [usuarios simultáneos en el pico](../tests/performance/resultados/pico/20261111-1918/graficos/G4_usuarios_simultaneos.png) · [p95 contra usuarios en estrés](../tests/performance/resultados/estres/20261111-1940/graficos/G6_p95_vs_usuarios.png) · [rodilla de throughput](../tests/performance/resultados/estres/20261111-1940/graficos/G7_throughput_vs_usuarios.png) · [errores en estrés](../tests/performance/resultados/estres/20261111-1940/graficos/G3_errores.png) · [memoria en resistencia](../tests/performance/resultados/resistencia/20261111-1958/graficos/G9_memoria_vs_sesiones.png) · [comparativo](../tests/performance/resultados/comparativo/G11_comparativo.png).
+**Gráficos.**
+
+![Carga: p95 y p50 por minuto frente a los umbrales U-01 y U-02](../tests/performance/resultados/carga/20261111-1833/graficos/G1_tiempo_respuesta.png)
+
+![Estrés con 1 CPU: p95 contra usuarios simultáneos y capacidad U-08 de 850](../tests/performance/resultados/estres/20261111-1940/graficos/G6_p95_vs_usuarios.png)
+
+![Comparativo: p95 de cada endpoint crítico en cada escenario frente a su umbral](../tests/performance/resultados/comparativo/G11_comparativo.png)
+
+Más gráficos: [throughput en carga](../tests/performance/resultados/carga/20261111-1833/graficos/G2_throughput.png) · [usuarios simultáneos en el pico](../tests/performance/resultados/pico/20261111-1918/graficos/G4_usuarios_simultaneos.png) · [rodilla de throughput](../tests/performance/resultados/estres/20261111-1940/graficos/G7_throughput_vs_usuarios.png) · [errores en estrés](../tests/performance/resultados/estres/20261111-1940/graficos/G3_errores.png) · [memoria en resistencia](../tests/performance/resultados/resistencia/20261111-1958/graficos/G9_memoria_vs_sesiones.png).
 
 **Cuello de botella.** La escritura de la sesión en SQLite durante el login (`autenticacion.py:136`), sobre un login que ya gasta la mayor parte del CPU en el PBKDF2. Evidencia:
 - Las respuestas 500 del estrés son `database is locked`: 733 de las 829 excepciones del log vienen de ese INSERT (1,202 de 1,280 con 2 CPU).
@@ -270,6 +278,7 @@ Además hay dos observaciones que no son defectos según los requisitos: OBS-01,
   - los permisos entre usuarios en G4;
   - la máquina de estados de las solicitudes, salvo aceptar una vencida (DEF-03) y las aceptaciones simultáneas (DEF-25);
   - lo que muestra la interfaz.
+- Rendimiento (§4): cumple la hora punta y el pico de la campaña con margen (p95 de 93 y 128 ms en hora punta, 0.00 % de error) y el dinero queda íntegro en todas las corridas. El límite está en 850 simultáneos con 1 CPU y el colapso es brusco, por la escritura de la sesión en SQLite durante el login.
 
 **Causas que se repiten** (de la evidencia de [`defectos.md`](defectos.md)):
 
@@ -292,7 +301,7 @@ Además hay dos observaciones que no son defectos según los requisitos: OBS-01,
 Cada corrección se comprueba sola. La prueba del defecto pasa a XPASS y el pipeline obliga a quitar la etiqueta `@DEF`, de modo que el caso queda como prueba de regresión.
 
 **Riesgos abiertos.**
-- **Rendimiento.** No se ha medido (Parte 3). Los defectos de concurrencia anticipan problemas bajo carga.
+- **Rendimiento.** Cumple en hora punta y en el pico de la campaña (§4). La capacidad es de 850 simultáneos con 1 CPU (1,300 con 2 CPU), como línea base relativa, y el colapso es brusco (de 78 ms a 13.4 s entre 876 y 946 simultáneos) por la escritura de la sesión en SQLite durante el login. Tampoco hay clave de idempotencia: en el colapso hubo operaciones aplicadas cuyo cliente recibió un timeout (`estres/20261111-1940`). La resistencia duró 60 min, no 18 h.
 - **Workflow nuevo.** Todavía no corrió en GitHub. `gestion-casos` y `publicar` solo se prueban en `main`.
 - **Kiwi TCMS.** La sincronización se probó con `--simular` sobre los 15 runs anteriores y con una importación real en un Kiwi 17 desechable (plan, TestRun, 331 casos, enlaces de defecto y capturas; fue antes de agregar CP-NA157 a NA160). Falta la primera sincronización en el Kiwi del alumno, con runs reales de `main`.
 - **Concurrencia en GitHub.** Los 10 escenarios `@concurrencia` cumplen la regla de 200 de 200 en local. Falta repetir el job `api` en el runner de GitHub y revisar que ninguno dé XPASS.
@@ -312,4 +321,4 @@ Cada corrección se comprueba sola. La prueba del defecto pasa a XPASS y el pipe
 - Agregar `quality-gate` como check obligatorio.
 - Sincronizar Kiwi después de cada run de `main`.
 - Unificar la ayuda de concurrencia y los usuarios de prueba en un solo lugar.
-- Ejecutar la Parte 3 con los flujos de dinero y sesión como prioridad.
+- Repetir `correr.sh estres` tras cada corrección del login o de SQLite y correr la resistencia de 18 h en un entorno dedicado.
