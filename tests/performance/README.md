@@ -1,6 +1,6 @@
 # Pruebas de rendimiento de Qolqe Wallet (P2, Parte 3)
 
-Esta carpeta tiene todo lo necesario para repetir las pruebas: el entorno (Docker), los datos de prueba, los scripts de k6, la medición de recursos, la verificación del dinero y el análisis. El diseño completo (umbrales U, supuestos S, modelo M y criterios de validez V) está en el informe; cada valor de configuración lleva en un comentario el ID del que sale.
+Esta carpeta tiene todo lo necesario para repetir las pruebas: el entorno (Docker), los datos de prueba, los scripts de k6, la medición de recursos, la verificación del dinero y el análisis. El diseño completo (umbrales U, supuestos S, modelo M y criterios de validez V) está en el informe; cada valor de configuración lleva en un comentario el ID del que sale. Las referencias «diseño §N» de los comentarios apuntan a [`docs/diseno-rendimiento.md`](../../docs/diseno-rendimiento.md), el plan previo a las corridas.
 
 `qolqe/` es el sistema bajo prueba y **no se modifica**: la imagen se construye desde el repo tal cual.
 
@@ -25,11 +25,11 @@ Esta carpeta tiene todo lo necesario para repetir las pruebas: el entorno (Docke
 
 ## 2. Requisitos
 
-- macOS con Docker Desktop (probado con el motor 29.8.2 y una VM de 10 CPU y 8 GB). La imagen base `python:3.11.15-slim-bookworm` se descarga sola la primera vez.
+- macOS con Docker Desktop (probado con el motor 29.8.2 y una VM de 10 CPU y 8.3 GB). La imagen base `python:3.11.15-slim-bookworm` se descarga sola la primera vez.
 - k6 2.3.0: `brew install k6 && brew pin k6` (`k6 version` debe decir `v2.3.0`).
 - El `.venv` del repo (Python 3.11). Los monitores usan `psutil`; el análisis usa `pandas`, `numpy` y `matplotlib`. Los scripts toman `.venv/bin/python` solos; para otro intérprete: `PYTHON=/ruta/python`.
 - `curl` y `bash` (sirve el 3.2 de macOS).
-- Puertos: Qolqe se publica en `127.0.0.1:8090` (el diseño decía 8141; se cambió a 8090 y así debe ir en el informe). **No se usan el 8000** (demo del alumno) **ni el 8443** (Kiwi TCMS).
+- Puertos: Qolqe se publica en `127.0.0.1:8090` (el diseño decía 8141; se cambió a 8090). **No se usan el 8000** (demo del alumno) **ni el 8443** (Kiwi TCMS).
 
 ## 3. Entorno elegido: Docker con 1 CPU y 1 GB
 
@@ -47,7 +47,7 @@ Qolqe corre en un contenedor con `--cpus=1 --memory=1g --memory-swap=1g` y k6 co
 cd <raíz del repo>
 # 0. Equipo libre (V-04): cerrar otras apps, enchufado, sin modo de bajo consumo. correr.sh espera a que el
 #    CPU ocioso del equipo (top, 3 s) llegue al 65 % (hasta 15 min) y registra ese valor y la carga de 1 min.
-# 1-2. Imagen + datos + base_perf.db (≈ 3 min con 3,000 usuarios; ver §7)
+# 1-2. Imagen + datos + base_perf.db (≈ 2.5 min con 3,000 usuarios: 158 s; ver §7)
 tests/performance/preparar.sh 3000
 # 3. Referencia de 1 VU (≈ 1 min, V-06) y 4. calibración (≈ 2.5 min, M-14: imprime el TOP sugerido)
 tests/performance/correr.sh referencia
@@ -59,18 +59,46 @@ TOP=<máx(calibrado, 2400)> tests/performance/correr.sh estres   # 28 min + dren
 tests/performance/correr.sh resistencia           # 62 min + drenaje
 # 9. Gráficos de todas las corridas y comparativo
 .venv/bin/python tests/performance/analisis/graficos.py --todo
-# 10. Demo en clase (≈ 2.5 min; dashboard en vivo en http://localhost:5665)
-tests/performance/correr.sh demo
+# 10. Demo en clase (≈ 2.5 min; dashboard en vivo en http://localhost:5665). El día de la exposición, ver «Demo en vivo»
+ESPERA_MAX=20 tests/performance/correr.sh demo
 ```
 
-### Demo en clase (el día de la exposición)
+### Demo en vivo (el día de la exposición)
 
-El enunciado da 5 a 10 min de transición, y `correr.sh` puede esperar hasta 15 min a que el equipo esté libre (V-04, `ESPERA_MAX=900`). Por eso:
+El enunciado da 5 a 10 min de transición, y `correr.sh` puede esperar hasta 15 min a que el equipo esté libre (V-04, `ESPERA_MAX=900`). Además, `preparar.sh` con las rutas por defecto reescribe archivos versionados que el informe cita como evidencia del 11-nov (`resultados/entorno/entorno.json`, `preparacion.json`, `pip_freeze.txt`, `cgroup.txt` y `datos/usuarios.csv`). Por eso la demo se prepara y se corre **fuera del repo**, con `RESULTADOS` y `USUARIOS_CSV` apuntando a otra carpeta.
 
-1. **Antes de clase, ese mismo día:** abrir Docker Desktop y correr `tests/performance/preparar.sh 3000` (≈ 2.5 min; la preparación de las corridas del 11-nov tardó 153.6 s según `resultados/entorno/preparacion.json`). Así `base_perf.db` es del día: si no, `correr.sh` avisa que la base es de otra fecha, porque los vencimientos y la ventana de 30 días dependen de la fecha.
-2. **En la transición:** cerrar las demás apps y dejar abiertos la terminal, `docker stats qolqe-perf` y `http://localhost:5665`. `correr.sh demo` borra y vuelve a crear el contenedor con la base restaurada, así que no hace falta dejarlo arriba antes.
-3. **Correr** `ESPERA_MAX=20 tests/performance/correr.sh demo` (≈ 2.5 min; con el equipo libre, k6 arranca en segundos). Si en 20 s el CPU ocioso no llega al 65 %, correr `FORZAR=1 ESPERA_MAX=10 tests/performance/correr.sh demo`: sigue con un aviso y lo deja registrado en `corrida.json`. Conviene mirar el CPU ocioso (`top -l 2 -n 0 -s 3`) antes de que empiece la transición. La demo no es evidencia del informe; su ensayo es `resultados/demo/20261111-2125`.
-4. **Si algo falla en vivo:** mostrar el ensayo (`resultados/demo/20261111-2125/reporte.html` y `consola.txt`).
+1. **Antes de clase, ese mismo día** (≈ 2.5 min; la preparación del 11-nov tardó 158 s), con Docker Desktop abierto y desde la raíz del repo:
+
+   ```bash
+   export RESULTADOS="$HOME/demo-qolqe" USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv"
+   SIN_BUILD=1 tests/performance/preparar.sh 3000
+   ```
+
+   `SIN_BUILD=1` reutiliza la imagen de las corridas (`qolqe-perf:p3`, `sha256:5edc50cc…`; si `docker images qolqe-perf:p3` no la muestra, quitar `SIN_BUILD=1`). Así `base_perf.db` es del día: si no, `correr.sh` avisa que la base es de otra fecha, porque los vencimientos y la ventana de 30 días dependen de la fecha. Hay que usar el **mismo** `USUARIOS_CSV` en la preparación y en la demo, porque la base del volumen se genera con esos usuarios.
+2. **En la transición:** cerrar las demás apps y mirar el CPU ocioso (`top -l 2 -n 0 -s 3`). Dejar abiertas dos terminales:
+   - la de la demo, con las dos variables del paso 1 exportadas (en una terminal nueva, repetir el `export`);
+   - otra con `docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}"`, **sin nombre de contenedor**. `correr.sh demo` borra y vuelve a crear `qolqe-perf`, y `docker stats qolqe-perf` se queda pegado al contenedor viejo y muestra `--` toda la demo. Sin nombre sigue al contenedor nuevo (también muestra `qolqe-perf-monitor` y los de Kiwi, si están arriba).
+3. **Correr** en la terminal de la demo:
+
+   ```bash
+   ESPERA_MAX=20 tests/performance/correr.sh demo
+   ```
+
+   Si en 20 s el CPU ocioso no llega al 65 %, correr `FORZAR=1 ESPERA_MAX=10 tests/performance/correr.sh demo`: sigue con un aviso y lo deja registrado en `corrida.json`. Cuando la consola imprima `web dashboard: http://127.0.0.1:5665` (≈ 10 s después de lanzar), abrir o recargar `http://localhost:5665`: k6 solo escucha en ese puerto mientras corre (`k6/correr_k6.sh` fija `K6_WEB_DASHBOARD_OPEN=false`), así que una pestaña abierta antes muestra «no se puede conectar» y no se recarga sola. Al terminar no hay que recargarla: conserva el último estado.
+4. **Qué se debe ver** (así pasó en el ensayo `resultados/demo/20261111-2125`):
+
+   | Momento | En la terminal | Lectura |
+   |---|---|---|
+   | ≈ 10 s | Cabecera de k6 con `web dashboard: http://127.0.0.1:5665` y los dos escenarios (`demo_hora_punta` y `demo_sin_pausa`) | k6 arrancó |
+   | 0:00–1:40 | `demo_hora_punta` con los VUs subiendo hasta ≈ 84 y ningún aviso | Little: 0.83 sesiones/s × 100 s; no llega a 100 porque la sesión dura 120 s |
+   | 1:40–2:25 | `demo_sin_pausa` y ≈ 380 líneas `level=warning … 500 http_5xx`, `EOF` o `request timeout` | **Esperado**: 50 VUs sin think time saturan Qolqe («estrés disfrazado», S13) |
+   | 2:25 | `Veredicto: 5 de 9 umbrales cumplidos con muestras → FALLA`: ✓ los 5 de hora punta (consultas ≈ 103 ms, login ≈ 106 ms, dinero ≈ 137 ms, 0.00 % de fallas, 0 sesiones descartadas) y ✗ los 4 de sin pausa (consultas ≈ 15.6 s, login ≈ 17.9 s, dinero ≈ 11.5 s, 35 % de operaciones fallidas) | **Esperado** |
+   | ≈ 2:30 | `TOTAL descuadres: 0` y `Resultado U-07: PASA` | El dinero cuadra aun con el colapso |
+   | Fin | `[perf] Fin: k6 = 99 (0 = umbrales OK, 99 = algún umbral falló), integridad = 0 (0 = PASA)`; el comando termina con código 99 | **99 es el resultado esperado**: los umbrales de sin pausa fallan a propósito |
+
+   Los p95 de la consola son los de k6, que interpola; `veredicto.md` usa rango más cercano y puede diferir en 1 ms (dinero: 137 en la consola y 138 en el veredicto). En `veredicto.md`, V-03 (mezcla) sale ✗ con la nota «informativo: la demo es demasiado corta»: no invalida la demo.
+5. **Si algo falla en vivo:** mostrar el ensayo (`resultados/demo/20261111-2125/reporte.html` y `consola.txt`; en el deck, la lámina de respaldo que sigue a la demo). Si no hay internet para el deck, las 32 láminas están en [`docs/Entrega3_G4_Rendimiento.pdf`](../../docs/Entrega3_G4_Rendimiento.pdf) (copia estática, sin animaciones ni notas).
+6. **Después:** el repo queda igual; la evidencia de la demo queda en `$HOME/demo-qolqe/demo/<marca>/`. La demo no es evidencia del informe; su ensayo versionado es `resultados/demo/20261111-2125`. El volumen `qolqe-perf-datos` queda con la base de la demo, que no afecta a las corridas versionadas.
 
 **Cambio en V-04 (11-nov).** El diseño pedía carga promedio de 1 min < 1.5. En esta Mac la carga no baja de ~3–4 aunque no haya nada corriendo (la sostienen los procesos del sistema: `suggestd`, `mediaanalysisd`, WindowServer), así que ese criterio no se puede cumplir nunca. `correr.sh` ahora decide con el **CPU ocioso del equipo** medido con `top -l 2 -n 0 -s 3` (segunda muestra, 3 s): **≥ 65 %** (`OCIOSO_MIN`). En `corrida.json` quedan los dos valores (`v04.cpu_ocioso_%`, `v04.carga_1_5_15`, `carga_equipo_antes`) y el veredicto muestra el CPU ocioso con la carga como nota. El criterio de validez que pide el enunciado sigue siendo V-01 (CPU de k6 < 80 %), que se mide durante toda la corrida; por la misma razón, el CPU total del equipo se informa en una fila aparte de V-01 que no invalida la corrida, con los minutos en que pasó del 80 %.
 

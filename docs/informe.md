@@ -208,7 +208,7 @@ Más gráficos: [throughput en carga](../tests/performance/resultados/carga/2026
 - Las respuestas 500 del estrés son `database is locked`: 733 de las 829 excepciones del log vienen de ese INSERT (1,202 de 1,280 con 2 CPU).
 - En el colapso con 2 CPU, las 40 plazas del pool de hilos de AnyIO están detenidas en esa línea esperando el bloqueo (`hilos_meseta.txt`).
 - py-spy: `verificar_pin` (PBKDF2) se lleva el 53–63 % de las muestras con 1 CPU (47–63 % según el perfil, contando los de 2 CPU) y la línea 136, el 19.6 % en el colapso con 1 CPU.
-- El colapso llega con el CPU de Qolqe al 75 % (113 % de 200 % con 2 CPU), y duplicar el CPU no duplica la capacidad.
+- El colapso llega con el CPU de Qolqe al 75.5 % (113 % de 200 % con 2 CPU), y duplicar el CPU no duplica la capacidad.
 
 **Recomendaciones.** Sacar la escritura de la sesión del camino crítico del login o usar una base de datos con varios escritores; fallar rápido (503) en lugar de encolar hasta el timeout de 30 s; renovar tokens para pagar menos veces el PBKDF2; corregir el N+1 de movimientos; agregar una clave de idempotencia a las operaciones de dinero (en el colapso hubo operaciones aplicadas cuyo cliente recibió un timeout), y escalonar los logins de la campaña.
 

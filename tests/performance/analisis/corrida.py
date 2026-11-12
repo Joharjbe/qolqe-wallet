@@ -130,7 +130,7 @@ def cargar(carpeta: Path) -> Corrida:
 
 def _completar_k6(c: Corrida) -> None:
     """V-01 usa el CPU de k6 respecto de todo el equipo. psutil lo da por núcleo: se divide entre los núcleos.
-    Si el monitor de Qolqe trae la columna cpu_herramienta (script del scratchpad), se usa como monitor de k6."""
+    Si el monitor de Qolqe trae la columna cpu_herramienta (versión previa del monitor), se usa como monitor de k6."""
     k6 = c.recursos.get("k6")
     qolqe = c.recursos.get("qolqe")
     if k6 is None and qolqe is not None and "cpu_herramienta" in qolqe:
