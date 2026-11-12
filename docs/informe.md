@@ -177,7 +177,7 @@ Informe completo con la plantilla del curso: [`Informe_Rendimiento_Qolqe.docx`](
 |---|---|---|---|
 | Carga | 100 simultáneos, 15 min estables | ¿Cumplimos en hora punta, sin acumular retrasos? | `carga/20261111-1833` |
 | Pico | 100 → 300 → 100 (12:00–12:15) | ¿Cumplimos en el pico de la campaña? ¿Queda el dinero íntegro? | `pico/20261111-1918` |
-| Estrés | Rampa de 100 a 2,400 (k6 la cortó a los 952 s, después de un máximo de 1,144 simultáneos) | ¿Hasta cuántos usuarios podemos crecer? | `estres/20261111-1940` (2 CPU: `escalabilidad/20261111-2103`) |
+| Estrés | Rampa de 100 a 2,400 (k6 la cortó a los 947.7 s, 952 s con la preparación del harness, después de un máximo de 1,144 simultáneos) | ¿Hasta cuántos usuarios podemos crecer? | `estres/20261111-1940` (2 CPU: `escalabilidad/20261111-2103`) |
 | Resistencia | 100 simultáneos, 60 min (proyección a 18 h) | ¿Opera de 6:00 a 24:00 sin reinicios? | `resistencia/20261111-1958` |
 
 **Resultados frente al SLA** (p95 por rango más cercano; carga y resistencia en la fase estable, pico en 12:00–12:15).
@@ -192,7 +192,7 @@ Informe completo con la plantilla del curso: [`Informe_Rendimiento_Qolqe.docx`](
 
 En la resistencia, además, el RSS proyectado a 54,000 sesiones es 92 MB (límite 700) y el p95 no deriva (0.98 × en consultas, 1.01 × en dinero). El pico vuelve a cumplir los umbrales normales en 12:10–12:15 (80 / 123 ms).
 
-**Capacidad.** **850 usuarios simultáneos** cumplen todos los criterios de hora punta con 1 CPU (≈ 25,500 sesiones/h): 8.5 veces la hora punta y 2.8 veces el pico de la campaña. Con 2 CPU, 1,300 (× 1.53, no × 2). El colapso es brusco: entre 876 y 946 simultáneos el p95 pasa de 78 ms a 13.4 s y el throughput cae de 85.2 a 26.1 req/s.
+**Capacidad.** **850 usuarios simultáneos** cumplen todos los criterios de hora punta con 1 CPU (≈ 25,500 sesiones/h): 8.5 veces la hora punta y 2.8 veces el pico de la campaña. Con 2 CPU, 1,300 (× 1.53, no × 2). La hipótesis previa del diseño (≈ 1,500 ± 300 con 1 CPU, informe M-14) queda refutada. El colapso es brusco: entre 876 y 946 simultáneos el p95 pasa de 78 ms a 13.4 s y el throughput cae de 85.2 a 26.1 req/s.
 
 **Gráficos.**
 
@@ -207,12 +207,12 @@ Más gráficos: [throughput en carga](../tests/performance/resultados/carga/2026
 **Cuello de botella.** La escritura de la sesión en SQLite durante el login (`autenticacion.py:136`), sobre un login que ya gasta la mayor parte del CPU en el PBKDF2. Evidencia:
 - Las respuestas 500 del estrés son `database is locked`: 733 de las 829 excepciones del log vienen de ese INSERT (1,202 de 1,280 con 2 CPU).
 - En el colapso con 2 CPU, las 40 plazas del pool de hilos de AnyIO están detenidas en esa línea esperando el bloqueo (`hilos_meseta.txt`).
-- py-spy: `verificar_pin` (PBKDF2) se lleva el 53–63 % de las muestras y la línea 136, el 19.6 % en el colapso con 1 CPU.
+- py-spy: `verificar_pin` (PBKDF2) se lleva el 53–63 % de las muestras con 1 CPU (47–63 % según el perfil, contando los de 2 CPU) y la línea 136, el 19.6 % en el colapso con 1 CPU.
 - El colapso llega con el CPU de Qolqe al 75 % (113 % de 200 % con 2 CPU), y duplicar el CPU no duplica la capacidad.
 
 **Recomendaciones.** Sacar la escritura de la sesión del camino crítico del login o usar una base de datos con varios escritores; fallar rápido (503) en lugar de encolar hasta el timeout de 30 s; renovar tokens para pagar menos veces el PBKDF2; corregir el N+1 de movimientos; agregar una clave de idempotencia a las operaciones de dinero (en el colapso hubo operaciones aplicadas cuyo cliente recibió un timeout), y escalonar los logins de la campaña.
 
-**Limitaciones declaradas.** Laptop compartida con procesos de macOS (en el pico y el estrés el CPU total del equipo pasó del 80 % en algunas ventanas, nunca por k6); el login con 1 VU dio 92 ms frente al límite de 80 ms de la referencia (V-06); V-04 y V-01 se ajustaron durante la ejecución; el estrés lo cortó la red de seguridad del 20 % antes de la meseta, y la resistencia duró 60 min en lugar de 18 h. Detalle en el informe, §5 y §6.
+**Limitaciones declaradas.** Laptop compartida con procesos de macOS (en el pico y el estrés el CPU total del equipo pasó del 80 % en algunas ventanas, nunca por k6); el login con 1 VU dio 92 ms frente al límite de 80 ms de la referencia (V-06); V-04 y V-01 se ajustaron durante la ejecución; el estrés lo cortó la red de seguridad técnica de k6 (20 % de operaciones fallidas acumulado desde el inicio, no es un umbral del SLA) antes de la meseta, y la resistencia duró 60 min en lugar de 18 h. Detalle en el informe, §5 y §6.
 
 ## 5. Defectos encontrados
 

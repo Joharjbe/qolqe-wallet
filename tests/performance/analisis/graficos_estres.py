@@ -10,12 +10,13 @@ from veredicto import d_sesion
 FASES = ("base", "rampa", "meseta")
 
 
-def _marcar_capacidad(ax, cap: dict, rotulo: bool = True) -> None:
-    """Línea vertical en la capacidad y zona roja desde la primera falla sostenida."""
+def _marcar_capacidad(ax, cap: dict, rotulo: bool = True, y_rotulo: float = 0.02) -> None:
+    """Línea vertical en la capacidad y zona roja desde la primera falla sostenida. y_rotulo: altura del rótulo (fracción
+    del eje), para que no tape puntos de las series."""
     if not math.isnan(cap.get("capacidad", math.nan)):
         ax.axvline(cap["capacidad"], color=CRITICO, lw=2, zorder=4)
         if rotulo:
-            ax.annotate(f"capacidad U-08\n≈ {cap['capacidad']:,.0f} usuarios", xy=(cap["capacidad"], 0.02), xycoords=("data", "axes fraction"),
+            ax.annotate(f"capacidad U-08\n≈ {cap['capacidad']:,.0f} usuarios", xy=(cap["capacidad"], y_rotulo), xycoords=("data", "axes fraction"),
                         xytext=(-8, 0), textcoords="offset points", ha="right", va="bottom", fontsize=13, color=CRITICO, fontweight="bold")
     if cap.get("limite_alcanzado"):
         ax.axvspan(cap["L_falla"], ax.get_xlim()[1] if ax.get_xlim()[1] > cap["L_falla"] else cap["L_max"] * 1.05,
@@ -37,7 +38,8 @@ def g6_p95_vs_usuarios(a, ruta) -> None:
         ax.set_yscale("log")
         ax.set_xlim(0, v["L_medida"].max() * 1.05)
         linea_umbral(ax, umbral, f"{uid}\n{umbral:,} ms")
-        _marcar_capacidad(ax, cap, rotulo=ax is ejes[0])
+        # el rótulo va sobre la línea de U-01: abajo taparía las series de consultas más rápidas (saldo, ~3–10 ms)
+        _marcar_capacidad(ax, cap, rotulo=ax is ejes[0], y_rotulo=0.64)
         ax.set_xlabel("usuarios simultáneos (medidos)")
         ax.set_ylabel("p95 (ms, escala log)")
         ax.xaxis.set_major_formatter(MILES)
