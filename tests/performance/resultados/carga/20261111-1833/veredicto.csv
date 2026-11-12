@@ -1,0 +1,48 @@
+seccion,id,criterio,medido,umbral,resultado,n,nota,decide
+validez,V-01,"CPU del generador k6 (% del equipo, máximo de las ventanas)",0.3 %,< 80 %,PASA,,pico de 1 s: 1.4 % del equipo (14 % de un núcleo),True
+validez,V-01,CPU total del equipo (máximo de las ventanas),60.9 %,< 80 %,PASA,,informativo: lo mueven procesos de macOS; ninguna ventana ≥ 80 %,False
+validez,V-02,errores de datos · estable,0 (0.00 %),= 0 (repetir si > 0.1 %),PASA,,,True
+validez,V-03,mezcla lograda · estable (peor operación),0.78 pp,± 2 pp,PASA,,,True
+validez,V-04,"CPU ocioso del equipo antes de empezar (top, 3 s)",81.5 %,≥ 65 %,PASA,,carga de 1 min: 4.23 (diseño < 1.5; solo se registra),True
+validez,V-05,base restaurada idéntica y cpu.max del contenedor,"base True, cpu.max 100000 100000",base idéntica y 100000 100000,PASA,,,True
+validez,V-07,avisos de k6 'Insufficient VUs',0,0,PASA,,,True
+umbral,U-01,Consultas e inicio de sesión: el 95 % en menos de 800 ms,93 ms,< 800 ms,PASA,,12 criterios (ver detalle),True
+umbral,U-02,Operaciones de dinero: el 95 % en menos de 1.5 s,128 ms,"< 1,500 ms",PASA,,4 criterios (ver detalle),True
+umbral,U-03,"En hora punta, no más del 1 % de operaciones fallidas",0.00 %,≤ 1 %,PASA,,1 criterio (ver detalle),True
+umbral,U-04,Sostener el volumen de la hora punta,9.77 req/s,≥ 9.60 req/s,PASA,,2 criterios (ver detalle),True
+umbral,U-05,…sin acumular retrasos,0,= 0,PASA,,3 criterios (ver detalle),True
+umbral,U-06,Campaña: degradación razonable del servicio,—,—,NO APLICA,,se evalúa en pico,True
+umbral,U-07,Ninguna operación de dinero a medias ni aplicada dos veces,0,= 0,PASA,,1 criterio (ver detalle),True
+umbral,U-08,Hasta cuántos usuarios simultáneos podemos crecer,—,—,NO APLICA,,se evalúa en estrés,True
+umbral,U-09,Opera de 6:00 a 24:00 sin reinicios,—,—,NO APLICA,,se evalúa en resistencia,True
+detalle,U-01,p95 grupo consulta · fase estable,93 ms,< 800 ms,PASA,"7,516",lectura literal (S-03),True
+detalle,U-02,p95 grupo dinero · fase estable,128 ms,"< 1,500 ms",PASA,"1,280",lectura literal (S-03),True
+detalle,U-01,p95 grupo otras · fase estable,12 ms,< 800 ms,PASA,433,lectura literal (S-03),True
+detalle,U-01,p95 `alertas` (GET /api/limites/alertas) · fase estable,12 ms,< 800 ms,PASA,89,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `comision` (GET /api/transferencias/comision) · fase estable,12 ms,< 800 ms,PASA,639,por endpoint (S-03),True
+detalle,U-01,p95 `contactos_buscar` (GET /api/contactos?buscar) · fase estable,8 ms,< 800 ms,PASA,483,por endpoint (S-03),True
+detalle,U-01,p95 `contactos_listar` (GET /api/contactos) · fase estable,14 ms,< 800 ms,PASA,483,por endpoint (S-03),True
+detalle,U-01,p95 `deudas` (GET /api/servicios/deudas) · fase estable,7 ms,< 800 ms,PASA,449,por endpoint (S-03),True
+detalle,U-01,p95 `dispositivos` (GET /api/seguridad/dispositivos) · fase estable,12 ms,< 800 ms,PASA,94,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `empresas` (GET /api/servicios/empresas) · fase estable,12 ms,< 800 ms,PASA,449,por endpoint (S-03),True
+detalle,U-01,p95 `limites` (GET /api/limites) · fase estable,12 ms,< 800 ms,PASA,83,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `login` (POST /api/auth/login) · fase estable,105 ms,< 800 ms,PASA,750,por endpoint (S-03),True
+detalle,U-01,p95 `movimientos` (GET /api/movimientos) · fase estable,38 ms,< 800 ms,PASA,689,por endpoint (S-03),True
+detalle,U-02,p95 `pagar` (POST /api/servicios/pagos) · fase estable,12 ms,"< 1,500 ms",PASA,178,por endpoint (S-03),True
+detalle,U-01,p95 `perfil` (GET /api/cuentas/me) · fase estable,6 ms,< 800 ms,PASA,"1,339",por endpoint (S-03),True
+detalle,U-02,p95 `recargar` (POST /api/recargas) · fase estable,13 ms,"< 1,500 ms",PASA,463,por endpoint (S-03),True
+detalle,U-01,p95 `recargas_config` (GET /api/recargas/configuracion) · fase estable,9 ms,< 800 ms,PASA,463,por endpoint (S-03),True
+detalle,U-01,p95 `saldo` (GET /api/cuentas/me/saldo) · fase estable,13 ms,< 800 ms,PASA,"1,339",por endpoint (S-03),True
+detalle,U-01,p95 `sesiones` (GET /api/seguridad/sesiones) · fase estable,12 ms,< 800 ms,PASA,84,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `solicitudes` (GET /api/solicitudes) · fase estable,12 ms,< 800 ms,PASA,83,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-02,p95 `transferir` (POST /api/transferencias) · fase estable,134 ms,"< 1,500 ms",PASA,639,por endpoint (S-03),True
+detalle,U-03,error de rendimiento · fase estable,0.00 %,≤ 1 %,PASA,"5,245","operacion_fallida (una muestra por operación, S-06)",True
+detalle,U-04,throughput atendido · fase estable,9.77 req/s,≥ 9.60 req/s,PASA,"8,796",ofrecido por el modelo: 9.78 req/s (M-08),True
+detalle,U-04,sesiones completadas por minuto · fase estable,49.6 /min,≥ 50/min (98 %: ≥ 49),PASA,744,S-04: misma tolerancia del 98 % que el throughput,True
+detalle,U-05,"(a) sesiones descartadas (dropped_iterations), toda la corrida",0,= 0,PASA,,,True
+detalle,U-05,(b) ventanas de 1 min con p95 sobre U-01/U-02 · fase estable,0 de 15,0,PASA,,"peor ventana: consulta 101 ms, dinero 141 ms",True
+detalle,U-05,(c) sesiones simultáneas por ventana de 1 min · fase estable,98.8 a 101.0,90–110,PASA,,Ley de Little: L = λ·W = 100 (M-03),True
+detalle,U-07,descuadres en C1–C6 (verificacion_dinero.txt),0,= 0,PASA,,línea TOTAL,True
+detalle,U-07,operaciones de dinero sin respuesta (status 0),0,se concilian en C6,INFO,,,False
+detalle,§2.1,p95 de http_req_connecting,1.3 ms,"≤ 10 ms (si no, se suma)",INFO,,no se suma,False
+detalle,§6.3,throttling del cgroup en la corrida,"2 períodos, 0.0 s",diagnóstico (H1),INFO,,,False

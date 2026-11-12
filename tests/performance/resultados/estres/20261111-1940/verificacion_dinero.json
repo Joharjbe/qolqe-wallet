@@ -1,0 +1,148 @@
+{
+ "pasa": true,
+ "chequeos": {
+  "ultimos": {
+   "columnas": [
+    "movimientos",
+    "transferencias",
+    "recargas",
+    "pagos",
+    "sesiones"
+   ],
+   "filas": [
+    [
+     3000031,
+     0,
+     1,
+     0,
+     3000
+    ]
+   ],
+   "total": 1,
+   "segundos": 0.0
+  },
+  "C1_conservacion": {
+   "columnas": [
+    "antes_cent",
+    "despues_cent",
+    "recargas_cent",
+    "pagos_cent",
+    "comisiones_cent",
+    "interbancarias_cent",
+    "descuadre_cent",
+    "movimientos_neto_cent",
+    "descuadre_libro_cent"
+   ],
+   "filas": [
+    [
+     3000515000,
+     2994220000,
+     4605000,
+     1690000,
+     0,
+     0,
+     0,
+     -6295000,
+     0
+    ]
+   ],
+   "total": 1,
+   "segundos": 0.001
+  },
+  "C2_libro_mayor": {
+   "columnas": [
+    "usuario_id",
+    "antes_cent",
+    "despues_cent",
+    "movimientos_cent",
+    "descuadre_cent"
+   ],
+   "filas": [],
+   "total": 0,
+   "segundos": 0.222
+  },
+  "C3_operacion_movimientos": {
+   "columnas": [
+    "problema",
+    "codigo",
+    "tipo",
+    "operaciones",
+    "movimientos"
+   ],
+   "filas": [],
+   "total": 0,
+   "segundos": 0.016
+  },
+  "C4_pagos": {
+   "columnas": [
+    "problema",
+    "deuda_id",
+    "n"
+   ],
+   "filas": [],
+   "total": 0,
+   "segundos": 0.009
+  },
+  "C5_reglas": {
+   "columnas": [
+    "problema",
+    "usuario_id",
+    "valor_cent"
+   ],
+   "filas": [],
+   "total": 0,
+   "segundos": 0.001
+  },
+  "C6_conteos": {
+   "columnas": [
+    "transferencias",
+    "recargas",
+    "pagos",
+    "logins",
+    "movimientos"
+   ],
+   "filas": [
+    [
+     1988,
+     1332,
+     521,
+     2695,
+     5829
+    ]
+   ],
+   "total": 1,
+   "segundos": 0.0
+  }
+ },
+ "c6": [
+  {
+   "tipo": "transferencias",
+   "bd": 1988,
+   "confirmadas": 1986,
+   "sin_respuesta": 29,
+   "cortadas": 0,
+   "diferencia": 2,
+   "ok": true,
+   "explicacion": "aplicadas sin confirmaci\u00f3n: el cliente no recibi\u00f3 la respuesta (timeout o sesi\u00f3n cortada por k6 con la petici\u00f3n en vuelo)"
+  },
+  {
+   "tipo": "recargas",
+   "bd": 1332,
+   "confirmadas": 1332,
+   "sin_respuesta": 68,
+   "cortadas": 0,
+   "diferencia": 0,
+   "ok": true
+  },
+  {
+   "tipo": "pagos",
+   "bd": 521,
+   "confirmadas": 521,
+   "sin_respuesta": 1,
+   "cortadas": 0,
+   "diferencia": 0,
+   "ok": true
+  }
+ ],
+ "k6_logins_ok": 2694
+}

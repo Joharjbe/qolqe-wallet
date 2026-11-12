@@ -1,0 +1,3 @@
+py-spy> Sampling process 100 times a second for 60 seconds. Press Control-C to exit.
+
+py-spy> Wrote flamegraph data to '/out/perfil_saturacion.svg'. Samples: 2519 Errors: 6

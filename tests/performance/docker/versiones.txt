@@ -1,0 +1,28 @@
+# Restricciones (-c) de la imagen de rendimiento: las mismas versiones que el .venv del repo
+# (`.venv/bin/pip freeze`, 11-nov-2026), para que Qolqe corra en Docker con lo mismo que en local y en el
+# pipeline (diseño §6.1). requirements.txt y constraints.txt (FastAPI 0.117.1, DEF-07) se aplican además.
+
+# Qolqe: fastapi, uvicorn[standard] y pyjwt, con sus dependencias
+fastapi==0.117.1
+starlette==0.48.0
+pydantic==2.14.1
+pydantic_core==2.50.1
+annotated-types==0.8.0
+typing_extensions==4.16.0
+typing-inspection==0.4.4
+anyio==4.15.1
+idna==3.20
+uvicorn==0.54.0
+click==8.5.0
+h11==0.16.0
+httptools==0.9.0
+python-dotenv==1.2.4
+PyYAML==6.0.3
+uvloop==0.23.0
+watchfiles==1.3.0
+websockets==17.3
+PyJWT==2.15.1
+
+# Medición (no son de Qolqe): psutil como en el .venv (monitor.py) y py-spy para el perfil del estrés (§7.1)
+psutil==7.2.2
+py-spy==0.4.3

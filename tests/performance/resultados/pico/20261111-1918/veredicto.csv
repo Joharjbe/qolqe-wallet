@@ -1,0 +1,107 @@
+seccion,id,criterio,medido,umbral,resultado,n,nota,decide
+validez,V-01,"CPU del generador k6 (% del equipo, máximo de las ventanas)",0.3 %,< 80 %,PASA,,pico de 1 s: 1.9 % del equipo (18 % de un núcleo),True
+validez,V-01,CPU total del equipo (máximo de las ventanas),90.2 %,< 80 %,FALLA,,"informativo: lo mueven procesos de macOS; ventanas ≥ 80 % en el minuto 10.2, 10.8",False
+validez,V-02,errores de datos · campaña,0 (0.00 %),= 0 (repetir si > 0.1 %),PASA,,,True
+validez,V-03,mezcla lograda · campaña (peor operación),0.48 pp,± 2 pp,PASA,,,True
+validez,V-04,"CPU ocioso del equipo antes de empezar (top, 3 s)",81.4 %,≥ 65 %,PASA,,carga de 1 min: 5.05 (diseño < 1.5; solo se registra),True
+validez,V-05,base restaurada idéntica y cpu.max del contenedor,"base True, cpu.max 100000 100000",base idéntica y 100000 100000,PASA,,,True
+validez,V-07,avisos de k6 'Insufficient VUs',0,0,PASA,,solo decide en carga y resistencia,False
+umbral,U-01,Consultas e inicio de sesión: el 95 % en menos de 800 ms,—,—,NO APLICA,,se evalúa en carga y resistencia,True
+umbral,U-02,Operaciones de dinero: el 95 % en menos de 1.5 s,—,—,NO APLICA,,se evalúa en carga y resistencia,True
+umbral,U-03,"En hora punta, no más del 1 % de operaciones fallidas",—,—,NO APLICA,,se evalúa en carga y resistencia,True
+umbral,U-04,Sostener el volumen de la hora punta,—,—,NO APLICA,,se evalúa en carga y resistencia,True
+umbral,U-05,…sin acumular retrasos,—,—,NO APLICA,,se evalúa en carga y resistencia,True
+umbral,U-06,Campaña: degradación razonable del servicio,78 ms,"< 1,600 ms",PASA,,34 criterios (ver detalle),True
+umbral,U-07,Ninguna operación de dinero a medias ni aplicada dos veces,0,= 0,PASA,,1 criterio (ver detalle),True
+umbral,U-08,Hasta cuántos usuarios simultáneos podemos crecer,—,—,NO APLICA,,se evalúa en estrés,True
+umbral,U-09,Opera de 6:00 a 24:00 sin reinicios,—,—,NO APLICA,,se evalúa en resistencia,True
+detalle,U-06,p95 grupo consulta · campaña,78 ms,"< 1,600 ms",PASA,"12,419",S-05: 2 × el umbral normal,True
+detalle,U-06,p95 grupo dinero · campaña,123 ms,"< 3,000 ms",PASA,"2,166",S-05: 2 × el umbral normal,True
+detalle,U-06,p95 grupo otras · campaña,8 ms,"< 1,600 ms",PASA,770,S-05: 2 × el umbral normal,True
+detalle,U-06,p95 `alertas` (GET /api/limites/alertas) · campaña,9 ms,"< 1,600 ms",PASA,166,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-06,p95 `comision` (GET /api/transferencias/comision) · campaña,8 ms,"< 1,600 ms",PASA,"1,115",S-05: 2 × el umbral normal,True
+detalle,U-06,p95 `contactos_buscar` (GET /api/contactos?buscar) · campaña,8 ms,"< 1,600 ms",PASA,754,S-05: 2 × el umbral normal,True
+detalle,U-06,p95 `contactos_listar` (GET /api/contactos) · campaña,10 ms,"< 1,600 ms",PASA,754,S-05: 2 × el umbral normal,True
+detalle,U-06,p95 `deudas` (GET /api/servicios/deudas) · campaña,7 ms,"< 1,600 ms",PASA,728,S-05: 2 × el umbral normal,True
+detalle,U-06,p95 `dispositivos` (GET /api/seguridad/dispositivos) · campaña,8 ms,"< 1,600 ms",PASA,170,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-06,p95 `empresas` (GET /api/servicios/empresas) · campaña,7 ms,"< 1,600 ms",PASA,728,S-05: 2 × el umbral normal,True
+detalle,U-06,p95 `limites` (GET /api/limites) · campaña,8 ms,"< 1,600 ms",PASA,153,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-06,p95 `login` (POST /api/auth/login) · campaña,97 ms,"< 1,600 ms",PASA,"1,250",S-05: 2 × el umbral normal,True
+detalle,U-06,p95 `movimientos` (GET /api/movimientos) · campaña,34 ms,"< 1,600 ms",PASA,"1,145",S-05: 2 × el umbral normal,True
+detalle,U-06,p95 `pagar` (POST /api/servicios/pagos) · campaña,13 ms,"< 3,000 ms",PASA,292,S-05: 2 × el umbral normal,True
+detalle,U-06,p95 `perfil` (GET /api/cuentas/me) · campaña,6 ms,"< 1,600 ms",PASA,"2,208",S-05: 2 × el umbral normal,True
+detalle,U-06,p95 `recargar` (POST /api/recargas) · campaña,14 ms,"< 3,000 ms",PASA,759,S-05: 2 × el umbral normal,True
+detalle,U-06,p95 `recargas_config` (GET /api/recargas/configuracion) · campaña,6 ms,"< 1,600 ms",PASA,759,S-05: 2 × el umbral normal,True
+detalle,U-06,p95 `saldo` (GET /api/cuentas/me/saldo) · campaña,8 ms,"< 1,600 ms",PASA,"2,208",S-05: 2 × el umbral normal,True
+detalle,U-06,p95 `sesiones` (GET /api/seguridad/sesiones) · campaña,8 ms,"< 1,600 ms",PASA,135,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-06,p95 `solicitudes` (GET /api/solicitudes) · campaña,8 ms,"< 1,600 ms",PASA,146,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-06,p95 `transferir` (POST /api/transferencias) · campaña,126 ms,"< 3,000 ms",PASA,"1,115",S-05: 2 × el umbral normal,True
+detalle,U-06,error de rendimiento · campaña,0.00 %,≤ 1 %,PASA,"8,729","operacion_fallida (una muestra por operación, S-06)",True
+detalle,U-06,sesiones descartadas · campaña,0,= 0,PASA,,,True
+detalle,U-06,p95 grupo consulta · recuperación 12:10–12:15,80 ms,< 800 ms,PASA,"2,486",recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 grupo dinero · recuperación 12:10–12:15,123 ms,"< 1,500 ms",PASA,418,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 grupo otras · recuperación 12:10–12:15,9 ms,< 800 ms,PASA,149,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 `alertas` (GET /api/limites/alertas) · recuperación 12:10–12:15,9 ms,< 800 ms,PASA,32,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-06,p95 `comision` (GET /api/transferencias/comision) · recuperación 12:10–12:15,8 ms,< 800 ms,PASA,220,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 `contactos_buscar` (GET /api/contactos?buscar) · recuperación 12:10–12:15,8 ms,< 800 ms,PASA,159,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 `contactos_listar` (GET /api/contactos) · recuperación 12:10–12:15,10 ms,< 800 ms,PASA,159,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 `deudas` (GET /api/servicios/deudas) · recuperación 12:10–12:15,7 ms,< 800 ms,PASA,132,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 `dispositivos` (GET /api/seguridad/dispositivos) · recuperación 12:10–12:15,7 ms,< 800 ms,PASA,31,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-06,p95 `empresas` (GET /api/servicios/empresas) · recuperación 12:10–12:15,8 ms,< 800 ms,PASA,132,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 `limites` (GET /api/limites) · recuperación 12:10–12:15,8 ms,< 800 ms,PASA,31,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-06,p95 `login` (POST /api/auth/login) · recuperación 12:10–12:15,97 ms,< 800 ms,PASA,250,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 `movimientos` (GET /api/movimientos) · recuperación 12:10–12:15,33 ms,< 800 ms,PASA,233,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 `pagar` (POST /api/servicios/pagos) · recuperación 12:10–12:15,16 ms,"< 1,500 ms",PASA,48,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 `perfil` (GET /api/cuentas/me) · recuperación 12:10–12:15,7 ms,< 800 ms,PASA,451,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 `recargar` (POST /api/recargas) · recuperación 12:10–12:15,15 ms,"< 1,500 ms",PASA,150,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 `recargas_config` (GET /api/recargas/configuracion) · recuperación 12:10–12:15,7 ms,< 800 ms,PASA,150,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 `saldo` (GET /api/cuentas/me/saldo) · recuperación 12:10–12:15,9 ms,< 800 ms,PASA,451,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-06,p95 `sesiones` (GET /api/seguridad/sesiones) · recuperación 12:10–12:15,10 ms,< 800 ms,PASA,25,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-06,p95 `solicitudes` (GET /api/solicitudes) · recuperación 12:10–12:15,10 ms,< 800 ms,PASA,30,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-06,p95 `transferir` (POST /api/transferencias) · recuperación 12:10–12:15,125 ms,"< 1,500 ms",PASA,220,recuperación: se vuelve a cumplir U-01/U-02,True
+detalle,U-01,p95 grupo consulta · campaña frente al umbral normal,78 ms,< 800 ms,PASA,"12,419",S-05: informativo,False
+detalle,U-02,p95 grupo dinero · campaña frente al umbral normal,123 ms,"< 1,500 ms",PASA,"2,166",S-05: informativo,False
+detalle,U-01,p95 grupo otras · campaña frente al umbral normal,8 ms,< 800 ms,PASA,770,S-05: informativo,False
+detalle,U-01,p95 `alertas` (GET /api/limites/alertas) · campaña frente al umbral normal,9 ms,< 800 ms,PASA,166,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `comision` (GET /api/transferencias/comision) · campaña frente al umbral normal,8 ms,< 800 ms,PASA,"1,115",S-05: informativo,False
+detalle,U-01,p95 `contactos_buscar` (GET /api/contactos?buscar) · campaña frente al umbral normal,8 ms,< 800 ms,PASA,754,S-05: informativo,False
+detalle,U-01,p95 `contactos_listar` (GET /api/contactos) · campaña frente al umbral normal,10 ms,< 800 ms,PASA,754,S-05: informativo,False
+detalle,U-01,p95 `deudas` (GET /api/servicios/deudas) · campaña frente al umbral normal,7 ms,< 800 ms,PASA,728,S-05: informativo,False
+detalle,U-01,p95 `dispositivos` (GET /api/seguridad/dispositivos) · campaña frente al umbral normal,8 ms,< 800 ms,PASA,170,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `empresas` (GET /api/servicios/empresas) · campaña frente al umbral normal,7 ms,< 800 ms,PASA,728,S-05: informativo,False
+detalle,U-01,p95 `limites` (GET /api/limites) · campaña frente al umbral normal,8 ms,< 800 ms,PASA,153,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `login` (POST /api/auth/login) · campaña frente al umbral normal,97 ms,< 800 ms,PASA,"1,250",S-05: informativo,False
+detalle,U-01,p95 `movimientos` (GET /api/movimientos) · campaña frente al umbral normal,34 ms,< 800 ms,PASA,"1,145",S-05: informativo,False
+detalle,U-02,p95 `pagar` (POST /api/servicios/pagos) · campaña frente al umbral normal,13 ms,"< 1,500 ms",PASA,292,S-05: informativo,False
+detalle,U-01,p95 `perfil` (GET /api/cuentas/me) · campaña frente al umbral normal,6 ms,< 800 ms,PASA,"2,208",S-05: informativo,False
+detalle,U-02,p95 `recargar` (POST /api/recargas) · campaña frente al umbral normal,14 ms,"< 1,500 ms",PASA,759,S-05: informativo,False
+detalle,U-01,p95 `recargas_config` (GET /api/recargas/configuracion) · campaña frente al umbral normal,6 ms,< 800 ms,PASA,759,S-05: informativo,False
+detalle,U-01,p95 `saldo` (GET /api/cuentas/me/saldo) · campaña frente al umbral normal,8 ms,< 800 ms,PASA,"2,208",S-05: informativo,False
+detalle,U-01,p95 `sesiones` (GET /api/seguridad/sesiones) · campaña frente al umbral normal,8 ms,< 800 ms,PASA,135,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `solicitudes` (GET /api/solicitudes) · campaña frente al umbral normal,8 ms,< 800 ms,PASA,146,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-02,p95 `transferir` (POST /api/transferencias) · campaña frente al umbral normal,126 ms,"< 1,500 ms",PASA,"1,115",S-05: informativo,False
+detalle,U-01,p95 grupo consulta · base 11:58–12:00,80 ms,< 800 ms,PASA,"1,025",informativo: hora punta antes del salto,False
+detalle,U-02,p95 grupo dinero · base 11:58–12:00,123 ms,"< 1,500 ms",PASA,166,informativo: hora punta antes del salto,False
+detalle,U-01,p95 grupo otras · base 11:58–12:00,8 ms,< 800 ms,PASA,68,informativo: hora punta antes del salto,False
+detalle,U-01,p95 `alertas` (GET /api/limites/alertas) · base 11:58–12:00,14 ms,< 800 ms,PASA,11,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `comision` (GET /api/transferencias/comision) · base 11:58–12:00,7 ms,< 800 ms,PASA,91,informativo: hora punta antes del salto,False
+detalle,U-01,p95 `contactos_buscar` (GET /api/contactos?buscar) · base 11:58–12:00,6 ms,< 800 ms,PASA,55,informativo: hora punta antes del salto,False
+detalle,U-01,p95 `contactos_listar` (GET /api/contactos) · base 11:58–12:00,8 ms,< 800 ms,PASA,55,informativo: hora punta antes del salto,False
+detalle,U-01,p95 `deudas` (GET /api/servicios/deudas) · base 11:58–12:00,5 ms,< 800 ms,PASA,65,informativo: hora punta antes del salto,False
+detalle,U-01,p95 `dispositivos` (GET /api/seguridad/dispositivos) · base 11:58–12:00,11 ms,< 800 ms,PASA,15,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `empresas` (GET /api/servicios/empresas) · base 11:58–12:00,7 ms,< 800 ms,PASA,65,informativo: hora punta antes del salto,False
+detalle,U-01,p95 `limites` (GET /api/limites) · base 11:58–12:00,7 ms,< 800 ms,PASA,15,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `login` (POST /api/auth/login) · base 11:58–12:00,91 ms,< 800 ms,PASA,100,informativo: hora punta antes del salto,False
+detalle,U-01,p95 `movimientos` (GET /api/movimientos) · base 11:58–12:00,26 ms,< 800 ms,PASA,89,informativo: hora punta antes del salto,False
+detalle,U-02,p95 `pagar` (POST /api/servicios/pagos) · base 11:58–12:00,9 ms,"< 1,500 ms",PASA,20,informativo: hora punta antes del salto,False
+detalle,U-01,p95 `perfil` (GET /api/cuentas/me) · base 11:58–12:00,4 ms,< 800 ms,PASA,191,informativo: hora punta antes del salto,False
+detalle,U-02,p95 `recargar` (POST /api/recargas) · base 11:58–12:00,11 ms,"< 1,500 ms",PASA,55,informativo: hora punta antes del salto,False
+detalle,U-01,p95 `recargas_config` (GET /api/recargas/configuracion) · base 11:58–12:00,5 ms,< 800 ms,PASA,55,informativo: hora punta antes del salto,False
+detalle,U-01,p95 `saldo` (GET /api/cuentas/me/saldo) · base 11:58–12:00,7 ms,< 800 ms,PASA,191,informativo: hora punta antes del salto,False
+detalle,U-01,p95 `sesiones` (GET /api/seguridad/sesiones) · base 11:58–12:00,8 ms,< 800 ms,PASA,15,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `solicitudes` (GET /api/solicitudes) · base 11:58–12:00,7 ms,< 800 ms,PASA,12,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-02,p95 `transferir` (POST /api/transferencias) · base 11:58–12:00,132 ms,"< 1,500 ms",PASA,91,informativo: hora punta antes del salto,False
+detalle,U-07,descuadres en C1–C6 (verificacion_dinero.txt),0,= 0,PASA,,línea TOTAL,True
+detalle,U-07,operaciones de dinero sin respuesta (status 0),0,se concilian en C6,INFO,,,False
+detalle,§2.1,p95 de http_req_connecting,0.6 ms,"≤ 10 ms (si no, se suma)",INFO,,no se suma,False
+detalle,§6.3,throttling del cgroup en la corrida,"18 períodos, 0.8 s",diagnóstico (H1),INFO,,,False

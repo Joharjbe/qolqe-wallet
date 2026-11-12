@@ -1,0 +1,164 @@
+{
+ "escenario": "pico",
+ "humo": null,
+ "inicio": {
+  "hora": "2026-11-11T19:18:14-05:00",
+  "epoch": 1794442694.981
+ },
+ "parametros": {
+  "ESCALA": "1",
+  "BASE_URL": "http://127.0.0.1:8090",
+  "CPUS": "1",
+  "MEMORIA": "1g",
+  "USUARIOS_CSV": "/Users/johar/Documents/26_2/4_PRUEBAS/qolqe-wallet-p3/tests/performance/datos/usuarios.csv"
+ },
+ "commit": "cba543f5fc62ed9378d98877c46f29ee616cf281",
+ "cambios_sin_commit": true,
+ "versiones": {
+  "k6": "k6 v2.3.0 (commit/devel, go1.27.1, darwin/arm64)",
+  "docker": "29.8.2",
+  "imagen": "qolqe-perf:p3",
+  "imagen_id": "sha256:5edc50cce9c7471872c7aa166f6b1e790e6e0f1cab7bff601486b753e568c577"
+ },
+ "v04": {
+  "criterio": "CPU ocioso (top, 3 s) >= 65 %",
+  "cpu_ocioso_%": 81.37,
+  "ocioso_min_%": 65.0,
+  "carga_1_5_15": [
+   5.05,
+   4.84,
+   5.22
+  ],
+  "carga_max_diseno": 1.5,
+  "ok": true,
+  "hora": "2026-11-11T19:18:12-05:00"
+ },
+ "v04_al_iniciar": {
+  "criterio": "CPU ocioso (top, 3 s) >= 65 %",
+  "cpu_ocioso_%": 79.55,
+  "ocioso_min_%": 65.0,
+  "carga_1_5_15": [
+   4.73,
+   4.78,
+   5.2
+  ],
+  "carga_max_diseno": 1.5,
+  "ok": true
+ },
+ "carga_equipo_antes": 5.05,
+ "cpu_ocioso_antes": 81.37,
+ "v04_ok": true,
+ "base_identica": true,
+ "cpu_max": "100000 100000",
+ "memory_max": "1073741824",
+ "nucleos": 10,
+ "v05": {
+  "base_igual_a_base_perf": true,
+  "cpu_max": "100000 100000",
+  "cpu_max_ok": true,
+  "memory_max": "1073741824",
+  "memory_max_ok": true,
+  "contenedor_iniciado": "2026-11-12T00:18:13.480770001Z",
+  "ok": true
+ },
+ "base_perf": {
+  "fecha": "2026-11-11",
+  "n": 3000,
+  "es_de_hoy": true,
+  "huella": {
+   "usuarios": 3006,
+   "usuarios_carga": 3000,
+   "saldo_total_cent": 3000515000,
+   "contactos": 15005,
+   "deudas_pendientes": 90210,
+   "max_id_movimientos": 3000031,
+   "max_id_transferencias": 0,
+   "max_id_recargas": 1,
+   "max_id_pagos": 0,
+   "max_id_sesiones": 3000,
+   "max_id_notificaciones": 2800
+  }
+ },
+ "huella_restaurada": {
+  "usuarios": 3006,
+  "usuarios_carga": 3000,
+  "saldo_total_cent": 3000515000,
+  "contactos": 15005,
+  "deudas_pendientes": 90210,
+  "max_id_movimientos": 3000031,
+  "max_id_transferencias": 0,
+  "max_id_recargas": 1,
+  "max_id_pagos": 0,
+  "max_id_sesiones": 3000,
+  "max_id_notificaciones": 2800
+ },
+ "cpu_stat_antes": {
+  "usage_usec": 746399,
+  "user_usec": 670154,
+  "system_usec": 76245,
+  "nice_usec": 0,
+  "nr_periods": 26,
+  "nr_throttled": 0,
+  "throttled_usec": 0,
+  "nr_bursts": 0,
+  "burst_usec": 0
+ },
+ "fin": {
+  "hora": "2026-11-11T19:39:18-05:00",
+  "epoch": 1794443958.948
+ },
+ "duracion_s": 1264.0,
+ "cpu_stat_despues": {
+  "usage_usec": 173233066,
+  "user_usec": 160044983,
+  "system_usec": 13188082,
+  "nice_usec": 0,
+  "nr_periods": 11360,
+  "nr_throttled": 18,
+  "throttled_usec": 794301,
+  "nr_bursts": 0,
+  "burst_usec": 0
+ },
+ "cpu_stat_delta": {
+  "usage_usec": 172486667,
+  "user_usec": 159374829,
+  "system_usec": 13111837,
+  "nice_usec": 0,
+  "nr_periods": 11334,
+  "nr_throttled": 18,
+  "throttled_usec": 794301,
+  "nr_bursts": 0,
+  "burst_usec": 0
+ },
+ "codigo_salida_k6": 0,
+ "codigo_integridad": 0,
+ "archivos": [
+  "codigo_salida_k6.txt",
+  "consola.txt",
+  "corrida.json",
+  "errores_datos_ventanas.csv",
+  "graficos/G1_tiempo_respuesta.png",
+  "graficos/G2_throughput.png",
+  "graficos/G3_errores.png",
+  "graficos/G4_usuarios_simultaneos.png",
+  "graficos/G5_recursos.png",
+  "metricas_k6.csv.gz",
+  "muestras.csv.gz",
+  "peticiones.csv.gz",
+  "qolqe.log.gz",
+  "recursos_docker.csv",
+  "recursos_k6.csv",
+  "recursos_qolqe.csv",
+  "reporte.html",
+  "resumen.json",
+  "resumen.txt",
+  "tabla_resumen.csv",
+  "tabla_resumen.md",
+  "ventanas.csv",
+  "veredicto.csv",
+  "veredicto.md",
+  "verificacion_dinero.json",
+  "verificacion_dinero.txt"
+ ],
+ "notas_operador": "Repetición del pico 20261111-1852 (Docker Desktop se cerró en su drenaje; ver descartadas/). V-01: k6 ≤ 0.3 % del equipo por ventana (2.9 % en el pico de 1 s); el CPU total del equipo pasó del 80 % en las ventanas de los minutos 10.25–11.25 (90 %, 83 %) por procesos de macOS, con el login subiendo de ~85 a 145 ms de p95 en esas ventanas, muy lejos de 1,600 ms."
+}

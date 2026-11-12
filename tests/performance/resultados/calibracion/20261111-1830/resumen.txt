@@ -1,0 +1,9 @@
+
+Qolqe · escenario calibracion · 2026-11-11T18:30:45.603-05:00 → 2026-11-11T18:32:56.656-05:00 · http://127.0.0.1:8090
+Umbrales (k6 termina con código 99 si alguno falla):
+  ✓ validez: sin errores de rendimiento  rate==0        medido       0.00 % (n=280)   operacion_fallida
+  ✓ V-02 sin errores de datos            count==0       medido            0   errores_datos
+Veredicto: 2 de 2 umbrales cumplidos con muestras → PASA   (✓ cumple · ✗ falla · ○ sin muestras)
+Peticiones 471 (3.59 req/s en toda la corrida) · sesiones 40 · descartadas 0 · VUs máx. 1
+Operaciones fallidas (rendimiento) 0.00 % · errores de rendimiento 0 · errores de datos 0 · dinero confirmado 70 · dinero sin respuesta 0
+http_req_duration total: p50 7.7 ms · p95 92.4 ms · http_req_connecting p95 0.00 ms

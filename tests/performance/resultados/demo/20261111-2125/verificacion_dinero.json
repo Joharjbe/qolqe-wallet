@@ -1,0 +1,149 @@
+{
+ "pasa": true,
+ "chequeos": {
+  "ultimos": {
+   "columnas": [
+    "movimientos",
+    "transferencias",
+    "recargas",
+    "pagos",
+    "sesiones"
+   ],
+   "filas": [
+    [
+     3000031,
+     0,
+     1,
+     0,
+     3000
+    ]
+   ],
+   "total": 1,
+   "segundos": 0.0
+  },
+  "C1_conservacion": {
+   "columnas": [
+    "antes_cent",
+    "despues_cent",
+    "recargas_cent",
+    "pagos_cent",
+    "comisiones_cent",
+    "interbancarias_cent",
+    "descuadre_cent",
+    "movimientos_neto_cent",
+    "descuadre_libro_cent"
+   ],
+   "filas": [
+    [
+     3000515000,
+     3000347930,
+     116000,
+     51070,
+     0,
+     0,
+     0,
+     -167070,
+     0
+    ]
+   ],
+   "total": 1,
+   "segundos": 0.0
+  },
+  "C2_libro_mayor": {
+   "columnas": [
+    "usuario_id",
+    "antes_cent",
+    "despues_cent",
+    "movimientos_cent",
+    "descuadre_cent"
+   ],
+   "filas": [],
+   "total": 0,
+   "segundos": 0.166
+  },
+  "C3_operacion_movimientos": {
+   "columnas": [
+    "problema",
+    "codigo",
+    "tipo",
+    "operaciones",
+    "movimientos"
+   ],
+   "filas": [],
+   "total": 0,
+   "segundos": 0.001
+  },
+  "C4_pagos": {
+   "columnas": [
+    "problema",
+    "deuda_id",
+    "n"
+   ],
+   "filas": [],
+   "total": 0,
+   "segundos": 0.004
+  },
+  "C5_reglas": {
+   "columnas": [
+    "problema",
+    "usuario_id",
+    "valor_cent"
+   ],
+   "filas": [],
+   "total": 0,
+   "segundos": 0.0
+  },
+  "C6_conteos": {
+   "columnas": [
+    "transferencias",
+    "recargas",
+    "pagos",
+    "logins",
+    "movimientos"
+   ],
+   "filas": [
+    [
+     62,
+     40,
+     16,
+     168,
+     180
+    ]
+   ],
+   "total": 1,
+   "segundos": 0.0
+  }
+ },
+ "c6": [
+  {
+   "tipo": "transferencias",
+   "bd": 62,
+   "confirmadas": 52,
+   "sin_respuesta": 0,
+   "cortadas": 10,
+   "diferencia": 10,
+   "ok": true,
+   "explicacion": "aplicadas sin confirmaci\u00f3n: el cliente no recibi\u00f3 la respuesta (timeout o sesi\u00f3n cortada por k6 con la petici\u00f3n en vuelo)"
+  },
+  {
+   "tipo": "recargas",
+   "bd": 40,
+   "confirmadas": 34,
+   "sin_respuesta": 0,
+   "cortadas": 7,
+   "diferencia": 6,
+   "ok": true,
+   "explicacion": "aplicadas sin confirmaci\u00f3n: el cliente no recibi\u00f3 la respuesta (timeout o sesi\u00f3n cortada por k6 con la petici\u00f3n en vuelo)"
+  },
+  {
+   "tipo": "pagos",
+   "bd": 16,
+   "confirmadas": 16,
+   "sin_respuesta": 0,
+   "cortadas": 0,
+   "diferencia": 0,
+   "ok": true
+  }
+ ],
+ "k6_logins_ok": 147
+}

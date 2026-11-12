@@ -1,0 +1,16 @@
+
+Qolqe · escenario demo · 2026-11-11T21:26:07.246-05:00 → 2026-11-11T21:28:32.254-05:00 · http://127.0.0.1:8090
+Umbrales (k6 termina con código 99 si alguno falla):
+  ✓ U-01 demo_hora_punta: consultas              p(95)<800      medido     103.0 ms (n=387)   http_req_duration{scenario:demo_hora_punta,grupo:consulta}
+  ✓ U-01 demo_hora_punta: login                  p(95)<800      medido     105.7 ms (n=84)   http_req_duration{scenario:demo_hora_punta,ep:login}
+  ✓ U-02 demo_hora_punta: dinero                 p(95)<1500     medido     136.7 ms (n=43)   http_req_duration{scenario:demo_hora_punta,grupo:dinero}
+  ✓ U-03 demo_hora_punta: operaciones fallidas   rate<=0.01     medido       0.00 % (n=276)   operacion_fallida{scenario:demo_hora_punta}
+  ✗ U-01 demo_sin_pausa: consultas               p(95)<800      medido   15647.8 ms (n=689)   http_req_duration{scenario:demo_sin_pausa,grupo:consulta}
+  ✗ U-01 demo_sin_pausa: login                   p(95)<800      medido   17857.7 ms (n=234)   http_req_duration{scenario:demo_sin_pausa,ep:login}
+  ✗ U-02 demo_sin_pausa: dinero                  p(95)<1500     medido   11522.3 ms (n=70)   http_req_duration{scenario:demo_sin_pausa,grupo:dinero}
+  ✗ U-03 demo_sin_pausa: operaciones fallidas    rate<=0.01     medido      35.07 % (n=519)   operacion_fallida{scenario:demo_sin_pausa}
+  ✓ U-05a demo_hora_punta: sesiones descartadas  count==0       medido            0   dropped_iterations{scenario:demo_hora_punta}
+Veredicto: 5 de 9 umbrales cumplidos con muestras → FALLA   (✓ cumple · ✗ falla · ○ sin muestras)
+Peticiones 1190 (8.21 req/s en toda la corrida) · sesiones 208 · descartadas 0 · VUs máx. 150
+Operaciones fallidas (rendimiento) 22.89 % · errores de rendimiento 182 · errores de datos 0 · dinero confirmado 102 · dinero sin respuesta 0
+http_req_duration total: p50 98.8 ms · p95 13452.9 ms · http_req_connecting p95 1.01 ms

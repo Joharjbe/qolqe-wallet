@@ -1,0 +1,14 @@
+# El .gitignore de la raíz ignora toda carpeta "datos/" (las bases locales de Qolqe); aquí sí se versionan
+# el generador y usuarios.csv (enunciado §6: "datos de prueba o el script que los genera").
+!datos/
+
+# Bases SQLite y cachés: nunca se versionan (diseño §7.3). Los crudos de k6 de más de 50 MB los excluye
+# correr.sh con un .gitignore dentro de la carpeta de la corrida.
+*.db
+*.db-wal
+*.db-shm
+__pycache__/
+
+# Corridas de humo (HUMO=…) y ensayos comprimidos (ESCALA=…): validan la cadena, no son evidencia.
+resultados/descartadas/*_humo/
+resultados/descartadas/*_ensayo/

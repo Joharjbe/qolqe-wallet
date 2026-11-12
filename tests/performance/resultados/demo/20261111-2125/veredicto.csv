@@ -1,0 +1,65 @@
+seccion,id,criterio,medido,umbral,resultado,n,nota,decide
+validez,V-01,"CPU del generador k6 (% del equipo, máximo de las ventanas)",0.5 %,< 80 %,PASA,,pico de 1 s: 1.2 % del equipo (12 % de un núcleo),True
+validez,V-01,CPU total del equipo (máximo de las ventanas),28.1 %,< 80 %,PASA,,informativo: lo mueven procesos de macOS; ninguna ventana ≥ 80 %,False
+validez,V-02,errores de datos · demo_hora_punta,0 (0.00 %),= 0 (repetir si > 0.1 %),PASA,,,True
+validez,V-03,mezcla lograda · demo_hora_punta (peor operación),9.27 pp,± 2 pp,FALLA,,informativo: la demo es demasiado corta,False
+validez,V-04,"CPU ocioso del equipo antes de empezar (top, 3 s)",90.4 %,≥ 65 %,PASA,,carga de 1 min: 6.80 (diseño < 1.5; solo se registra),True
+validez,V-05,base restaurada idéntica y cpu.max del contenedor,"base True, cpu.max 100000 100000",base idéntica y 100000 100000,PASA,,,True
+validez,V-07,avisos de k6 'Insufficient VUs',0,0,PASA,,solo decide en carga y resistencia,False
+umbral,U-01,Consultas e inicio de sesión: el 95 % en menos de 800 ms,103 ms,< 800 ms,PASA,,12 criterios (ver detalle),True
+umbral,U-02,Operaciones de dinero: el 95 % en menos de 1.5 s,138 ms,"< 1,500 ms",PASA,,4 criterios (ver detalle),True
+umbral,U-03,"En hora punta, no más del 1 % de operaciones fallidas",0.00 %,≤ 1 %,PASA,,1 criterio (ver detalle),True
+umbral,U-04,Sostener el volumen de la hora punta,—,—,NO APLICA,,se evalúa en carga y resistencia,True
+umbral,U-05,…sin acumular retrasos,—,—,NO APLICA,,se evalúa en carga y resistencia,True
+umbral,U-06,Campaña: degradación razonable del servicio,—,—,NO APLICA,,se evalúa en pico,True
+umbral,U-07,Ninguna operación de dinero a medias ni aplicada dos veces,0,= 0,PASA,,1 criterio (ver detalle),True
+umbral,U-08,Hasta cuántos usuarios simultáneos podemos crecer,—,—,NO APLICA,,se evalúa en estrés,True
+umbral,U-09,Opera de 6:00 a 24:00 sin reinicios,—,—,NO APLICA,,se evalúa en resistencia,True
+detalle,U-01,p95 grupo consulta · demo_hora_punta,103 ms,< 800 ms,PASA,387,lectura literal (S-03),True
+detalle,U-02,p95 grupo dinero · demo_hora_punta,138 ms,"< 1,500 ms",PASA,43,lectura literal (S-03),True
+detalle,U-01,p95 grupo otras · demo_hora_punta,11 ms,< 800 ms,PASA,16,lectura literal (S-03),True
+detalle,U-01,p95 `alertas` (GET /api/limites/alertas) · demo_hora_punta,9 ms,< 800 ms,PASA,4,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `comision` (GET /api/transferencias/comision) · demo_hora_punta,10 ms,< 800 ms,PASA,21,por endpoint (S-03),True
+detalle,U-01,p95 `contactos_buscar` (GET /api/contactos?buscar) · demo_hora_punta,6 ms,< 800 ms,PASA,37,por endpoint (S-03),True
+detalle,U-01,p95 `contactos_listar` (GET /api/contactos) · demo_hora_punta,12 ms,< 800 ms,PASA,37,por endpoint (S-03),True
+detalle,U-01,p95 `deudas` (GET /api/servicios/deudas) · demo_hora_punta,6 ms,< 800 ms,PASA,18,por endpoint (S-03),True
+detalle,U-01,p95 `dispositivos` (GET /api/seguridad/dispositivos) · demo_hora_punta,11 ms,< 800 ms,PASA,5,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `empresas` (GET /api/servicios/empresas) · demo_hora_punta,10 ms,< 800 ms,PASA,18,por endpoint (S-03),True
+detalle,U-01,p95 `limites` (GET /api/limites) · demo_hora_punta,10 ms,< 800 ms,PASA,1,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `login` (POST /api/auth/login) · demo_hora_punta,106 ms,< 800 ms,PASA,84,por endpoint (S-03),True
+detalle,U-01,p95 `movimientos` (GET /api/movimientos) · demo_hora_punta,37 ms,< 800 ms,PASA,31,por endpoint (S-03),True
+detalle,U-02,p95 `pagar` (POST /api/servicios/pagos) · demo_hora_punta,11 ms,"< 1,500 ms",PASA,9,por endpoint (S-03),True
+detalle,U-01,p95 `perfil` (GET /api/cuentas/me) · demo_hora_punta,4 ms,< 800 ms,PASA,56,por endpoint (S-03),True
+detalle,U-02,p95 `recargar` (POST /api/recargas) · demo_hora_punta,13 ms,"< 1,500 ms",PASA,13,por endpoint (S-03),True
+detalle,U-01,p95 `recargas_config` (GET /api/recargas/configuracion) · demo_hora_punta,8 ms,< 800 ms,PASA,13,por endpoint (S-03),True
+detalle,U-01,p95 `saldo` (GET /api/cuentas/me/saldo) · demo_hora_punta,13 ms,< 800 ms,PASA,56,por endpoint (S-03),True
+detalle,U-01,p95 `sesiones` (GET /api/seguridad/sesiones) · demo_hora_punta,9 ms,< 800 ms,PASA,5,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `solicitudes` (GET /api/solicitudes) · demo_hora_punta,10 ms,< 800 ms,PASA,1,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-02,p95 `transferir` (POST /api/transferencias) · demo_hora_punta,138 ms,"< 1,500 ms",PASA,21,por endpoint (S-03),True
+detalle,U-03,error de rendimiento · demo_hora_punta,0.00 %,≤ 1 %,PASA,276,"operacion_fallida (una muestra por operación, S-06)",True
+detalle,U-01,p95 grupo consulta · demo_sin_pausa,"15,689 ms",< 800 ms,FALLA,689,estrés disfrazado (S13): se espera que falle,False
+detalle,U-02,p95 grupo dinero · demo_sin_pausa,"11,713 ms","< 1,500 ms",FALLA,70,estrés disfrazado (S13): se espera que falle,False
+detalle,U-01,p95 grupo otras · demo_sin_pausa,"1,004 ms",< 800 ms,FALLA,41,estrés disfrazado (S13): se espera que falle,False
+detalle,U-01,p95 `alertas` (GET /api/limites/alertas) · demo_sin_pausa,785 ms,< 800 ms,PASA,9,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `comision` (GET /api/transferencias/comision) · demo_sin_pausa,"1,852 ms",< 800 ms,FALLA,45,estrés disfrazado (S13): se espera que falle,False
+detalle,U-01,p95 `contactos_buscar` (GET /api/contactos?buscar) · demo_sin_pausa,"2,852 ms",< 800 ms,FALLA,26,estrés disfrazado (S13): se espera que falle,False
+detalle,U-01,p95 `contactos_listar` (GET /api/contactos) · demo_sin_pausa,"1,999 ms",< 800 ms,FALLA,27,estrés disfrazado (S13): se espera que falle,False
+detalle,U-01,p95 `deudas` (GET /api/servicios/deudas) · demo_sin_pausa,"2,416 ms",< 800 ms,FALLA,23,estrés disfrazado (S13): se espera que falle,False
+detalle,U-01,p95 `dispositivos` (GET /api/seguridad/dispositivos) · demo_sin_pausa,"2,710 ms",< 800 ms,FALLA,13,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `empresas` (GET /api/servicios/empresas) · demo_sin_pausa,"7,149 ms",< 800 ms,FALLA,23,estrés disfrazado (S13): se espera que falle,False
+detalle,U-01,p95 `limites` (GET /api/limites) · demo_sin_pausa,881 ms,< 800 ms,FALLA,7,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `login` (POST /api/auth/login) · demo_sin_pausa,"17,886 ms",< 800 ms,FALLA,234,estrés disfrazado (S13): se espera que falle,False
+detalle,U-01,p95 `movimientos` (GET /api/movimientos) · demo_sin_pausa,"3,396 ms",< 800 ms,FALLA,33,estrés disfrazado (S13): se espera que falle,False
+detalle,U-02,p95 `pagar` (POST /api/servicios/pagos) · demo_sin_pausa,"12,489 ms","< 1,500 ms",FALLA,10,estrés disfrazado (S13): se espera que falle,False
+detalle,U-01,p95 `perfil` (GET /api/cuentas/me) · demo_sin_pausa,"1,294 ms",< 800 ms,FALLA,102,estrés disfrazado (S13): se espera que falle,False
+detalle,U-02,p95 `recargar` (POST /api/recargas) · demo_sin_pausa,"12,125 ms","< 1,500 ms",FALLA,25,estrés disfrazado (S13): se espera que falle,False
+detalle,U-01,p95 `recargas_config` (GET /api/recargas/configuracion) · demo_sin_pausa,"1,407 ms",< 800 ms,FALLA,32,estrés disfrazado (S13): se espera que falle,False
+detalle,U-01,p95 `saldo` (GET /api/cuentas/me/saldo) · demo_sin_pausa,"1,618 ms",< 800 ms,FALLA,103,estrés disfrazado (S13): se espera que falle,False
+detalle,U-01,p95 `sesiones` (GET /api/seguridad/sesiones) · demo_sin_pausa,"1,735 ms",< 800 ms,FALLA,6,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-01,p95 `solicitudes` (GET /api/solicitudes) · demo_sin_pausa,"1,004 ms",< 800 ms,FALLA,6,informativo: el veredicto es el grupo otras (§3.3),False
+detalle,U-02,p95 `transferir` (POST /api/transferencias) · demo_sin_pausa,"11,098 ms","< 1,500 ms",FALLA,35,estrés disfrazado (S13): se espera que falle,False
+detalle,U-03,error de rendimiento · demo_sin_pausa,35.07 %,≤ 1 %,FALLA,519,"operacion_fallida (una muestra por operación, S-06)",False
+detalle,U-07,descuadres en C1–C6 (verificacion_dinero.txt),0,= 0,PASA,,línea TOTAL,True
+detalle,U-07,operaciones de dinero sin respuesta (status 0),0,se concilian en C6,INFO,,,False
+detalle,§2.1,p95 de http_req_connecting,1.0 ms,"≤ 10 ms (si no, se suma)",INFO,,no se suma,False
+detalle,§6.3,throttling del cgroup en la corrida,"225 períodos, 134.4 s",diagnóstico (H1),INFO,,,False

@@ -1,0 +1,67 @@
+{
+ "fecha": "2026-11-11",
+ "n": 3000,
+ "creados_por_api": 2800,
+ "hilos": 6,
+ "cpus_preparacion": "4",
+ "carga_equipo_inicio": [
+  3.34375,
+  4.7705078125,
+  4.21044921875
+ ],
+ "pasos": {
+  "1_reiniciar": {
+   "segundos": 0.14
+  },
+  "2_registrar": {
+   "segundos": 50.67,
+   "cantidad": 2800,
+   "ms_por_unidad": 18.1
+  },
+  "3_saldo": {
+   "segundos": 6.18,
+   "cantidad": 3000,
+   "ms_por_unidad": 2.1
+  },
+  "4_login_y_contactos": {
+   "segundos": 66.6,
+   "cantidad": 3000,
+   "ms_por_unidad": 22.2
+  },
+  "5_sql_historial_y_deudas": {
+   "segundos": 22.88,
+   "cantidad": 3000,
+   "ms_por_unidad": 7.6
+  },
+  "6_verificacion": {
+   "segundos": 5.99
+  },
+  "7_respaldo_base_perf": {
+   "segundos": 0.85
+  }
+ },
+ "conteos": {
+  "usuarios_carga": 3000,
+  "contactos_carga": 15000,
+  "deudas_carga": 90000,
+  "saldos_distintos": 0,
+  "min_movimientos_por_usuario": 1000,
+  "movimientos": 3000031
+ },
+ "integrity_check": "ok",
+ "huella_base_perf": {
+  "usuarios": 3006,
+  "usuarios_carga": 3000,
+  "saldo_total_cent": 3000515000,
+  "contactos": 15005,
+  "deudas_pendientes": 90210,
+  "max_id_movimientos": 3000031,
+  "max_id_transferencias": 0,
+  "max_id_recargas": 1,
+  "max_id_pagos": 0,
+  "max_id_sesiones": 3000,
+  "max_id_notificaciones": 2800
+ },
+ "tamano_base_perf_MB": 539.5,
+ "segundos_total": 153.6
+}

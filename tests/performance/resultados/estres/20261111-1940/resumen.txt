@@ -1,0 +1,8 @@
+
+Qolqe · escenario estres · 2026-11-11T19:40:35.457-05:00 → 2026-11-11T19:56:23.155-05:00 · http://127.0.0.1:8090
+Umbrales (k6 termina con código 99 si alguno falla):
+  ✗ red de seguridad: corta si falla más del 20 %  rate<0.2       medido      20.05 % (n=19932)   operacion_fallida
+Veredicto: 0 de 1 umbrales cumplidos con muestras → FALLA   (✓ cumple · ✗ falla · ○ sin muestras)
+Peticiones 31425 (33.16 req/s en toda la corrida) · sesiones 3993 · descartadas 0 · VUs máx. 2500
+Operaciones fallidas (rendimiento) 20.05 % · errores de rendimiento 4878 · errores de datos 0 · dinero confirmado 3839 · dinero sin respuesta 98
+http_req_duration total: p50 3.3 ms · p95 30001.5 ms · http_req_connecting p95 0.60 ms

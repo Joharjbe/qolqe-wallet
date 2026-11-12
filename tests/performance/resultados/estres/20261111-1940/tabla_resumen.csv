@@ -1,0 +1,22 @@
+subconjunto,endpoint,ep,grupo,peticiones,promedio_ms,p50_ms,p90_ms,p95_ms,p99_ms,max_ms,error_rendimiento_%,error_datos_%,throughput_req_s
+rampa y meseta,POST /api/auth/login,login,consulta,4393,12455.88,78.49,30001.74,30002.04,30002.49,30056.97,42.07,0.00,2.93
+rampa y meseta,GET /api/limites/alertas,alertas,consulta,273,4550.97,2.20,30000.43,30001.32,30002.23,30002.44,15.02,0.00,0.18
+rampa y meseta,GET /api/transferencias/comision,comision,consulta,2247,4207.76,2.11,30000.29,30001.46,30002.26,30012.27,13.35,0.00,1.50
+rampa y meseta,GET /api/contactos?buscar,contactos_buscar,consulta,1502,4509.03,2.36,30000.60,30001.50,30002.32,30004.15,14.91,0.00,1.00
+rampa y meseta,GET /api/contactos,contactos_listar,consulta,1529,4879.09,2.94,30000.57,30001.37,30002.28,30009.49,15.70,0.00,1.02
+rampa y meseta,GET /api/servicios/deudas,deudas,consulta,1307,1281.23,2.16,4.88,720.24,30001.90,30003.10,3.98,0.00,0.87
+rampa y meseta,GET /api/seguridad/dispositivos,dispositivos,consulta,290,4754.71,2.21,30000.77,30001.60,30002.14,30009.59,14.83,0.00,0.19
+rampa y meseta,GET /api/servicios/empresas,empresas,consulta,1487,4346.91,1.86,30000.28,30001.38,30002.24,30008.91,12.10,0.00,0.99
+rampa y meseta,GET /api/limites,limites,consulta,332,3628.93,2.15,30000.13,30001.29,30002.51,30002.86,11.75,0.00,0.22
+rampa y meseta,GET /api/movimientos,movimientos,consulta,2280,4276.24,17.05,30000.28,30001.31,30002.19,30004.73,13.16,0.00,1.52
+rampa y meseta,GET /api/cuentas/me,perfil,consulta,4305,4271.27,1.68,30000.38,30001.37,30002.13,30005.60,14.05,0.00,2.87
+rampa y meseta,GET /api/recargas/configuracion,recargas_config,consulta,1508,3905.92,1.13,29999.76,30001.11,30002.27,30004.47,10.28,0.00,1.01
+rampa y meseta,GET /api/cuentas/me/saldo,saldo,consulta,4394,4622.23,2.14,30000.40,30001.43,30002.23,30007.23,14.59,0.00,2.93
+rampa y meseta,GET /api/seguridad/sesiones,sesiones,consulta,310,4589.79,2.22,30000.67,30001.61,30002.18,30014.13,14.52,0.00,0.21
+rampa y meseta,GET /api/solicitudes,solicitudes,consulta,279,5057.69,2.34,30000.43,30001.22,30002.46,30007.95,15.41,0.00,0.19
+rampa y meseta,POST /api/servicios/pagos,pagar,dinero,501,127.30,4.58,6.57,8.36,27.26,30002.17,0.60,0.00,0.33
+rampa y meseta,POST /api/recargas,recargar,dinero,1353,1673.79,4.63,9.38,30000.19,30002.06,30007.12,6.13,0.00,0.90
+rampa y meseta,POST /api/transferencias,transferir,dinero,1947,579.27,89.00,121.64,126.41,30000.57,30004.27,1.85,0.00,1.30
+rampa y meseta,,grupo consulta,,26436,5581.12,2.57,30000.78,30001.64,30002.29,30056.97,17.99,0.00,17.62
+rampa y meseta,,grupo dinero,,3801,909.30,53.01,117.27,126.27,30001.38,30007.12,3.21,0.00,2.53
+rampa y meseta,,total,,30237,4993.84,3.15,30000.60,30001.54,30002.27,30056.97,16.13,0.00,20.16
