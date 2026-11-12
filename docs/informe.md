@@ -154,7 +154,7 @@ En la protección de `main`, `api` y `web` son status checks obligatorios (consu
 - **Trazabilidad.** Con los JUnit de esa corrida: 335 casos, 295 passed y 40 xfailed, sin casos sin ejecutar. Hay 25 defectos enlazados a sus casos.
 - **Etapa estática.** `ruff`, `tsc`, `bddgen`, `--verificar` y `actionlint`, este último sobre el workflow, terminan sin errores.
 
-El workflow nuevo todavía no corrió en GitHub: la rama `entrega-final` no está publicada. `gestion-casos` y `publicar` solo corren en `main`.
+El workflow nuevo ya corrió en GitHub, en verde: en el PR #7 ([run 43104812888](https://github.com/Joharjbe/qolqe-wallet/actions/runs/43104812888), 6 jobs; `gestion-casos` y `publicar` se saltan fuera de `main`) y en el merge a `main` ([run 43109102424](https://github.com/Joharjbe/qolqe-wallet/actions/runs/43109102424), los 8 jobs). En `main`, `publicar` actualizó GitHub Pages y `gestion-casos` terminó sin registrar el run en Kiwi, porque el repositorio no tiene los secretos `KIWI_URL`, `KIWI_USUARIO` y `KIWI_CLAVE`.
 
 **Evidencia anterior en GitHub (Entrega 2).**
 - El [run #10](https://github.com/Joharjbe/qolqe-wallet/actions/runs/41123298780) pasó 57 de 57 ejecuciones web.
@@ -167,7 +167,7 @@ El workflow nuevo todavía no corrió en GitHub: la rama `entrega-final` no est�
 
 ## 4. Pruebas de rendimiento
 
-Informe completo con la plantilla del curso: [`Informe_Rendimiento_Qolqe.docx`](Informe_Rendimiento_Qolqe.docx) (copia en [PDF](Informe_Rendimiento_Qolqe.pdf)). Cómo repetir las pruebas: [`tests/performance/README.md`](../tests/performance/README.md). Las corridas son del 11-nov-2026 y su evidencia está en [`tests/performance/resultados/`](../tests/performance/resultados/).
+Informe completo con la plantilla del curso: [`Informe_Rendimiento_Qolqe.docx`](Informe_Rendimiento_Qolqe.docx) (copia en [PDF](Informe_Rendimiento_Qolqe.pdf)). Cómo repetir las pruebas: [`tests/performance/README.md`](../tests/performance/README.md). Las corridas son del 11-nov-2026 y su evidencia está en [`tests/performance/resultados/`](../tests/performance/resultados/). La versión entregada es el tag `parte-3`, sobre el merge de la rama `parte-3-rendimiento` en `main`.
 
 **Herramienta y entorno.** k6 2.3.0. El requerimiento expresa la carga como tasa de llegada (3,000 sesiones por hora) y pide sostenerla "sin acumular retrasos": k6 la modela con ejecutores de llegada (modelo abierto), registra las sesiones que no puede iniciar y termina con código 99 si falla algún umbral. La comparación con JMeter, Gatling, Locust, Artillery y Taurus está en el informe, §2. Qolqe corrió en Docker con `--cpus=1 --memory=1g` y k6 en el host (MacBook Pro M1 Pro, 10 núcleos, 16 GB). CPU y memoria se midieron sobre el proceso de Qolqe con psutil y `docker stats` en cada corrida. Los resultados son una **línea base relativa**, no la capacidad de producción.
 
@@ -190,7 +190,7 @@ Informe completo con la plantilla del curso: [`Informe_Rendimiento_Qolqe.docx`](
 | Throughput ≥ 9.6 req/s y 0 sesiones descartadas | 9.77 req/s; 0 · cumple | 0 descartadas; máx. 30.2 req/s | 9.77 req/s; 0 · cumple |
 | Dinero sin operaciones a medias ni duplicadas | 0 descuadres | 0 descuadres | 0 descuadres |
 
-En la resistencia, además, el RSS proyectado a 54,000 sesiones es 92 MB (límite 700) y el p95 no deriva (0.98 × en consultas, 1.01 × en dinero). El pico vuelve a cumplir los umbrales normales en 12:10–12:15 (80 / 123 ms). En el tramo con ~300 simultáneos (12:02–12:05, seis ventanas de 30 s con 289–304 simultáneos) el peor p95 por ventana fue 84 ms en consultas, 125 ms en dinero y 114 ms en el login, con 0 % de error (`pico/20261111-1918/ventanas.csv`).
+En la resistencia, además, el RSS proyectado a 54,000 sesiones es 92 MB (límite 700) y el p95 no deriva (0.98 × en consultas, 1.01 × en dinero). El pico vuelve a cumplir los umbrales normales en 12:10–12:15 (80 / 123 ms). En el tramo con ~300 simultáneos (12:02–12:05, seis ventanas de 30 s con 289–304 simultáneos) el peor p95 por ventana fue 84 ms en consultas, 125 ms en dinero y 114 ms en el login, con 0 % de error (`pico/20261111-1918/ventanas.csv`). Si el triple se sostuviera los 15 min (150 sesiones/min, 29.35 req/s ofrecidas), la evidencia más cercana es el estrés: estuvo sobre 300 simultáneos 6 min seguidos (del min 6.0 al 12.0, de 329 a 876 usuarios) con p95 de consultas ≤ 76 ms, dinero ≤ 126 ms, login ≤ 99 ms y 0 % de error (`estres/20261111-1940/ventanas.csv`), lejos de los 1,600 / 3,000 ms de U-06.
 
 **Capacidad.** **850 usuarios simultáneos** cumplen todos los criterios de hora punta con 1 CPU (≈ 25,500 sesiones/h): 8.5 veces la hora punta y 2.8 veces el pico de la campaña. Con 2 CPU, 1,300 (× 1.53, no × 2). La hipótesis previa del diseño (≈ 1,500 ± 300 con 1 CPU, informe M-14) queda refutada. El colapso es brusco: entre 876 y 946 simultáneos el p95 pasa de 78 ms a 13.4 s y el throughput cae de 85.2 a 26.1 req/s.
 
@@ -209,7 +209,7 @@ Más gráficos: [throughput en carga](../tests/performance/resultados/carga/2026
 - En el colapso con 2 CPU, las 40 plazas del pool de hilos de AnyIO están detenidas en esa línea esperando el bloqueo (`hilos_meseta.txt`).
 - Por qué un INSERT de una fila espera los 10 s del `busy_timeout` (leído en el código y coherente con la foto de hilos; no se probó aparte): la transacción implícita del INSERT se confirma recién al cerrar la dependencia `obtener_bd` (`bd.py:216-222`), y en FastAPI 0.117.1 ese cierre corre después de validar la respuesta, que en un endpoint síncrono pide otra plaza del mismo pool de 40 (`fastapi/routing.py:172-177`). Con el pool lleno de logins que esperan el bloqueo, el que lo tiene no consigue plaza y no lo suelta hasta que los demás fallan a los 10 s con `database is locked`. Por eso el colapso es brusco y el CPU de Qolqe baja durante el colapso (75.5 % → 60.0 % → 41.7 %).
 - py-spy: `verificar_pin` (PBKDF2) se lleva el 53–63 % de las muestras con 1 CPU (47–63 % según el perfil, contando los de 2 CPU) y la línea 136, el 19.6 % en el colapso con 1 CPU.
-- El colapso llega con el CPU de Qolqe al 75.5 % (113 % de 200 % con 2 CPU), y duplicar el CPU no duplica la capacidad.
+- Justo antes del colapso, en la última ventana que cumple, el CPU de Qolqe estaba en 75.5 % (113 % de 200 % con 2 CPU); en la primera ventana que falla bajó a 60.0 % (51.8 %). Y duplicar el CPU no duplica la capacidad.
 
 **Recomendaciones.** Hacer `commit` dentro del endpoint justo después del INSERT de la sesión (y después de `mover_saldo`), para no retener el bloqueo mientras la respuesta espera plaza en el pool, y a más largo plazo guardar la sesión en un almacén aparte o usar una base de datos con varios escritores; fallar rápido (503) en lugar de encolar hasta el timeout de 30 s; renovar tokens para pagar menos veces el PBKDF2; corregir el N+1 de movimientos; agregar una clave de idempotencia a las operaciones de dinero (en el colapso hubo operaciones aplicadas cuyo cliente recibió un timeout), y escalonar los logins de la campaña.
 
@@ -303,9 +303,9 @@ Cada corrección se comprueba sola. La prueba del defecto pasa a XPASS y el pipe
 
 **Riesgos abiertos.**
 - **Rendimiento.** Cumple en hora punta y en el pico de la campaña (§4). La capacidad es de 850 simultáneos con 1 CPU (1,300 con 2 CPU), como línea base relativa, y el colapso es brusco (de 78 ms a 13.4 s entre 876 y 946 simultáneos) por la escritura de la sesión en SQLite durante el login. Tampoco hay clave de idempotencia: en el colapso hubo operaciones aplicadas cuyo cliente recibió un timeout (`estres/20261111-1940`). La resistencia duró 60 min, no 18 h.
-- **Workflow nuevo.** Todavía no corrió en GitHub. `gestion-casos` y `publicar` solo se prueban en `main`.
+- **Workflow nuevo.** Ya corrió en verde en el PR #7 y en `main` ([run 43109102424](https://github.com/Joharjbe/qolqe-wallet/actions/runs/43109102424)). Falta que `gestion-casos` registre un run real en Kiwi: en GitHub se salta ese paso hasta cargar los secretos `KIWI_URL`, `KIWI_USUARIO` y `KIWI_CLAVE`.
 - **Kiwi TCMS.** La sincronización se probó con `--simular` sobre los 15 runs anteriores y con una importación real en un Kiwi 17 desechable (plan, TestRun, 331 casos, enlaces de defecto y capturas; fue antes de agregar CP-NA157 a NA160). Falta la primera sincronización en el Kiwi del alumno, con runs reales de `main`.
-- **Concurrencia en GitHub.** Los 10 escenarios `@concurrencia` cumplen la regla de 200 de 200 en local. Falta repetir el job `api` en el runner de GitHub y revisar que ninguno dé XPASS.
+- **Concurrencia en GitHub.** Los 10 escenarios `@concurrencia` cumplen la regla de 200 de 200 en local, y el job `api`, que corre todo `tests/api`, pasó en el runner de GitHub en los 3 runs del PR #7 y de `main` (push y ejecución manual). Como los `@DEF` son `xfail(strict=True)`, un XPASS habría dejado el job en rojo. Pero 3 corridas no son 200: la regla de 200 de 200 solo se comprobó en local.
 - **Sin automatizar.** Tres casos quedan como evidencia manual: CP-NA28, CP-NA69 y CP-T19. Los números retirados (CP-A19, A38, T01, T03 y T27) y su motivo están en [`alcance-y-casos.md`](alcance-y-casos.md).
 - **Deuda del código de prueba.**
   - La ayuda de concurrencia está repetida en tres módulos de pasos.

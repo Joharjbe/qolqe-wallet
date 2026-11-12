@@ -268,7 +268,7 @@ TOP=2400 tests/performance/correr.sh estres    # rampa hasta 2,400 simultáneos,
 ESPERA_MAX=20 tests/performance/correr.sh demo # demo de clase (≈ 2.5 min, dashboard en http://localhost:5665; el día de la exposición, ver «Demo en vivo» en tests/performance/README.md)
 ```
 
-Cada corrida queda en `tests/performance/resultados/<escenario>/<AAAAMMDD-HHMM>/` con el reporte HTML de k6, los CSV de recursos, la verificación del dinero, el veredicto por umbral y los gráficos. Resultados y análisis: [`docs/informe.md`](docs/informe.md) §4 y el informe con la plantilla del curso, [`docs/Informe_Rendimiento_Qolqe.docx`](docs/Informe_Rendimiento_Qolqe.docx) ([PDF](docs/Informe_Rendimiento_Qolqe.pdf)).
+Cada corrida queda en `tests/performance/resultados/<escenario>/<AAAAMMDD-HHMM>/` con el reporte HTML de k6, los CSV de recursos, la verificación del dinero, el veredicto por umbral y los gráficos. Resultados y análisis: [`docs/informe.md`](docs/informe.md) §4 y el informe con la plantilla del curso, [`docs/Informe_Rendimiento_Qolqe.docx`](docs/Informe_Rendimiento_Qolqe.docx) ([PDF](docs/Informe_Rendimiento_Qolqe.pdf)). La versión entregada de la Parte 3 es el tag `parte-3`, sobre el merge de la rama `parte-3-rendimiento` en `main`.
 
 ### Estructura
 

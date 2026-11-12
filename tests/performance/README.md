@@ -75,7 +75,9 @@ El enunciado da 5 a 10 min de transición, y `correr.sh` puede esperar hasta 15 
    ```
 
    `SIN_BUILD=1` reutiliza la imagen de las corridas (`qolqe-perf:p3`, `sha256:5edc50cc…`; si `docker images qolqe-perf:p3` no la muestra, quitar `SIN_BUILD=1`). Así `base_perf.db` es del día: si no, `correr.sh` avisa que la base es de otra fecha, porque los vencimientos y la ventana de 30 días dependen de la fecha. Hay que usar el **mismo** `USUARIOS_CSV` en la preparación y en la demo, porque la base del volumen se genera con esos usuarios.
-2. **En la transición:** cerrar las demás apps y mirar el CPU ocioso (`top -l 2 -n 0 -s 3`). Opcional: detener Kiwi, que comparte el CPU de la VM de Docker (`docker stop qolqe_kiwi_web qolqe_kiwi_db`; después de clase, `docker start qolqe_kiwi_db qolqe_kiwi_web`). **Comprobación previa (≈ 10 s)**, desde la raíz del repo:
+
+   **Ensayo general (recomendado, ≈ 2:40).** El único ensayo versionado (`resultados/demo/20261111-2125`) se corrió con las rutas del repo; el camino de clase (`RESULTADOS=$HOME/demo-qolqe`, `USUARIOS_CSV` propio y `SIN_BUILD=1`) no tiene ensayo registrado. Después de preparar, correr una vez el comando del paso 3 tal cual y comprobar que la primera línea diga `[perf] Escenario demo → /Users/johar/demo-qolqe/demo/<marca>` y la última `[perf] Fin: k6 = 99 … integridad = 0`. El ensayo general no gasta la base: `correr.sh` restaura `base_perf.db` al empezar cada corrida, así que no hay que volver a preparar antes de clase.
+2. **En la transición:** cerrar las demás apps y mirar el CPU ocioso (`top -l 2 -n 0 -s 3`, segunda muestra). **Si da menos de ~75 %**, en el paso 3 lanzar directamente la variante con `FORZAR=1 ESPERA_MAX=0`: V-04 exige 65 % y cerca de ese valor suele fallar, y con `ESPERA_MAX=20` se pierden ≈ 35 s antes de relanzar. Opcional: detener Kiwi, que comparte el CPU de la VM de Docker (`docker stop qolqe_kiwi_web qolqe_kiwi_db`; después de clase, `docker start qolqe_kiwi_db qolqe_kiwi_web`). **Comprobación previa (≈ 10 s)**, desde la raíz del repo:
 
    ```bash
    docker image inspect qolqe-perf:p3 --format '{{.Id}}'   # sha256:5edc50cc…
@@ -93,13 +95,13 @@ El enunciado da 5 a 10 min de transición, y `correr.sh` puede esperar hasta 15 
    RESULTADOS="$HOME/demo-qolqe" USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv" ESPERA_MAX=20 tests/performance/correr.sh demo
    ```
 
-   Si termina con `V-04: el equipo no está libre` (≈ 35 s: V-04 mide a los 3, 18 y 33 s), o si en el paso 2 `top` dio menos de 65 % de CPU ocioso, lanzar directamente:
+   Si en el paso 2 `top` dio menos de ~75 % de CPU ocioso, no usar el comando anterior y lanzar directamente la variante de abajo. Si el comando anterior termina con `V-04: el equipo no está libre` (≈ 35 s: V-04 mide a los 3, 18 y 33 s), relanzar con ella:
 
    ```bash
    RESULTADOS="$HOME/demo-qolqe" USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv" FORZAR=1 ESPERA_MAX=0 tests/performance/correr.sh demo
    ```
 
-   Con `ESPERA_MAX=0` hace una sola medición de 3 s y, con `FORZAR=1`, sigue con un aviso y lo deja registrado en `corrida.json` (con `ESPERA_MAX=10` esperaría otros ≈ 18 s). Cuando la consola imprima `web dashboard: http://127.0.0.1:5665` (≈ 10 s después de lanzar), abrir o recargar `http://localhost:5665`: k6 solo escucha en ese puerto mientras corre (`k6/correr_k6.sh` fija `K6_WEB_DASHBOARD_OPEN=false`), así que una pestaña abierta antes muestra «no se puede conectar» y no se recarga sola. Al terminar no hay que recargarla: conserva el último estado.
+   Con `ESPERA_MAX=0` hace una sola medición de 3 s (el peor caso pierde 3 s, no 35) y, con `FORZAR=1`, sigue con un aviso y lo deja registrado en `corrida.json` (con `ESPERA_MAX=10` esperaría otros ≈ 18 s). Cuando la consola imprima `web dashboard: http://127.0.0.1:5665` (≈ 10 s después de lanzar), abrir o recargar `http://localhost:5665`: k6 solo escucha en ese puerto mientras corre (`k6/correr_k6.sh` fija `K6_WEB_DASHBOARD_OPEN=false`), así que una pestaña abierta antes muestra «no se puede conectar» y no se recarga sola. Al terminar no hay que recargarla: conserva el último estado.
 4. **Qué se debe ver** (así pasó en el ensayo `resultados/demo/20261111-2125`):
 
    | Momento | En la terminal | Lectura |
@@ -110,6 +112,7 @@ El enunciado da 5 a 10 min de transición, y `correr.sh` puede esperar hasta 15 
    | 1:40–2:25 | `demo_sin_pausa` y ≈ 380 líneas `level=warning … 500 http_5xx`, `EOF` o `request timeout` | **Esperado**: 50 VUs sin think time saturan Qolqe («estrés disfrazado», S13) |
    | 2:25 | `Veredicto: 5 de 9 umbrales cumplidos con muestras → FALLA`: ✓ los 5 de hora punta (consultas ≈ 103 ms, login ≈ 106 ms, dinero ≈ 137 ms, 0.00 % de fallas, 0 sesiones descartadas) y ✗ los 4 de sin pausa (consultas ≈ 15.6 s, login ≈ 17.9 s, dinero ≈ 11.5 s, 35 % de operaciones fallidas) | **Esperado** |
    | ≈ 2:30 | `TOTAL descuadres: 0` y `Resultado U-07: PASA` | El dinero cuadra aun con el colapso |
+   | Si preguntan por la conciliación | La terminal solo muestra las líneas `C1`–`C6`, `TOTAL` y `Resultado` (filtro `grep` de `correr.sh`). El desglose por tipo (operaciones cortadas en vuelo y aplicadas sin confirmación) se ve con `cat "$HOME/demo-qolqe/demo/$(ls -t $HOME/demo-qolqe/demo \| head -1)/verificacion_dinero.txt"` | En vivo las cifras serán distintas de las del ensayo (la lámina dice «Ensayo»: 17 cortadas, 16 aplicadas) |
    | Fin | `[perf] Fin: k6 = 99 (0 = umbrales OK, 99 = algún umbral falló), integridad = 0 (0 = PASA)`; el comando termina con código 99 | **99 es el resultado esperado**: los umbrales de sin pausa fallan a propósito |
 
    Los p95 de la consola son los de k6, que interpola; `veredicto.md` usa rango más cercano y puede diferir en 1 ms (dinero: 137 en la consola y 138 en el veredicto). En `veredicto.md`, V-03 (mezcla) sale ✗ con la nota «informativo: la demo es demasiado corta»: no invalida la demo.
