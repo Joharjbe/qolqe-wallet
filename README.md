@@ -20,6 +20,7 @@ Billetera digital **ficticia** usada como sistema bajo prueba (SUT) en el Proyec
 | **Pipeline** | [`.github/workflows/pruebas.yml`](.github/workflows/pruebas.yml): `estatico` → `api` y `contrato` → `web` → `quality-gate`, más `reportes`, `gestion-casos` y `publicar` · evidencia `sin-imagenes` o `con-imagenes` · [ejecuciones](https://github.com/Joharjbe/qolqe-wallet/actions/workflows/pruebas.yml) · [detalle](docs/pipeline.md) |
 | **Reportes publicados** | https://joharjbe.github.io/qolqe-wallet/ (con el workflow nuevo en `main`: portada, reportes, matriz del run e historial de los últimos 30 runs) |
 | **Trazabilidad y gestión de casos** | Matriz HU → CA → CP → resultado por run, `junit-cp.xml` e historial · Kiwi TCMS 17.0 en Docker: [`docs/gestion-casos.md`](docs/gestion-casos.md) |
+| **Rendimiento (Parte 3)** | k6 2.3.0 + Docker (1 CPU, 1 GB): carga, pico, estrés y resistencia; capacidad de 850 usuarios simultáneos · [`tests/performance/`](tests/performance/README.md) · [informe de rendimiento](docs/Informe_Rendimiento_Qolqe.docx) ([PDF](docs/Informe_Rendimiento_Qolqe.pdf)) |
 | **Informe** | [`docs/informe.md`](docs/informe.md) · [respuesta a la retroalimentación](docs/respuesta-feedback.md) · [arquitectura](docs/arquitectura.md) · [alcance y casos](docs/alcance-y-casos.md) · [defectos](docs/defectos.md) · [matriz](docs/trazabilidad.md) · presentaciones: [Entrega 1](docs/Entrega1_G4_API.pptx), [Entrega 2](docs/Entrega2_G4_E2E_CICD.pptx) |
 
 Comandos en la [sección 6](#6-ejecutar-las-pruebas).
@@ -256,6 +257,19 @@ GH_TOKEN=$(gh auth token --user Joharjbe) KIWI_PLAN_ID=<id> .venv/bin/python scr
 
 Para ver qué se crearía sin conectarse a Kiwi: `GH_TOKEN=$(gh auth token --user Joharjbe) .venv/bin/python scripts/kiwi_sincronizar.py --simular --ultimos 20`. Cada run de `main` queda como un TestRun, y cada caso acumula todas sus ejecuciones.
 
+### Pruebas de rendimiento (Parte 3)
+
+k6 2.3.0 contra Qolqe en Docker con 1 CPU y 1 GB (puerto `127.0.0.1:8090`; no usa el 8000 ni el 8443). Requisitos: Docker Desktop, `brew install k6` (v2.3.0) y el `.venv` del repo. Guía completa, variables y qué deja cada corrida en [`tests/performance/README.md`](tests/performance/README.md).
+
+```bash
+tests/performance/preparar.sh 3000             # imagen, 3,000 usuarios de prueba y base_perf.db (el mismo día de las corridas)
+tests/performance/correr.sh referencia         # 1 VU (≈ 1 min); luego: calibracion, carga, pico, estres, resistencia
+TOP=2400 tests/performance/correr.sh estres    # rampa hasta 2,400 simultáneos, con perfiles de py-spy
+tests/performance/correr.sh demo               # demo de clase (≈ 2.5 min, dashboard en http://localhost:5665)
+```
+
+Cada corrida queda en `tests/performance/resultados/<escenario>/<AAAAMMDD-HHMM>/` con el reporte HTML de k6, los CSV de recursos, la verificación del dinero, el veredicto por umbral y los gráficos. Resultados y análisis: [`docs/informe.md`](docs/informe.md) §4 y el informe con la plantilla del curso, [`docs/Informe_Rendimiento_Qolqe.docx`](docs/Informe_Rendimiento_Qolqe.docx) ([PDF](docs/Informe_Rendimiento_Qolqe.pdf)).
+
 ### Estructura
 
 ```
@@ -272,6 +286,7 @@ tests/
   e2e/pages/                   # Page Objects y componentes compartidos (componentes.ts, PaginaQolqe.ts)
   e2e/steps/                   # Pasos de Playwright por área, sin localizadores
   e2e/fixtures.ts              # Páginas y datos de prueba preparados por la API
+  performance/                 # Parte 3: k6, Docker, datos, monitores, verificación del dinero, análisis y resultados
 scripts/
   correr-contrato.sh  contrato_hooks.py   # Contrato (Schemathesis)
   kiwi_sincronizar.py                     # Runs de GitHub → Kiwi TCMS

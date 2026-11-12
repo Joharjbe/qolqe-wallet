@@ -10,7 +10,7 @@
 | Herramienta web | Playwright 1.64.1 (TypeScript) + playwright-bdd 9.2.1, con Page Object, componentes y fixtures |
 | CI/CD | GitHub Actions (`.github/workflows/pruebas.yml`), 8 jobs y quality gate |
 | Gestión de casos | Kiwi TCMS 17.0 (Docker local) más matriz e historial de ejecuciones en GitHub Pages |
-| Herramienta de rendimiento | Pendiente (Parte 3) |
+| Herramienta de rendimiento | k6 2.3.0, con Qolqe en Docker (1 CPU y 1 GB); recursos con psutil y `docker stats`, perfiles con py-spy |
 
 **Alcance y nivel de prueba.** Son 19 historias y sus 51 criterios: 33 del núcleo y 18 de G4. Hay 335 casos: 334 escenarios Gherkin y el caso de contrato CP-T04.
 
@@ -167,7 +167,44 @@ El workflow nuevo todavía no corrió en GitHub: la rama `entrega-final` no est�
 
 ## 4. Pruebas de rendimiento
 
-Pendiente (Parte 3).
+Informe completo con la plantilla del curso: [`Informe_Rendimiento_Qolqe.docx`](Informe_Rendimiento_Qolqe.docx) (copia en [PDF](Informe_Rendimiento_Qolqe.pdf)). Cómo repetir las pruebas: [`tests/performance/README.md`](../tests/performance/README.md). Las corridas son del 11-nov-2026 y su evidencia está en [`tests/performance/resultados/`](../tests/performance/resultados/).
+
+**Herramienta y entorno.** k6 2.3.0. El requerimiento expresa la carga como tasa de llegada (3,000 sesiones por hora) y pide sostenerla "sin acumular retrasos": k6 la modela con ejecutores de llegada (modelo abierto), registra las sesiones que no puede iniciar y termina con código 99 si falla algún umbral. La comparación con JMeter, Gatling, Locust, Artillery y Taurus está en el informe, §2. Qolqe corrió en Docker con `--cpus=1 --memory=1g` y k6 en el host (MacBook Pro M1 Pro, 10 núcleos, 16 GB). CPU y memoria se midieron sobre el proceso de Qolqe con psutil y `docker stats` en cada corrida. Los resultados son una **línea base relativa**, no la capacidad de producción.
+
+**Escenarios.** Sesión = login + 6 operaciones con pausas de 10 a 25 s (media 18 s) y la mezcla del requerimiento. 3,000 sesiones/h equivalen a 100 usuarios simultáneos (Ley de Little: 0.833 sesiones/s × 120 s). Datos: 3,000 usuarios distintos, uno por VU, con S/ 10,000, 5 contactos, 30 deudas y 1,000 movimientos cada uno.
+
+| Tipo | Carga | Pregunta del requerimiento | Corrida |
+|---|---|---|---|
+| Carga | 100 simultáneos, 15 min estables | ¿Cumplimos en hora punta, sin acumular retrasos? | `carga/20261111-1833` |
+| Pico | 100 → 300 → 100 (12:00–12:15) | ¿Cumplimos en el pico de la campaña? ¿Queda el dinero íntegro? | `pico/20261111-1918` |
+| Estrés | Rampa de 100 a 2,400 (k6 la cortó a los 952 s, con 1,103) | ¿Hasta cuántos usuarios podemos crecer? | `estres/20261111-1940` (2 CPU: `escalabilidad/20261111-2103`) |
+| Resistencia | 100 simultáneos, 60 min (proyección a 18 h) | ¿Opera de 6:00 a 24:00 sin reinicios? | `resistencia/20261111-1958` |
+
+**Resultados frente al SLA** (p95 por rango más cercano; carga y resistencia en la fase estable, pico en 12:00–12:15).
+
+| Umbral | Carga | Pico | Resistencia |
+|---|---|---|---|
+| Consultas y login: p95 < 800 ms (pico: < 1,600 ms) | 93 ms (login 105) · cumple | 78 ms (login 97) · cumple | 95 ms (login 106) · cumple |
+| Dinero: p95 < 1,500 ms (pico: < 3,000 ms) | 128 ms (transferir 134) · cumple | 123 ms (transferir 126) · cumple | 127 ms (transferir 130) · cumple |
+| Operaciones fallidas ≤ 1 % | 0.00 % · cumple | 0.00 % · cumple | 0.00 % · cumple |
+| Throughput ≥ 9.6 req/s y 0 sesiones descartadas | 9.77 req/s; 0 · cumple | 0 descartadas; máx. 30.2 req/s | 9.77 req/s; 0 · cumple |
+| Dinero sin operaciones a medias ni duplicadas | 0 descuadres | 0 descuadres | 0 descuadres |
+
+En la resistencia, además, el RSS proyectado a 54,000 sesiones es 92 MB (límite 700) y el p95 no deriva (0.98 × en consultas, 1.01 × en dinero). El pico vuelve a cumplir los umbrales normales en 12:10–12:15 (80 / 123 ms).
+
+**Capacidad.** **850 usuarios simultáneos** cumplen todos los criterios de hora punta con 1 CPU (≈ 25,500 sesiones/h): 8.5 veces la hora punta y 2.8 veces el pico de la campaña. Con 2 CPU, 1,300 (× 1.53, no × 2). El colapso es brusco: entre 876 y 946 simultáneos el p95 pasa de ~80 ms a 13.4 s y el throughput cae de 85.2 a 26.1 req/s.
+
+**Gráficos.** [Tiempo de respuesta en carga](../tests/performance/resultados/carga/20261111-1833/graficos/G1_tiempo_respuesta.png) · [throughput en carga](../tests/performance/resultados/carga/20261111-1833/graficos/G2_throughput.png) · [usuarios simultáneos en el pico](../tests/performance/resultados/pico/20261111-1918/graficos/G4_usuarios_simultaneos.png) · [p95 contra usuarios en estrés](../tests/performance/resultados/estres/20261111-1940/graficos/G6_p95_vs_usuarios.png) · [rodilla de throughput](../tests/performance/resultados/estres/20261111-1940/graficos/G7_throughput_vs_usuarios.png) · [errores en estrés](../tests/performance/resultados/estres/20261111-1940/graficos/G3_errores.png) · [memoria en resistencia](../tests/performance/resultados/resistencia/20261111-1958/graficos/G9_memoria_vs_sesiones.png) · [comparativo](../tests/performance/resultados/comparativo/G11_comparativo.png).
+
+**Cuello de botella.** La escritura de la sesión en SQLite durante el login (`autenticacion.py:136`), sobre un login que ya gasta la mayor parte del CPU en el PBKDF2. Evidencia:
+- Las respuestas 500 del estrés son `database is locked`: 733 de las 829 excepciones del log vienen de ese INSERT (1,202 de 1,280 con 2 CPU).
+- En el colapso con 2 CPU, las 40 plazas del pool de hilos de AnyIO están detenidas en esa línea esperando el bloqueo (`hilos_meseta.txt`).
+- py-spy: `verificar_pin` (PBKDF2) se lleva el 53–63 % de las muestras y la línea 136, el 19.6 % en el colapso con 1 CPU.
+- El colapso llega con el CPU de Qolqe al 75 % (113 % de 200 % con 2 CPU), y duplicar el CPU no duplica la capacidad.
+
+**Recomendaciones.** Sacar la escritura de la sesión del camino crítico del login o usar una base de datos con varios escritores; fallar rápido (503) en lugar de encolar hasta el timeout de 30 s; renovar tokens para pagar menos veces el PBKDF2; corregir el N+1 de movimientos; agregar una clave de idempotencia a las operaciones de dinero (en el colapso hubo operaciones aplicadas cuyo cliente recibió un timeout), y escalonar los logins de la campaña.
+
+**Limitaciones declaradas.** Laptop compartida con procesos de macOS (en el pico y el estrés el CPU total del equipo pasó del 80 % en algunas ventanas, nunca por k6); el login con 1 VU dio 92 ms frente al límite de 80 ms de la referencia (V-06); V-04 y V-01 se ajustaron durante la ejecución; el estrés lo cortó la red de seguridad del 20 % antes de la meseta, y la resistencia duró 60 min en lugar de 18 h. Detalle en el informe, §5 y §6.
 
 ## 5. Defectos encontrados
 
