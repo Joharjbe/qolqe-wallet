@@ -1,0 +1,362 @@
+{
+  "_lea_esto": [
+    "Casos del conjunto de oro que NO salen tal cual de un artefacto. Cada uno dice de dónde sale.",
+    "origen 'reconstruido': el hecho está documentado en el repositorio, pero su JUnit no está versionado;",
+    "la entrada se armó con los metadatos reales del caso (JUnit y .feature) y el texto del fallo se",
+    "escribió a partir de la causa documentada.",
+    "origen 'sembrado': el fallo no ocurrió; se construyó a propósito para cubrir una clase que los",
+    "artefactos no traen. Lleva 'motivo' y queda contado aparte en el README y en el documento.",
+    "Los textos de error de los casos sembrados de entorno no se inventaron de cero: se reprodujeron en",
+    "esta máquina con la biblioteca estándar y httpx (ver README, 'cómo se midieron los textos')."
+  ],
+  "logs_reales": {
+    "_lea_esto": "Fallos reales cuyo texto sí quedó guardado en un artefacto del run. Se agregan a la salida del caso que ya sale del JUnit, no crean un caso nuevo.",
+    "CP-NW03": {
+      "log": "Detalle del fallo (reportes/web/resultados/.../error-context.md)\nError: expect(locator).not.toContainText(expected) failed\n\nLocator: getByTestId('registro-error')\nExpected pattern: not /String should|characters|at least|at most/i\nReceived string: \"La solicitud tiene datos inválidos: String should have at least 2 characters\"\nTimeout: 5000ms",
+      "fuente": [
+        {"archivo": "reportes/web/resultados/features-web-nucleo_acceso-8447a-error-se-muestra-en-español-chromium/error-context.md", "en_el_repo": false, "linea": null, "cita": "Received string: \"La solicitud tiene datos inválidos: String should have at least 2 characters\""}
+      ],
+      "nota": "Es el único caso del conjunto con el texto del fallo tal como lo capturó la corrida: Playwright guarda el error-context de los fallos esperados de la web. El mensaje en inglés es la evidencia del defecto y no nombra ningún DEF."
+    }
+  },
+  "casos": [
+    {
+      "clave": "CP-W10-run13",
+      "hereda_de": "CP-W10",
+      "estado": "flaky",
+      "pasaron": 2,
+      "detalle": "Error: locator.selectOption: Test timeout of 30000ms exceeded.",
+      "quitar_pasos": ["Y el contacto \"Bruno Demo\" aparece en la lista"],
+      "log": "Detalle del fallo (repetición 1)\nError: locator.selectOption: Test timeout of 30000ms exceeded.\nCall log:\n  - waiting for getByTestId('solicitud-contacto')\n  -   locator resolved to <select data-testid=\"solicitud-contacto\">…</select>\n  - selecting specified option(s) in <select data-testid=\"solicitud-contacto\">\n  -   did not find some options\n\nLog del servidor\nINFO:     127.0.0.1:49656 - \"POST /api/contactos HTTP/1.1\" 201 Created\nINFO:     127.0.0.1:49656 - \"GET /api/contactos?pagina=1 HTTP/1.1\" 200 OK",
+      "etiqueta": {"clase": "prueba_inestable", "defecto": null},
+      "fuente": [
+        {"archivo": "docs/informe.md", "linea": 161, "cita": "En el run #13, `failOnFlakyTests` puso el pipeline en rojo por CP-W10 inestable. Era un error de la prueba, que no esperaba el alta del contacto, y se corrigió."},
+        {"archivo": "docs/gestion-casos.md", "linea": 87, "cita": "detecta los runs fallidos (#1, #2, #8, #13) y el CP-W10 inestable del run #13"},
+        {"archivo": "features/web/solicitudes_web.feature", "linea": 9, "cita": "Y el contacto \"Bruno Demo\" aparece en la lista (el paso de espera que se agregó al corregirlo)"}
+      ],
+      "procedencia": {
+        "origen": "reconstruido",
+        "sembrado": false,
+        "artefactos": ["junit-cp.xml (metadatos del caso)", "features/web/solicitudes_web.feature"],
+        "notas": [
+          "El JUnit del run #13 no está versionado; el texto del fallo se escribió a partir de la causa documentada (la prueba no esperaba el alta del contacto).",
+          "El escenario se muestra sin el paso de espera, que es como estaba antes de la corrección.",
+          "El servidor respondió 201 al alta: la evidencia de que el producto no falló está en el log."
+        ]
+      },
+      "grupo_oro": null,
+      "nota": "Pasó 2 de 3 repeticiones del mismo run sin tocar el producto ni el entorno: el fallo es de la prueba. Es el único caso inestable dentro de un run que el proyecto documenta."
+    },
+    {
+      "clave": "CP-T20-rafaga-unica",
+      "hereda_de": "CP-T20",
+      "estado": "failed",
+      "pasaron": 0,
+      "detalle": "[XPASS(strict)] el fallo marcado como esperado no se reprodujo",
+      "cambiar_pasos": {
+        "Cuando Diego agrega 5 veces a la vez el celular \"912345678\" en 5 ráfagas": "Cuando Diego agrega 5 veces a la vez el celular \"912345678\""
+      },
+      "log": "Detalle del fallo\n[XPASS(strict)] el fallo marcado como esperado no se reprodujo\n\nLog del servidor\nINFO:     127.0.0.1:50000 - \"POST /api/contactos HTTP/1.1\" 201 Created\nINFO:     127.0.0.1:50000 - \"POST /api/contactos HTTP/1.1\" 409 Conflict\nINFO:     127.0.0.1:50000 - \"POST /api/contactos HTTP/1.1\" 409 Conflict\nINFO:     127.0.0.1:50000 - \"POST /api/contactos HTTP/1.1\" 409 Conflict\nINFO:     127.0.0.1:50000 - \"POST /api/contactos HTTP/1.1\" 409 Conflict",
+      "etiqueta": {"clase": "prueba_inestable", "defecto": "DEF-26"},
+      "fuente": [
+        {"archivo": "docs/defectos.md", "linea": 6, "cita": "CP-T20, con una sola ráfaga, no reprodujo DEF-26 en 2 de 90 corridas de la revisión, porque el alta de contacto no tiene la pausa antifraude de las transferencias y la ventana es de milisegundos. Por eso CP-T20 repite la ráfaga hasta 5 veces."},
+        {"archivo": "docs/pipeline.md", "linea": 107, "cita": "donde la ventana de la carrera es corta, el escenario repite la ráfaga: CP-T20 envía hasta 5 ráfagas de 5 altas y termina en la primera que crea duplicados, así que un XPASS espurio exige que las 5 se serialicen"},
+        {"archivo": "docs/informe.md", "linea": 317, "cita": "Con 20 no alcanzaba: CP-T20 pasaba 20 de 20 y aun así fallaba cerca de 2 de cada 100."}
+      ],
+      "procedencia": {
+        "origen": "reconstruido",
+        "sembrado": false,
+        "artefactos": ["junit-cp.xml (metadatos del caso)", "features/g4_tecnico_api.feature"],
+        "notas": [
+          "Es una de las 2 corridas de 90 de la revisión en que el servidor serializó las altas: el fallo esperado no se reprodujo y, con xfail estricto, el caso quedó en rojo (XPASS).",
+          "El escenario se muestra con una sola ráfaga, que es como estaba antes de la corrección.",
+          "El log muestra el resultado correcto (1 × 201 y 4 × 409): no hubo nada que reportar del producto en esta corrida."
+        ]
+      },
+      "grupo_oro": null,
+      "nota": "El par discriminante del conjunto: el mismo CP-T20 aparece también como defecto_real cuando sí reproduce DEF-26. Aquí falló por lo contrario, porque pasó; la acción es estabilizar la prueba, no reportar un defecto."
+    },
+    {
+      "clave": "CP-NA69-xpass",
+      "entrada": {
+        "caso": "CP-NA69",
+        "titulo": "Ediciones simultáneas del perfil con el mismo correo",
+        "hu": "HU-N-05",
+        "ca": "HU-N-05:CA1",
+        "modulo": "núcleo",
+        "nivel": "api",
+        "tipo": "técnico",
+        "estado": "failed",
+        "ejecuciones": "0/1",
+        "archivo": "",
+        "defecto_declarado": null,
+        "mensaje": "Fallaron 1 de 1 ejecuciones",
+        "salida": "failed: test_cpna69_ediciones_simultáneas_con_el_mismo_correo [XPASS(strict)] el fallo marcado como esperado no se reprodujo\n\nPasos del caso\n  Dado que Ana inició sesión\n  Cuando 10 ediciones simultáneas de su perfil ponen el correo \"mismo@correo.pe\"\n  Entonces solo una responde 200 y las demás 409 \"CORREO_REGISTRADO\"\n\nLog del servidor\nINFO:     127.0.0.1:50112 - \"PUT /api/cuentas/me HTTP/1.1\" 200 OK\nINFO:     127.0.0.1:50112 - \"PUT /api/cuentas/me HTTP/1.1\" 409 Conflict"
+      },
+      "etiqueta": {"clase": "prueba_inestable", "defecto": "DEF-15"},
+      "fuente": [
+        {"archivo": "features/nucleo_cuenta_api.feature", "linea": 208, "cita": "CP-NA69 (DEF-15 en edición simultánea) NO se automatiza: la carrera de 10 ediciones no es 100 % reproducible (en ~1 de 25 corridas el proceso se serializa y da el resultado correcto, lo que rompería el xfail estricto)."},
+        {"archivo": "docs/alcance-y-casos.md", "linea": 184, "cita": "CP-NA69: ediciones simultáneas con el mismo correo (DEF-15) | Cerca de 1 de 25 corridas se serializa y daría XPASS"},
+        {"archivo": "docs/defectos.md", "linea": 300, "cita": "La edición simultánea (CP-NA69) queda como evidencia manual: en 1 de cada 25 corridas el servidor serializa las peticiones."}
+      ],
+      "procedencia": {
+        "origen": "reconstruido",
+        "sembrado": false,
+        "artefactos": ["docs/alcance-y-casos.md", "docs/defectos.md", "features/nucleo_cuenta_api.feature"],
+        "notas": [
+          "El caso no está automatizado, así que no aparece en ningún JUnit ni tiene línea en un .feature: por eso `archivo` va vacío.",
+          "La entrada muestra la corrida de 1 de cada 25 que el comentario del .feature describe, que es justo el motivo por el que el equipo decidió no automatizarlo.",
+          "Los pasos y las líneas del log se escribieron a partir de los pasos de DEF-15 en docs/defectos.md."
+        ]
+      },
+      "grupo_oro": null,
+      "nota": "Un fallo con `archivo` vacío y con la misma firma que CP-T20 cuando no reproduce: el componente tiene que aguantar una entrada incompleta sin inventarse una ruta."
+    },
+    {
+      "clave": "CP-W05-espera-fragil",
+      "hereda_de": "CP-W05",
+      "estado": "flaky",
+      "pasaron": 2,
+      "detalle": "Error: expect(locator).toContainText(expected) failed — Timeout: 5000ms",
+      "log": "Detalle del fallo (repetición 1)\nError: expect(locator).toContainText(expected) failed\n\nLocator: getByTestId('contacto-fila').filter({ hasText: 'Bruno' })\nExpected string: \"Bruno D. · 912345678\"\nReceived string: \"\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"toContainText\" with timeout 5000ms\n  -   locator resolved to <li data-testid=\"contacto-fila\"></li>\n\nLog del servidor\nINFO:     127.0.0.1:49668 - \"POST /api/pruebas/reiniciar HTTP/1.1\" 200 OK\nINFO:     127.0.0.1:49668 - \"POST /api/auth/login HTTP/1.1\" 200 OK\nINFO:     127.0.0.1:49668 - \"GET /api/contactos?pagina=1 HTTP/1.1\" 200 OK",
+      "etiqueta": {"clase": "prueba_inestable", "defecto": null},
+      "fuente": [
+        {"archivo": "docs/arquitectura.md", "linea": 193, "cita": "Espera automática antes de cada acción; aserciones que reintentan"},
+        {"archivo": "playwright.config.ts", "linea": 24, "cita": "retries: CI ? 1 : 0,"}
+      ],
+      "procedencia": {
+        "origen": "sembrado",
+        "sembrado": true,
+        "motivo": "El proyecto solo documenta un caso inestable dentro de un run (CP-W10, run #13). Se siembra un segundo para que la clase no se mida con un único caso y para que 'alternó' no sea la única pista: aquí la pista es que el servidor respondió 200 y la fila llegó vacía al expirar la espera.",
+        "artefactos": ["junit-cp.xml (metadatos del caso)", "features/web/contactos_web.feature"],
+        "notas": [
+          "La cadena esperada \"Bruno D. · 912345678\" es la que el escenario real exige en features/web/contactos_web.feature:46.",
+          "El formato del error es el de Playwright, igual al del fallo real que quedó en reportes/web/resultados/.../error-context.md."
+        ]
+      },
+      "grupo_oro": null,
+      "nota": "La fila existe y el GET respondió 200: el contenido llega después de la aserción. El reintento pasa. No es el producto ni el entorno."
+    },
+    {
+      "clave": "entorno-servidor-caido-A01",
+      "hereda_de": "CP-A01",
+      "estado": "failed",
+      "pasaron": 0,
+      "detalle": "httpx.ConnectError: [Errno 61] Connection refused",
+      "log": "Detalle del fallo\nhttpx.ConnectError: [Errno 61] Connection refused\n  en POST http://127.0.0.1:8000/api/pruebas/reiniciar (fixture de datos)\n\nLog del servidor (reportes/uvicorn-api.log)\n(vacío)",
+      "etiqueta": {"clase": "error_entorno", "defecto": null},
+      "fuente": [
+        {"archivo": "docs/pipeline.md", "linea": 94, "cita": "QOLQE_BD=/tmp/qolqe.db QOLQE_MODO_PRUEBA=1 python -m uvicorn qolqe.main:app --port 8000 &"},
+        {"archivo": "tests/api/conftest.py", "linea": 10, "cita": "URL = os.environ.get(\"QOLQE_URL\", \"http://127.0.0.1:8000\")"}
+      ],
+      "procedencia": {
+        "origen": "sembrado",
+        "sembrado": true,
+        "motivo": "Entre los artefactos no hay ningún run con el servidor caído: todos corrieron con uvicorn arriba. Sin este caso la clase error_entorno no tendría el fallo más común del proyecto.",
+        "artefactos": ["junit-cp.xml (metadatos del caso)", "features/contactos_api.feature"],
+        "notas": [
+          "El texto del error se reprodujo de verdad: httpx contra un puerto cerrado en esta máquina (ver README).",
+          "Errno 61 es macOS, donde se corre en local; en el runner ubuntu-24.04 el mismo error es [Errno 111]."
+        ]
+      },
+      "grupo_oro": "entorno-servidor-caido",
+      "nota": "Ni el escenario ni el producto entran en juego: la petición no llegó a salir. Tres casos distintos comparten esta causa y tienen que terminar en un solo grupo."
+    },
+    {
+      "clave": "entorno-servidor-caido-A05",
+      "hereda_de": "CP-A05",
+      "estado": "failed",
+      "pasaron": 0,
+      "detalle": "httpx.ConnectError: [Errno 61] Connection refused",
+      "log": "Detalle del fallo\nhttpx.ConnectError: [Errno 61] Connection refused\n  en POST http://127.0.0.1:8000/api/pruebas/reiniciar (fixture de datos)\n\nLog del servidor (reportes/uvicorn-api.log)\n(vacío)",
+      "etiqueta": {"clase": "error_entorno", "defecto": null},
+      "fuente": [
+        {"archivo": "docs/pipeline.md", "linea": 94, "cita": "QOLQE_BD=/tmp/qolqe.db QOLQE_MODO_PRUEBA=1 python -m uvicorn qolqe.main:app --port 8000 &"}
+      ],
+      "procedencia": {
+        "origen": "sembrado",
+        "sembrado": true,
+        "motivo": "Segundo caso de la misma causa, para poder medir el agrupamiento y no solo la clasificación.",
+        "artefactos": ["junit-cp.xml (metadatos del caso)", "features/contactos_api.feature"],
+        "notas": ["Mismo texto medido que el caso anterior; lo que cambia es el caso y su escenario."]
+      },
+      "grupo_oro": "entorno-servidor-caido",
+      "nota": "Mismo fallo que CP-A01 con otro escenario: el agrupamiento tiene que ponerlos juntos aunque el .feature apunte a otra línea."
+    },
+    {
+      "clave": "entorno-servidor-caido-NA01",
+      "hereda_de": "CP-NA01",
+      "estado": "failed",
+      "pasaron": 0,
+      "detalle": "httpx.ConnectError: [Errno 61] Connection refused",
+      "log": "Detalle del fallo\nhttpx.ConnectError: [Errno 61] Connection refused\n  en POST http://127.0.0.1:8000/api/pruebas/reiniciar (fixture de datos)\n\nLog del servidor (reportes/uvicorn-api.log)\n(vacío)",
+      "etiqueta": {"clase": "error_entorno", "defecto": null},
+      "fuente": [
+        {"archivo": "docs/pipeline.md", "linea": 94, "cita": "QOLQE_BD=/tmp/qolqe.db QOLQE_MODO_PRUEBA=1 python -m uvicorn qolqe.main:app --port 8000 &"}
+      ],
+      "procedencia": {
+        "origen": "sembrado",
+        "sembrado": true,
+        "motivo": "Tercer caso de la misma causa, esta vez del núcleo y en otro archivo .feature, para que el grupo no dependa del módulo.",
+        "artefactos": ["junit-cp.xml (metadatos del caso)", "features/nucleo_registro_api.feature"],
+        "notas": ["Mismo texto medido que los dos anteriores."]
+      },
+      "grupo_oro": "entorno-servidor-caido",
+      "nota": "Con el servidor caído cae toda la suite, no un módulo: el resumen del run debería decir eso y no 29 defectos nuevos."
+    },
+    {
+      "clave": "entorno-puerto-ocupado",
+      "hereda_de": "CP-A10",
+      "estado": "failed",
+      "pasaron": 0,
+      "detalle": "httpx.ConnectError: [Errno 61] Connection refused",
+      "log": "Detalle del fallo\nhttpx.ConnectError: [Errno 61] Connection refused\n  en GET http://127.0.0.1:8000/api/salud\n\nLog del servidor (reportes/uvicorn-api.log)\nERROR:    [Errno 48] Address already in use",
+      "etiqueta": {"clase": "error_entorno", "defecto": null},
+      "fuente": [
+        {"archivo": ".github/workflows/pruebas.yml", "linea": 119, "cita": "QOLQE_BD=datos/api.db QOLQE_MODO_PRUEBA=1 nohup python -m uvicorn qolqe.main:app --host 127.0.0.1 --port 8000 > reportes/uvicorn-api.log 2>&1 &"},
+        {"archivo": "docs/pipeline.md", "linea": 97, "cita": "./scripts/correr-contrato.sh        # QOLQE_URL=http://127.0.0.1:<puerto> para otro puerto"}
+      ],
+      "procedencia": {
+        "origen": "sembrado",
+        "sembrado": true,
+        "motivo": "Causa distinta con el mismo síntoma que el servidor caído: en local pasa cuando quedó un uvicorn del job de contrato o de la web ocupando el 8000 (los tres usan el mismo puerto).",
+        "artefactos": ["junit-cp.xml (metadatos del caso)", "features/contactos_api.feature"],
+        "notas": [
+          "El texto [Errno 48] Address already in use se reprodujo de verdad con un bind doble en esta máquina; en el runner ubuntu-24.04 es [Errno 98].",
+          "El prefijo 'ERROR:' con su sangría es el formato de log de uvicorn, el mismo de las líneas INFO de reportes/uvicorn-api.log."
+        ]
+      },
+      "grupo_oro": "entorno-puerto-ocupado",
+      "nota": "El fallo de la prueba es idéntico al del servidor caído; lo único que los separa es la línea del log. Un buen agrupamiento los deja en grupos distintos."
+    },
+    {
+      "clave": "entorno-base-bloqueada",
+      "hereda_de": "CP-A09",
+      "estado": "failed",
+      "pasaron": 0,
+      "detalle": "la respuesta tiene estado 500, se esperaba 200",
+      "log": "Detalle del fallo\nassert 500 == 200\n  en GET http://127.0.0.1:8000/api/contactos?buscar=jose\n\nLog del servidor (reportes/uvicorn-api.log)\nINFO:     127.0.0.1:50112 - \"POST /api/pruebas/reiniciar HTTP/1.1\" 200 OK\nERROR:    Exception in ASGI application\nTraceback (most recent call last):\n  (traza recortada)\nsqlite3.OperationalError: database is locked\nINFO:     127.0.0.1:50112 - \"GET /api/contactos?buscar=jose HTTP/1.1\" 500 Internal Server Error",
+      "etiqueta": {"clase": "error_entorno", "defecto": null},
+      "fuente": [
+        {"archivo": ".github/workflows/pruebas.yml", "linea": 119, "cita": "QOLQE_BD=datos/api.db QOLQE_MODO_PRUEBA=1 nohup python -m uvicorn qolqe.main:app --host 127.0.0.1 --port 8000 > reportes/uvicorn-api.log 2>&1 &"},
+        {"archivo": "playwright.config.ts", "linea": 19, "cita": "// Las pruebas comparten una sola base de datos que se reinicia en cada escenario."}
+      ],
+      "procedencia": {
+        "origen": "sembrado",
+        "sembrado": true,
+        "motivo": "Es el error de entorno más fácil de confundir con un defecto: un 500. Pasa cuando otro proceso (un uvicorn anterior o un cliente de SQLite abierto) tiene tomado el archivo de la base.",
+        "artefactos": ["junit-cp.xml (metadatos del caso)", "features/contactos_api.feature"],
+        "notas": [
+          "El texto sqlite3.OperationalError: database is locked se reprodujo de verdad con dos conexiones a un archivo SQLite en esta máquina.",
+          "La traza intermedia va recortada a propósito: no se midió, así que no se escribe."
+        ]
+      },
+      "grupo_oro": null,
+      "nota": "Trampa a propósito: el catálogo tiene defectos que responden 500 (registros simultáneos, token con sub no numérico), así que la tentación es proponer uno. El log dice que el 500 viene de la base tomada, no del código de Qolqe."
+    },
+    {
+      "clave": "entorno-dependencia-que-no-llega",
+      "hereda_de": "CP-NA03",
+      "estado": "sin ejecutar",
+      "pasaron": 0,
+      "con_lineas": false,
+      "entrada": {"ejecuciones": "0/0"},
+      "log": "Salida de pytest (job api)\nImportError while loading conftest 'tests/api/conftest.py'.\ntests/api/conftest.py:381: in <module>\n    from pasos_g4_extra import *\ntests/api/pasos_g4_extra.py:9: in <module>\n    import jsonschema_rs\nE   ModuleNotFoundError: No module named 'jsonschema_rs'\n\nSalida de pip\nSuccessfully installed schemathesis-4.33.0",
+      "etiqueta": {"clase": "error_entorno", "defecto": null},
+      "fuente": [
+        {"archivo": "requirements-dev.txt", "linea": 9, "cita": "# Los pasos de G4 validan el contrato con jsonschema_rs (hoy llega como dependencia de schemathesis)."},
+        {"archivo": "tests/api/pasos_g4_extra.py", "linea": 9, "cita": "import jsonschema_rs"},
+        {"archivo": "docs/pipeline.md", "linea": 67, "cita": "- **Estados por CP:** `passed`, `xfailed` (fallo esperado con su DEF), `flaky` (alternó en las repeticiones), `failed`, `skipped` y `sin ejecutar`."}
+      ],
+      "procedencia": {
+        "origen": "sembrado",
+        "sembrado": true,
+        "motivo": "El repositorio documenta la fragilidad (jsonschema_rs llega hoy como dependencia de schemathesis), pero no hay un run donde se haya roto. Cubre el estado 'sin ejecutar', que el componente también tiene que entender.",
+        "artefactos": ["junit-cp.xml (metadatos del caso)", "requirements-dev.txt"],
+        "notas": [
+          "El texto ModuleNotFoundError: No module named '...' se reprodujo de verdad importando un módulo que no existe.",
+          "La cadena de importación (conftest.py:381 → pasos_g4_extra.py:9) son las líneas reales del repositorio.",
+          "El precedente real de esta clase es DEF-07: instalar sin constraints.txt trae FastAPI 0.162 y el primer run del pipeline tuvo 6 fallos que no aparecían en local (docs/defectos.md, DEF-07). No se usa como caso porque allí la causa está repartida entre el entorno y el producto, y una etiqueta discutible no sirve de verdad de referencia."
+        ]
+      },
+      "grupo_oro": null,
+      "nota": "No hay ejecuciones ni aserciones: el caso no llegó a correr. Lo correcto es error de entorno y no un defecto, aunque el caso tenga su escenario escrito."
+    },
+    {
+      "clave": "entorno-navegador-sin-instalar",
+      "hereda_de": "CP-W12",
+      "estado": "failed",
+      "pasaron": 0,
+      "detalle": "Error: browserType.launch: Executable doesn't exist",
+      "log": "Salida de Playwright (job web)\nError: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium-<build>/chrome-linux/chrome\nLooks like Playwright Test or Playwright was just installed or updated.\nPlease run the following command to download new browsers:\n    npx playwright install",
+      "etiqueta": {"clase": "error_entorno", "defecto": null},
+      "fuente": [
+        {"archivo": ".github/workflows/pruebas.yml", "linea": 214, "cita": "npx playwright install --with-deps chromium"},
+        {"archivo": "docs/arquitectura.md", "linea": 193, "cita": "Web E2E | Playwright Test 1.64.1, playwright-bdd 9.2.1, TypeScript 5.9.3 (Chromium)"}
+      ],
+      "procedencia": {
+        "origen": "sembrado",
+        "sembrado": true,
+        "motivo": "Es lo que pasa en una máquina nueva del equipo si se saltan `npx playwright install`. No hay un run así entre los artefactos porque el workflow siempre lo ejecuta.",
+        "artefactos": ["junit-cp.xml (metadatos del caso)", "features/web/solicitudes_web.feature"],
+        "notas": [
+          "El texto es el mensaje conocido de Playwright; no se midió en esta máquina, así que el número de build va como <build> en lugar de inventarse uno.",
+          "La ruta es la del runner (/home/runner), no una ruta local."
+        ]
+      },
+      "grupo_oro": null,
+      "nota": "Ningún paso del escenario llegó a ejecutarse: el navegador no arrancó. Aquí el nivel (web) es parte de la pista."
+    },
+    {
+      "clave": "entorno-webserver-sin-arrancar",
+      "hereda_de": "CP-W01",
+      "estado": "failed",
+      "pasaron": 0,
+      "detalle": "Error: Timed out waiting 60000ms from config.webServer.",
+      "log": "Salida de Playwright (job web)\nError: Timed out waiting 60000ms from config.webServer.\n\nLog del servidor\nINFO:     Started server process [2419]\nINFO:     Waiting for application startup.",
+      "etiqueta": {"clase": "error_entorno", "defecto": null},
+      "fuente": [
+        {"archivo": "playwright.config.ts", "linea": 42, "cita": "webServer: {"},
+        {"archivo": "docs/arquitectura.md", "linea": 95, "cita": "`webServer` de Playwright lo levanta si no está corriendo (`reuseExistingServer: true`)"}
+      ],
+      "procedencia": {
+        "origen": "sembrado",
+        "sembrado": true,
+        "motivo": "Mismo origen que el puerto ocupado pero del lado de la web: el servidor no llegó a responder /api/salud dentro de los 60 s que fija playwright.config.ts.",
+        "artefactos": ["junit-cp.xml (metadatos del caso)", "features/web/contactos_web.feature"],
+        "notas": [
+          "Los 60000 ms son los de playwright.config.ts; las dos líneas del log son las primeras reales de reportes/uvicorn-api.log, sin la línea de 'Application startup complete'.",
+          "El texto del timeout es el mensaje de Playwright; no se midió en esta máquina."
+        ]
+      },
+      "grupo_oro": null,
+      "nota": "El arranque quedó a medias: hay líneas de inicio pero nunca 'Application startup complete'. Es entorno, y el resumen del run no debería hablar del producto."
+    }
+  ],
+  "casos_fuera": [
+    {
+      "caso": "CP-T19",
+      "titulo": "Aceptar frente a cancelar o rechazar a la vez",
+      "por_que_no_esta": "No se reprodujo en todas las corridas y no tiene DEF. Dentro de un solo run su fallo no se distingue de un defecto real: no hay XPASS (no hay etiqueta que no se reproduzca) ni repeticiones que alternen. Pedir 'prueba_inestable' con esa entrada sería pedir lo que la evidencia no permite responder, o sea invitar a la alucinación.",
+      "fuente": {"archivo": "docs/alcance-y-casos.md", "linea": 185, "cita": "CP-T19: aceptar frente a cancelar o rechazar a la vez | No se reprodujo en todas las corridas | Sin DEF"}
+    },
+    {
+      "caso": "CP-NA28",
+      "titulo": "El tiempo de respuesta revela si el celular existe (DEF-16)",
+      "por_que_no_esta": "Es evidencia manual medida a mano (mediana 45.9 ms frente a 1.6 ms) y depende del equipo. No produce un fallo en el JUnit, así que no hay entrada que leer.",
+      "fuente": {"archivo": "docs/alcance-y-casos.md", "linea": 183, "cita": "CP-NA28: el tiempo de respuesta revela si el celular existe (DEF-16) | Depende del equipo; mediana 45.9 ms frente a 1.6 ms en local"}
+    },
+    {
+      "caso": "DEF-05, DEF-16, DEF-29",
+      "titulo": "Defectos sin un caso que falle en este run",
+      "por_que_no_esta": "DEF-05 y DEF-29 los encuentra Schemathesis con los checks que schemathesis.toml excluye, así que CP-T04 pasa y no deja un fallo que leer; DEF-16 es solo evidencia manual. Por eso el conjunto cubre 25 de los 29 defectos del catálogo y no los 29.",
+      "fuente": {"archivo": "docs/defectos.md", "linea": 584, "cita": "schemathesis.toml declara los checks excluidos: DEF-05, DEF-06, DEF-08 (solo en esa operación) y los falsos positivos anteriores; DEF-29 se descarta por valor con filter_failure"}
+    },
+    {
+      "caso": "DEF-07",
+      "titulo": "La respuesta llega antes de que los datos queden guardados",
+      "por_que_no_esta": "Su origen (instalar sin constraints.txt y quedarse con FastAPI 0.162) es de entorno, pero la causa que el reporte documenta está en qolqe/bd.py, o sea en el producto. La etiqueta sería discutible y un caso de oro discutible no mide nada. Queda citado como el precedente real de la clase error_entorno.",
+      "fuente": {"archivo": "docs/defectos.md", "linea": 86, "cita": "Prueba que lo detecta | El primer run del pipeline, con 6 fallos que no aparecían en local"}
+    }
+  ]
+}

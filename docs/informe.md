@@ -11,6 +11,7 @@
 | CI/CD | GitHub Actions (`.github/workflows/pruebas.yml`), 8 jobs y quality gate |
 | Gestión de casos | Kiwi TCMS 17.0 (Docker local) más matriz e historial de ejecuciones en GitHub Pages |
 | Herramienta de rendimiento | k6 2.3.0, con Qolqe en Docker (1 CPU y 1 GB); recursos con psutil y `docker stats`, perfiles con py-spy |
+| Capacidad de IA | Diagnóstico de los fallos de un run en la fase de reporte, sin dependencias nuevas (biblioteca estándar), con línea base sin IA y guardas; verificado contra un conjunto de oro de 52 casos: [`capacidad-ia.md`](capacidad-ia.md) |
 
 **Alcance y nivel de prueba.** Son 19 historias y sus 51 criterios: 33 del núcleo y 18 de G4. Hay 335 casos: 334 escenarios Gherkin y el caso de contrato CP-T04.
 
