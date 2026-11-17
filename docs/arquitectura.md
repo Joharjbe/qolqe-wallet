@@ -91,7 +91,7 @@ Reglas que se derivan:
 | | API funcional y técnica | Contrato | Web E2E |
 |---|---|---|---|
 | Comando local | `npm run test:api` (pytest con JUnit y HTML) | `./scripts/correr-contrato.sh` | `npm run test:web` o `npm run test:web:3x` (`bddgen` y luego `playwright test`) |
-| Job en CI | `api`, después de `estatico` | `contrato`, en paralelo con `api` | `web`, solo si `api` y `contrato` están en verde |
+| Job en CI | `api`, después de `contrato` | `contrato`, al inicio, después de `estatico` | `web`, solo si `api` y `contrato` están en verde |
 | Cómo se levanta Qolqe en CI | Un paso del job con uvicorn | Un paso del job con uvicorn | `webServer` de Playwright lo levanta si no está corriendo (`reuseExistingServer: true`) |
 | Cómo se descubren los casos | Cada `test_*.py` llama a `scenarios("<archivo>.feature")` | `--include-path-regex` con las operaciones del núcleo y G4: 20 coinciden y se excluye `DELETE /api/seguridad/sesiones` (HU-G6-10) | `bddgen` genera los `.spec.js` en `.features-gen/` desde `features/web/*.feature` |
 | Defectos conocidos | `@DEF-xx` se convierte en `xfail(strict=True, raises=AssertionError)` con el hook `pytest_bdd_apply_tag` de `conftest.py`. Si el defecto se corrige, la prueba falla y avisa; un error que no es una aserción (servidor caído, paso roto) es un fallo, no el defecto. | Checks u operaciones desactivados con su motivo en `schemathesis.toml`; dos fallos descartados por valor en `contrato_hooks.py` (DEF-29 y un falso positivo) | `@fail @DEF-xx`: playwright-bdd lo traduce a `test.fail()`, que falla si la prueba pasa. Lo que el paso necesita para comparar es una precondición (`tests/e2e/precondicion.ts`): si no se cumple, el caso falla de verdad |

@@ -111,8 +111,8 @@ La comparación con Page Factory, Page Object encadenado, Screenplay, App Action
 | Job | Depende de | Qué hace | Por qué |
 |---|---|---|---|
 | `estatico` | — | ruff, `tsc --noEmit`, `bddgen`, `pytest --collect-only`, `trazabilidad.py --verificar` | *Fail fast*: en un minuto y sin servidor detecta un paso sin definir, un error de tipos o una etiqueta `@CP` faltante |
-| `api` | `estatico` | pytest-bdd del núcleo y de G4, funcional y técnico | Primera prueba dinámica y la más barata. Check obligatorio |
-| `contrato` | `estatico`, en paralelo con `api` | Schemathesis, 19 operaciones | Otro runner y otra base. Antes iba dentro de `api` y se perdía si fallaba pytest |
+| `contrato` | `estatico` | Schemathesis, 19 operaciones | Primera prueba dinámica, **al inicio**: si la API no cumple el contrato que promete, los casos diseñados prueban sobre una base que no se sostiene. Otro runner y otra base. Antes iba dentro de `api` y se perdía si fallaba pytest |
+| `api` | `estatico` y `contrato` | pytest-bdd del núcleo y de G4, funcional y técnico | Con el contrato cumplido, los casos diseñados. Check obligatorio |
 | `web` | `api` y `contrato` | Playwright, 3 repeticiones | La etapa más cara solo corre con la API en verde. Check obligatorio |
 | `quality-gate` | las 4 anteriores, `always()` | Pasa solo si las 4 terminan en `success` | Un solo veredicto; un job omitido no cuenta como aprobado |
 | `reportes` | `estatico` en verde | Matriz, `junit-cp.xml`, `run.json`, evidencias por CP | Corre aunque fallen las pruebas: el reporte explica el fallo |
