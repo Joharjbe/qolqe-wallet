@@ -1,0 +1,15 @@
+{
+  "grupo": "G14",
+  "nombre": "Transferencia a cuenta cerrada",
+  "fallos": [
+    {
+      "caso": "CP-NA112",
+      "grupo": "G14",
+      "clase": "defecto_real",
+      "defecto": "DEF-04",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y el sistema ya tiene un defecto asignado para este comportamiento esperado de fallo.",
+      "evidencia": "Defecto conocido DEF-04 (fallo esperado)"
+    }
+  ]
+}

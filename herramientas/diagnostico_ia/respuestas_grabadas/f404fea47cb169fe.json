@@ -1,0 +1,15 @@
+{
+  "grupo": "G32",
+  "nombre": "Error en validación de nombres cortos",
+  "fallos": [
+    {
+      "caso": "CP-NW03",
+      "grupo": "G32",
+      "clase": "defecto_real",
+      "defecto": "DEF-18",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y tiene un defecto conocido asociado confirmado por el reporte.",
+      "evidencia": "Defecto conocido DEF-18 (fallo esperado)"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "grupo": "G25",
+  "nombre": "Registros simultáneos con el mismo correo",
+  "fallos": [
+    {
+      "caso": "CP-NA20",
+      "grupo": "G25",
+      "clase": "defecto_real",
+      "defecto": "DEF-15",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed debido a un defecto conocido (DEF-15) que impide el registro correcto de usuarios duplicados.",
+      "evidencia": "Defecto conocido DEF-15 (fallo esperado)"
+    }
+  ]
+}

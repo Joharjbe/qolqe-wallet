@@ -1,0 +1,15 @@
+{
+  "grupo": "G10",
+  "nombre": "Validación de tipo de dato en campo favorito",
+  "fallos": [
+    {
+      "caso": "CP-T26",
+      "grupo": "G10",
+      "clase": "defecto_real",
+      "defecto": "DEF-08",
+      "confianza": "alta",
+      "razon": "El caso de prueba está marcado como xfailed y el defecto ya está registrado, confirmando que la aplicación no maneja correctamente los números en el campo favorito.",
+      "evidencia": "xfailed: test_cpt26_favorito_no_acepta_números_aunque_pydantic_los_convierta[{\"favorito\": 0}]"
+    }
+  ]
+}

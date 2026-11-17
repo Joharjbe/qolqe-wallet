@@ -1,0 +1,15 @@
+{
+  "grupo": "G22",
+  "nombre": "Transferencias interbancarias límite diario",
+  "fallos": [
+    {
+      "caso": "CP-NA146",
+      "grupo": "G22",
+      "clase": "defecto_real",
+      "defecto": "DEF-20",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y reconocido como un defecto existente en la funcionalidad de límites diarios.",
+      "evidencia": "defecto conocido def-20 (fallo esperado)"
+    }
+  ]
+}

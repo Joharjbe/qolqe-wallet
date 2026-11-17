@@ -1,0 +1,15 @@
+{
+  "grupo": "G13",
+  "nombre": "Validación de tipo contacto_id",
+  "fallos": [
+    {
+      "caso": "CP-NA104",
+      "grupo": "G13",
+      "clase": "defecto_real",
+      "defecto": "DEF-28",
+      "confianza": "alta",
+      "razon": "La prueba está marcada explícitamente como xfailed y vinculada a un defecto conocido en el sistema.",
+      "evidencia": "defecto conocido def-28 (fallo esperado)"
+    }
+  ]
+}

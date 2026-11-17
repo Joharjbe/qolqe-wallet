@@ -86,14 +86,23 @@ def diagnosticar(carpeta_run: Path, *, backend: str = "lineabase", raiz_repo: Pa
         if grabar and carpeta_grabados is not None and backend in ("anthropic", "google"):
             modelo.guardar_respuesta(carpeta_grabados, SISTEMA, prompt, esquema, respuesta)
         grupo["nombre"] = str(respuesta.get("nombre", ""))[:120]
+        contestados = set()
         for propuesta in respuesta.get("fallos", []) if isinstance(respuesta, dict) else []:
             aceptada, motivos = guardas.validar(propuesta, material=material, defectos=defectos)
+            caso = propuesta.get("caso", "") if isinstance(propuesta, dict) else ""
+            contestados.add(caso)
             if aceptada:
                 clasificaciones.append(propuesta)
             else:
-                rechazos.append({"grupo": grupo["id"],
-                                 "caso": propuesta.get("caso", "") if isinstance(propuesta, dict) else "",
-                                 "tipo": "guarda", "motivos": motivos})
+                rechazos.append({"grupo": grupo["id"], "caso": caso, "tipo": "guarda", "motivos": motivos})
+        # El modelo contesta por grupo y puede devolver menos fallos de los que se le pasaron.
+        # Sin esta cuenta, esos casos desaparecían del reporte sin rechazo y sin error: el
+        # total decía menos casos de los que había y nadie se enteraba. Un caso que el modelo
+        # no contestó es un dato SOBRE el modelo, igual que un rechazo, y se anota como tal.
+        for fallo in del_grupo:
+            if fallo["caso"] not in contestados:
+                rechazos.append({"grupo": grupo["id"], "caso": fallo["caso"], "tipo": "sin_respuesta",
+                                 "motivos": ["el modelo contestó por el grupo pero dejó este caso fuera"]})
 
     por_clase: dict[str, int] = {}
     for propuesta in clasificaciones:
@@ -119,6 +128,7 @@ def diagnosticar(carpeta_run: Path, *, backend: str = "lineabase", raiz_repo: Pa
     # tabla destruye el argumento de este reporte, que es que los números son honestos.
     totales["rechazados_por_guardas"] = sum(1 for r in rechazos if r["tipo"] == "guarda")
     totales["errores_del_backend"] = sum(1 for r in rechazos if r["tipo"] == "backend")
+    totales["casos_sin_respuesta"] = sum(1 for r in rechazos if r["tipo"] == "sin_respuesta")
     return {
         "run": {
             "carpeta": str(carpeta_run),
@@ -258,6 +268,7 @@ def a_markdown(diagnostico: dict) -> str:
         f"| Clasificaciones aceptadas | {totales['clasificados']} |",
         f"| Respuestas rechazadas por las guardas | {totales['rechazados_por_guardas']} |",
         f"| Errores del backend (sin clave, sin red) | {totales['errores_del_backend']} |",
+        f"| Casos que el modelo dejó sin contestar | {totales['casos_sin_respuesta']} |",
         "",
     ]
     for clase, cuenta in sorted(diagnostico["por_clase"].items()):

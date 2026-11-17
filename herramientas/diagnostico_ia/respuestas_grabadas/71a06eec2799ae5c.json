@@ -1,0 +1,4 @@
+{
+  "resumen": "Se registraron 40 fallos en la ejecución, distribuidos en 32 grupos distintos que afectan principalmente a las APIs de contactos, núcleo de sesión y dinero. La mayoría de los casos presentan errores consistentes categorizados como defecto_real. Los grupos G1 y G28 son los más extensos, concentrando fallos en los módulos de contactos y sesión respectivamente.",
+  "riesgo": "El alto número de fallos distribuidos en múltiples módulos críticos sugiere una degradación generalizada en la estabilidad de la billetera digital."
+}

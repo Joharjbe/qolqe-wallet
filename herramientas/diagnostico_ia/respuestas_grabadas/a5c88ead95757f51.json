@@ -1,0 +1,15 @@
+{
+  "grupo": "G4",
+  "nombre": "Solicitudes API vencidas",
+  "fallos": [
+    {
+      "caso": "CP-A32",
+      "grupo": "G4",
+      "clase": "defecto_real",
+      "defecto": "DEF-03",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y el run confirma que corresponde al defecto conocido DEF-03.",
+      "evidencia": "Defecto conocido DEF-03 (fallo esperado)"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "grupo": "G1",
+  "nombre": "Validación de alias con letra ñ",
+  "fallos": [
+    {
+      "caso": "CP-A04",
+      "grupo": "G1",
+      "clase": "defecto_real",
+      "defecto": "DEF-01",
+      "confianza": "alta",
+      "razon": "El caso está marcado como fallo esperado (xfailed) debido a un defecto conocido en la gestión de caracteres especiales.",
+      "evidencia": "xfailed: test_cpa04_el_alias_admite_la_letra_ñ"
+    },
+    {
+      "caso": "CP-A79",
+      "grupo": "G1",
+      "clase": "defecto_real",
+      "defecto": "DEF-01",
+      "confianza": "alta",
+      "razon": "El caso está marcado como fallo esperado (xfailed) debido a un defecto conocido en la gestión de caracteres especiales.",
+      "evidencia": "xfailed: test_cpa79_el_alias_admite_la_letra_ñ_mayúscula"
+    },
+    {
+      "caso": "CP-A80",
+      "grupo": "G1",
+      "clase": "defecto_real",
+      "defecto": "DEF-01",
+      "confianza": "alta",
+      "razon": "El caso está marcado como fallo esperado (xfailed) debido a un defecto conocido en la gestión de caracteres especiales.",
+      "evidencia": "xfailed: test_cpa80_editar_el_alias_con_la_letra_ñ"
+    }
+  ]
+}

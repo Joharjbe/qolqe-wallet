@@ -164,17 +164,40 @@ def test_cp_ia_06_no_determinismo_de_un_modelo_real(exige_modelo, exigir_que_el_
     assert len(firmas) == 1, "los grupos cambiaron entre corridas: eso no lo decide el modelo"
 
     clases_por_caso: dict[str, set[str]] = {}
+    veces_clasificado: dict[str, int] = {}
     for resultado in corridas:
         for propuesta in resultado["fallos"]:
             clases_por_caso.setdefault(propuesta["caso"], set()).add(propuesta["clase"])
+            veces_clasificado[propuesta["caso"]] = veces_clasificado.get(propuesta["caso"], 0) + 1
     cambiaron = {caso: sorted(clases) for caso, clases in clases_por_caso.items() if len(clases) > 1}
+
+    # La varianza del modelo no está solo en QUÉ clase dice: también en SI contesta.
+    # Un caso que unas corridas clasifica y otras deja fuera es no determinismo igual,
+    # y se mide aparte porque se cuenta distinto en la exposición.
+    todos = sorted({caso["name"].split()[0] for caso in _casos_de_prueba(caso_base)})
+    cobertura = {caso: veces_clasificado.get(caso, 0) for caso in todos}
+    nunca = [caso for caso, veces in cobertura.items() if veces == 0]
+    a_veces = [caso for caso, veces in cobertura.items() if 0 < veces < repeticiones]
 
     (carpeta_resultados / f"no-determinismo-{exige_modelo}.json").write_text(json.dumps({
         "backend": exige_modelo,
         "corridas": repeticiones,
-        "casos": len(clases_por_caso),
+        "casos_del_run": len(todos),
+        "casos_clasificados_alguna_vez": len(clases_por_caso),
         "casos_que_cambiaron_de_clase": len(cambiaron),
         "detalle": cambiaron,
+        "veces_clasificado_de_n_corridas": cobertura,
+        "casos_que_el_modelo_nunca_contesto": nunca,
+        "casos_que_contesto_solo_a_veces": a_veces,
     }, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    assert len(clases_por_caso) == len({caso["name"].split()[0] for caso in _casos_de_prueba(caso_base)})
+    # Qué se exige y qué no. No se exige que el modelo conteste por todos los casos:
+    # eso sería un umbral de cobertura disfrazado de prueba, y la única forma de
+    # ponerlo verde sería esconder el caso que el modelo deja fuera. Lo que sí se
+    # exige es que la medición sirva (que haya algo medido) y que la cuenta cuadre:
+    # cada caso del run, o lo clasificó, o quedó anotado como sin respuesta.
+    assert clases_por_caso, "ninguna corrida clasificó nada: no hay nada que medir"
+    sin_respuesta = {rechazo["caso"] for resultado in corridas for rechazo in resultado["rechazos"]
+                     if rechazo["tipo"] == "sin_respuesta"}
+    assert set(nunca) <= sin_respuesta, (
+        f"casos que desaparecieron sin quedar anotados como sin respuesta: {sorted(set(nunca) - sin_respuesta)}")

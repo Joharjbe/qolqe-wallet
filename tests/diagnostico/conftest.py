@@ -175,13 +175,22 @@ def clasificar_fallos(entradas: list[dict], *, backend: str, defectos: set[str],
                              "motivos": [f"{type(error).__name__}: {error}"]})
             continue
         propuestas = respuesta.get("fallos", []) if isinstance(respuesta, dict) else []
+        contestados = set()
         for propuesta in propuestas:
             aceptada, motivos = guardas.validar(propuesta, material=material, defectos=defectos)
             caso = propuesta.get("caso", "") if isinstance(propuesta, dict) else ""
+            contestados.add(caso)
             if aceptada:
                 predicciones[caso] = propuesta
             else:
                 rechazos.append({"grupo": grupo["id"], "caso": caso, "tipo": "guarda", "motivos": motivos})
+        # Mismo criterio que el componente: un caso del grupo que el modelo no contestó se
+        # anota, no desaparece. Antes la prueba lo deducía por descarte; ahora lo dice quien
+        # lo sabe de primera mano, que es el único sitio donde se ve la respuesta completa.
+        for fallo in del_grupo:
+            if fallo["caso"] not in contestados:
+                rechazos.append({"grupo": grupo["id"], "caso": fallo["caso"], "tipo": "sin_respuesta",
+                                 "motivos": ["el modelo contestó por el grupo pero dejó este caso fuera"]})
     return {"predicciones": predicciones, "grupos": grupos, "rechazos": rechazos}
 
 

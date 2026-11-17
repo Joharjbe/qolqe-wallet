@@ -23,6 +23,8 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -32,10 +34,44 @@ BACKENDS = ("anthropic", "google", "grabado", "lineabase")
 URL_ANTHROPIC = "https://api.anthropic.com/v1/messages"
 VERSION_ANTHROPIC = "2023-06-01"
 MODELO_ANTHROPIC = "claude-opus-5-5"
-URL_GOOGLE = "https://generativelanguage.googleapis.com/v1beta/models/{modelo}:generateContent"
-MODELO_GOOGLE = "gemini-2.5-flash"
+# Google movió su API: `:generateContent` ya no acepta claves nuevas («no longer available to
+# new users») y el camino actual es la Interactions API, con el modelo dentro del cuerpo.
+URL_GOOGLE = "https://generativelanguage.googleapis.com/v1beta/interactions"
+MODELO_GOOGLE = "gemini-3.1-flash-lite"
 MAXIMO_DE_SALIDA = 2000
 ESPERA = 120
+
+# --- Reintentos ante un error TEMPORAL del backend -------------------------
+#
+# Por qué están: un 503 («high demand») o un 429 (límite de peticiones del plan)
+# no dicen NADA sobre el modelo. Sin reintentos, el grupo entero se cae de la
+# medición y los casos de ese grupo aparecen «sin clasificación», mezclando un
+# problema de infraestructura con un resultado del modelo. En la primera corrida
+# real eso se llevó 9 de los 52 casos del conjunto de oro.
+#
+# Está puesto a propósito simple y con techo: pocos intentos, espera creciente y
+# un presupuesto total de espera para toda la corrida. Un reintento sin límite
+# convertiría una caída del backend en un arnés que no termina nunca.
+CODIGOS_TEMPORALES = (429, 500, 502, 503, 504)
+INTENTOS = int(os.environ.get("DIAGNOSTICO_IA_INTENTOS") or "3")
+ESPERA_ENTRE_INTENTOS = float(os.environ.get("DIAGNOSTICO_IA_ESPERA") or "5")
+ESPERA_MAXIMA = 60.0
+# Techo de espera acumulada por proceso. Al agotarse ya no se reintenta: el
+# error se reporta tal cual y queda contado como error del backend.
+PRESUPUESTO_DE_ESPERA = float(os.environ.get("DIAGNOSTICO_IA_PRESUPUESTO") or "180")
+# El propio 429 dice cuánto esperar («Please retry in 55s»): se le hace caso en
+# vez de adivinar, con el techo de ESPERA_MAXIMA.
+PISTA_DE_ESPERA = re.compile(r"retry in (\d+)\s*s", re.IGNORECASE)
+
+# Pausa mínima entre dos llamadas HTTP al modelo. El plan gratuito de Google
+# admite 15 peticiones por minuto y el arnés manda una por grupo (20 grupos) de
+# corrido: sin la pausa, el 429 es seguro a partir de la petición 16. Esperar
+# ~4 s antes de cada llamada cuesta menos tiempo total que reintentar un 429
+# que pide 55 s. Se puede desactivar con DIAGNOSTICO_IA_PAUSA=0.
+PAUSA_ENTRE_LLAMADAS = float(os.environ.get("DIAGNOSTICO_IA_PAUSA") or "4.2")
+
+_ultima_llamada = 0.0
+_espera_gastada = 0.0
 
 # Casos que la documentación del proyecto declara inestables: no dan el mismo
 # resultado en todas las corridas. CP-T20 reproduce DEF-26 solo a veces y
@@ -53,6 +89,19 @@ class SinClave(RuntimeError):
 
 class RespuestaInvalida(RuntimeError):
     """El backend contestó algo que no se pudo leer como JSON."""
+
+
+class ErrorTemporal(RespuestaInvalida):
+    """Error del backend que vale la pena reintentar (429, 503, 5xx).
+
+    Hereda de RespuestaInvalida a propósito: quien ya atrapaba RespuestaInvalida
+    (el arnés, el CLI) sigue funcionando igual, y el mensaje final dice cuántos
+    intentos se hicieron para que en el reporte se vea que no fue un solo tiro.
+    """
+
+    def __init__(self, mensaje: str, segundos_sugeridos: float | None = None) -> None:
+        super().__init__(mensaje)
+        self.segundos_sugeridos = segundos_sugeridos
 
 
 def responder(sistema: str, prompt: str, esquema: dict, *, backend: str = "lineabase",
@@ -279,18 +328,45 @@ def _pedir_a_google(sistema: str, peticion: str, raiz: Path | None) -> str:
     clave = leer_clave("GOOGLE_API_KEY", raiz)
     modelo = os.environ.get("MODELO_GOOGLE") or _del_env("MODELO_GOOGLE", raiz) or MODELO_GOOGLE
     cuerpo = {
-        "system_instruction": {"parts": [{"text": sistema}]},
-        "contents": [{"role": "user", "parts": [{"text": peticion}]}],
-        "generationConfig": {"maxOutputTokens": MAXIMO_DE_SALIDA},
+        "model": modelo,
+        "system_instruction": sistema,
+        "input": peticion,
+        "generation_config": {"max_output_tokens": MAXIMO_DE_SALIDA},
     }
     # La clave va en una cabecera, no en la URL: una URL con la clave queda en
     # los logs del servidor y en el historial de la terminal.
-    datos = _post(URL_GOOGLE.format(modelo=modelo), cuerpo, {"x-goog-api-key": clave})
-    partes = datos.get("candidates", [{}])[0].get("content", {}).get("parts", [])
-    return "\n".join(parte.get("text", "") for parte in partes)
+    datos = _post(URL_GOOGLE, cuerpo, {"x-goog-api-key": clave})
+    # La respuesta viene como una lista de pasos. Solo interesa el de la salida del
+    # modelo: los pasos de tipo "thought" son su razonamiento y se descartan, porque
+    # lo que el componente promete entregar es la clasificación, no cómo la pensó.
+    textos = []
+    for paso in datos.get("steps", []):
+        if paso.get("type") != "model_output":
+            continue
+        textos += [parte.get("text", "") for parte in paso.get("content", []) if parte.get("type") == "text"]
+    return "\n".join(textos)
 
 
 def _post(url: str, cuerpo: dict, cabeceras: dict) -> dict:
+    """Una petición POST, con reintentos solo ante errores temporales.
+
+    Lo que NO se reintenta: un 400, un 401 o un 404. Esos no se arreglan
+    esperando (clave mal puesta, modelo que no existe, camino de la API que
+    cambió) y reintentarlos solo haría más lenta la corrida.
+    """
+    ultimo: ErrorTemporal | None = None
+    for intento in range(1, max(INTENTOS, 1) + 1):
+        _esperar_turno()
+        try:
+            return _post_una_vez(url, cuerpo, cabeceras)
+        except ErrorTemporal as error:
+            ultimo = error
+            if intento == max(INTENTOS, 1) or not _dormir(_cuanto_esperar(error, intento)):
+                break
+    raise RespuestaInvalida(f"{ultimo} (tras {intento} intento(s))")
+
+
+def _post_una_vez(url: str, cuerpo: dict, cabeceras: dict) -> dict:
     datos = json.dumps(cuerpo).encode("utf-8")
     peticion = urllib.request.Request(url, data=datos, method="POST",
                                       headers={"content-type": "application/json", **cabeceras})
@@ -299,9 +375,46 @@ def _post(url: str, cuerpo: dict, cabeceras: dict) -> dict:
             return json.loads(respuesta.read().decode("utf-8"))
     except urllib.error.HTTPError as error:
         detalle = error.read().decode("utf-8", errors="replace")[:300]
-        raise RespuestaInvalida(f"{url} respondió {error.code}: {detalle}") from error
+        mensaje = f"{url} respondió {error.code}: {detalle}"
+        if error.code in CODIGOS_TEMPORALES:
+            pista = PISTA_DE_ESPERA.search(detalle)
+            raise ErrorTemporal(mensaje, float(pista.group(1)) if pista else None) from error
+        raise RespuestaInvalida(mensaje) from error
     except urllib.error.URLError as error:
-        raise RespuestaInvalida(f"No se pudo llegar a {url}: {error.reason}") from error
+        # Sin red o DNS caído: también es temporal, y si no se arregla el último
+        # intento lo reporta igual.
+        raise ErrorTemporal(f"No se pudo llegar a {url}: {error.reason}") from error
+
+
+def _cuanto_esperar(error: ErrorTemporal, intento: int) -> float:
+    """Espera creciente, y si el backend dijo cuánto esperar, se le hace caso."""
+    sugerida = error.segundos_sugeridos or 0.0
+    return min(max(ESPERA_ENTRE_INTENTOS * intento, sugerida), ESPERA_MAXIMA)
+
+
+def _dormir(segundos: float) -> bool:
+    """Espera antes del siguiente intento. Devuelve False si ya no queda
+    presupuesto de espera, y entonces no se reintenta más."""
+    global _espera_gastada
+    if _espera_gastada + segundos > PRESUPUESTO_DE_ESPERA:
+        return False
+    _espera_gastada += segundos
+    time.sleep(segundos)
+    return True
+
+
+def _esperar_turno() -> None:
+    """Deja pasar PAUSA_ENTRE_LLAMADAS entre dos llamadas al modelo.
+
+    No es un reintento: es no provocar el 429. Vale para todo el proceso, así
+    que una corrida de 20 grupos agrega ~84 s y a cambio no pierde grupos.
+    """
+    global _ultima_llamada
+    if PAUSA_ENTRE_LLAMADAS > 0:
+        falta = PAUSA_ENTRE_LLAMADAS - (time.monotonic() - _ultima_llamada)
+        if falta > 0:
+            time.sleep(falta)
+    _ultima_llamada = time.monotonic()
 
 
 def _del_env(nombre: str, raiz: Path | None) -> str | None:

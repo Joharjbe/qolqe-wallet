@@ -1,0 +1,15 @@
+{
+  "grupo": "G16",
+  "nombre": "Registros simultáneos con el mismo celular",
+  "fallos": [
+    {
+      "caso": "CP-NA12",
+      "grupo": "G16",
+      "clase": "defecto_real",
+      "defecto": "DEF-14",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y existe un defecto registrado que explica el comportamiento esperado no cumplido.",
+      "evidencia": "Defecto conocido DEF-14 (fallo esperado)"
+    }
+  ]
+}

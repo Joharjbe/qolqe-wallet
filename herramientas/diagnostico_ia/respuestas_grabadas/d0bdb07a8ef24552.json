@@ -1,0 +1,15 @@
+{
+  "grupo": "G20",
+  "nombre": "Fallo en redondeo de comisiones",
+  "fallos": [
+    {
+      "caso": "CP-NA142",
+      "grupo": "G20",
+      "clase": "defecto_real",
+      "defecto": "DEF-23",
+      "confianza": "alta",
+      "razon": "El caso de prueba está marcado como xfailed y reportado con un defecto conocido relacionado con el redondeo comercial.",
+      "evidencia": "xfailed: test_cpna142_rn09_la_comisión_usa_redondeo_comercial_cuando_el_tercer_decimal_es_5[67.00-1.005-1.01-68.01]"
+    }
+  ]
+}

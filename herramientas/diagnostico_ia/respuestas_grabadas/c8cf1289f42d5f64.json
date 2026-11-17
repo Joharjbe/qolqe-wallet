@@ -1,0 +1,15 @@
+{
+  "grupo": "G7",
+  "nombre": "Error en concurrencia de débitos",
+  "fallos": [
+    {
+      "caso": "CP-T17",
+      "grupo": "G7",
+      "clase": "defecto_real",
+      "defecto": "DEF-25",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed debido a un defecto técnico conocido ya registrado en la plataforma.",
+      "evidencia": "Mensaje normalizado: defecto conocido def-25 (fallo esperado)"
+    }
+  ]
+}

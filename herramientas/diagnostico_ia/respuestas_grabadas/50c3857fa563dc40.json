@@ -1,0 +1,15 @@
+{
+  "grupo": "G29",
+  "nombre": "Validación de token con clave por defecto",
+  "fallos": [
+    {
+      "caso": "CP-NA60",
+      "grupo": "G29",
+      "clase": "defecto_real",
+      "defecto": "DEF-17",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y asociado a un defecto conocido, indicando que la funcionalidad no cumple con el comportamiento esperado.",
+      "evidencia": "Defecto conocido DEF-17 (fallo esperado)"
+    }
+  ]
+}

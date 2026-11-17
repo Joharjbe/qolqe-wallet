@@ -1,0 +1,24 @@
+{
+  "grupo": "G19",
+  "nombre": "Transferencias simultáneas bajo DEF-21",
+  "fallos": [
+    {
+      "caso": "CP-NA134",
+      "grupo": "G19",
+      "clase": "defecto_real",
+      "defecto": "DEF-21",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y asociado a un defecto conocido de lógica de negocio.",
+      "evidencia": "defecto conocido def-21 (fallo esperado)"
+    },
+    {
+      "caso": "CP-NA135",
+      "grupo": "G19",
+      "clase": "defecto_real",
+      "defecto": "DEF-21",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y asociado a un defecto conocido de lógica de negocio.",
+      "evidencia": "defecto conocido def-21 (fallo esperado)"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "grupo": "G26",
+  "nombre": "Fallo esperado en reinicio de intentos de sesión",
+  "fallos": [
+    {
+      "caso": "CP-NA30",
+      "grupo": "G26",
+      "clase": "defecto_real",
+      "defecto": "DEF-10",
+      "confianza": "alta",
+      "razon": "El caso de prueba está marcado explícitamente como un defecto conocido (xfailed) relacionado con el conteo de intentos fallidos.",
+      "evidencia": "Defecto conocido DEF-10 (fallo esperado)"
+    }
+  ]
+}
