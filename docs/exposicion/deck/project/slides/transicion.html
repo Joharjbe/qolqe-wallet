@@ -1,0 +1,27 @@
+<section id="transicion" class="oscura" data-transition="push">
+<p class="cejilla">EL CONSOLIDADO</p>
+<div class="franja"></div>
+<h2 style="font-size:88px; margin-top:48px; max-width:1500px">Tres partes, una sola suite</h2>
+<p class="bajada" style="max-width:1600px; font-size:36px">19 historias y 51 criterios → 335 casos → 30 defectos. API y web comparten los criterios, los identificadores CP y la matriz de trazabilidad. El rendimiento parte de su propio requerimiento: sus flujos F-01 a F-06 se trazan a las mismas historias, y su veredicto es por umbral (U-01 a U-09), no por caso.</p>
+<div class="fila" style="margin-top:auto; gap:48px">
+<div class="tarjeta" style="flex:1">
+<p class="etiqueta">PARTE 1 · API</p>
+<p>276 escenarios funcionales y técnicos, más el contrato</p>
+</div>
+<div class="tarjeta" style="flex:1">
+<p class="etiqueta">PARTE 2 · WEB Y CI/CD</p>
+<p>58 escenarios en Gherkin y un pipeline de 8 jobs</p>
+</div>
+<div class="tarjeta" style="flex:1">
+<p class="etiqueta">PARTE 3 · RENDIMIENTO</p>
+<p>4 tipos de prueba con k6 y la capacidad medida</p>
+</div>
+</div>
+<aside>Hasta aquí la Parte 3. Ahora el consolidado.
+
+El proyecto en una línea: 19 historias de usuario con 51 criterios de aceptación, de donde salen 335 casos de prueba, que encontraron 30 defectos en la aplicación.
+
+Las tres partes no son tres trabajos pegados, pero tampoco comparten todo, y quiero decirlo exacto. API y web comparten los criterios de aceptación, los identificadores CP y la matriz de trazabilidad: un caso de API y uno de web se enlazan al mismo criterio. El rendimiento parte de su propio requerimiento, con sus propios IDs: flujos F, umbrales U y criterios de validez V. Sus flujos se trazan a las mismas historias, por ejemplo el login a HU-N-02, pero no tienen ID CP ni cuentan en los 335 casos: su veredicto es por umbral, no por caso. Lo que sí comparte es la API de soporte, la semilla y el sitio publicado.
+
+Voy a ir punto por punto del enunciado. Arriba de cada lámina va la observación de la Entrega 2 que resuelve.</aside>
+</section>

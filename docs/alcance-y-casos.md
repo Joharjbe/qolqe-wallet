@@ -16,7 +16,7 @@ G4 mueve dinero sin que el pagador inicie la operación: una persona pide y otra
 
 ## Totales
 
-Fuente: etiquetas de `features/` (`npm run trazabilidad:verificar` → *334 casos, 0 errores, 3 avisos*: CP-NA45, NA48 y T28 son técnicos sin `@CA`, a propósito) más el caso de contrato CP-T04. Resultado de la corrida local del 11-nov-2026, después de la revisión final.
+Fuente: etiquetas de `features/` (`npm run trazabilidad:verificar` → *334 casos, 0 errores, 3 avisos*: CP-NA45, NA48 y T28 son técnicos sin `@CA`, a propósito) más el caso de contrato CP-T04. Resultado del [run #24](https://github.com/Joharjbe/qolqe-wallet/actions/runs/44225240314) del pipeline (push a `main`, commit `1025a78`, 17-nov-2026, los 8 jobs en verde); su matriz es [`trazabilidad.md`](trazabilidad.md).
 
 | Módulo | Nivel | Tipo | Casos | Pasan | Fallo esperado (con su DEF) |
 |---|---|---|---:|---:|---:|
@@ -59,9 +59,16 @@ Un criterio se define como **web** si cumple al menos una condición:
 2. Es un paso de un recorrido crítico que pasa por dinero o por el acceso (registro, ingreso, transferencia, aceptar).
 3. La interfaz debe comunicar al usuario un error de la API.
 
-Las validaciones de reglas (límites, formatos, permisos, estados) quedan en **API**; la web solo confirma que un error se muestra. Los efectos que no aparecen en la pantalla también quedan en API: el SMS simulado se lee en `/api/pruebas/notificaciones`. Lo mismo pasa con la concurrencia, que no se puede provocar de forma determinista desde la interfaz.
+Las validaciones de reglas (límites, formatos, permisos, estados) quedan en **API**; la web solo confirma que un error se muestra. Los efectos que no aparecen en la pantalla también quedan en API: el SMS simulado se lee en `/api/pruebas/notificaciones`. Lo mismo pasa con la concurrencia, que no se puede provocar de forma determinista desde la interfaz. Las decisiones de escritura del Gherkin están en [Convenciones de Gherkin](#convenciones-de-gherkin).
 
 Un caso es **técnico** si verifica una propiedad de la API que no está escrita como regla de negocio en el criterio: autenticación, propiedad de los datos, tipos y forma del cuerpo, semántica HTTP, conformidad con el contrato, concurrencia. Se etiqueta `@tecnico` (o tiene ID `CP-T`) y va enlazado al criterio que protege.
+
+**Qué se automatiza (clase 11).** Los cinco criterios de la clase para decidir qué automatizar, aplicados aquí:
+- **Frecuencia.** Todo lo automatizado corre en cada push a `main` y en cada pull request, como regresión ([`pipeline.md`](pipeline.md)).
+- **Riesgo.** Los módulos y sus riesgos están en la tabla «Por qué estos módulos»: dinero, acceso, estados, acceso entre usuarios y concurrencia.
+- **Estabilidad.** Un caso se automatiza solo si da el mismo resultado en todas las corridas; en concurrencia, 200 de 200 ([`defectos.md`](defectos.md)). CP-NA28, CP-NA69 y CP-T19 no lo cumplen y quedan como evidencia manual («Lo que no se automatizó»).
+- **Oráculo claro.** Los Entonces comparan valores exactos, no «se ve bien»: por ejemplo, «la respuesta tiene estado 422» y «el código de error es "PIN_INVALIDO"» en CP-NA15.
+- **Costo frente a beneficio.** En la laptop, cada ejecución web cuesta casi 3 veces más que una de API (0.71 s frente a 0.25 s, [`informe.md`](informe.md) §6). Por eso por la web solo van los recorridos críticos y lo que solo se ve en la pantalla (las tres condiciones de arriba).
 
 ## Criterios por nivel · Núcleo
 
@@ -146,7 +153,7 @@ En la columna de API técnico, un "—" sin nota es una regla de negocio pura: l
 | Revocación del token | Después del logout el token no debe servir; cerrar una sesión desde Seguridad sí la invalida | NA45, NA46, NA48 (y el funcional NA44) | T07 | DEF-09 | pytest-bdd |
 | Token forjado | `sub` no numérico firmado con la clave por defecto | NA60 | — | DEF-17 | pytest-bdd |
 | Aislamiento entre usuarios | Un recurso de otro usuario responde como inexistente (404) y lo que hace un usuario no afecta a otro. La cuenta solo se lee por `/api/cuentas/me` (NA55 revisa que el contrato no tenga otra ruta) | NA42, NA50, NA102, NA128 a NA130 | T02, T08, T09 | DEF-24 | pytest-bdd |
-| Tipos y forma del cuerpo | Campo faltante, tipo incorrecto o JSON mal formado: 422 `SOLICITUD_INVALIDA` que nombra el campo y no cambia nada | NA05, NA26, NA64, NA82, NA104, NA106, NA137, NA153 | T10 a T15, T26, T30 | DEF-08, DEF-28 | pytest-bdd |
+| Tipos y forma del cuerpo | Campo faltante, tipo incorrecto o JSON mal formado: 422 `SOLICITUD_INVALIDA` que nombra el campo y no cambia nada. El campo faltante sigue la regla de la clase 10, un caso por campo obligatorio: en el registro, NA05 omite uno a la vez `dni`, `nombres`, `celular` y `pin`, con el resto del cuerpo válido | NA05, NA26, NA64, NA82, NA104, NA106, NA137, NA153 | T10 a T15, T26, T30 | DEF-08, DEF-28 | pytest-bdd |
 | Cabeceras (clase 10) | `Content-Type: text/plain` se rechaza sin cambiar nada; sin `Content-Type` el cuerpo se toma como JSON; con `Accept: application/xml` la respuesta es JSON según el contrato | NA159, NA160 | T11 | OBS-02 | pytest-bdd + `jsonschema_rs` |
 | Campos ignorados | Asignación masiva, campos no editables y campos del otro tipo de transferencia | NA06, NA71, NA105, NA107, NA139 | T25 | — | pytest-bdd |
 | Identificadores en el borde | ids 0, negativos, ausentes y fuera de 64 bits; identificador de dispositivo; PIN que no tiene 4 dígitos | NA43, NA81, NA103 | T23, T24 | — | pytest-bdd |
@@ -182,7 +189,12 @@ Un caso puede combinar dos técnicas; por eso los conteos suman más que el tota
 |---|---|---|
 | CP-NA28: el tiempo de respuesta revela si el celular existe (DEF-16) | Depende del equipo; mediana 45.9 ms frente a 1.6 ms en local | `docs/defectos.md`, DEF-16 |
 | CP-NA69: ediciones simultáneas con el mismo correo (DEF-15) | Cerca de 1 de 25 corridas se serializa y daría XPASS | `docs/defectos.md`, DEF-15 (el registro simultáneo sí está automatizado en CP-NA20) |
-| CP-T19: aceptar frente a cancelar o rechazar a la vez | No se reprodujo en todas las corridas | Sin DEF |
+| CP-T19: aceptar frente a cancelar o rechazar a la vez (DEF-30) | No se reprodujo en todas las corridas: en 118 de 200 rondas al cancelar y en 136 de 200 al rechazar (17-nov-2026), así que no cumple la regla de 200 de 200 | `docs/defectos.md`, [DEF-30](defectos.md#def-30-cancelar-o-rechazar-a-la-vez-que-se-acepta-responde-200-y-el-dinero-igual-se-mueve); script y salida en [`resultados-manuales/cp-t19.md`](resultados-manuales/cp-t19.md) |
+| Enlace "Crear cuenta" del ingreso (`enlace-registro`, `qolqe/web/login.html`) | Las pruebas abren el registro por su dirección, `/registro` (`RegistroPage`). Ningún criterio de HU-N-01 pide el enlace y el alta sí está automatizada desde el registro (CP-NW01). Si el enlace se rompe, ninguna prueba falla: es un riesgo aceptado | Sin caso |
+| Acceso rápido "Transferir" del inicio (`acceso-transferir`, `qolqe/web/inicio.html`) | Las pruebas llegan a transferir por el menú lateral (`Navegacion`, `nav-transferir`) o por el botón de un contacto (CP-W09); ninguna pulsa el acceso rápido, que es otro enlace fijo a la misma pantalla. El riesgo aceptado es el mismo | Sin caso |
+| Acceso rápido "Solicitudes" del inicio (`acceso-solicitudes`) | Igual que el anterior, por `nav-solicitudes`. La insignia de pendientes de ese acceso sí se verifica (CP-W27) | Sin caso |
+
+CP-NA28, CP-NA69 y CP-T19 son casos diseñados que no corren en el run automatizado. No tienen escenario en `features/`, así que la matriz no los cuenta: su columna *sin ejecutar* queda en 0 porque solo mide los escenarios que no corrieron. Los 335 del total son los casos que corren en el pipeline; la evidencia de estos tres es manual (columna de la derecha).
 
 Además hay números sin caso:
 
@@ -194,3 +206,27 @@ Además hay números sin caso:
 | CP-T01 y CP-T03 | Retirados en la revisión final: eran las filas `GET /api/contactos` y `GET /api/solicitudes` sin token de CP-T05, que además revisa el desafío Bearer y que nada cambie |
 
 Esos números no se reutilizan, para que la trazabilidad acumulada entre ejecuciones no mezcle casos distintos.
+
+## Convenciones de Gherkin
+
+- **Sin `Antecedentes`.** Ningún `.feature` usa `Antecedentes` (el *Background* de Gherkin en español). En ningún archivo todos los escenarios empiezan igual: el primer paso cambia de usuario (Ana, Bruno, Carla o Diego) o de datos previos, y los registros empiezan sin sesión. Lo que sí comparten todos, reiniciar los datos y el reloj, lo hace una fixture antes de cada escenario (`s` en la API y `datos` en la web), no un paso.
+- **Abrir una pantalla es precondición.** Los pasos *abre la pantalla de contactos*, de solicitudes, de perfil y de transferencias están declarados una sola vez, como `When`, en `tests/e2e/steps/comunes.steps.ts`. En unos escenarios van bajo `Dado`, porque abrir la pantalla es preparación; en otros, bajo `Cuando`, porque abrirla es parte de lo que se prueba (en CP-W14, lo que la pantalla muestra al abrirse). playwright-bdd, como Cucumber, empareja el paso por su texto y no por la palabra clave: `playwright.config.ts` no activa `matchKeywords`. Por eso la palabra clave del `.feature` dice qué papel cumple el paso en ese escenario, y el paso no se declara dos veces.
+- **Varios Cuando-Entonces en un escenario.** Los recorridos críticos encadenan varios ciclos porque aplican la técnica de casos de uso (ver *Técnicas de diseño*). CP-W14 no es un recorrido crítico y también encadena 4: verifica HU-G4-07 CA1, que junta dos controles de la misma pantalla, las pestañas y el filtro por estado. Al cambiar de pestaña, la pantalla vuelve a cargar con el filtro elegido (`cargar` en `qolqe/web/static/app.js`), así que cada Entonces depende del estado que dejó el paso anterior: recibidas sin filtro, recibidas vencidas, enviadas con el filtro de vencidas y enviadas con todos. Partido en cuatro escenarios, cada uno repetiría los pasos previos para llegar al mismo estado.
+- **Cuatro Entonces, más el del SMS, se verifican por la API.** La regla *Preparar por API, verificar por pantalla* (`docs/arquitectura.md`, §1.2) tiene cuatro excepciones: CP-NW02 y CP-NW25 (*no puede ingresar con el celular … y el PIN …*), CP-NW16 (*la cuenta de "Carla" sigue activa*) y CP-W12 (*"Ana" no tiene solicitudes enviadas con el motivo "ab"*). En los cuatro, el Entonces anterior ya verifica por la pantalla lo que ve el usuario: el error y, en CP-W12, que la solicitud no aparece en la lista. Lo que queda es una postcondición del servidor: que la cuenta no se creó, que no se cerró o que la solicitud no se guardó. Por la pantalla, eso exigiría otro recorrido, como salir e intentar ingresar. Por eso estos pasos usan `DatosPrueba`, el mismo cliente HTTP que prepara los datos: `codigoDeIngreso` envía `POST /api/auth/login` y `motivosEnviados` lee `GET /api/solicitudes` (`tests/e2e/fixtures.ts`). El SMS de CP-NW08 no es una excepción más: ninguna pantalla de Qolqe muestra los SMS, así que se leen en `/api/pruebas/notificaciones`, que la tabla de la API de soporte ya declara (`docs/arquitectura.md`, §1.2).
+
+## Rendimiento (Parte 3)
+
+Los flujos críticos de la Parte 3 se identifican de F-01 a F-06 (`docs/diseno-rendimiento.md`, §1). No tienen ID CP ni cuentan en los 335 casos: su veredicto es por umbral (U-01 a U-09, §2.1), no por caso. Así se trazan a las historias:
+
+| Flujo | Endpoints | HU y CA que recorre | Módulo |
+|---|---|---|---|
+| F-01 Iniciar sesión | `POST /api/auth/login` | HU-N-02 CA1 | Núcleo |
+| F-02 Transferir | `GET /api/transferencias/comision` → `POST /api/transferencias` con `contacto_id` | HU-N-09 CA1 (comisión); HU-N-07 CA1 y CA3; HU-G4-05 CA1 (elige un contacto). El débito, el crédito y el mismo código en los dos movimientos los revisa la verificación del dinero de cada corrida (§5.5) | Núcleo y G4 |
+| F-03 Saldo y perfil | `GET /api/cuentas/me/saldo` + `GET /api/cuentas/me` | HU-N-04 CA1 y CA2 | Núcleo |
+| F-04 Recargar un celular | `GET /api/recargas/configuracion` → `POST /api/recargas` | HU-G1-01 | G1 |
+| F-05 Pagar servicios | `GET /api/servicios/empresas` → `GET /api/servicios/deudas` → `POST /api/servicios/pagos` | HU-G2-01 y HU-G2-02 | G2 |
+| F-06 Consultar movimientos | `GET /api/movimientos` (30 días, página 1) | HU-G3-01 | G3 |
+
+**F-04, F-05 y F-06 están fuera del alcance de este documento.** Son de G1, G2 y G3, no del núcleo ni de G4. Entran porque la carga de la Parte 3 sigue la mezcla de operaciones del requerimiento, que es la de toda la billetera y no la de un módulo (§3.3: recargas 10 %, pagos 4 %, movimientos 15 %). Sin ellos, la carga no sería la del perfil operacional. Además el §1 los marca como críticos: F-04 y F-05 por mover dinero (con riesgo medio y medio-alto: un `SCAN recargas` sin índice y deudas sin dueño), y F-06 por su peso (15 %) y su consulta N+1. Como sus criterios no se diseñaron aquí, se trazan solo a la HU.
+
+Los umbrales, los cuatro tipos de prueba (carga, pico, estrés y resistencia) y el veredicto de cada uno están en [`informe.md`, sección 4](informe.md#4-pruebas-de-rendimiento).

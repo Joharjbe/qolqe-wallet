@@ -1,14 +1,17 @@
 # language: es
 Característica: Pantalla de solicitudes de dinero (G4)
+  El recorrido crítico de una solicitud entre dos usuarios, lo que solo existe en la pantalla
+  (pestañas, filtro por estado, contadores, confirmaciones, doble clic) y cómo comunica
+  los errores de la API. Las reglas R-G4-04 y R-G4-05 se prueban en la API.
 
   @HU-G4-01 @HU-G4-06 @HU-G4-07 @CA1 @HU-G4-08 @CA3 @CP-W10
   Escenario: CP-W10 Recorrido completo de una solicitud entre dos usuarios
     Dado que "Diego" ingresó a Qolqe
     Y abre la pantalla de contactos
-    Y agrega el contacto "912345678" con alias "Bruno Demo"
-    Y el contacto "Bruno Demo" aparece en la lista
-    Y abre la pantalla de solicitudes
-    Cuando solicita "25.00" a "Bruno Demo" por "Devolución demo G4"
+    Cuando agrega el contacto "912345678" con alias "Bruno Demo"
+    Entonces el contacto "Bruno Demo" aparece en la lista
+    Cuando abre la pantalla de solicitudes
+    Y solicita "25.00" a "Bruno Demo" por "Devolución demo G4"
     Entonces ve la confirmación "Solicitud enviada"
     Y la solicitud "Devolución demo G4" está "Pendiente"
     Cuando cierra sesión e ingresa como "Bruno"
@@ -36,8 +39,8 @@ Característica: Pantalla de solicitudes de dinero (G4)
     Y abre la pantalla de solicitudes
     Cuando solicita "10.00" a "Prima Carla" por "ab"
     Entonces ve la confirmación "entre 3 y 60 caracteres"
-    Y va a la pestaña "enviadas"
-    Y la solicitud "ab" no aparece
+    Cuando va a la pestaña "enviadas"
+    Entonces la solicitud "ab" no aparece
     Y "Ana" no tiene solicitudes enviadas con el motivo "ab"
 
   @HU-G4-06 @CA2 @CP-W13
@@ -55,11 +58,11 @@ Característica: Pantalla de solicitudes de dinero (G4)
     Entonces ve 2 solicitudes
     Y la solicitud "Almuerzo del viernes" está "Pendiente"
     Cuando filtra por el estado "Vencidas"
-    Entonces ve 1 solicitudes
+    Entonces ve 1 solicitud
     Cuando va a la pestaña "enviadas"
     Entonces ve el mensaje vacío "No tienes solicitudes enviadas"
     Cuando filtra por el estado "Todos"
-    Entonces ve 1 solicitudes
+    Entonces ve 1 solicitud
 
   @HU-G4-07 @CA2 @HU-G4-08 @CA4 @CP-W15
   Escenario: CP-W15 Una solicitud vencida se muestra como Vencida y sin acciones
@@ -121,8 +124,8 @@ Característica: Pantalla de solicitudes de dinero (G4)
   @HU-G4-08 @CA4 @HU-G4-10 @CA1 @CP-W21
   Escenario: CP-W21 Aceptar una solicitud que el solicitante ya canceló muestra el error y refresca la lista
     Dado que "Bruno" ingresó a Qolqe
-    Y abre la pantalla de solicitudes
-    Y la solicitud "Taxi al aeropuerto" está "Pendiente"
+    Cuando abre la pantalla de solicitudes
+    Entonces la solicitud "Taxi al aeropuerto" está "Pendiente"
     Cuando "Ana" cancela por su lado la solicitud "Taxi al aeropuerto"
     Y acepta la solicitud "Taxi al aeropuerto"
     Entonces ve el aviso "La solicitud ya no está pendiente"

@@ -1,0 +1,34 @@
+<section id="reporteria" class="pie" data-transition="fade">
+<p class="cejilla">PUNTO 6 · REPORTERÍA · OBS. 2b Y LAB S11</p>
+<h2>El reporte queda publicado al terminar el último job</h2>
+<div class="cuerpo junto">
+<div class="fila-2">
+<div class="tarjeta tarjeta-azul ajustada">
+<p class="etiqueta">CON EVIDENCIA O SIN EVIDENCIA, A ELECCIÓN</p>
+<p class="chica">Al lanzar el workflow a mano se elige <span class="mono" style="font-size:24px; white-space:nowrap">con-imagenes</span> o <span class="mono" style="font-size:24px; white-space:nowrap">sin-imagenes</span>. Con imágenes, cada prueba web guarda captura, video y traza, y cada caso de API sus peticiones. En los push normales va sin imágenes, porque el sitio con evidencia completa pesa casi 200 MB.</p>
+</div>
+<div class="tarjeta ajustada">
+<p class="etiqueta">TRES FORMATOS, CADA UNO PARA ALGO</p>
+<p class="chica"><b>HTML para personas:</b> pytest-html con las peticiones; Schemathesis, que con imágenes suma el HAR; Playwright, con traza y video. <b>JUnit XML</b> para las herramientas: lo leen la matriz y Kiwi. <b>Resumen de cada job</b> en Actions.</p>
+</div>
+</div>
+<div class="tarjeta ajustada">
+<p class="etiqueta">QUÉ HAY EN EL SITIO PUBLICADO</p>
+<p class="chica">Portada con el veredicto, reportes HTML, matriz, evidencias por caso, historial de los runs de main desde el #17 (guarda hasta 30 y dibuja los últimos 15) y, desde esta entrega, <b>la Parte 3</b>: veredicto por umbral, comparativo y gráficos de las ocho corridas.</p>
+</div>
+<div class="tarjeta tarjeta-ambar ajustada">
+<p class="etiqueta">EL DETALLE QUE FALTABA</p>
+<p class="chica">El job que publica ahora es el <b>último</b> del run y deja en el resumen los enlaces al sitio, a la Parte 3 y a las evidencias.</p>
+</div>
+</div>
+<p class="numero-pagina">14 · Entrega final · Pruebas de Qolqe</p>
+<aside>Este punto responde la observación 2b, elegir si el reporte va con evidencia o sin ella, y la del laboratorio S11, que pedía profundizar en la reportería de la herramienta y sus opciones. El enunciado también pide que el reporte esté visible al terminar el último job.
+
+Lo de la evidencia es una entrada del workflow. Con imágenes, cada prueba web guarda captura, video y traza, y cada caso de API guarda sus peticiones. Sin imágenes, solo de los fallos. Los push normales van sin imágenes porque el sitio con evidencia completa pesa casi 200 megas, el run deja unos 416 entre todos sus artefactos, y los artefactos de GitHub caducan.
+
+Sobre la reportería de cada herramienta: uso los tres formatos que vimos en la clase 12, y cada uno tiene un lector distinto. El HTML es para personas: el de pytest-html trae las peticiones de cada caso, el de Schemathesis con imágenes suma el HAR, y el de Playwright trae la traza paso a paso y el video. El JUnit XML es para las herramientas: con él se arman la matriz y los Test Runs de Kiwi. Y el resumen de cada job queda en la página del run.
+
+Sobre «al terminar el último job» había un detalle que no estaba bien: el job que publica terminaba último por casualidad, y en los runs #17 y #18 el orden ya se había invertido: gestion-casos terminó después que publicar. Ahora depende explícitamente del anterior, así que es el último de verdad, y deja en el resumen los enlaces al sitio.
+
+El historial guarda hasta 30 runs y la página dibuja los últimos 15. Empezó en el run #17: al 18 de noviembre tenía 5 columnas, y cada run nuevo de main suma una. Y desde esta entrega el sitio tiene la Parte 3: el veredicto por umbral, el comparativo entre escenarios y los gráficos de las ocho corridas.</aside>
+</section>

@@ -1,6 +1,6 @@
 # Respuestas grabadas
 
-Esta carpeta está **vacía a propósito**.
+Esta carpeta tiene las **31 respuestas** de la corrida real del 17-nov-2026 con `google` (`gemini-3.1-flash-lite`), las que usa `docs/capacidad-ia.md`.
 
 El backend `grabado` lee de aquí las respuestas de una corrida real del modelo, para
 poder regenerar el mismo reporte sin volver a llamar a la API y sin depender de la red

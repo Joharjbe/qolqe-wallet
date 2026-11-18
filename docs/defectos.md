@@ -1,9 +1,9 @@
 # Reporte de defectos · núcleo y G4
 
-Entorno común: Qolqe (`qolqe/` sin modificar), Python 3.12 en el pipeline y 3.11 en local, SQLite, `QOLQE_MODO_PRUEBA=1`, Chromium; pipeline en `ubuntu-24.04`.
-Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` estricto, `raises=AssertionError`): si se corrige, la prueba pasa a XPASS y el pipeline obliga a retirar la etiqueta; un error que no es una aserción (servidor caído, paso roto) queda como fallo y no como el defecto. En la web el fallo esperado es `@DEF-xx @fail` (`test.fail` de Playwright) y lo que el paso necesita para comparar (que el error aparezca) es una precondición: si no se cumple, el caso falla de verdad (`tests/e2e/precondicion.ts`).
+Entorno común: Qolqe (`qolqe/` sin modificar), Python 3.12 en el pipeline y 3.11 en local, SQLite, `QOLQE_MODO_PRUEBA=1`, Chromium; pipeline en `ubuntu-24.04`. Versión: Qolqe Wallet 1.0.0 (`qolqe/config.py:16`); `qolqe/` no cambió desde el commit inicial `8c7d2f0` (`git log -- qolqe/`). Los 25 DEF con escenario se confirmaron por última vez en el run #24 (commit `1025a78`), con sus 40 casos en `xfailed`; DEF-30 se midió el 17-nov-2026.
+Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` estricto, `raises=AssertionError`): si se corrige, la prueba pasa a XPASS y el pipeline obliga a retirar la etiqueta; un error que no es una aserción (servidor caído, paso roto) queda como fallo y no como el defecto. En la web el fallo esperado es `@DEF-xx @fail` (`test.fail` de Playwright) y lo que el paso necesita para comparar (que el error aparezca) es una precondición: si no se cumple, el caso falla de verdad (`tests/e2e/precondicion.ts`). La tabla *Defectos → casos* de [`trazabilidad.md`](trazabilidad.md) se arma con las etiquetas `@DEF-xx` de `features/`, por eso lista 25 de los 30 defectos. Los otros cinco no tienen escenario etiquetado: DEF-05 y DEF-29 los encuentra el contrato (CP-T04) con un check que `schemathesis.toml` desactiva (DEF-05) o con un fallo que `filter_failure` descarta (DEF-29), así que CP-T04 pasa, y la matriz muestra el contrato por operación y no por defecto; DEF-07 lo detectó el pipeline y no tiene caso; y DEF-16 y DEF-30 son evidencia manual (CP-NA28 y CP-T19).
 
-**Regla para la concurrencia.** Un defecto de concurrencia se automatiza solo si su escenario lo reprodujo en **200 de 200** corridas locales con `--runxfail` (los 10 escenarios con `@concurrencia`, 11-nov-2026: los 9 con DEF fallaron 200 de 200 y CP-NA131 pasó 200 de 200). Con 20 corridas no alcanzaba: CP-T20, con una sola ráfaga, no reprodujo DEF-26 en 2 de 90 corridas de la revisión, porque el alta de contacto no tiene la pausa antifraude de las transferencias y la ventana es de milisegundos. Por eso CP-T20 repite la ráfaga hasta 5 veces. Si un escenario no cumple la regla, queda como evidencia manual (CP-NA69, CP-T19). En el runner de GitHub los 10 escenarios dieron el resultado esperado en los 3 runs del PR #7 y de `main` (11-nov-2026), pero 3 corridas no son 200: la regla solo se comprobó en local.
+**Regla para la concurrencia.** Un defecto de concurrencia se automatiza solo si su escenario lo reprodujo en **200 de 200** corridas locales con `--runxfail` (los 10 escenarios con `@concurrencia`, 11-nov-2026: los 9 con DEF fallaron 200 de 200 y CP-NA131 pasó 200 de 200). Con 20 corridas no alcanzaba: CP-T20, con una sola ráfaga, no reprodujo DEF-26 en 2 de 90 corridas de la revisión, porque el alta de contacto no tiene la pausa antifraude de las transferencias y la ventana es de milisegundos. Por eso CP-T20 repite la ráfaga hasta 5 veces. Si un escenario no cumple la regla, queda como evidencia manual (CP-NA69, CP-T19). En el runner de GitHub los 10 escenarios dieron el resultado esperado en los 9 runs del #16 al #24 (11 al 17-nov-2026) y en el intento 2 del #24, pero 10 corridas no son 200: la regla solo se comprobó en local.
 
 | ID | Título | Severidad | Prioridad | Estado |
 |---|---|---|---|---|
@@ -14,6 +14,7 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | DEF-19 | La interbancaria no considera la comisión y el saldo queda negativo | Crítica | Alta | Abierto |
 | DEF-21 | Transferencias simultáneas superan el saldo o el límite diario | Crítica | Alta | Abierto |
 | DEF-25 | Aceptaciones simultáneas de la misma solicitud debitan varias veces | Crítica | Alta | Abierto |
+| DEF-30 | Cancelar o rechazar a la vez que se acepta responde 200 y el dinero igual se mueve | Crítica | Alta | Abierto (solo evidencia manual) |
 | DEF-07 | La respuesta puede llegar antes de que los datos queden guardados | Alta | Alta | Abierto (mitigado en el pipeline) |
 | DEF-12 | Se acepta un PIN con secuencia descendente | Alta | Alta | Abierto |
 | DEF-20 | El límite diario no suma las transferencias interbancarias | Alta | Alta | Abierto |
@@ -36,6 +37,8 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | DEF-27 | Los alias que empiezan con tilde se ordenan al final | Baja | Baja | Abierto |
 | DEF-28 | `contacto_id` acepta un booleano y transfiere al contacto 1 | Baja | Baja | Abierto |
 | DEF-29 | La transferencia acepta un campo del otro tipo que no cumple su formato | Baja | Baja | Abierto |
+
+La severidad la propone el tester. La prioridad también es una propuesta del tester, porque en este proyecto no hay PO; en el curso la define el negocio (clase 7).
 
 ## DEF-03: Se puede aceptar una solicitud vencida y se transfiere el dinero
 
@@ -83,7 +86,7 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | Módulo / regla | Toda la API · `qolqe/bd.py`, con `fastapi>=0.118` |
 | Severidad | Alta |
 | Prioridad | Alta |
-| Prueba que lo detecta | El primer run del pipeline, con 6 fallos que no aparecían en local |
+| Prueba que lo detecta | El primer run del pipeline, con 6 fallos que no aparecían en local. Sin caso automatizado, por dos motivos: con `constraints.txt` el pipeline instala FastAPI 0.117.1, que no lo reproduce (ver *Mitigación*), así que un fallo esperado pasaría a XPASS en cada run; y sin la restricción aparece en 2 de 300 ciclos, no siempre |
 
 **Pasos para reproducir**
 1. Instalar `requirements.txt` sin `constraints.txt` (se instala FastAPI 0.162).
@@ -142,7 +145,7 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | Módulo / regla | G4 · contrato de `POST /api/contactos`, `PUT /api/contactos/{id}`, `POST /api/solicitudes` |
 | Severidad | Baja |
 | Prioridad | Baja |
-| Prueba que lo detecta | Schemathesis, check `positive_data_acceptance` (ST202) |
+| Prueba que lo detecta | CP-T04 (Schemathesis), check `positive_data_acceptance` (ST202). El check está desactivado en `schemathesis.toml`, por eso CP-T04 pasa; con el check activo, CP-T04 falla por este defecto |
 
 **Pasos para reproducir:** ejecutar Schemathesis sin excluir el check; por ejemplo, `PUT /api/contactos/1` con un alias de caracteres arbitrarios.
 
@@ -157,7 +160,7 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | Módulo / regla | G4 · contrato HTTP (RFC 9110) |
 | Severidad | Baja |
 | Prioridad | Baja |
-| Prueba que lo detecta | Schemathesis, check `allow_header_conformance` (ST205) |
+| Prueba que lo detecta | `tests/api/test_g4_tecnico_api.py::test_cpt29_la_cabecera_allow_lista_todos_los_métodos_de_la_ruta` (CP-T29, fallo esperado). En el contrato lo detecta Schemathesis con el check `allow_header_conformance` (ST205), desactivado en `schemathesis.toml`: el defecto lo sigue CP-T29 |
 
 **Pasos para reproducir:** enviar `OPTIONS /api/contactos`.
 
@@ -172,7 +175,7 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 | Módulo / regla | G4 · contrato de `PUT /api/contactos/{id}` |
 | Severidad | Baja |
 | Prioridad | Baja |
-| Prueba que lo detecta | Schemathesis, check `negative_data_rejection` (ST201) |
+| Prueba que lo detecta | `tests/api/test_g4_tecnico_api.py::test_cpt26_favorito_no_acepta_números_aunque_pydantic_los_convierta` (CP-T26, fallo esperado con 0 y 1). En el contrato lo detecta Schemathesis con el check `negative_data_rejection` (ST201), desactivado solo en `PUT /api/contactos/{contacto_id}` en `schemathesis.toml`: el defecto lo sigue CP-T26 |
 
 **Pasos para reproducir:** enviar `PUT /api/contactos/1` con `{"alias": "Bruno oficina", "favorito": 0}`.
 
@@ -547,6 +550,23 @@ Cada defecto con prueba de pytest-bdd queda como **fallo esperado** (`xfail` est
 
 **Resultado obtenido:** 201 en los dos casos: la API ignora el campo del otro tipo sin validarlo. Clasificación: desajuste entre el código y el contrato.
 
+## DEF-30: Cancelar o rechazar a la vez que se acepta responde 200 y el dinero igual se mueve
+
+| Campo | Valor |
+|---|---|
+| Módulo / regla | G4 · HU-G4-08 CA4, HU-G4-09 CA1 y HU-G4-10 CA1 |
+| Severidad | Crítica |
+| Prioridad | Alta |
+| Prueba que lo detecta | Solo evidencia manual (CP-T19): `herramientas/mediciones/cp_t19.py`, con la salida en [`resultados-manuales/cp-t19.md`](resultados-manuales/cp-t19.md). Se reprodujo en 118 de 200 rondas al cancelar y en 136 de 200 al rechazar (17-nov-2026): no cumple la regla de 200 de 200 y no se automatiza |
+
+**Pasos para reproducir:** reiniciar datos. Diego le solicita S/ 25.00 a Bruno. A la vez, Bruno envía `POST /api/solicitudes/{id}/aceptar` y Diego envía `POST /api/solicitudes/{id}/cancelar` (o Bruno, `POST /api/solicitudes/{id}/rechazar`). Repetir con datos reiniciados, porque no ocurre en todas las rondas.
+
+**Resultado esperado:** gana una sola. O aceptar responde 200 y la otra 409 `ESTADO_INVALIDO`, con la solicitud ACEPTADA, Bruno en S/ 775.00 y Diego en S/ 2,525.00; o cancelar (o rechazar) responde 200 y aceptar 409 `ESTADO_INVALIDO`, con la solicitud CANCELADA (o RECHAZADA) y los saldos sin cambio (S/ 800.00 y S/ 2,500.00).
+
+**Resultado obtenido:** las dos responden 200. Cancelar devuelve la solicitud CANCELADA (o rechazar, RECHAZADA) y aceptar la devuelve ACEPTADA. La solicitud termina ACEPTADA, con Bruno en S/ 775.00 y Diego en S/ 2,525.00. Diego recibe el SMS «aceptó tu solicitud»; en el modo rechazar, también el de «rechazó». La aplicación confirma con 200 una decisión que después no se cumple.
+
+**Evidencia:** en `qolqe/api/solicitudes.py`, `aceptar` comprueba el estado (línea 156), transfiere con la pausa antifraude de 40 a 120 ms (`qolqe/operaciones.py:99-101`) y recién después escribe. `_resolver` actualiza con `WHERE id = ?`, sin `AND estado = 'PENDIENTE'` (líneas 92-95), y lo usan también `cancelar` y `rechazar`. No es DEF-25: allí varias aceptaciones cobran varias veces (CP-T17); aquí el dinero se mueve una sola vez, pero contra una cancelación o un rechazo que la aplicación ya confirmó.
+
 ## Observaciones (no son defectos según los requisitos)
 
 ### OBS-01: el cierre de cuenta sirve para adivinar el PIN
@@ -581,4 +601,4 @@ En el contrato del núcleo hay dos falsos positivos más, documentados en `schem
 
 ## Quality gate
 
-Todas las pruebas pasan, salvo los fallos esperados de esta lista; no hay flaky (`failOnFlakyTests`); la suite web pasa 3 veces seguidas; no hay respuestas 500 ni incumplimientos de esquema en el contrato; los reportes quedan publicados. `schemathesis.toml` declara los checks excluidos: DEF-05, DEF-06, DEF-08 (solo en esa operación) y los falsos positivos anteriores; DEF-29 se descarta por valor con `filter_failure`, sin desactivar el check en toda la operación.
+El quality gate tiene los mismos cuatro criterios de salida que escribe el job `quality-gate` ([`pipeline.md`](pipeline.md), «Checks obligatorios»): 1) análisis estático (`estatico`); 2) contrato sin 500 ni incumplimientos de esquema (`contrato`); 3) API: todo pasa, y los fallos conocidos son xfail estricto con su DEF de esta lista (`api`); 4) web: pasa 3 veces seguidas, sin pruebas inestables (`web`). No evalúa el rendimiento ni el job `reportes`, que publica la evidencia aunque las pruebas fallen. `schemathesis.toml` declara los checks excluidos: DEF-05, DEF-06, DEF-08 (solo en esa operación) y los falsos positivos anteriores; DEF-29 se descarta por valor con `filter_failure`, sin desactivar el check en toda la operación.

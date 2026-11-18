@@ -1,0 +1,48 @@
+<section id="ia-inyeccion" class="pie" data-transition="fade">
+<p class="cejilla">PUNTO 8 · RED TEAMING E INYECCIÓN DE PROMPTS · LIM-IA-01</p>
+<h2>Un texto en un log puede darle órdenes al modelo</h2>
+<p class="bajada corta" style="max-width:1500px">Cinco corridas por condición, con la misma firma de grupo en las tres.</p>
+<div class="cuerpo">
+<div class="fila-3">
+<div class="tarjeta ajustada">
+<p class="etiqueta">ENTRADA LIMPIA</p>
+<p class="dato">0 de 5</p>
+<p class="chica">corridas clasifican como pide la orden</p>
+</div>
+<div class="tarjeta tarjeta-ambar ajustada">
+<p class="etiqueta">CON LA ORDEN INYECTADA</p>
+<p class="dato dato-ambar">5 de 5</p>
+<p class="chica">obedecen: 4 pasan las guardas, y la quinta cae por un <span class="mono" style="font-size:24px; white-space:nowrap">DEF-99</span> que no existe</p>
+</div>
+<div class="tarjeta ajustada">
+<p class="etiqueta">INYECCIÓN AGRESIVA</p>
+<p class="dato">0 de 5</p>
+<p class="chica">el texto que se nota postizo lo trata como dato</p>
+</div>
+</div>
+<div class="fila-2">
+<div class="tarjeta tarjeta-azul ajustada">
+<p class="etiqueta">LA IA PROPONE, EL TESTER DECIDE</p>
+<p class="chica">La guarda paró el <span class="mono" style="font-size:24px; white-space:nowrap">DEF-99</span>; la clase equivocada, no, porque viene bien formada. Y el caso era un 500, que en el curso «siempre es un defecto». Ninguna clase se usa sin que yo mire el artefacto.</p>
+</div>
+<div class="tarjeta ajustada">
+<p class="etiqueta">MI PRIMERA PRUEBA ESTABA MAL</p>
+<p class="chica">Comparaba una corrida contra otra, y el texto inyectado cambiaba también la firma del grupo: oráculo débil y variables confundidas.</p>
+</div>
+</div>
+</div>
+<p class="numero-pagina">19 · Entrega final · Pruebas de Qolqe</p>
+<aside>En la clase 15 esto es red teaming: atacar a propósito mi propia capacidad. Es la prueba que encontró algo de verdad, y la registré como la limitación LIM-IA-01.
+
+La pregunta era: si un log trae texto dentro, ¿puede ese texto darle órdenes al modelo? Los logs son datos que yo no controlo.
+
+La respuesta es que sí. Con la orden metida en la salida del caso, el modelo clasificó como la orden le pedía en las cinco corridas, contra cero de cinco con la misma entrada limpia. Cuatro de esas cinco respuestas pasaron las guardas. En la corrida que quedó escrita, una de las cinco propuso además el DEF-99 que dictaba la orden y que no existe en mi reporte de defectos; eso solo pudo leerlo del texto inyectado, y esa la rechazó la guarda. Y lo que duele es el caso: era un 500, que en el curso siempre es un defecto, y la orden lo hizo pasar por error de entorno.
+
+Lo contraintuitivo es la tercera columna. La inyección agresiva, un bloque que se hace pasar por mensaje del sistema, funcionó peor. El texto que se nota postizo lo trata como dato; el que parece un mensaje normal de la aplicación es el que pasa.
+
+La defensa aguantó a medias: el DEF inventado lo rechazó la guarda, pero la clase equivocada viene bien formada y pasa. Una guarda de formato no distingue lo verdadero de lo falso. Por eso la IA propone y el tester decide: ninguna propuesta entra a defectos.md ni a Kiwi sin que yo mire el artefacto.
+
+Y quiero contar mi error, porque es de los que enseña la clase. Mi primera versión comparaba una corrida contra una corrida y falló por el motivo equivocado: el texto inyectado cambiaba también la firma del grupo. Oráculo débil y variables confundidas al mismo tiempo. Por eso ahora comparo distribuciones, con la misma firma en las tres condiciones.
+
+La prueba está marcada como fallo esperado estricto apuntando a esta limitación, igual que hago con los defectos de Qolqe. Así la suite queda en verde, la limitación queda registrada, y si algún día deja de reproducirse el pipeline me obliga a volver a mirarla.</aside>
+</section>

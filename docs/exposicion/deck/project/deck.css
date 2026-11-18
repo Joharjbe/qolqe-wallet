@@ -1,0 +1,163 @@
+:root {
+  --tinta: #14213D;
+  --papel: #F7F6F2;
+  --texto: #44506B;
+  --azul: #1F5FD0;
+  --ambar: #C2710C;
+  --linea: #D8D5CC;
+  --papel-tenue: #EDEAE2;
+  --claro: #E6EAF2;
+  --verde: #2F6B2F;
+}
+
+body {
+  font-family: 'IBM Plex Sans', Arial, sans-serif;
+  font-size: 32px;
+  color: var(--texto);
+}
+
+section {
+  background: var(--papel);
+  padding: 128px;
+  display: flex;
+  flex-direction: column;
+}
+
+section.oscura { background: var(--tinta); color: var(--claro); }
+section.tenue { background: var(--papel-tenue); }
+section.pie { padding: 128px 128px 160px; }
+
+h1 { font-size: 104px; font-weight: 600; color: var(--papel); line-height: 1.05; }
+h2 { font-size: 64px; font-weight: 600; color: var(--tinta); line-height: 1.1; }
+h3 { font-size: 32px; font-weight: 600; color: var(--tinta); line-height: 1.2; }
+p { font-size: 32px; line-height: 1.45; }
+
+.oscura h2 { color: var(--papel); }
+.oscura h3 { color: var(--papel); }
+.oscura p { color: var(--claro); }
+
+.cejilla {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--azul);
+  margin-bottom: 24px;
+}
+.oscura .cejilla { color: #8FB4F2; }
+
+.bajada { font-size: 40px; color: var(--texto); margin-top: 24px; line-height: 1.35; }
+.oscura .bajada { color: #A9BCDC; }
+
+.cuerpo { margin-top: 48px; display: flex; flex-direction: column; gap: 32px; flex: 1; }
+.fila { display: flex; gap: 32px; }
+.fila-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
+.fila-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+.tarjeta {
+  background: #FFFFFF;
+  border: 2px solid var(--linea);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.tarjeta p { font-size: 28px; }
+.oscura .tarjeta { background: #1C2C4D; border-color: #2E4470; }
+
+.tarjeta-azul { border-color: var(--azul); border-width: 3px; }
+.tarjeta-ambar { border-color: var(--ambar); border-width: 3px; }
+
+.dato {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--tinta);
+  line-height: 1;
+}
+.dato-azul { color: var(--azul); }
+.dato-ambar { color: var(--ambar); }
+.oscura .dato { color: var(--papel); }
+/* «.tarjeta p» es más específica que «.dato» y dejaba las cifras a 28 px.
+   Esta regla solo devuelve el tamaño: el color sigue siendo el de .dato-azul o .dato-ambar. */
+.tarjeta .dato { font-size: 72px; line-height: 1; }
+
+.etiqueta {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--azul);
+  letter-spacing: 1px;
+}
+.oscura .etiqueta { color: #8FB4F2; }
+
+.mono { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 26px; }
+
+table { font-family: 'IBM Plex Sans', Arial, sans-serif; font-size: 28px; color: var(--texto); }
+th { font-weight: 600; color: var(--tinta); }
+td { padding: 14px 18px; }
+tr.verde { background: #E8F1E4; }
+tr.titulo { background: var(--claro); }
+
+ul { font-size: 32px; line-height: 1.45; }
+li { margin-top: 16px; }
+
+.numero-pagina {
+  position: absolute;
+  left: 128px;
+  bottom: 64px;
+  width: 1664px;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 24px;
+  color: #8E97AC;
+}
+
+.nota { font-size: 26px; color: #6B7693; margin-top: 16px; }
+.oscura .nota { color: #8FA0C4; }
+
+.franja { height: 8px; background: var(--azul); width: 240px; }
+.franja-ambar { background: var(--ambar); }
+
+.compacta td { padding: 8px 18px; }
+.apretada { gap: 24px; }
+.tarjeta.ajustada { padding: 24px; gap: 8px; }
+
+/* Tablas densas del foco y del consolidado: 24 px, con el veredicto escrito y no solo en color. */
+.densa { font-size: 24px; }
+.densa th { font-size: 24px; padding: 8px 14px; vertical-align: bottom; line-height: 1.2; }
+.densa td { padding: 7px 14px; line-height: 1.25; vertical-align: top; }
+.densa .mono { font-size: 24px; }
+.densa td.cumple { color: var(--verde); font-weight: 600; }
+.densa td.no-cumple { color: var(--ambar); font-weight: 600; }
+.densa tr.veredicto td { background: var(--claro); color: var(--tinta); font-weight: 600; }
+.densa tr.veredicto td.cumple { color: var(--verde); }
+.densa tr.veredicto td.no-cumple { color: var(--ambar); }
+.bajada.corta { font-size: 32px; margin-top: 16px; }
+.cuerpo.junto { margin-top: 28px; gap: 20px; }
+.tarjeta p.chica, .tarjeta .chica { font-size: 26px; line-height: 1.3; }
+.nota.sola { margin-top: 0; }
+
+/* Franja de flujos críticos (p3-tipos) */
+.flujos { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+.flujo { background: #FFFFFF; border: 2px solid var(--linea); border-radius: 12px; padding: 10px 14px; font-size: 24px; line-height: 1.25; }
+.flujo b { color: var(--tinta); }
+
+/* Diagrama de capas (arquitectura): cajas en una grilla, flechas como texto */
+.capas { display: grid; grid-template-columns: 310px 30px 320px 30px 290px 30px 210px 30px 1fr; row-gap: 14px; align-items: stretch; }
+.capas .titulo-col { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; color: var(--azul); letter-spacing: 1px; align-self: end; }
+.caja { background: #FFFFFF; border: 2px solid var(--linea); border-radius: 12px; padding: 10px 16px; font-size: 24px; line-height: 1.25; }
+.caja b { color: var(--tinta); }
+.caja.qolqe { border-color: var(--azul); border-width: 3px; display: flex; flex-direction: column; justify-content: center; }
+.caja.k6 { border-style: dashed; }
+.flecha { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 30px; font-weight: 700; color: var(--azul); align-self: center; text-align: center; }
+
+/* p3-resultados: tabla con filas más bajas para dejar sitio al gráfico de p95 contra usuarios. */
+.densa.fina th { padding: 6px 14px; }
+.densa.fina td { padding: 4px 14px; }
+.tarjeta.grafico { flex: none; width: 580px; padding: 12px 20px; justify-content: center; }
+.tarjeta.grafico svg { display: block; font-family: 'IBM Plex Sans', Arial, sans-serif; }
+
+/* api: cifra grande a la izquierda y su texto al lado, para dejar sitio a la bajada del módulo. */
+.tarjeta.dato-lado { flex-direction: row; align-items: center; gap: 24px; }
+.tarjeta.dato-lado .dato { flex: none; }

@@ -18,11 +18,23 @@ Billetera digital **ficticia** usada como sistema bajo prueba (SUT) en el Proyec
 | **API** | pytest + httpx + pytest-bdd: 276 escenarios, funcionales y técnicos (766 ejecuciones) · Schemathesis: contrato de 19 operaciones |
 | **Web** | Playwright (TypeScript) + playwright-bdd · Page Object con componentes y fixtures: 58 escenarios (71 pruebas), 3 repeticiones |
 | **Pipeline** | [`.github/workflows/pruebas.yml`](.github/workflows/pruebas.yml): `estatico` → `contrato` → `api` → `web` → `quality-gate`, más `reportes`, `gestion-casos` y `publicar` (el contrato valida al inicio) · evidencia `sin-imagenes` o `con-imagenes` · [ejecuciones](https://github.com/Joharjbe/qolqe-wallet/actions/workflows/pruebas.yml) · [detalle](docs/pipeline.md) |
-| **Reportes publicados** | https://joharjbe.github.io/qolqe-wallet/ (con el workflow nuevo en `main`: portada, reportes, matriz del run e historial de los últimos 30 runs) |
+| **Reportes publicados** | https://joharjbe.github.io/qolqe-wallet/ (lo publica cada run de `main`: portada, reportes de API, web y contrato, rendimiento de la Parte 3, evidencias por caso, matriz del run e historial de ejecuciones: hasta 30 runs guardados, los últimos 15 en la grilla) |
 | **Trazabilidad y gestión de casos** | Matriz HU → CA → CP → resultado por run, `junit-cp.xml` e historial · Kiwi TCMS 17.0 en Docker: [`docs/gestion-casos.md`](docs/gestion-casos.md) |
 | **Rendimiento (Parte 3)** | k6 2.3.0 + Docker (1 CPU, 1 GB): carga, pico, estrés y resistencia; capacidad de 850 usuarios simultáneos · [`tests/performance/`](tests/performance/README.md) · [informe de rendimiento](docs/Informe_Rendimiento_Qolqe.docx) ([PDF](docs/Informe_Rendimiento_Qolqe.pdf)) |
-| **Capacidad de IA** | Diagnóstico de los fallos del run (defecto real / prueba inestable / error de entorno) con su `DEF` propuesto, medido contra un conjunto de oro de 52 casos y contra una línea base sin IA. Resultado medido: el modelo no mejora a las reglas en la clase principal (28 de 36 frente a 38 de 40) y no propuso ningún `DEF` (0 de 38); sí acierta todos los errores de entorno (8 de 8). Se midió además una vulnerabilidad a la inyección de prompts (LIM-IA-01) · [`docs/capacidad-ia.md`](docs/capacidad-ia.md) · [resultados](docs/resultados-capacidad-ia/) · [`herramientas/diagnostico_ia/`](herramientas/diagnostico_ia/README.md) |
-| **Informe** | [`docs/informe.md`](docs/informe.md) · [respuesta a la retroalimentación](docs/respuesta-feedback.md) · [arquitectura](docs/arquitectura.md) · [alcance y casos](docs/alcance-y-casos.md) · [defectos](docs/defectos.md) · [matriz](docs/trazabilidad.md) · [capacidad de IA](docs/capacidad-ia.md) · presentaciones: [Entrega 1](docs/Entrega1_G4_API.pptx), [Entrega 2](docs/Entrega2_G4_E2E_CICD.pptx) |
+| **Capacidad de IA** | Diagnóstico de los fallos del run (defecto real / prueba inestable / error de entorno) con su `DEF` propuesto, medido con un eval de 52 casos (el «conjunto de oro») y contra una línea base sin IA. Qué aporta, medido: el código junta los 40 fallos esperados del run #24 en 32 grupos (32 preguntas en vez de 40; el tiempo no se midió) y el modelo acierta todos los errores de entorno (8 de 8; las reglas, 7 de 8) y lo inestable (4 de 4, como las reglas), con razón y evidencia por caso. Qué no aporta: en la clase principal queda por debajo de las reglas (28 de 36 frente a 34 de 36, sobre los mismos 48 casos) y no propuso ningún `DEF` (0 de 38). Se midió además una vulnerabilidad a la inyección de prompts (LIM-IA-01) · [`docs/capacidad-ia.md`](docs/capacidad-ia.md) · [resultados](docs/resultados-capacidad-ia/) · [`herramientas/diagnostico_ia/`](herramientas/diagnostico_ia/README.md) |
+| **Informe** | [`docs/informe.md`](docs/informe.md) · [respuesta a la retroalimentación](docs/respuesta-feedback.md) · [arquitectura](docs/arquitectura.md) · [alcance y casos](docs/alcance-y-casos.md) · [defectos](docs/defectos.md) · [matriz](docs/trazabilidad.md) · [capacidad de IA](docs/capacidad-ia.md) · [declaración de uso de IA](IA.md) · presentaciones: [Entrega 1](docs/Entrega1_G4_API.pptx), [Entrega 2](docs/Entrega2_G4_E2E_CICD.pptx), [Entrega 3](docs/Entrega3_G4_Rendimiento.pdf), [exposición final](docs/exposicion/deck.pdf) |
+
+**Dónde está cada entrega**
+
+| Entrega | Versión entregada | Informe | Presentación |
+|---|---|---|---|
+| **1 y 2** · API, web y CI/CD | [PR #1](https://github.com/Joharjbe/qolqe-wallet/pull/1) («Parte 1 y 2»: cubre las dos, no hay tag propio de la Entrega 1) y tag [`parte-2`](https://github.com/Joharjbe/qolqe-wallet/releases/tag/parte-2), merge del [PR #6](https://github.com/Joharjbe/qolqe-wallet/pull/6): suma al PR #1 los PR #2, #4, #5 y #6 (arreglos, scripts de demo y presentaciones) | [`docs/informe.md`](docs/informe.md) §2 y §3 | [Entrega 1](docs/Entrega1_G4_API.pptx) · [Entrega 2](docs/Entrega2_G4_E2E_CICD.pptx) |
+| **3** · Rendimiento | tag [`parte-3`](https://github.com/Joharjbe/qolqe-wallet/releases/tag/parte-3), merge del [PR #8](https://github.com/Joharjbe/qolqe-wallet/pull/8) | [`docs/informe.md`](docs/informe.md) §4 · [informe de rendimiento](docs/Informe_Rendimiento_Qolqe.pdf) | [Entrega 3](docs/Entrega3_G4_Rendimiento.pdf) |
+| **Final** · Consolidado de las tres partes y capacidad de IA | tag [`entrega-final-v1`](https://github.com/Joharjbe/qolqe-wallet/tree/entrega-final-v1) · [Release](https://github.com/Joharjbe/qolqe-wallet/releases/tag/entrega-final-v1) · [sitio publicado](https://joharjbe.github.io/qolqe-wallet/) | [`docs/informe.md`](docs/informe.md) ([los 9 puntos](docs/informe.md#los-9-puntos-de-la-entrega-final)) · [`docs/capacidad-ia.md`](docs/capacidad-ia.md) | [deck de la exposición](docs/exposicion/deck.pdf) · [material de la exposición](docs/exposicion/) |
+
+- **Congelación:** la entrega final es el tag `entrega-final-v1`. Lo que se suba después es material de la exposición y no entra a `main`.
+- El [PR #10](https://github.com/Joharjbe/qolqe-wallet/pull/10) («NO FUSIONAR · Demo del quality gate sobre el pipeline actual») queda abierto a propósito: rompe el saldo esperado de CP-A28 para mostrar que la protección de `main` no deja fusionar un cambio en rojo. En su [run #25](https://github.com/Joharjbe/qolqe-wallet/actions/runs/44240958431), `api` falla (CP-A28 espera 770.00 y el saldo es 775.00), `web` falla en su guarda, `quality-gate` da «no pasa» ([captura del run](docs/img/demo-gate-rojo.png)) y la fusión queda bloqueada (`gh pr view 10` → `BLOCKED`, 18-nov-2026). Al 18-nov-2026, la protección de `main` exige los checks `api` y `web`, con `enforce_admins` activo; `quality-gate` da el veredicto único en el resumen, pero no es check obligatorio. El [PR #3](https://github.com/Joharjbe/qolqe-wallet/pull/3) es la misma demo con el pipeline de la Entrega 2, que no tenía `quality-gate`.
+- El repositorio de la profesora (`cjudihtroj/qolqe-wallet`, remoto `origin`) no se toca. La entrega vive en su fork, `Joharjbe/qolqe-wallet`, con los tags, los PR, los runs y el sitio publicado.
 
 Comandos en la [sección 6](#6-ejecutar-las-pruebas).
 
@@ -288,16 +300,18 @@ tests/
   e2e/steps/                   # Pasos de Playwright por área, sin localizadores
   e2e/fixtures.ts              # Páginas y datos de prueba preparados por la API
   performance/                 # Parte 3: k6, Docker, datos, monitores, verificación del dinero, análisis y resultados
+  diagnostico/                 # Capacidad de IA: conjunto de oro y pruebas del componente (CP-IA-01 a CP-IA-08)
 scripts/
   correr-contrato.sh  contrato_hooks.py   # Contrato (Schemathesis)
   kiwi_sincronizar.py                     # Runs de GitHub → Kiwi TCMS
   preparar-demo.sh
 schemathesis.toml              # Checks y operaciones excluidos, con su motivo
 herramientas/kiwi/             # Kiwi TCMS con Docker (HTTPS en 8443)
+herramientas/diagnostico_ia/   # Capacidad de IA: diagnóstico de los fallos de un run
 .github/
   workflows/pruebas.yml        # Pipeline
   scripts/                     # casos.py, trazabilidad.py (matriz, JUnit por CP, historial) y resumen.py
-docs/                          # Informe, arquitectura, alcance, pipeline, gestión de casos, defectos, trazabilidad y presentaciones
+docs/                          # Informe, arquitectura, alcance, pipeline, gestión de casos, defectos, trazabilidad, capacidad de IA y presentaciones (la final, en docs/exposicion/)
 labs/s11-robot/                # Laboratorio S11 (Robot Framework), fuera del pipeline
 IA.md                          # Declaración de uso de IA
 ```

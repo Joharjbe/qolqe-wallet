@@ -1,0 +1,38 @@
+<section id="web" class="pie" data-transition="fade">
+<p class="cejilla">PUNTO 3 · COBERTURA WEB EN GHERKIN · OBS. 1a</p>
+<h2>Todo lo que corre en el navegador nace de un <span class="mono" style="font-size:52px">.feature</span></h2>
+<div class="cuerpo">
+<div class="fila-3">
+<div class="tarjeta">
+<p class="dato dato-azul">58</p>
+<p>escenarios web: 27 del núcleo común y 31 de G4</p>
+</div>
+<div class="tarjeta">
+<p class="dato dato-azul">4</p>
+<p>archivos <span class="mono">.feature</span>; ni una prueba suelta escrita en código</p>
+</div>
+<div class="tarjeta">
+<p class="dato dato-azul">× 3</p>
+<p>cada escenario corre tres veces seguidas, en cada pipeline</p>
+</div>
+</div>
+<div class="fila-2">
+<div class="tarjeta">
+<p class="etiqueta">POR QUÉ TRES VECES</p>
+<p class="chica">Una prueba que pasa dos de tres veces es inestable, no una prueba que pasa: sin eso, el equipo aprende a reintentar y deja de creerle a la suite. Es lo que pedía la Entrega 2: sin esperas fijas y pasa 3 veces seguidas. Hoy hay 0 esperas fijas.</p>
+</div>
+<div class="tarjeta">
+<p class="etiqueta">QUÉ SE AGREGÓ Y CON QUÉ CRITERIO</p>
+<p class="chica">De 19 escenarios web en la Entrega 2 a 58: los 27 del núcleo y 12 nuevos de G4. Va por la web lo que solo se ve en pantalla, los recorridos críticos con dinero o acceso y los errores que la interfaz debe mostrar: 48 de 51 criterios. Los otros 3 son dos SMS, que no aparecen en pantalla, y una carrera, que la interfaz no provoca de forma determinista.</p>
+</div>
+</div>
+</div>
+<p class="numero-pagina">10 · Entrega final · Pruebas de Qolqe</p>
+<aside>Este punto responde la observación 1a: agregar los escenarios que a mi criterio requieren automatización y las pruebas del módulo común.
+
+El enunciado pide que los escenarios web estén en archivos .feature, y se cumple sin excepciones: los 58 escenarios web nacen de cuatro archivos Gherkin. No hay ni una prueba escrita directamente en código saltándose el Gherkin.
+
+Lo que se agregó: en la Entrega 2 había 19 escenarios web de G4; ahora son 58, porque sumé los 27 del núcleo común y 12 nuevos de G4. El criterio es la regla de niveles de la clase 11. Va por la web lo que solo se ve en la pantalla, los pasos de un recorrido crítico que pasa por dinero o por el acceso, y los errores de la API que la interfaz debe mostrar. Con esa regla, 48 de los 51 criterios tienen caso web. Los tres que no lo tienen son dos SMS, que no aparecen en ninguna pantalla, y una carrera, que desde la interfaz no se puede provocar de forma determinista; esos tres sí tienen caso de API.
+
+El número que quiero resaltar es el de la derecha: cada escenario corre tres veces seguidas en cada pipeline. Una prueba que pasa dos de tres veces no es una prueba que pasa: es una prueba inestable. Si no las detectas, el equipo aprende a reintentar hasta que pase, y a partir de ahí la suite deja de servir. Era el criterio de la Entrega 2: sin esperas fijas y que pase tres veces seguidas. Hoy no hay ninguna espera fija en las pruebas web, y las tres corridas salen en verde, sin ninguna inestable.</aside>
+</section>
