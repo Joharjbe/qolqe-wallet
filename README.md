@@ -33,7 +33,7 @@ Billetera digital **ficticia** usada como sistema bajo prueba (SUT) en el Proyec
 | **Final** · Consolidado de las tres partes y capacidad de IA | tag [`entrega-final-v1`](https://github.com/Joharjbe/qolqe-wallet/tree/entrega-final-v1) · [Release](https://github.com/Joharjbe/qolqe-wallet/releases/tag/entrega-final-v1) · [sitio publicado](https://joharjbe.github.io/qolqe-wallet/) | [`docs/informe.md`](docs/informe.md) ([los 9 puntos](docs/informe.md#los-9-puntos-de-la-entrega-final)) · [`docs/capacidad-ia.md`](docs/capacidad-ia.md) | [deck de la exposición](docs/exposicion/deck.pdf) · [material de la exposición](docs/exposicion/) |
 
 - **Congelación:** la entrega final es el tag `entrega-final-v1`. Lo que se suba después es material de la exposición y no entra a `main`.
-- El [PR #10](https://github.com/Joharjbe/qolqe-wallet/pull/10) («NO FUSIONAR · Demo del quality gate sobre el pipeline actual») queda abierto a propósito: rompe el saldo esperado de CP-A28 para mostrar que la protección de `main` no deja fusionar un cambio en rojo. En su [run #25](https://github.com/Joharjbe/qolqe-wallet/actions/runs/44240958431), `api` falla (CP-A28 espera 770.00 y el saldo es 775.00), `web` falla en su guarda, `quality-gate` da «no pasa» ([captura del run](docs/img/demo-gate-rojo.png)) y la fusión queda bloqueada (`gh pr view 10` → `BLOCKED`, 18-nov-2026). Al 18-nov-2026, la protección de `main` exige los checks `api` y `web`, con `enforce_admins` activo; `quality-gate` da el veredicto único en el resumen, pero no es check obligatorio. El [PR #3](https://github.com/Joharjbe/qolqe-wallet/pull/3) es la misma demo con el pipeline de la Entrega 2, que no tenía `quality-gate`.
+- El [PR #10](https://github.com/Joharjbe/qolqe-wallet/pull/10) («NO FUSIONAR · Demo del quality gate sobre el pipeline actual») queda abierto a propósito: rompe el saldo esperado de CP-A28 para mostrar que la protección de `main` no deja fusionar un cambio en rojo. En su [run #25](https://github.com/Joharjbe/qolqe-wallet/actions/runs/44240958431), `api` falla (CP-A28 espera 770.00 y el saldo es 775.00), `web` falla en su guarda, `quality-gate` da «no pasa» ([captura del run](docs/img/demo-gate-rojo.png)) y la fusión queda bloqueada (`gh pr view 10` → `BLOCKED`, 18-nov-2026). La protección de `main` exige los checks `api`, `web` y, desde el 18-nov-2026, también `quality-gate`, con `enforce_admins` activo: tampoco el dueño fusiona sin los tres en verde. El [PR #3](https://github.com/Joharjbe/qolqe-wallet/pull/3) es la misma demo con el pipeline de la Entrega 2, que no tenía `quality-gate`.
 - El repositorio de la profesora (`cjudihtroj/qolqe-wallet`, remoto `origin`) no se toca. La entrega vive en su fork, `Joharjbe/qolqe-wallet`, con los tags, los PR, los runs y el sitio publicado.
 
 Comandos en la [sección 6](#6-ejecutar-las-pruebas).
@@ -293,8 +293,8 @@ features/                      # Casos en Gherkin con @HU, @CA, @CP, @DEF y @tec
   web/nucleo_acceso_web.feature  web/nucleo_dinero_web.feature
   web/contactos_web.feature  web/solicitudes_web.feature
 tests/
-  api/conftest.py              # Cliente, sesiones, reinicio por escenario y pasos comunes
-  api/pasos_*.py               # Pasos de pytest-bdd por área (núcleo acceso, núcleo dinero, G4)
+  api/conftest.py              # Cliente, sesiones, reinicio por escenario y usuarios de la semilla (sin pasos)
+  api/pasos_*.py               # Pasos de pytest-bdd por área (núcleo acceso, núcleo dinero, G4 y G4 extra)
   api/evidencia.py             # Peticiones y respuestas en el reporte HTML (sin o con imágenes)
   e2e/pages/                   # Page Objects y componentes compartidos (componentes.ts, PaginaQolqe.ts)
   e2e/steps/                   # Pasos de Playwright por área, sin localizadores

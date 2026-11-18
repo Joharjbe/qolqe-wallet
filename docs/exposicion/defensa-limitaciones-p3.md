@@ -4,7 +4,7 @@ Son las limitaciones que el propio informe declara (`docs/informe.md:247` y `:33
 
 **1. La resistencia duró 60 minutos, no 18 horas.**
 Lo que busca la resistencia es deriva, y en 60 min no la hubo: las 12 ventanas de 5 min cumplen y el p95 final entre el inicial da 0,98 × en consultas y 1,01 × en dinero. Las 18 h se proyectan y lo digo como lo que es, una extrapolación lineal: el RSS a 54 000 sesiones da 92 MB frente a 700, con r² de 0,53, bajo pero sobre una recta casi plana (el RSS fue de 60,6 a 63,1 MB en la hora).
-Lo sostiene: `tests/performance/resultados/resistencia/20261111-1958/veredicto.md:67-72` · `docs/Informe_Rendimiento_Qolqe.pdf`, Prueba 4 (pág. 32-33). Correr las 18 h en un entorno dedicado es la recomendación escrita (`docs/informe.md:361`).
+Lo sostiene: `tests/performance/resultados/resistencia/20261111-1958/veredicto.md:67-72` · `docs/Informe_Rendimiento_Qolqe.pdf`, Prueba 4 (pág. 32-33). Correr las 18 h en un entorno dedicado es la recomendación escrita (`docs/informe.md:362`).
 
 **2. V-04 y V-01 se ajustaron durante la ejecución.**
 V-04 pedía carga de 1 min < 1,5, y esta Mac no baja de ~3-4 sin nada corriendo: no se habría cumplido nunca, así que pasó a CPU ocioso ≥ 65 % (commit `5adb217`) y en las 8 corridas analizadas se midió entre 69,4 % y 93,3 %. V-01 pasó a decidir solo con el CPU de k6, que es el criterio del enunciado; ese cambio lo hice después de ver los datos y así está declarado: con el criterio original, el pico y el estrés se habrían repetido.

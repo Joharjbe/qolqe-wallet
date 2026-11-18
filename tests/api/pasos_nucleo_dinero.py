@@ -6,14 +6,12 @@ import time
 from datetime import datetime, timedelta
 from decimal import Decimal
 
-import conftest  # Helpers compartidos: URL, USUARIOS, Sesiones.
+import conftest  # Helpers compartidos: URL, usuarios de la semilla, Sesiones.
 import httpx
 import jwt
 from pytest_bdd import given, parsers, then, when
 
 CCI_PRUEBA = "00219300123456789012"
-PIN_CARGA = "2580"  # Usuarios de carga de la semilla: celulares 900000001 a 900000200.
-CERRADAS = {"Fabián": ("934567812", "6029")}  # Cuenta CERRADA de la semilla.
 RESOLVER = {"RECHAZADA": "rechazar", "CANCELADA": "cancelar", "ACEPTADA": "aceptar"}
 MONTOS = r"(?P<montos>\d+\.\d\d(?:, \d+\.\d\d)*)"
 DESTINO = r'(?P<destino>"[^"]*"|su contacto "[^"]*"(?: indicando también el celular "[^"]*")?|[^\s"]+)'
@@ -25,13 +23,13 @@ def _celular(quien):
     """Nombre de la semilla o, para los usuarios de carga, su propio celular."""
     if quien in conftest.USUARIOS:
         return conftest.USUARIOS[quien][0]
-    return CERRADAS.get(quien, (quien,))[0]
+    return conftest.CERRADAS.get(quien, (quien,))[0]
 
 
 def _pin(quien):
     if quien in conftest.USUARIOS:
         return conftest.USUARIOS[quien][1]
-    return CERRADAS.get(quien, (None, PIN_CARGA))[1]
+    return conftest.CERRADAS.get(quien, (None, conftest.PIN_CARGA))[1]
 
 
 def _ingresar(s, quien):

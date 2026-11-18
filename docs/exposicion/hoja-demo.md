@@ -9,7 +9,7 @@ Lo que se dice y por qué este orden: [`guion.md`](guion.md). Carpeta: la raíz 
 | # | Qué | Comando |
 |---|---|---|
 | 1 | Repo al tag | `git switch main && git pull --ff-only entrega main && git fetch -q entrega --tags && git describe --tags` → `entrega-final-v1`. Si sale `entrega-final-v1-N-g…`, hay commits después del tag; si da error, el tag todavía no existe (al 18-nov, `git ls-remote --tags entrega` solo daba `parte-2` y `parte-3`) |
-| 1b | Checks de main | `gh api repos/Joharjbe/qolqe-wallet/branches/main -q .protection.required_status_checks.contexts` → `["api","web"]`, lo mismo que dicen la lámina 13, `docs/pipeline.md:32` y `docs/informe.md:164` (al 18-nov). Si da también `quality-gate`, en la lámina 13 dilo de palabra (`guion.md`, fila `gate`) |
+| 1b | Checks de main | `gh api repos/Joharjbe/qolqe-wallet/branches/main -q .protection.required_status_checks.contexts` → `["api","web","quality-gate"]` (salida del 18-nov), lo mismo que dicen la lámina 13, `docs/pipeline.md:32` y `docs/informe.md:164`. Si da otra cosa, en la lámina 13 di lo que dio (`guion.md`, fila `gate`) |
 | 2 | Base de k6 (≈ 2,5 min) | `export RESULTADOS="$HOME/demo-qolqe" USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv"` y `SIN_BUILD=1 tests/performance/preparar.sh 3000` |
 | 3 | Ensayo de k6 (≈ 2:40) | «Antes de k6» y el principal: primera línea `…/demo-qolqe/demo/<marca>`, última `k6 = 99 … integridad = 0` |
 | 4 | Parte 3 al respaldo | `.venv/bin/python .github/scripts/sitio_rendimiento.py --sitio ~/Desktop/respaldo-sitio-con-imagenes` |

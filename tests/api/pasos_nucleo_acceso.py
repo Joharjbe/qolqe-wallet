@@ -5,7 +5,7 @@ import time
 from collections import Counter
 from datetime import datetime, timedelta
 
-import conftest  # Helpers compartidos: URL, USUARIOS, Sesiones.
+import conftest  # Helpers compartidos: URL, usuarios de la semilla, Sesiones.
 import httpx
 import jwt
 from pytest_bdd import given, parsers, then, when
@@ -304,13 +304,14 @@ def _inicia_con_dispositivo(s, nombre, dispositivo):
 
 @when(parsers.parse('se envía al login la variante "{variante}"'))
 def _login_variante(s, variante):
-    base = {"celular": "987654321", "pin": "4826"}
+    celular, pin = conftest.USUARIOS["Ana"]
+    base = {"celular": celular, "pin": pin}
     if variante == "cuerpo vacío":
         s.respuesta = s.cliente.post("/api/auth/login", json={})
     elif variante == "sin pin":
-        s.respuesta = s.cliente.post("/api/auth/login", json={"celular": "987654321"})
+        s.respuesta = s.cliente.post("/api/auth/login", json={"celular": celular})
     elif variante == "pin numérico":
-        s.respuesta = s.cliente.post("/api/auth/login", json={**base, "pin": 4826})
+        s.respuesta = s.cliente.post("/api/auth/login", json={**base, "pin": int(pin)})
     elif variante == "dispositivo numérico":
         s.respuesta = s.cliente.post("/api/auth/login", json={**base, "dispositivo_id": 123})
     elif variante == "formulario":
@@ -321,18 +322,18 @@ def _login_variante(s, variante):
 
 @when(parsers.parse('Ana intenta ingresar con el dispositivo de prueba "{variante}"'))
 def _ingreso_dispositivo_borde(s, variante):
-    celular = conftest.USUARIOS["Ana"][0]
+    celular, pin = conftest.USUARIOS["Ana"]
     if variante == "sin id":
-        s.respuesta = _login(s, celular, "4826")
+        s.respuesta = _login(s, celular, pin)
     elif variante == "id vacío":
-        s.respuesta = _login(s, celular, "4826", dispositivo="")
+        s.respuesta = _login(s, celular, pin, dispositivo="")
     elif variante == "mayúsculas":
-        s.respuesta = _login(s, celular, "4826", dispositivo="A1B2C3D4E5F60718")
+        s.respuesta = _login(s, celular, pin, dispositivo="A1B2C3D4E5F60718")
     elif variante == "pin incorrecto":
         s.respuesta = _login(s, celular, "0000", dispositivo="nuevo-dispositivo")
     elif variante == "id numérico":
         s.respuesta = s.cliente.post("/api/auth/login",
-                                     json={"celular": celular, "pin": "4826", "dispositivo_id": 123})
+                                     json={"celular": celular, "pin": pin, "dispositivo_id": 123})
 
 
 @then(parsers.parse('la sesión actual registra el dispositivo "{dispositivo}" con nombre "{nombre}"'))
@@ -732,7 +733,7 @@ def _perfil_guardo_nombres(s, nombre, nombres):
 @when(parsers.parse('se consulta el perfil del caso "{caso}"'))
 def _perfil_caso(s, caso):
     if caso == "usuario de carga":
-        token = _login(s, "900000001", "2580").json()["access_token"]
+        token = _login(s, str(conftest.CARGA_BASE + 1), conftest.PIN_CARGA).json()["access_token"]
     else:
         s.cliente.post("/api/usuarios", json={"dni": "00000000", "nombres": "Nuevo Sin Correo",
                                               "celular": "987000161", "pin": "4826"})
@@ -756,10 +757,10 @@ def _cambio_sin_correo_nuevo(s, variante):
 @when(parsers.parse('se cambia el correo del caso "{caso}"'))
 def _cambia_correo_caso(s, caso):
     if caso == "Ana quita el correo":
-        cab = _cabecera(_login(s, "987654321", "4826").json()["access_token"])
+        cab = _cabecera(_login(s, *conftest.USUARIOS["Ana"]).json()["access_token"])
         s.respuesta = s.cliente.put("/api/cuentas/me", headers=cab, json={"correo": ""})
     elif caso == "usuario de carga agrega correo":
-        cab = _cabecera(_login(s, "900000001", "2580").json()["access_token"])
+        cab = _cabecera(_login(s, str(conftest.CARGA_BASE + 1), conftest.PIN_CARGA).json()["access_token"])
         s.respuesta = s.cliente.put("/api/cuentas/me", headers=cab, json={"correo": "carga1@correo.pe"})
 
 

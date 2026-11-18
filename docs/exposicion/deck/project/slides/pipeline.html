@@ -16,7 +16,7 @@
 </div>
 <div class="tarjeta tarjeta-ambar ajustada">
 <p class="etiqueta">LA TRAMPA: SKIPPED NO ES VERDE (CLASE 12)</p>
-<p class="chica">GitHub cuenta un job <b>omitido</b> como aprobado. Sin guarda, un contrato en rojo dejaría <span class="mono" style="font-size:24px">api</span> y <span class="mono" style="font-size:24px">web</span> en «omitido» y el PR se podría fusionar. Cada job comprueba al anterior y falla en segundos si no está verde.</p>
+<p class="chica">GitHub cuenta un job <b>omitido</b> como aprobado. Sin guarda, un contrato en rojo dejaría <span class="mono" style="font-size:24px">api</span> y <span class="mono" style="font-size:24px">web</span> en «omitido»: aprobados sin haber corrido. Cada job comprueba al anterior y falla en segundos si no está verde.</p>
 </div>
 </div>
 <p class="nota sola">Tiempos del run #24, intento 1: el run completo, 13 min 38 s.</p>
@@ -28,5 +28,5 @@ El pipeline va de lo barato a lo caro: si falla algo de un minuto, no se gastan 
 
 El cambio de esta entrega es el orden. Antes el contrato corría en paralelo con la API; ahora va antes y la bloquea, que es lo que pedía la indicación. No contradice que estático vaya primero: estático no levanta Qolqe, así que el contrato es la primera prueba que de verdad ejecuta la API. El razonamiento es que el contrato es lo que la API promete cumplir: si no lo cumple, los casos funcionales prueban sobre una base que no se sostiene. Ponerlo delante cuesta lo que dura su job: 41 segundos en el run #20 y 35 en el #24. Los tiempos de la lámina son del run #24, intento 1, que es el que se abre en la demo.
 
-Pero la parte interesante es la de la derecha, porque serializar tenía una trampa, que la clase 12 resume en una frase: skipped no es verde. GitHub cuenta un job omitido como aprobado en un check obligatorio. Si ponía el contrato delante sin más, un contrato en rojo habría dejado api y web en «omitido», y el pull request se habría podido fusionar igual. Por eso cada job empieza con una guarda que comprueba el anterior y falla en segundos si no está en verde. Ahí el check queda en rojo de verdad y el merge se bloquea.</aside>
+Pero la parte interesante es la de la derecha, porque serializar tenía una trampa, que la clase 12 resume en una frase: skipped no es verde. GitHub cuenta un job omitido como aprobado en un check obligatorio. Si ponía el contrato delante sin más, un contrato en rojo habría dejado api y web en «omitido»; con solo api y web obligatorios, como estaba la protección cuando hice el cambio, el pull request se habría podido fusionar igual. Hoy además lo pararía quality-gate, que es obligatorio desde el 18 de noviembre y cuenta una etapa omitida como no aprobada; eso lo cuento en la lámina siguiente. Por eso cada job empieza con una guarda que comprueba el anterior y falla en segundos si no está en verde. Ahí el check queda en rojo de verdad y el merge se bloquea.</aside>
 </section>

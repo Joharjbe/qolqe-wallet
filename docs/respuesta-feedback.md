@@ -60,7 +60,7 @@ La observación 6 no pide un cambio en el repositorio: se responde en la exposic
 - **Lo que no se automatizó.** CP-NA28, CP-NA69 y CP-T19 quedan como evidencia manual, porque no dan el mismo resultado en todas las corridas. CP-T19 se midió el 17-nov con un script: la falla aparece en 118 de 200 rondas al cancelar y en 136 de 200 al rechazar, y quedó registrada como DEF-30 ([`resultados-manuales/cp-t19.md`](resultados-manuales/cp-t19.md)).
 - **Contrato.** Pasó de 9 operaciones de G4 a 19 del núcleo y de G4.
 - **Arquitectura.** Hay un documento propio con las capas, el diagrama y cómo se conectan.
-  - En la API, los pasos nuevos se separaron por área en tres módulos (`pasos_nucleo_acceso.py`, `pasos_nucleo_dinero.py` y `pasos_g4_extra.py`). Los 45 pasos de G4 que venían de la Parte 2 siguen en `conftest.py`, junto a la infraestructura: se declara como riesgo residual, con lo que cuesta pagarlo, en [`informe.md`](informe.md) §6.
+  - En la API, los pasos están separados por área en cuatro módulos (`pasos_g4.py`, `pasos_g4_extra.py`, `pasos_nucleo_acceso.py` y `pasos_nucleo_dinero.py`), y `conftest.py` queda con la infraestructura y los usuarios de la semilla, que la suite escribe solo ahí. Los 45 pasos de G4 de la Parte 2 estuvieron en `conftest.py` hasta el 18-nov-2026, cuando pasaron a `pasos_g4.py` sin cambiar ninguna prueba: las mismas 766 con los mismos IDs, 707 passed y 59 xfailed ([`informe.md`](informe.md) §6).
   - En la web, se crearon componentes compartidos y pasos por área, sin localizadores.
 
 **Dónde**
@@ -109,7 +109,7 @@ Antes había 3 jobs: `api`, `web` y `reportes`. Ahora hay 8. Las etapas de prueb
 | `gestion-casos` | Solo en `main`. Registra el run en Kiwi TCMS si existen los secretos; sin ellos deja un aviso, y la sincronización se hace desde la máquina del alumno con `scripts/kiwi_sincronizar.py` |
 | `publicar` | Solo en `main`, y es el último job del run: GitHub Pages. Es el único job con permisos de escritura en Pages |
 
-- **Checks obligatorios.** Al 18-nov-2026, `main` exige `api` y `web`. Los dos empiezan con una guarda: si la etapa anterior falla, quedan en rojo y no como omitidos. `quality-gate` da el veredicto único en el resumen, pero no es check obligatorio.
+- **Checks obligatorios.** `main` exige `api` y `web`, y desde el 18-nov-2026 también `quality-gate`, incluso al dueño (`enforce_admins`). `api` y `web` empiezan con una guarda: si la etapa anterior falla, quedan en rojo y no como omitidos. `quality-gate` da el veredicto único en el resumen y cuenta como no aprobada una etapa omitida.
 - **Evidencia a elección.** *Run workflow* tiene la entrada `evidencia`. Push y PR usan `sin-imagenes`.
 
 | Modo | Web | API | Contrato | Retención |
@@ -296,7 +296,7 @@ La Entrega 3 no recibió observaciones escritas. Esta sección está porque la e
 
 - **Concurrencia en el runner.** La misma suite corrió en los 9 runs seguidos del #16 al #24, todos en verde, y otra vez en el intento 2 del #24 (*Re-run*: 707 passed y 59 xfailed en 244.79 s). Como el xfail es estricto (`tests/api/conftest.py:26`), un escenario `@concurrencia` que diera XPASS habría puesto `api` en rojo.
 - **Matriz versionada.** [`trazabilidad.md`](trazabilidad.md) es la matriz del artefacto `trazabilidad` del run #24, no una corrida local.
-- **Checks obligatorios.** Al 18-nov-2026, `main` exige `api` y `web`, con `enforce_admins` activo; `quality-gate` da el veredicto, pero no es obligatorio.
+- **Checks obligatorios.** `main` exige `api` y `web`, y desde el 18-nov-2026 también `quality-gate`, con `enforce_admins` activo. El PR #10 sigue `BLOCKED` con los tres en rojo (`gh pr view 10`, 18-nov-2026).
 
 - **Kiwi TCMS.** Primera sincronización real el 17-nov-2026: 10 TestRuns, con las capturas en `docs/img/` (§3).
 
