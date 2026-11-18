@@ -110,7 +110,7 @@ persona.
 | `--modelo` | Qué es | Para qué sirve |
 |---|---|---|
 | `lineabase` | clasificador por reglas, **sin IA** | **control** del experimento: si las reglas aciertan lo mismo que el modelo, la IA no aporta nada en esta tarea. La comparación es parte de la defensa, no un adorno |
-| `grabado` | respuestas guardadas de una corrida real | reproducible y sin red. La carpeta `respuestas_grabadas/` está vacía a propósito: se llena con `--grabar` en una corrida real |
+| `grabado` | respuestas guardadas de una corrida real | reproducible y sin red. La carpeta `respuestas_grabadas/` tiene las 31 respuestas de la corrida del 17-nov con `google` (`gemini-3.1-flash-lite`); se llena con `--grabar` en una corrida real |
 | `anthropic` | HTTPS con `urllib` | `ANTHROPIC_API_KEY` del `.env` local |
 | `google` | HTTPS con `urllib` | `GOOGLE_API_KEY` del `.env` local |
 

@@ -1,0 +1,91 @@
+<section id="p3-resultados" class="pie" data-transition="fade">
+<p class="cejilla">PARTE 3 · 4 DE 4 · ¿PASÓ O NO PASÓ?</p>
+<h2>Frente a mis umbrales: ¿pasó o no pasó?</h2>
+<p class="bajada corta" style="max-width:1664px">Hora punta: cumple. Pico: cumple (U-06). Hasta cuántos: 850 simultáneos con 1 CPU, 8,5 × la hora punta.</p>
+<div class="cuerpo junto" style="gap:16px">
+<table class="densa fina" style="width:1664px">
+<tr><th width="35%">Umbral</th><th width="22%">Carga · 100 simultáneos</th><th width="21%">Estrés · 876</th><th width="22%">Estrés · 946</th></tr>
+<tr><td><b>U-01</b> consultas y login: p95 &lt; 800&nbsp;ms</td><td class="cumple">✓ 93&nbsp;ms (login 105)</td><td class="cumple">✓ 73&nbsp;ms (login 83)</td><td class="no-cumple">✗ 13&nbsp;296&nbsp;ms (login 17&nbsp;685)</td></tr>
+<tr><td><b>U-02</b> dinero: p95 &lt; 1&nbsp;500&nbsp;ms</td><td class="cumple">✓ 128&nbsp;ms (transferir 134)</td><td class="cumple">✓ 118&nbsp;ms</td><td class="no-cumple">✗ 18&nbsp;672&nbsp;ms</td></tr>
+<tr><td><b>U-03</b> operaciones fallidas ≤ 1 %</td><td class="cumple">✓ 0,00 %</td><td class="cumple">✓ 0,00 %</td><td class="no-cumple">✗ 13,7 %</td></tr>
+<tr><td><b>U-04</b> atendido ≥ 9,6 req/s; estrés: ≥ 90 %</td><td class="cumple">✓ 9,77 de 9,78 req/s</td><td class="cumple">✓ 85,2 de 86,0 req/s</td><td class="no-cumple">✗ 26,1 de 90,9 req/s</td></tr>
+<tr><td><b>U-05</b> 0 sesiones descartadas</td><td class="cumple">✓ 0</td><td class="cumple">✓ 0</td><td class="cumple">✓ 0</td></tr>
+<tr><td><b>U-07</b> dinero íntegro: 0 descuadres</td><td class="cumple">✓ 0</td><td class="cumple" colspan="2">✓ 0 en toda la corrida, incluso en el colapso</td></tr>
+<tr class="veredicto"><td>Veredicto</td><td class="cumple">Cumple</td><td class="cumple">Cumple</td><td class="no-cumple">No cumple</td></tr>
+</table>
+<div class="fila" style="gap:24px; align-items:stretch">
+<div class="tarjeta tarjeta-ambar ajustada" style="flex:1; padding:20px 24px">
+<p class="chica"><b>Degradación abrupta.</b> Cuello de botella: la escritura de la sesión en SQLite al hacer login (<span class="mono" style="font-size:24px">autenticacion.py:136</span>): 733 de 829 excepciones son <i>database is locked</i>, y con 2 CPU la capacidad sube × 1,53, no × 2. <b>Qué hacer:</b> commit justo después de ese INSERT y fallar rápido con 503, sin renegociar el SLA.</p>
+</div>
+<div class="tarjeta grafico">
+<svg width="540" height="152" viewBox="0 0 540 152" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="p95 de consultas por ventana de 30 s contra usuarios simultáneos en el estrés con 1 CPU: plano, por debajo de 90 ms, hasta 876 usuarios, y 13 296 ms con 946">
+<text x="0" y="24" font-size="24" font-weight="600" fill="#14213D">Estrés · p95 de consultas (ms, log)</text>
+<line x1="88" y1="118" x2="528" y2="118" stroke="#8E97AC" stroke-width="2"/>
+<line x1="88" y1="40" x2="88" y2="118" stroke="#8E97AC" stroke-width="2"/>
+<line x1="83" y1="107.7" x2="88" y2="107.7" stroke="#8E97AC" stroke-width="2"/>
+<text x="79" y="115.7" text-anchor="end" font-size="24" fill="#6B7693">100</text>
+<line x1="83" y1="55.7" x2="88" y2="55.7" stroke="#8E97AC" stroke-width="2"/>
+<text x="79" y="63.7" text-anchor="end" font-size="24" fill="#6B7693">10 000</text>
+<line x1="88.0" y1="118" x2="88.0" y2="123" stroke="#8E97AC" stroke-width="2"/>
+<text x="88.0" y="146" text-anchor="middle" font-size="24" fill="#6B7693">0</text>
+<line x1="271.3" y1="118" x2="271.3" y2="123" stroke="#8E97AC" stroke-width="2"/>
+<text x="271.3" y="146" text-anchor="middle" font-size="24" fill="#6B7693">500</text>
+<line x1="454.7" y1="118" x2="454.7" y2="123" stroke="#8E97AC" stroke-width="2"/>
+<text x="454.7" y="146" text-anchor="middle" font-size="24" fill="#6B7693">1 000</text>
+<text x="528" y="110" text-anchor="end" font-size="24" fill="#6B7693">usuarios</text>
+<line x1="88" y1="84.2" x2="528" y2="84.2" stroke="#14213D" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="96" y="76.2" font-size="24" fill="#14213D">800 ms (U-01)</text>
+<line x1="399.7" y1="40" x2="399.7" y2="118" stroke="#C2710C" stroke-width="3"/>
+<text x="391.7" y="62" text-anchor="end" font-size="24" font-weight="600" fill="#C2710C">U-08: 850</text>
+<polyline fill="none" stroke="#1F5FD0" stroke-width="3" points="92.8,109.1 101.9,109.8 111.1,110.3 120.1,110.3 124.4,109.3 124.6,109.9 125.4,109.5 130.6,110.1 140.5,110.4 154.2,110.4 171.0,110.7 188.6,110.9 208.5,111.0 227.0,110.8 244.7,110.8 260.8,110.9 281.6,110.9 299.7,110.9 316.6,111.1 337.0,111.1 355.7,111.0 373.8,111.2 389.2,111.2 409.3,111.3 434.7,52.4 492.4,43.2 507.4,43.2"/>
+<circle cx="92.8" cy="109.1" r="3.5" fill="#1F5FD0"/>
+<circle cx="101.9" cy="109.8" r="3.5" fill="#1F5FD0"/>
+<circle cx="111.1" cy="110.3" r="3.5" fill="#1F5FD0"/>
+<circle cx="120.1" cy="110.3" r="3.5" fill="#1F5FD0"/>
+<circle cx="124.4" cy="109.3" r="3.5" fill="#1F5FD0"/>
+<circle cx="124.6" cy="109.9" r="3.5" fill="#1F5FD0"/>
+<circle cx="125.4" cy="109.5" r="3.5" fill="#1F5FD0"/>
+<circle cx="130.6" cy="110.1" r="3.5" fill="#1F5FD0"/>
+<circle cx="140.5" cy="110.4" r="3.5" fill="#1F5FD0"/>
+<circle cx="154.2" cy="110.4" r="3.5" fill="#1F5FD0"/>
+<circle cx="171.0" cy="110.7" r="3.5" fill="#1F5FD0"/>
+<circle cx="188.6" cy="110.9" r="3.5" fill="#1F5FD0"/>
+<circle cx="208.5" cy="111.0" r="3.5" fill="#1F5FD0"/>
+<circle cx="227.0" cy="110.8" r="3.5" fill="#1F5FD0"/>
+<circle cx="244.7" cy="110.8" r="3.5" fill="#1F5FD0"/>
+<circle cx="260.8" cy="110.9" r="3.5" fill="#1F5FD0"/>
+<circle cx="281.6" cy="110.9" r="3.5" fill="#1F5FD0"/>
+<circle cx="299.7" cy="110.9" r="3.5" fill="#1F5FD0"/>
+<circle cx="316.6" cy="111.1" r="3.5" fill="#1F5FD0"/>
+<circle cx="337.0" cy="111.1" r="3.5" fill="#1F5FD0"/>
+<circle cx="355.7" cy="111.0" r="3.5" fill="#1F5FD0"/>
+<circle cx="373.8" cy="111.2" r="3.5" fill="#1F5FD0"/>
+<circle cx="389.2" cy="111.2" r="3.5" fill="#1F5FD0"/>
+<circle cx="409.3" cy="111.3" r="3.5" fill="#1F5FD0"/>
+<circle cx="434.7" cy="52.4" r="5" fill="#C2710C"/>
+<circle cx="492.4" cy="43.2" r="5" fill="#C2710C"/>
+<circle cx="507.4" cy="43.2" r="5" fill="#C2710C"/>
+</svg>
+</div>
+</div>
+<p class="nota sola" style="line-height:1.3">U-08 = 876 redondeado a 50 · el informe da el p95 de todas las peticiones: 78 ms → 13,4 s · línea base de 1 CPU: no se extrapola.</p>
+</div>
+<p class="numero-pagina">5 · Entrega final · Pruebas de Qolqe</p>
+<aside>Esta es la comparación con mis propios umbrales, y el veredicto es binario: cumple o no cumple.
+
+En carga, con 100 usuarios simultáneos durante 15 minutos, cumple todo y con mucho margen: consultas 93 milisegundos frente a 800, dinero 128 frente a 1 500, cero por ciento de error y cero sesiones descartadas.
+
+En el estrés leo dos momentos. Con 876 usuarios, que es la última ventana de 30 segundos que cumple, todo sigue bien: consultas en 73 milisegundos. En la ventana siguiente, con 946, fallan a la vez el tiempo, el error y el throughput: el p95 de consultas salta a 13 segundos y el error a 13,7 %. En el informe esa misma caída se resume con el p95 de todas las peticiones, de 78 milisegundos a 13,4 segundos; por eso lo dejé escrito en la nota de abajo, para que la lámina y el informe digan lo mismo. Las sesiones descartadas, U-05, siguen en cero también en el estrés: k6 siguió ofreciendo toda la carga, así que la caída es de Qolqe y no del generador.
+
+El gráfico es el de p95 de consultas contra usuarios, el mismo de la Figura 5 del informe: plano, por debajo de 90 milisegundos, hasta 876 usuarios, y en la ventana siguiente el muro. Es una degradación abrupta, no gradual, y eso para el negocio significa que no hay aviso previo. El gráfico llega hasta el pico de 1 144 usuarios; después la corrida ya colapsada vuelve hacia menos usuarios. La capacidad es 850, que es 876 redondeado hacia abajo a 50. Y la digo como línea base relativa de 1 CPU en una laptop: no digo que producción aguante 850; sirve para comparar versiones, por ejemplo 1 contra 2 CPU.
+
+El dinero quedó íntegro en las dos, incluso en el colapso. Eso no se verifica mirando si la respuesta dijo «ok»: se verifica con los saldos y los movimientos antes y después de cada corrida.
+
+¿Por qué se cae? El cuello de botella es la escritura de la sesión en SQLite durante el login, y lo afirmo con evidencia: 733 de las 829 excepciones del estrés son «database is locked» en ese INSERT; en el colapso con 2 CPU, las 40 plazas del pool de hilos estaban esperando en esa línea; y Qolqe iba al 75,5 % de CPU justo antes de caer, y con 2 CPU la capacidad sube 1,53 veces, no 2. Si el límite fuera solo el CPU, se habría duplicado. El PBKDF2 del PIN es lo que más CPU gasta, verificar_pin está entre el 53 y el 63 % de las muestras del perfilador con 1 CPU, pero lo que convierte la carga en un colapso es el bloqueo de SQLite. Mi hipótesis antes de medir era 1 500 ± 300 usuarios: quedó refutada, y está escrito así en el informe.
+
+¿Qué hacer? Es el cuarto paso del análisis, y está al final del recuadro: hacer commit justo después del INSERT de la sesión, para no retener el bloqueo, y fallar rápido con un 503 en vez de encolar. El SLA no necesita renegociarse, porque la hora punta y la campaña cumplen con margen.
+
+Pico y resistencia también se ejecutaron y pasan. El pico, con 304 simultáneos, cumple U-06: consultas 78 milisegundos y login 97 frente a 1 600, y dinero 123 frente a 3 000. El umbral del pico, el doble del normal, es un supuesto mío (S-05), porque el requerimiento solo dice «degradación razonable»; aun así, el pico cumplió los umbrales normales. La resistencia cumple U-09: 12 de 12 ventanas de 5 minutos y 92 MB de memoria proyectada frente a 700.
+
+Los gráficos de las demás corridas, con las líneas de los umbrales, están en el informe y en la pestaña Rendimiento del sitio.</aside>
+</section>

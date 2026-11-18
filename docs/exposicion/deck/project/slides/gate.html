@@ -1,0 +1,36 @@
+<section id="gate" class="pie" data-transition="fade">
+<p class="cejilla">PUNTO 5 · QUALITY GATE</p>
+<h2>Cuatro criterios de salida, y quién los hace cumplir</h2>
+<p class="bajada corta" style="max-width:1664px">Si uno falla, el PR no entra a main: api, web y quality-gate son checks obligatorios, también para el dueño. Probado en el PR #10: run #25 en rojo, fusión bloqueada.</p>
+<div class="cuerpo junto">
+<div class="fila-2 apretada">
+<div class="tarjeta ajustada">
+<p class="etiqueta">1 · ANÁLISIS ESTÁTICO · estatico</p>
+<p>Lint, tipos, Gherkin con todos sus pasos definidos, etiquetas de trazabilidad, el propio workflow y la regla del patrón</p>
+</div>
+<div class="tarjeta ajustada">
+<p class="etiqueta">2 · CONTRATO · contrato</p>
+<p>Los casos generados desde el OpenAPI pasan, y corren antes que las pruebas funcionales</p>
+</div>
+<div class="tarjeta ajustada">
+<p class="etiqueta">3 · API FUNCIONAL Y TÉCNICA · api</p>
+<p>Todas pasan; los defectos conocidos, como fallo esperado estricto con su DEF</p>
+</div>
+<div class="tarjeta ajustada">
+<p class="etiqueta">4 · WEB · web</p>
+<p>Pasa las tres corridas seguidas, sin ninguna prueba inestable</p>
+</div>
+</div>
+<p class="nota sola">Se lee en el resumen del run, sin abrir el YAML. No evalúa el rendimiento, que se mide aparte con 1 CPU, ni el job de reportes, que publica aunque fallen las pruebas.</p>
+</div>
+<p class="numero-pagina">13 · Entrega final · Pruebas de Qolqe</p>
+<aside>El anuncio pide que los quality gates estén claros. Claro significa dos cosas: qué mide y qué pasa si falla.
+
+Qué pasa si falla está arriba: el pull request no entra a main. La protección de main exige tres checks obligatorios, api, web y quality-gate, y la regla se aplica a todos, así que tampoco el dueño del repositorio puede fusionar sin los tres en verde. Son dos defensas: cada job comprueba al anterior, así que si estático o contrato fallan, api y web también quedan en rojo; y quality-gate junta los cuatro resultados, cuenta una etapa omitida como no aprobada y escribe el veredicto en el resumen. Lo probé de verdad: el PR #10 rompe a propósito el saldo esperado de un caso; en su run, el #25, api quedó en rojo, web falló en su guarda en vez de omitirse, quality-gate dio «no pasa» y la fusión quedó bloqueada.
+
+Qué mide: el job quality-gate escribe en el resumen del run los cuatro criterios de salida y el job que hace cumplir cada uno. Antes había que abrir el YAML para saber qué significaba «pasa».
+
+Y dice también lo que no evalúa: el rendimiento, porque se mide aparte en un entorno controlado, y el job de reportes, que corre incluso cuando las pruebas fallan, porque el reporte es justamente lo que explica el fallo. Un gate que no declara su alcance invita a creer que cubre más de lo que cubre.
+
+Si pregunta por qué el rendimiento no está en el pipeline: con un solo usuario, el login ya da 92 milisegundos frente a los 80 de margen que exige mi criterio de validez. En un runner compartido de GitHub eso daría rojos falsos y bloquearía merges sin que nada se haya roto.</aside>
+</section>

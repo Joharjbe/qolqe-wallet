@@ -3,7 +3,7 @@
 Concepto de la clase 15: **alucinación**. Un modelo contesta con la misma
 seguridad cuando sabe y cuando no. En este componente la alucinación tiene una
 forma concreta y peligrosa: proponer `DEF-31` para un fallo cuando el catálogo
-`docs/defectos.md` llega hasta `DEF-29`. Un número inventado dentro de un
+`docs/defectos.md` llega hasta `DEF-30`. Un número inventado dentro de un
 reporte de defectos es peor que no decir nada, porque alguien lo va a buscar.
 
 La defensa no es pedirle al modelo que no invente (ya se le pide, en el prompt

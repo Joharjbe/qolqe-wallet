@@ -1,7 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 
 // Un objeto por cada componente que app.js genera igual en todas las pantallas
-// (toast, confirmar, dialogoFormulario, itemVacio y el menú). Las pantallas los componen.
+// (toast, confirmar, dialogoFormulario, itemVacio y el menú). Las pantallas componen los diálogos y el menú; Aviso y ListaVacia los entrega fixtures.ts a los pasos comunes.
 
 /** Aviso flotante: dura 4 s y uno nuevo reemplaza al anterior. */
 export class Aviso {

@@ -1,0 +1,35 @@
+<section id="ia-validacion" class="pie" data-transition="fade">
+<p class="cejilla">PUNTO 8 · CÓMO SE VALIDÓ</p>
+<h2>Un eval: 52 fallos con su respuesta correcta</h2>
+<p class="bajada corta" style="max-width:1664px">Evals de la clase 15: casos que miden al modelo. Sin LLM-as-judge: cada respuesta correcta cita archivo y línea.</p>
+<div class="cuerpo junto">
+<div class="fila-2">
+<div class="tarjeta tarjeta-azul ajustada">
+<p class="etiqueta">52 FALLOS ETIQUETADOS, CON SU PROCEDENCIA</p>
+<p class="chica">40 vienen de los casos en fallo esperado, que ya traen su <span class="mono" style="font-size:24px">DEF</span> verdadero. 4 son pruebas inestables: 3 reconstruidas de hechos documentados y 1 sembrada. 8 son errores de entorno sembrados.</p>
+</div>
+<div class="tarjeta tarjeta-ambar ajustada">
+<p class="etiqueta">LA FUGA QUE HABÍA QUE TAPAR</p>
+<p class="chica">El JUnit marca esos fallos como <i>esperados</i>: trae el campo del defecto, el mensaje «Defecto conocido DEF-01», el estado y la etiqueta del escenario. Con eso dentro, la entrada <b>contiene la respuesta</b>. Eran cuatro caminos, y se taparon los cuatro.</p>
+</div>
+</div>
+<div class="fila-2">
+<div class="tarjeta ajustada">
+<p class="etiqueta">GUARDRAILS (CLASE 15): LO QUE ENTRA Y LO QUE SALE</p>
+<p class="chica"><b>Entra:</b> el bloque de datos blindado y ningún DEF que no esté en el catálogo. <b>Sale:</b> esquema estricto · DEF que existe (alucinación) · evidencia que está en el material del caso (oráculo débil) · sin rutas ni datos personales (privacidad).</p>
+</div>
+<div class="tarjeta ajustada">
+<p class="etiqueta">UN CONTROL SIN IA, CONTRA LA FALSA COBERTURA</p>
+<p class="chica">Unas reglas de veinte líneas responden la pregunta honesta: si aciertan igual que el modelo, la IA no aporta nada, y hay que decirlo.</p>
+</div>
+</div>
+</div>
+<p class="numero-pagina">17 · Entrega final · Pruebas de Qolqe</p>
+<aside>Esta es la lámina que de verdad responde «cómo validaron su resultado», y es donde está el trabajo.
+
+Lo validé con un eval, como en la clase 15: un conjunto de casos que mide la calidad del modelo. En el repositorio lo llamo conjunto de oro: son 52 fallos con la respuesta correcta y la procedencia de cada etiqueta, archivo y línea. 40 salen de los casos en fallo esperado, que ya traen su defecto verdadero; 4 son pruebas inestables, 3 reconstruidas de hechos que el proyecto documenta y 1 sembrada; y 8 son errores de entorno que sembré a propósito y que están marcados como sembrados. No usé LLM-as-judge a propósito: un modelo juez también se equivoca con seguridad, y entonces no habría nada firme contra qué medir.
+
+El recuadro de la derecha es el error que casi cometo. El JUnit marca esos fallos como esperados, así que la entrada traía el campo del defecto, el mensaje «Defecto conocido DEF-01», el estado y la etiqueta del escenario. Si le paso eso al modelo, le doy la respuesta dentro de la pregunta, y una exactitud del 100 % no significaría nada. Eran cuatro caminos y los tapé los cuatro; el script se niega a armar el conjunto si alguno vuelve a entrar.
+
+Abajo a la izquierda están los guardrails, que en el código se llaman guardas, y cada uno tapa un riesgo de la clase: que el DEF exista tapa la alucinación; que la evidencia esté en el material del caso tapa el oráculo débil; y sin rutas ni datos personales tapa la privacidad. La guarda de privacidad paró 2 respuestas que copiaban un celular, ORO-09 y ORO-11. A la derecha, el control sin IA, unas reglas, contra la falsa cobertura: sin eso no podría decir si la IA aporta algo. Y el no determinismo lo medí aparte: en 5 corridas del mismo run, 0 casos cambiaron de clase. La respuesta a si aporta está en la lámina siguiente.</aside>
+</section>

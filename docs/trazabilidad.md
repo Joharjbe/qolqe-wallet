@@ -2,7 +2,7 @@
 
 Generada por `.github/scripts/trazabilidad.py` a partir de las etiquetas de `features/` y los JUnit XML del pipeline.
 
-Run **#local** (intento 1) · commit `11b3537` · local · entrega-final · evidencia: sin-imagenes · veredicto: **success** · 2026-11-11 16:34 (hora de Lima) · **corrida local, fuera de GitHub Actions**: el job `reportes` del pipeline genera esta matriz en cada run (artefacto `trazabilidad`)
+Run **#24** (intento 1) · commit `1025a78` · push · main · evidencia: sin-imagenes · veredicto: **success** · 2026-11-17 21:55 (hora de Lima) · [ver run](https://github.com/Joharjbe/qolqe-wallet/actions/runs/44225240314)
 
 ## Resumen por módulo, nivel y tipo
 

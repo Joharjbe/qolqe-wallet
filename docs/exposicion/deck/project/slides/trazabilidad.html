@@ -1,0 +1,28 @@
+<section id="trazabilidad" class="pie" data-transition="fade">
+<p class="cejilla">PUNTO 7 · TRAZABILIDAD Y GESTIÓN DE CASOS · OBS. 3</p>
+<h2>Las pruebas corren muchas veces: mirar atrás</h2>
+<div class="cuerpo">
+<div class="fila-2">
+<div class="tarjeta">
+<p class="etiqueta">LA CADENA COMPLETA</p>
+<p class="mono" style="font-size:30px; color:#1F5FD0">Historia → Criterio → Caso → Resultado → Defecto</p>
+<p style="margin-top:8px">Cada escenario lleva sus etiquetas, y el pipeline falla si a uno le falta su historia, su criterio o su identificador. La matriz no se escribe a mano: se genera de las etiquetas y de los resultados del run.</p>
+</div>
+<div class="tarjeta tarjeta-azul">
+<p class="etiqueta">KIWI TCMS · LA HERRAMIENTA</p>
+<p>Kiwi corre en mi máquina, en Docker. <span class="mono">scripts/kiwi_sincronizar.py</span> baja el JUnit de cada run de <span class="mono">main</span> y lo importa con el plugin oficial: un Test Run por run, con su build y, si fue con imágenes, sus capturas.</p>
+</div>
+</div>
+<div class="tarjeta" style="background:#EDEAE2; border-style:dashed">
+<p style="font-size:28px"><b>Por qué Kiwi y no otra:</b> comparé ocho. Qase limita el historial a 30 días y dos ejecuciones activas. TestRail, Xray, Zephyr y QMetry son de pago pasada la prueba gratuita, o sea que vencían a mitad del curso. TestLink no tiene importador de JUnit. Kiwi es gratis, sin límite de ejecuciones y tiene el plugin oficial que lee el formato que ya genera mi pipeline.</p>
+</div>
+</div>
+<p class="numero-pagina">15 · Entrega final · Pruebas de Qolqe</p>
+<aside>Este punto responde la observación 3: considerar que las pruebas se ejecutan muchas veces, y trabajar con una herramienta de gestión de casos.
+
+Lo primero es la cadena: historia, criterio, caso, resultado, defecto. Lo importante es que la matriz no la escribo a mano. Se genera de las etiquetas de los escenarios y de los resultados del run, y el pipeline falla si un escenario no tiene su historia, su criterio o su identificador. Una matriz escrita a mano envejece mal; una generada no puede mentir.
+
+La herramienta es Kiwi TCMS, que es la de la semana 12. Kiwi corre en mi máquina, en Docker, y los runners de GitHub no llegan a ella; por eso la sincronización la corro yo: scripts/kiwi_sincronizar.py baja el JUnit de cada run de main y lo importa con el plugin oficial, un Test Run por run, y el run con imágenes trae además sus capturas. Al 18 de noviembre eran 10 Test Runs, y cada sincronización suma el run nuevo de main; ahí se ve el historial de un caso concreto: cuántas veces pasó, cuándo falló y con qué defecto quedó enlazado. El job gestion-casos del pipeline queda listo para el día en que Kiwi esté en internet.
+
+Sobre la investigación, que el enunciado dice que se valora: comparé ocho herramientas y las descarté por motivos concretos. Qase limita el historial a 30 días. TestRail, Xray y Zephyr vencían a mitad del curso porque su prueba gratuita dura 30 días, y QMetry, que nombra la clase 7, solo da 14 días y además pide montar Jira. TestLink no tiene importador de JUnit. Kiwi es gratis, no caduca y su plugin oficial lee exactamente el formato que mi pipeline ya genera.</aside>
+</section>

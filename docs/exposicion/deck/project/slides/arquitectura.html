@@ -1,0 +1,40 @@
+<section id="arquitectura" class="pie" data-transition="fade">
+<p class="cejilla">PUNTO 1 · ARQUITECTURA · OBS. 1c</p>
+<h2>Las capas, del Gherkin a la evidencia</h2>
+<div class="cuerpo junto">
+<div class="capas">
+<p class="titulo-col">QUÉ SE PRUEBA</p><span></span><p class="titulo-col">LO TRADUCE</p><span></span><p class="titulo-col">HABLA CON QOLQE</p><span></span><p class="titulo-col">SISTEMA</p><span></span><p class="titulo-col">DEJA</p>
+<div class="caja"><b>API</b> · 276 escenarios<br>features/*.feature</div><p class="flecha">→</p>
+<div class="caja"><b>pytest-bdd</b> · Python<br>266 pasos</div><p class="flecha">→</p>
+<div class="caja"><b>cliente Sesiones</b><br>(httpx)</div><p class="flecha">→</p>
+<div class="caja qolqe" style="grid-column:7; grid-row:2 / span 3"><div><b>Qolqe</b> sin cambios, una base SQLite por suite</div></div><p class="flecha">→</p>
+<div class="caja">JUnit + HTML<br>con las peticiones</div>
+<div class="caja"><b>Web</b> · 58 escenarios<br>features/web/</div><p class="flecha">→</p>
+<div class="caja"><b>playwright-bdd</b><br>TypeScript, 139 pasos</div><p class="flecha">→</p>
+<div class="caja"><b>Page Objects</b><br>y 5 componentes</div>
+<p class="flecha" style="grid-column:8">→</p>
+<div class="caja">JUnit + traza,<br>captura y video</div>
+<div class="caja"><b>Contrato</b> · CP-T04<br>/openapi.json</div><p class="flecha">→</p>
+<div class="caja"><b>Schemathesis</b> · Python<br>genera los casos</div><p class="flecha">→</p>
+<div class="caja">peticiones generadas<br>desde el contrato</div>
+<p class="flecha" style="grid-column:8">→</p>
+<div class="caja">JUnit + HTML<br>del contrato</div>
+<div class="caja k6"><b>Rendimiento</b><br>su propio requerimiento</div><p class="flecha">→</p>
+<div class="caja k6"><b>k6</b> · JavaScript<br>8 escenarios, a mano</div><p class="flecha">→</p>
+<div class="caja k6">sesiones completas<br>por HTTP</div><p class="flecha">→</p>
+<div class="caja k6 qolqe"><div>Qolqe en <b>Docker</b>, 1 CPU y 1 GB</div></div><p class="flecha">→</p>
+<div class="caja k6">resultados versionados<br>en el repositorio</div>
+</div>
+<div class="tarjeta tarjeta-azul ajustada">
+<p class="chica">Las tres primeras filas corren en <b>GitHub Actions</b>; el rendimiento, a mano. Las partes comparten artefactos, no código: el Gherkin con sus etiquetas <span class="mono" style="font-size:24px">@HU @CA @CP @DEF</span>, la API de soporte y el JUnit. Con el JUnit, <span class="mono" style="font-size:24px">trazabilidad.py</span> arma la matriz y el historial de Pages, y Kiwi TCMS lo importa desde mi máquina.</p>
+</div>
+</div>
+<p class="numero-pagina">7 · Entrega final · Pruebas de Qolqe</p>
+<aside>Esta lámina responde la primera observación: que quede clara la arquitectura del proyecto de automatización, API y web.
+
+Se lee de izquierda a derecha. El Gherkin dice qué se prueba. Los pasos lo traducen: pytest-bdd en Python para la API y playwright-bdd en TypeScript para la web. Después, lo que habla con Qolqe: en la API, el cliente Sesiones, hecho con httpx, que guarda el token de cada usuario; en la web, los Page Objects y sus componentes, así que ningún paso tiene un localizador. Y al final cada suite deja su JUnit y su reporte HTML. El contrato no pasa por Gherkin: Schemathesis lee el OpenAPI de Qolqe y genera los casos. El rendimiento tampoco: k6 corre a mano contra Qolqe en un contenedor de 1 CPU, fuera del pipeline, y su evidencia queda versionada en el repositorio.
+
+Las partes comparten artefactos, no código: el Gherkin con sus etiquetas, la API de soporte y el formato JUnit. Por eso el JUnit es el punto de unión: de ahí salen la matriz, el historial de Pages y los Test Runs de Kiwi.
+
+Si pregunta por qué dos lenguajes: cada capa usa el runner que enseña la clase. La clase 10 enseña pytest con pytest-bdd y Schemathesis, en Python, que además es el lenguaje de Qolqe; la clase 11 enseña Playwright con playwright-bdd, en TypeScript, y su runner trae integradas las repeticiones, los reintentos y las trazas. El costo es real y está escrito: dos gestores de dependencias y los usuarios de prueba repetidos en las dos suites.</aside>
+</section>

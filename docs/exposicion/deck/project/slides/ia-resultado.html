@@ -1,0 +1,35 @@
+<section id="ia-resultado" class="pie" data-transition="fade">
+<p class="cejilla">PUNTO 8 · EL RESULTADO MEDIDO</p>
+<h2>Contra las reglas: gana en entorno, pierde en defecto real</h2>
+<div class="cuerpo junto">
+<table class="compacta" style="width:1664px">
+<tr><th width="46%">Sobre los mismos 48 casos</th><th width="27%">Reglas, sin IA</th><th width="27%">Con el modelo</th></tr>
+<tr><td>Defecto real</td><td class="mono">34 de 36</td><td class="mono">28 de 36</td></tr>
+<tr><td>Prueba inestable</td><td class="mono">4 de 4</td><td class="mono">4 de 4</td></tr>
+<tr class="verde"><td>Error de entorno (8 sembrados)</td><td class="mono">7 de 8</td><td class="mono">8 de 8</td></tr>
+<tr><td><b>DEF-xx propuesto correcto</b></td><td class="mono">no lo intenta</td><td class="mono"><b>0 de 38</b></td></tr>
+</table>
+<div class="fila-2">
+<div class="tarjeta tarjeta-ambar ajustada">
+<p class="etiqueta">LA CONCLUSIÓN, SIN ADORNOS</p>
+<p class="chica">La capacidad se construyó para proponer el <span class="mono" style="font-size:24px">DEF</span> de cada fallo. <b>No lo logró: 0 de 38.</b> Tal como está, no sustituye al tester ni a las reglas.</p>
+</div>
+<div class="tarjeta ajustada">
+<p class="etiqueta">DÓNDE SÍ SIRVE, Y ES POCO</p>
+<p class="chica">Un primer pase: el código junta 40 fallos en 32 grupos, 32 preguntas en vez de 40, y el modelo acierta los 8 errores de entorno, donde las reglas fallan uno. En lo inestable empata, 4 de 4, pero llamó inestables a 12 casos y 8 eran defectos reales.</p>
+</div>
+</div>
+</div>
+<p class="numero-pagina">18 · Entrega final · Pruebas de Qolqe</p>
+<aside>Este es el resultado, y es incómodo.
+
+En la clase principal, defecto real, las reglas aciertan 34 de 36 y el modelo 28 de 36. Y en lo que venía a resolver, proponer el DEF de cada fallo, el modelo acertó cero de 38. Las reglas ni lo intentan: solo copian el DEF declarado, que se quitó de la entrada.
+
+La conclusión que escribí en el documento es que, tal como está, esta capacidad no sustituye al tester ni a las reglas. Prefiero decir eso a inflar un número.
+
+Dónde sí sirve, y es poco: como primer pase de lectura. El código junta los 40 fallos del run en 32 grupos, así que son 32 preguntas en vez de 40, y el modelo acierta los ocho errores de entorno, que son sembrados, donde las reglas fallan uno. En lo inestable empata, 4 de 4, pero no sirve solo: llamó inestables a 12 casos y 8 eran defectos reales de concurrencia. Ese es el error más caro, porque llamar inestable a un defecto lo esconde. Por eso la decisión es del tester. Y sus guardrails pararon 4 respuestas malas, 2 de ellas con un número de celular copiado.
+
+Y hay una parte de culpa que es mía, no del modelo: el prompt le pide null si el DEF no está en los datos, y en las 52 entradas venía vacío. La guarda contra alucinación y la tarea se estorban. Darle el catálogo de defectos es la siguiente hipótesis, y no la medí, así que la dejo como hipótesis y no como conclusión.
+
+Una advertencia sobre la tabla: las dos columnas se miden sobre los mismos casos. Comparar los números crudos sería engañoso, porque el modelo clasificó menos casos que las reglas, y los que no clasificó salieron del denominador. Eso también está marcado en el reporte.</aside>
+</section>

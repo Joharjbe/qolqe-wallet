@@ -1,0 +1,36 @@
+<section id="ia-que" class="pie" data-transition="push">
+<p class="cejilla">PUNTO 8 · CAPACIDAD DE IA</p>
+<h2>El pipeline dice qué falló. ¿Puede la IA proponer por qué?</h2>
+<p class="bajada corta" style="max-width:1664px">Enfoque A de la clase 15, IA para probar, en la fase de Reporte. La IA propone, el tester decide.</p>
+<div class="cuerpo junto">
+<div class="fila-3">
+<div class="tarjeta ajustada">
+<p class="etiqueta">ENTRADA</p>
+<p class="chica">Lo que el pipeline ya publica: el JUnit por caso y los logs. Se corre a mano y no cambia el quality gate.</p>
+</div>
+<div class="tarjeta ajustada">
+<p class="etiqueta">AGRUPACIÓN · SIN IA</p>
+<p class="chica">Los fallos parecidos se agrupan por una firma de código: mismo tipo de error, mismo archivo, mismo mensaje normalizado.</p>
+</div>
+<div class="tarjeta tarjeta-azul ajustada">
+<p class="etiqueta">SALIDA · AQUÍ SÍ HAY IA</p>
+<p class="chica">Por cada caso: ¿defecto real, prueba inestable o error de entorno? Con su <span class="mono" style="font-size:24px">DEF</span> propuesto y su evidencia.</p>
+</div>
+</div>
+<div class="tarjeta tarjeta-ambar ajustada">
+<p class="etiqueta">POR QUÉ LA AGRUPACIÓN NO LA HACE LA IA</p>
+<p class="chica">Porque tiene que dar lo mismo en cada corrida. Si agrupara el modelo, dos ejecuciones del mismo run darían grupos distintos y el reporte dejaría de ser reproducible.</p>
+</div>
+<p style="font-size:24px; font-weight:600; color:#1F5FD0">IA propone → guardrails → checklist de 6 preguntas de la clase 15 → el tester acepta, corrige o descarta → defectos.md y Kiwi</p>
+</div>
+<p class="numero-pagina">16 · Entrega final · Pruebas de Qolqe</p>
+<aside>Llegamos al punto 8, la capacidad de IA, y es el que construí desde cero para esta entrega.
+
+La clase 15 separa dos enfoques: A, la IA como herramienta del tester, y B, probar sistemas que usan IA. Elegí el A, en la fase de Reporte. De lo que la clase pone en Reporte, «resumir resultados y agrupar fallos parecidos», la IA hace el resumen y la clasificación. Agrupar lo dejé en código a propósito, por el no determinismo.
+
+Lo que hace: toma lo que el pipeline ya publica, el JUnit por caso y los logs, y por cada fallo propone si es un defecto real, una prueba inestable o un error de entorno, propone el DEF y copia como evidencia una línea del artefacto del caso. Cuando un run falla, hoy reviso a mano cada fallo. Para medirlo usé el run de cierre, con 40 casos en fallo esperado: el código los junta en 32 grupos, así que son 32 preguntas en vez de 40, y la IA propone la clase de cada caso. El caso real es el run #13: CP-W10 puso el pipeline en rojo y el error era de la prueba, no de Qolqe. No medí minutos: lo que medí es cuántas lecturas ahorra.
+
+Dónde está: no es un job del pipeline. Se corre a mano sobre los artefactos de un run y no puede cambiar el veredicto del quality gate; hay una prueba que lo comprueba, CP-IA-07. La IA propone y el tester decide, que es el human-in-the-loop de la clase: la línea de abajo es el flujo. Cada propuesta la reviso en dos pasos antes de que entre a defectos.md o a Kiwi: el checklist de 6 preguntas de la clase 15, adaptado a un diagnóstico, y después mi lista de 9 puntos. Por ejemplo, la pregunta 6, «¿Se envió algún dato sensible a la IA?»: solo van el JUnit del caso y hasta 10 líneas de log, con usuarios de prueba ficticios, y de vuelta la guarda de privacidad paró 2 respuestas que copiaban un celular. Y si la evidencia citada no está en el artefacto, no se usa.
+
+Y por si pregunta por qué no construí un asistente con IA para probarlo, el enfoque B: porque habría tenido que inventar un sistema bajo prueba que el proyecto no tiene. El enunciado pide una capacidad en un flujo del proyecto, y el proyecto es la suite de pruebas.</aside>
+</section>

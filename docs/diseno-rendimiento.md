@@ -33,7 +33,7 @@ Se usan los criterios del enunciado: **frecuencia** (porcentaje de la tabla del 
 | — | Ver y buscar contactos | `GET /api/contactos?pagina=1` + `GET /api/contactos?buscar=…` | 10 % | No | Bajo (`SCAN contactos` + B-tree temporal) | Carga de fondo |
 | — | Otras (límites, alertas, solicitudes, dispositivos, sesiones) | 5 × GET, 2 % cada uno | 10 % | No | Bajo | Carga de fondo |
 
-**Criterio aplicado.** Un flujo es crítico si cumple al menos dos de estas condiciones: frecuencia ≥ 15 %, mueve dinero, o tiene un riesgo alto con evidencia en el código. F-01 se incluye aunque no mueva dinero, porque todas las sesiones pasan por él.
+**Criterio aplicado.** Un flujo es crítico si cumple al menos dos de estas condiciones: frecuencia ≥ 15 %, mueve dinero, o tiene un riesgo alto con evidencia en el código. F-01 se incluye aunque no mueva dinero, porque todas las sesiones pasan por él. **Cómo se aplicó:** la regla de dos de tres quedó escrita más estricta de lo que se aplicó. Al pie de la letra, con riesgo alto, solo la cumplen F-02 y F-06. F-01 es esa excepción. F-03 entra por su frecuencia (30 %), y F-04 y F-05 por mover dinero, con riesgo medio y medio-alto. En la práctica, cada flujo crítico entra por al menos uno de los tres criterios del enunciado.
 
 Todos los flujos, críticos o no, forman parte de la mezcla: el perfil operacional tiene que estar completo. Los críticos tienen umbral propio por endpoint y se analizan primero.
 
@@ -50,7 +50,7 @@ Todos los flujos, críticos o no, forman parte de la mezcla: el perfil operacion
 | U-01 | "Consultas e inicio de sesión: el 95 % debe responder en menos de 800 ms." | Tiempo de respuesta de **cada** endpoint de consulta y del login, y del grupo `consulta` | p95 | **< 800 ms** | 100 usuarios simultáneos (3,000 sesiones/h) | carga (`estable`), resistencia (`estable`) y criterio de capacidad en estrés | S-01, S-02, S-03 |
 | U-02 | "Operaciones de dinero (transferencias, recargas y pagos): el 95 % debe responder en menos de 1.5 segundos." | Tiempo de respuesta de `POST /api/transferencias`, `POST /api/recargas` y `POST /api/servicios/pagos`, y del grupo `dinero` | p95 | **< 1,500 ms** | 100 simultáneos | ídem U-01 | S-01, S-03 |
 | U-03 | "En hora punta, no más del 1 % de las operaciones puede fallar" | Tasa de error de rendimiento = operaciones fallidas ÷ operaciones totales (login incluido) | tasa | **≤ 1 %** | 100 simultáneos | carga, resistencia y criterio de capacidad | S-06 |
-| U-04 | "…la plataforma debe sostener el volumen de la hora punta…" | Throughput atendido en el estado estable | promedio de la fase | **≥ 50 sesiones/min (3,000/h) y ≥ 9.6 req/s** (98 % de los 9.78 req/s ofrecidos, M-08) | 100 simultáneos | carga, resistencia | S-04 |
+| U-04 | "…la plataforma debe sostener el volumen de la hora punta…" | Throughput atendido en el estado estable | promedio de la fase | **≥ 50 sesiones/min (3,000/h), con la tolerancia del 98 % de S-04 (≥ 49), y ≥ 9.6 req/s** (98 % de los 9.78 req/s ofrecidos, M-08) | 100 simultáneos | carga, resistencia | S-04 |
 | U-05 | "…sin acumular retrasos." | (a) `dropped_iterations`; (b) p95 por ventana de 1 min; (c) sesiones simultáneas medidas | conteo; p95 por ventana; promedio por ventana | (a) **= 0**; (b) **ninguna ventana** sobre U-01/U-02; (c) **90–110** (100 ± 10 %) | 100 simultáneos | carga, resistencia | S-04 |
 | U-06 | "Durante el pico de la campaña se acepta una degradación razonable del servicio" | Tiempo de respuesta por endpoint y grupo; tasa de error; sesiones descartadas; recuperación | p95; tasa; conteo | consultas **< 1,600 ms**, dinero **< 3,000 ms**; error **≤ 1 %**; descartadas **= 0**; recuperación: en 12:10–12:15 se vuelve a cumplir U-01/U-02 | Pico de 300 simultáneos (M-09) | pico (`campana:si`; `fase:recuperacion`) | S-05, S-07, S-08 |
 | U-07 | "…ninguna operación de dinero puede quedar a medias ni aplicarse dos veces." | Descuadres en los 6 chequeos de integridad (§5.5) | conteo absoluto | **= 0** | Toda la corrida | **pico** (literal) y además todos los escenarios | S-09 |
@@ -518,6 +518,15 @@ Después se muestran los gráficos ya generados de carga, pico, estrés (capacid
 ## 10. Archivos a implementar y orden de ejecución
 
 ### 10.1 Archivos (`tests/performance/`; `qolqe/` no se toca)
+
+> **Cómo quedó al implementar.** El árbol de abajo es el del plan. La estructura final, con lo que hace cada archivo, está en [`tests/performance/README.md`](../tests/performance/README.md) §1. Cambiaron tres cosas:
+> - `config.env` pasó a `docker/config.env`. Lo cargan `preparar.sh` y `correr.sh`.
+> - `verificacion/` se llama `integridad/` y tiene 4 archivos: los 2 del plan más `foto.sql` y `verificar_bd.py`.
+> - `analisis/` pasó de 2 módulos a 18, más un `README.md`. Los valores del análisis están en un solo módulo, `analisis/config.py`.
+>
+> Hay además 6 archivos que el plan no tenía: `docker/comun.sh` (funciones comunes de `preparar.sh` y `correr.sh`), `docker/versiones.txt` (versiones fijadas de la imagen), `k6/README.md`, `k6/correr_k6.sh` (corre un escenario y guarda la evidencia de k6), `k6/resumen.js` (el `handleSummary` con el veredicto por umbral) y `monitor/corrida.py` (hora de inicio y fin de cada corrida, y el entorno). Fuera de esta carpeta, el informe con la plantilla quedó como `docs/Informe_Rendimiento_Qolqe.docx` y la presentación de la Entrega 3 es `docs/Entrega3_G4_Rendimiento.pdf`.
+>
+> El contraste opcional con JMeter (`jmeter/carga.jmx`) no se hizo. La comparación con JMeter es documental y está en el [informe de rendimiento](Informe_Rendimiento_Qolqe.pdf), §2.
 
 ```
 tests/performance/

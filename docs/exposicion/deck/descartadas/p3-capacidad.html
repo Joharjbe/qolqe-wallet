@@ -1,0 +1,38 @@
+<section id="p3-capacidad" class="pie" data-transition="fade">
+<p class="cejilla">PARTE 3 · PASO 5</p>
+<h2>Hasta dónde crece, y qué lo frena</h2>
+<div class="cuerpo">
+<div class="fila-3">
+<div class="tarjeta tarjeta-azul ajustada">
+<p class="etiqueta">CAPACIDAD CON 1 CPU</p>
+<p class="dato dato-azul">850</p>
+<p>simultáneos cumpliendo todos los umbrales: 8,5 veces la hora punta</p>
+</div>
+<div class="tarjeta ajustada">
+<p class="etiqueta">CON 2 CPU</p>
+<p class="dato">1 300</p>
+<p>× 1,53 y no × 2: duplicar el CPU no duplica la capacidad</p>
+</div>
+<div class="tarjeta tarjeta-ambar ajustada">
+<p class="etiqueta">EL COLAPSO ES BRUSCO</p>
+<p class="dato dato-ambar" style="font-size:52px">78 ms → 13,4 s</p>
+<p>entre 876 y 946 usuarios. No se degrada: se cae</p>
+</div>
+</div>
+<div class="tarjeta ajustada" style="border-color:#C2710C; border-width:3px">
+<p class="etiqueta">EL CUELLO DE BOTELLA, CON EVIDENCIA</p>
+<p>La escritura de la sesión en SQLite durante el login, que ya gasta la mayor parte del CPU en el PBKDF2 del PIN. Tres pruebas: 733 de las 829 excepciones del estrés son <span class="mono">database is locked</span> en ese INSERT; en el colapso con 2 CPU, las 40 plazas del pool de hilos esperan en esa línea; y el perfilador da a <span class="mono">verificar_pin</span> entre el 53 % y el 63 % de las muestras con 1 CPU.</p>
+</div>
+<p class="nota">La hipótesis que escribí antes de medir era 1 500 ± 300 usuarios con 1 CPU. Quedó refutada: son 850. Eso también es un resultado.</p>
+</div>
+<p class="numero-pagina">Entrega final · Pruebas de Qolqe</p>
+<aside>Esta es la lámina que más me costó y la que más aprendí.
+
+La capacidad con 1 CPU son 850 usuarios simultáneos, que es 8,5 veces la hora punta del requerimiento. Con 2 CPU sube a 1 300, no a 1 700: por 1,53. Eso ya dice que el límite no es el CPU.
+
+Lo importante es la forma del colapso. Entre 876 y 946 usuarios, o sea en un salto de 70 usuarios, el p95 pasa de 78 milisegundos a 13,4 segundos. No se degrada poco a poco: se cae. Para un equipo de operaciones eso significa que no hay aviso previo.
+
+El cuello de botella es la escritura de la sesión en SQLite durante el login. Lo afirmo con tres evidencias distintas que apuntan al mismo sitio: los errores del estrés son «database is locked» en ese INSERT, 733 de 829; en el colapso de la corrida con 2 CPU, que es donde tomé la foto de los hilos, las 40 plazas del pool están todas detenidas en esa línea; y el perfilador muestra que verificar_pin, el PBKDF2, se lleva entre el 53 y el 63 % de las muestras con 1 CPU.
+
+Y una cosa que quiero decir porque creo que es lo correcto: yo había escrito antes de medir que la capacidad sería 1 500 ± 300. Salió 850. Mi hipótesis quedó refutada, está escrita en el informe así, y prefiero contarlo a esconderlo.</aside>
+</section>

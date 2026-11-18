@@ -1,0 +1,197 @@
+# Guion de la exposición · entrega final
+
+Mismo formato que el guion del 30-oct, que funcionó: qué se dice en cada lámina, en qué minuto hay que estar, qué se salta si se va tarde y los pasos de la demo con su comando. Las frases salen de las notas de orador de cada lámina (`deck/project/slides/*.html`, en `<aside>`); aquí va la versión corta para el reloj, y la completa sigue en el deck. Qué se corre antes y en qué orden: [`hoja-demo.md`](hoja-demo.md).
+
+## Mapa de la exposición
+
+Son 15 minutos: 4 de foco en la Parte 3, casi 6 de consolidado y 5 de demo. Los 15 minutos son un supuesto: ninguna fuente fija la duración de la final, así que se toma el formato de la Parte 3, 15 min + 5 de preguntas (P3 §7). Si piden 10, está la tabla «Si el formato es de 10 minutos». La demo de k6 va al final por dos motivos: su panel queda en pantalla durante las preguntas, y antes de lanzarla hay que apagar Kiwi y el Qolqe del 8000, así que todo lo que usa esas dos cosas se muestra primero.
+
+Así se resuelve el choque entre los dos guiones de la demo. `scripts/preparar-demo.sh` deja Qolqe en el 8000, Kiwi arriba y 7 pestañas. `tests/performance/correr.sh` no arranca si el CPU ocioso baja del 65 % (V-04), y su README pide cerrar las demás apps y sugiere detener Kiwi, que comparte el CPU de la VM de Docker. Por eso la hoja tiene la línea «Antes de k6»: apaga las dos cosas justo antes de lanzarlo, cuando ya no hacen falta.
+
+En casa, `preparar-demo.sh` va al final, después del ensayo de k6, porque su `docker compose up -d` vuelve a levantar Kiwi. Necesita red (pip, npm y Chromium): en el aula no se corre. El ensayo no gasta la base de k6, porque cada corrida restaura `base_perf.db`.
+
+| Tramo | Láminas o pasos | Minutos | Empieza en |
+|---|---|---|---|
+| Foco de la Parte 3 | 1 a 5: la portada y las cuatro láminas que pidió la profesora | 4 | 0:00 |
+| Consolidado | 6 a 21 | 5:55 | 4:00 |
+| Demo | D1 a D5, con k6 al final | 5 | 9:55 |
+| Preguntas | con el panel de k6 en pantalla | — | 15:00 |
+
+El foco sigue el orden que ella dio en la reunión: cómo identifiqué, el análisis y los umbrales, las dos pruebas y si pasaron o no (T or.15-16). Lo que se dice tiene que coincidir con el informe de rendimiento, porque ella lo va a cruzar (T or.10): las cifras del foco están en [`chuleta-cifras.md`](chuleta-cifras.md) §2 con su archivo.
+
+## Guion de las láminas
+
+La columna «Responde a» dice qué pidió la profesora con esa lámina: en el foco, la parte de su indicación; en el consolidado, el punto del anuncio y la observación de la Entrega 2 (texto literal en `docs/respuesta-feedback.md`), que también va en la cejilla de la lámina.
+
+| # | Lámina | Minuto | Responde a | Qué señalas | Di |
+|---|---|---|---|---|---|
+| 1 | `portada` | 0:00 | — | La fila de abajo: 335 casos y 30 defectos | «Buenos días, profesora. Empiezo por la Parte 3, el rendimiento, que quedó pendiente de exponer. Son cuatro láminas, en el orden que usted pidió: cómo identifiqué las pruebas, mi análisis y mis umbrales, las dos pruebas que ejecuté y si pasaron o no. Después, el consolidado: el módulo G4 y el núcleo común, 335 casos de prueba y 30 defectos encontrados en la aplicación.» |
+| 2 | `p3-tipos` | 0:25 | «cómo han identificado» (T or.15) · TPL §3 · P3 §3.1 | La tabla, fila por fila: frase → tipo; después la tarjeta azul. Si pregunta por qué esos seis flujos: cada uno cumple al menos uno de los tres criterios, que es la regla del informe (Informe §1, pág. 1; banco, pregunta 1); la regla de dos de tres de `docs/diseno-rendimiento.md:36`, solo si pregunta por el diseño. Si pregunta por el login: el diseño estimó que el PBKDF2 es ≈ 65 % del CPU de una sesión; medido con py-spy, 53-63 % de las muestras | «Primero, qué medir: seis flujos críticos, cada uno por frecuencia, por mover dinero o por riesgo. Y qué pruebas pide el requerimiento, con la regla de la clase 13: el tipo lo define la pregunta, no la cantidad de usuarios. "Si cumplimos en hora punta" es carga. "Hasta cuántos usuarios podemos crecer" es estrés. El triple de usuarios, la mayoría entrando en los primeros 5 minutos, es pico. Y "de 6:00 a 24:00 sin reinicios" es resistencia. Los cuatro aplican, los cuatro se ejecutaron y están en el informe con su justificación. Defiendo carga y estrés: las pide el enunciado, responden dos de las tres preguntas del negocio, y el estrés es la única que dice dónde se rompe Qolqe y por qué.» |
+| 3 | `p3-umbrales` | 1:15 | «su análisis, sus umbrales» (T or.15) · P3 §3.2 · TPL §5 | La columna «Supuesto que tomé»: S-01, S-04 y S-05; después la nota de abajo | «Este es el análisis, y aquí está el criterio del tester. Tres frases del requerimiento ya traen número: 800 milisegundos, 1,5 segundos y el 1 % de error. Les faltaba con qué carga se cumplen, y la fijé en la hora punta, 100 simultáneos: es el supuesto S-01. Dos frases no traen número. "Sin acumular retrasos" no es un tiempo: es que la cola no crezca, y por eso U-04 y U-05 miden throughput y sesiones descartadas. "Una degradación razonable" en el pico la fijé en el doble del umbral normal, 1 600 y 3 000 milisegundos: ese doble es un supuesto mío, el S-05, y en un proyecto real se lo preguntaría al negocio. La capacidad, U-08, no pasa ni falla: se mide. Y separé estos umbrales del cliente de mis siete criterios de validez, V-01 a V-07, que dicen si una corrida sirve.» |
+| 4 | `p3-pruebas` | 2:15 | «las dos pruebas que han ejecutado» (T or.15) · P3 §3.3 y §3.4 · TPL §4 | La fila VUs, con la cuenta de Little; después la tarjeta de abajo | «Las dos que defiendo, de las cuatro que ejecuté, y cada valor sale del requerimiento. En la carga, 3 000 sesiones por hora y sesiones de 2 minutos dan, por la ley de Little, 100 usuarios a la vez: 120 segundos de llenado, 15 minutos estables, pausas de 10 a 25 segundos y la mezcla del requerimiento. El estrés usa la misma sesión y sube 100 usuarios por minuto, hacia 2 400. Cada VU es un usuario distinto con saldo suficiente. Y usé k6 porque su modelo abierto sostiene la tasa de llegada aunque Qolqe se atrase: comparada con otras cinco herramientas, es la única que cumple mis cuatro criterios eliminatorios.» |
+| 5 | `p3-resultados` | 3:00 | «si ha pasado o no ha pasado los umbrales» (T or.16) · P3 §3.7 y §4 · TPL §8 | La columna de carga, después las dos de estrés, el gráfico y la nota de abajo. Lo que se dice es lo de la tabla, el p95 de consultas (73 → 13 296 ms, ventanas, minutos 11.750 y 12.250). Si cruza con el informe: la nota da el p95 de todas las peticiones, 78 ms → 13,4 s, que es el del Informe pág. 41. Si pregunta por el ≥ 90 % de U-04 o por U-05 en el estrés: banco, pregunta 8 | «Y el veredicto contra mis umbrales. Carga, la hora punta: pasa. Consultas 93 milisegundos frente a 800, dinero 128 frente a 1 500, 0 % de error, 9,77 req/s y cero sesiones descartadas. Estrés: cumple hasta 876 usuarios; con 946 fallan a la vez tiempo, error y throughput: las consultas pasan de 73 milisegundos a más de 13 segundos y el error a 13,7 %. El dinero cuadra incluso en el colapso. Las tres preguntas del negocio: en hora punta cumple, en el pico también, y se puede crecer hasta 850, 8,5 veces la hora punta; la resistencia también pasa. El cuello de botella es la escritura de la sesión en SQLite durante el login. Es una línea base relativa de 1 CPU en una laptop, no la capacidad de producción. ¿Qué hacer? Commit justo después de ese INSERT, para no retener el bloqueo, y fallar rápido con un 503; el SLA no necesita renegociarse.» |
+| 6 | `transicion` | 4:00 | — | Las tres tarjetas | «Ahora el consolidado, punto por punto del enunciado: arriba de cada lámina va la observación que resuelve.» |
+| 7 | `arquitectura` | 4:05 | Punto 1 · obs. 1c | Las cuatro filas, de izquierda a derecha, y la tarjeta azul | «La observación 1c pedía una arquitectura clara. El Gherkin dice qué se prueba, los pasos lo traducen, el cliente HTTP y los Page Objects hablan con Qolqe, y cada suite deja su JUnit. Del JUnit salen la matriz, el historial y Kiwi.» |
+| 8 | `herramientas` | 4:20 | Punto 1 · obs. 1c y 5, la crítica que se repitió | La última columna, fila por fila, y la nota de abajo. Si pregunta por qué dos lenguajes o por otra alternativa: banco, pregunta 14; por los riesgos de automatizar (clase 11, ISTQB 6.2): pregunta 14b | «Esta observación se repitió dos veces: herramientas complementarias. Cada una responde una pregunta que las otras no, y ganó a una alternativa concreta: pytest-bdd y no Postman con Newman, porque Newman no lee Gherkin; Playwright y no Cypress, porque CP-NW18 necesita dos navegadores a la vez. Y la regla de la clase 11: lo que se comprueba por API va por API.» |
+| 9 | `api` | 4:45 | Punto 2 · obs. 1b y la nota de la Entrega 1 (T or.25-29) | La bajada (G4 y sus 4 HU de prioridad Alta), la tarjeta azul, «Qué tan madura está», y después la ámbar. Si pregunta por deuda técnica: banco, pregunta 16 (dos costos pagados el 18-nov y una decisión con su motivo); si pide correr la API en vivo: pregunta 16b | «La observación 1b y la Entrega 1 son esta parte. G4 mueve dinero sin que el pagador inicie la operación, y 4 de sus 10 historias son de prioridad Alta. Los 51 criterios tienen caso de API: 198 funcionales y 78 técnicos, más el contrato. Su madurez, en el run #24: 237 pasan y 39 están en fallo esperado estricto con su DEF; ninguno falla, se omite o queda sin ejecutar. Por escenario, lo que más defectos encontró fue la concurrencia: 10 escenarios, 7 defectos. Una carrera se automatiza solo si se reproduce 200 de 200 veces.» |
+| 10 | `web` | 5:25 | Punto 3 · obs. 1a | El 58, la tarjeta «Qué se agregó y con qué criterio» y después «Por qué tres veces» | «La observación 1a pedía más escenarios, a mi criterio, y el módulo común: pasé de 19 escenarios web a 58. Mi criterio: por la web va lo que solo se ve en pantalla; así, 48 de 51 criterios tienen caso web, y los otros 3, dos SMS y una carrera, van solo por API. Y cada escenario corre tres veces: si pasa dos de tres, es una prueba frágil, flaky, como la llama la clase 11.» |
+| 11 | `patron` | 5:55 | Punto 4 · obs. 4 y lab S11, la otra crítica que se repitió | La fila marcada, las filas «Page Object clásico» y «Screenplay», y el recuadro de escalabilidad | «La otra observación repetida: el patrón frente a otros. Uso Page Object con componentes y fixtures: el paso pide una acción y no tiene localizadores. Page Object solo no alcanza: el menú se repetiría en 5 pantallas. Screenplay, no por ahora: con 58 escenarios sumaría actores y tareas sin un problema que lo pida, y lo usaría con más de unos 100. Y escala: un G5 suma su feature, sus pasos y sus páginas sin tocar los componentes.» Puente: «Lo muestro en la demo.» |
+| 12 | `pipeline` | 6:30 | Punto 5 · obs. 2a y el contrato al inicio que pide el anuncio | Las cuatro etapas, la tarjeta azul («Por qué el contrato va antes»), la línea «Después» y la tarjeta ámbar. La línea «Después» llama a `quality-gate` «el veredicto único»; que también es check obligatorio lo dice la lámina 13 (fila `gate`). Si pregunta por un job: banco, pregunta 20 | «La observación 2a: justificar cada job. Van de lo barato a lo caro, el fail fast de la clase 12. El contrato va al inicio porque, si la API no cumple el contrato que publica, los casos funcionales prueban sobre una base que no se sostiene; cuesta 35 segundos. Y como GitHub cuenta un job omitido como aprobado, cada job empieza con una guarda que falla si el anterior no está en verde.» |
+| 13 | `gate` | 7:00 | Punto 5 · «los quality gates deben estar claros» (anuncio) | Los cuatro criterios y la nota de abajo. La bajada dice lo que exige hoy `main`: `api`, `web` y `quality-gate` son checks obligatorios, también para el dueño; es lo mismo que `docs/pipeline.md:32`, `docs/informe.md:164` y la fila 1b de `hoja-demo.md`. Si esa fila dio otra cosa el sábado, di lo que dio y no lo que dice la lámina. Si pregunta si bloquea de verdad: la pestaña 5 tiene el PR #10 («…sobre el pipeline actual») bloqueado, con `api`, `web` y `quality-gate` en rojo. Sin red: `docs/img/demo-gate-rojo.png` | «El anuncio pide quality gates claros. Si uno falla, el PR no entra a main: lo probé en el PR #10. Y el resumen del run dice qué evalúa y qué no: ni el rendimiento ni los reportes.» |
+| 14 | `reporteria` | 7:15 | Punto 6 · obs. 2b y lab S11 | Las dos tarjetas de arriba | «La observación 2b: al lanzar el workflow se elige con o sin imágenes. HTML para personas, JUnit para las herramientas, y el job que publica es ahora el último de verdad.» Puente: «Lo abro en la demo.» |
+| 15 | `trazabilidad` | 7:30 | Punto 7 · obs. 3 | La cadena, el recuadro de Kiwi y el de «Por qué Kiwi y no otra». Si pregunta por las ocho: banco, pregunta 26 | «La observación 3: las pruebas corren muchas veces. La matriz se genera de las etiquetas y del run, y el pipeline falla si a un escenario le falta su etiqueta. Comparé ocho herramientas y elegí Kiwi TCMS: es gratis, no caduca y su plugin lee el JUnit que ya genero. Al 18 de noviembre tenía 10 Test Runs.» |
+| 16 | `ia-que` | 7:50 | Punto 8 · «qué aporta» (anuncio) · enfoque y fase de la clase 15 | La bajada, la tarjeta azul y la línea de abajo | «El punto 8 cae en el enfoque A de la clase 15, IA para probar, en la fase de Reporte: por cada fallo propone si es defecto real, prueba inestable o error de entorno. Agrupar lo hace código, para que sea reproducible. La IA propone y el tester decide con el checklist de 6 preguntas de la clase 15: es el human-in-the-loop.» |
+| 17 | `ia-validacion` | 8:15 | Punto 8 · «cómo validaron su resultado» (anuncio) | La bajada, la tarjeta de la fuga y la de guardrails | «Lo validé con un eval de la clase 15: 52 fallos con su respuesta correcta, sin LLM-as-judge y con cuatro fugas tapadas. Las guardas son mis guardrails, una por riesgo, y unas reglas sin IA son el control contra la falsa cobertura.» |
+| 18 | `ia-resultado` | 8:35 | Punto 8 · qué aporta, medido | La tarjeta «Dónde sí sirve», después la fila del DEF y la tarjeta ámbar. Si pregunta por el checklist: banco, pregunta 31 | «Aporta un primer pase: el código junta 40 fallos en 32 grupos, 20 % menos de lectura, y el modelo acierta los 8 errores de entorno, que son sembrados. Lo que no logra es el DEF: 0 de 38, y en defecto real pierde contra las reglas, 28 de 36 contra 34. Y llamó inestables a 8 defectos de concurrencia, que la pregunta 5 del checklist atrapa: contradicen la regla de 200 de 200. Por eso decide el tester.» |
+| 19 | `ia-inyeccion` | 9:05 | Punto 8 · riesgos de la clase 15 | El 5 de 5 y la tarjeta azul | «Esto es red teaming e inyección de prompts: con una orden metida en el log, el modelo obedeció 5 de 5 veces, contra 0 de 5 sin la orden, y 4 de esas 5 pasaron las guardas. Una guarda de formato no distingue lo verdadero de lo falso: por eso decide el tester.» |
+| 20 | `defectos` | 9:25 | Lo que encontró el trabajo (la tarea de la Entrega 2 pedía los defectos encontrados) | La nota de abajo | «Son 30 defectos, y los 8 críticos tocan el dinero o la sesión. Cuatro solo aparecen con dos operaciones a la vez: tres están automatizados y DEF-30 quedó como evidencia manual.» |
+| 21 | `cierre` | 9:40 | — | Las tres tarjetas | «Me llevo tres cosas: medir antes que suponer, porque mis dos hipótesis quedaron refutadas; que una prueba que no falla por lo que dice que prueba no prueba nada; y que lo determinista va en código.» Puente: «Ahora la demo.» La demo es parte de los 15 minutos, y el «gracias» va al final de k6 |
+
+Los minutos son un plan, hecho contando las palabras de cada «Di» a unas 150 por minuto, y el reparto se corrige con los tiempos del ensayo cronometrado del sábado por la mañana. En el consolidado, cada «Di» abre con la observación que resuelve: si el tiempo no alcanza, esa media frase va antes que el resto. El 18-nov el consolidado pasó de 5 a casi 6 minutos, porque cada punto dice ahora su porqué en voz alta: la alternativa descartada en `herramientas` y `patron`, el módulo y su prioridad en `api`, el criterio en `web`, el porqué del contrato en `pipeline` y qué aporta la IA en `ia-resultado`. Lo pagó D2, que va en su versión de 40 s; la de 90 s queda para las preguntas.
+
+## Si vas tarde
+
+| Si a este minuto… | …todavía | Haz |
+|---|---|---|
+| 4:30 | estás en el foco | Cierra `p3-resultados` con el veredicto en una frase («hora punta y pico cumplen, la capacidad es 850 y el dinero cuadra») y pasa la transición sin pararte |
+| 5:15 | no llegaste a `api` (9) | No acortes `api`: es la nota de la Entrega 1. Recupera en `web` y `patron`, 20 s cada una: en `web`, la media frase de la observación y el criterio (48 de 51 por la web); en `patron`, la observación, una alternativa descartada con su motivo («Screenplay, no por ahora: con 58 escenarios no hay un problema que lo pida») y la escalabilidad |
+| 7:30 | no llegaste a `reporteria` (14) | `reporteria` y `trazabilidad`: la media frase de la observación y una cifra, 10 s cada una; las dos se ven en la demo |
+| 8:45 | no llegaste a `ia-resultado` (18) | `ia-validacion` en una frase: «Lo validé con un eval de 52 casos y un control sin IA». `ia-inyeccion` en otra: «Una orden en el log le cambió la clase 5 de 5 veces: por eso decido yo» |
+| 10:25 | no empezaste la demo | D1 corta: portada con la matriz, rendimiento y el desplegable de evidencia (40 s) |
+| 11:30 | no empezaste D2 | D2 en 20 s: solo `SolicitudesPage.aceptar` y `ContactosPage.eliminar`, con la última frase de la versión de 40 s |
+| 12:10 | no terminaste D2 | Corta D2, salta D3 (Kiwi ya está en la lámina 15), apaga y lanza k6 |
+
+Nunca se saltan: las cuatro láminas de la Parte 3, la tarjeta de madurez de `api`, en `herramientas` y en `patron` una alternativa descartada con su motivo (son las dos observaciones que se repitieron), `ia-validacion` (al menos su frase), `ia-resultado`, el desplegable de evidencia y k6. k6 se lanza a más tardar en el minuto 12:20: tarda ≈ 2:40 y las preguntas empiezan a las 15:00.
+
+**Si vas adelantado.** Si D1 termina antes de 10:50, antes de D2 muestra la capacidad de IA en vivo (20 s), con el comando de [`guion-capacidad-ia.md`](guion-capacidad-ia.md) («El comando de la demo»): la línea de totales y, en `diagnostico.md`, el rechazo de CP-T17. Di: «La capacidad de IA corre sin red, con las respuestas grabadas del modelo: 40 fallos en 32 grupos, y la guarda rechazó a CP-T17 porque citó una evidencia que no está en su artefacto.» Es lo que el laboratorio S11 pedía «mostrada en vivo»; en la final no se pide.
+
+## Si el formato es de 10 minutos
+
+| Tramo | Minutos | Qué queda | Qué sale |
+|---|---|---|---|
+| Foco | 0:00 a 3:00 | Las cinco láminas: `portada` 15 s, `p3-tipos`, `p3-umbrales` y `p3-pruebas` 35 s cada una y `p3-resultados` 60 s, con la primera y la última frase de cada una. De `p3-resultados` no se corta el veredicto | Nada |
+| Consolidado | 3:00 a 6:00 | `transicion` 5 s, `arquitectura` 10, `herramientas` 20, `api` 20, `web` 15, `patron` 25, `pipeline` 15, `gate` 10, `reporteria` 10, `trazabilidad` 10, `ia-que` 10, `ia-validacion` 10, `ia-resultado` 15 y `cierre` 5 (solo el puente a la demo). En `herramientas` y `patron` no se corta la alternativa descartada con su motivo | `ia-inyeccion` y `defectos`: quedan para las preguntas; los críticos de concurrencia ya se nombran en `api` |
+| Demo | 6:00 a 10:00 | D1 corta (portada con la matriz, rendimiento y desplegable, 40 s), D3 Kiwi (20 s), D4 (10 s) y k6 desde el 7:10 | D2: el patrón queda en la lámina 11; si lo pide en las preguntas, el comando de `guion-patron-90s.md` vuelve a abrir los cuatro archivos |
+
+## Guion de la demo
+
+Las pestañas van en el orden en que las abre `scripts/preparar-demo.sh`: 1 Actions, 2 portada de Pages, 3 historial, 4 reporte web, 5 lista de PRs, 6 Kiwi y 7 Qolqe local.
+
+**Transición desde la lámina 21.** Cambia a la pestaña 2. Di: «Abro primero lo que deja cada ejecución, después el patrón en el código y Kiwi, y termino con k6 en vivo.»
+
+### D1. Reportería (9:55 a 11:10)
+
+En línea, el sitio es https://joharjbe.github.io/qolqe-wallet/. Sin red, la columna de la derecha es el respaldo del run #18 (commit `5fbe969`, con imágenes), servido con `cd ~/Desktop/respaldo-sitio-con-imagenes && python3 -m http.server 8100`. Puerto 8100 y no 8000: hasta D4 el 8000 es de Qolqe, y con los dos arriba `localhost:8000` y `127.0.0.1:8000` abren cosas distintas. La portada del respaldo no trae los botones de Evidencias ni de Rendimiento: escribe la dirección.
+
+La clase 12 pide mostrar en la demo «un run real del pipeline», «el reporte abierto» y «la matriz de trazabilidad»: la matriz está en la portada (paso 1) y el run real en la pestaña 1 (paso 7).
+
+| # | Pantalla | Haz | Di | Sin red |
+|---|---|---|---|---|
+| 1 | Pestaña 2: portada | Señala la línea del run: número, commit, evidencia y veredicto. Baja a «Resumen por módulo, nivel y tipo» | «Esto lo publica el último job del run, al terminar: qué run, qué commit, si fue con o sin evidencia y el veredicto. Debajo está la matriz de trazabilidad del run: 335 casos, 295 pasan y 40 en fallo esperado. Desde aquí se llega a todo.» | http://localhost:8100/ (run #18: los mismos 335, 295 y 40) |
+| 2 | Pestaña 3: `historial.html` | Señala las columnas de los runs y la de estabilidad | «Las pruebas corren muchas veces: cada columna es un run, cada intento cuenta aparte y cada caso lleva su estabilidad.» | http://localhost:8100/historial.html (runs #17 y #18) |
+| 3 | Pestaña 4: `web/` | Escribe `CP-W10` en el buscador, abre el primero y despliega dos pasos | «El reporte para personas: el recorrido crítico paso a paso en Gherkin, con su duración. Con evidencia trae captura, video y traza.» | http://localhost:8100/web/ (213 pruebas, cada una con su video y su traza; la traza solo abre por http) |
+| 4 | Pestaña 2 → «Reporte API (pytest-bdd)» | Señala el resumen de arriba: `766 tests`, `0 Failed`, `707 Passed` y `59 Expected failures`. No abras un caso: este paso cede 10 s al paso 7 | «El de API, con su resumen arriba: 766 ejecuciones, 707 pasan, 59 en fallo esperado y ninguna falla. Con evidencia, guarda las peticiones de cada caso.» Si pide correr la API en vivo: banco, pregunta 16b | http://localhost:8100/api/ (run #18: el mismo resumen, 766, 707 y 59) |
+| 5 | Pestaña 2 → «Evidencias por caso» | Lee la primera línea | Si el run fue sin imágenes, la página dice que 0 de 58 casos web tienen captura: «Este run fue sin imágenes, así que solo guarda la captura de lo que falla. Para eso está la opción, que muestro al final.» Si fue con imágenes, abre la de CP-W10 | http://localhost:8100/evidencias/ (las 219 capturas, por ejemplo `CP-W10_r0.png`) |
+| 6 | Pestaña 2 → «Rendimiento (Parte 3)» | Señala la tabla de veredicto por umbral y escenario | «Y la Parte 3, que antes no llegaba al sitio: el veredicto por umbral y escenario, el comparativo y los gráficos de cada corrida.» | http://localhost:8100/rendimiento/ (existe después del paso 4 de la hoja) |
+| 7 | Pestaña 1: Actions | Pega en la pestaña 1 https://github.com/Joharjbe/qolqe-wallet/actions/runs/44225240314/attempts/1: es el run #24 en su intento 1, el de los tiempos de la lámina 12 (sin esa dirección, GitHub abre el último intento, el 2, que tardó 15 min 58 s). → *Summary*: señala el grafo de los 8 jobs y el bloque del quality gate con sus cuatro criterios (10 s). Vuelve atrás a la lista del workflow, pulsa *Run workflow*, abre el desplegable de evidencia y cierra con `Esc`, sin lanzarlo. Si pregunta por el run del commit final: «las láminas citan el #24; el run final, el #N, da los mismos 335, 295 y 40» (el número lo anotas en el checklist) | «Este es un run real, el #24 de las láminas: los ocho jobs y el veredicto del quality gate con sus cuatro criterios, sin abrir el YAML. Y aquí se elige la evidencia: al lanzarlo a mano, el desplegable ofrece sin-imagenes o con-imagenes. Los push van sin imágenes porque el sitio de un run con evidencia completa pesa casi 200 MB. No lo lanzo ahora: tarda más de diez minutos.» | Ninguna de las dos pantallas tiene copia local: los cuatro criterios están en `docs/pipeline.md:38-45`, y `code -g .github/workflows/pruebas.yml:12` muestra la entrada `evidencia` y sus dos opciones (líneas 12 a 20) |
+
+### D2. Patrón (11:10 a 11:50)
+
+Pantalla: VS Code, con los cuatro archivos que abrió `preparar-demo.sh`. En los 15 minutos va la versión de 40 s de [`guion-patron-90s.md`](guion-patron-90s.md) (el paso del `.feature`, `SolicitudesPage.aceptar` y `ContactosPage.eliminar`): el porqué frente a los otros patrones ya se dijo en la lámina 11. La de 90 s, con los cinco saltos, queda para las preguntas o para cuando vas adelantado.
+
+### D3. Kiwi (11:50 a 12:10)
+
+Pantalla: pestaña 6, https://localhost:8443, ya con la sesión iniciada.
+
+Haz: abre *Test runs*, el TestRun del run #18 (el `con-imagenes`, que trae las capturas como adjuntos, como dice `docs/gestion-casos.md`), señala el enlace DEF de un caso WAIVED y, dentro, abre un caso con su pestaña de ejecuciones. *Telemetry → Testing → Matrix*, el último paso del carril A de `docs/gestion-casos.md`, no entra en los 20 s: queda para las preguntas.
+
+- Test Run que se abre: TR-7, «Qolqe · run #18.1 · 5fbe969 · workflow_dispatch main · evidencia: con-imagenes» (séptimo de la lista de 10)
+- Qué se ve en él: 335 casos (295 PASSED y 40 WAIVED), 40 enlaces DEF (uno por caso WAIVED) y 216 capturas como adjuntos. Si preguntan por qué no 219: Kiwi rechazó 3 PNG de CP-NW25 con un falso positivo de su filtro de subida (`docs/gestion-casos.md`). Junto al ícono del defecto, Kiwi muestra «undefined - undefined» porque no tiene un gestor de defectos conectado: el nombre del DEF aparece al abrir la ejecución
+- Caso cuyo historial se abre: CP-W10 (TC-52), el mismo del recorrido del patrón, con 10 ejecuciones: una por TestRun, del run #5 al intento 2 del #24
+
+Di: «Y la herramienta de gestión de casos. Cada run de main se convierte en un Test Run de Kiwi, con sus casos y sus capturas, y aquí se ve el historial de un caso a lo largo de las corridas. Kiwi vive en mi máquina, así que la sincronización la corro yo desde aquí.»
+
+### D4. Antes de k6 (12:10 a 12:20)
+
+Haz, en la terminal de la demo:
+
+```bash
+docker stop qolqe_kiwi_web qolqe_kiwi_db; lsof -ti tcp:8000 -sTCP:LISTEN | xargs kill
+```
+
+Después `Cmd + Q` en VS Code y cierra todas las pestañas menos la del deck. El `-sTCP:LISTEN` deja solo el proceso que escucha en el 8000 (uvicorn): sin él, `lsof` también da el navegador si aún tiene una conexión con la pestaña 7.
+
+Di: «Para la última parte necesito la máquina libre: k6 no arranca si el CPU ocioso baja del 65 %, así que apago Kiwi y la aplicación de la demo.»
+
+### D5. k6 en vivo (12:20 a 15:00)
+
+Haz: pega el comando que marcaste en la hoja (principal o respaldo):
+
+```bash
+RESULTADOS="$HOME/demo-qolqe" USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv" ESPERA_MAX=20 tests/performance/correr.sh demo
+RESULTADOS="$HOME/demo-qolqe" USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv" FORZAR=1 ESPERA_MAX=0 tests/performance/correr.sh demo
+```
+
+Lo que se ve es lo del ensayo del 11-nov (`tests/performance/README.md`, «Demo en vivo»); en vivo las cifras cambian un poco.
+
+| Momento | En la terminal | Di o haz |
+|---|---|---|
+| 0 s | `[perf] Escenario demo → …/demo-qolqe/demo/<marca>` | «k6 genera la carga fuera del contenedor, pero en la misma Mac; por eso Qolqe corre en Docker con su cuota de 1 CPU y 1 GB. Son dos tramos, en dos minutos y medio.» Si en cambio dice `tests/performance/resultados/demo/…`, faltan las variables: `Ctrl + C` y relanza con el comando completo |
+| ≈ 10 s | `web dashboard: http://127.0.0.1:5665` | Abre http://localhost:5665. Una pestaña abierta antes no se conecta sola |
+| 0:00 a 1:40 | `demo_hora_punta`, los VUs subiendo hasta ≈ 84, sin avisos | «Primer tramo: la hora punta, con la tasa de llegada del requerimiento. Los usuarios suben hasta unos 84 y no llegan a 100, porque la sesión dura 120 segundos y el tramo dura 100.» |
+| 1:40 a 2:25 | `demo_sin_pausa` y avisos `500`, `EOF` o `request timeout` | «Segundo tramo: 50 usuarios sin pausa. Es un estrés a propósito, así que estos errores son esperados.» |
+| 2:25 | `Veredicto: 5 de 9 umbrales cumplidos con muestras → FALLA` | «FALLA, y es lo esperado. Estos 9 son los umbrales de k6 de este escenario corto, no los U del informe: se cumplen los cinco de la hora punta y fallan a propósito los cuatro del tramo sin pausa, que es la "prueba de estrés disfrazada" de la clase 13.» |
+| ≈ 2:30 | `TOTAL descuadres: 0` y `Resultado U-07: PASA` | «Y lo que más importa: el dinero cuadra aun con el colapso.» |
+| Fin | `[perf] Fin: k6 = 99 …, integridad = 0` | «El 99 quiere decir que algún umbral falló, y eran los del tramo sin pausa.» Deja el panel en pantalla. «Muchas gracias, quedo atento a sus preguntas.» |
+
+Si pregunta por la conciliación del dinero (la consola solo muestra C1 a C6, el total y el resultado):
+
+```bash
+cat "$HOME/demo-qolqe/demo/$(command ls -t "$HOME/demo-qolqe/demo" | head -1)/verificacion_dinero.txt"
+```
+
+Va `command ls` y no `ls`, porque en esta terminal `ls` es `colorls` y rompería la ruta.
+
+Si en las preguntas pide ver Kiwi, ya está detenido: `docker start qolqe_kiwi_db qolqe_kiwi_web` y, mientras arranca, la lámina 15.
+
+Después de clase: `docker start qolqe_kiwi_db qolqe_kiwi_web` y, si usaste el respaldo, `lsof -ti tcp:8100 -sTCP:LISTEN | xargs kill`.
+
+## Si algo falla en vivo
+
+No improvises ni depures frente a la clase: usa el plan B y sigue.
+
+| Qué pasa | Qué haces | Qué dices |
+|---|---|---|
+| No hay internet o Pages no carga | El respaldo de D1, columna «Sin red» | «Sin conexión muestro la copia local del run con evidencia.» |
+| Kiwi no abre | Pestaña 3 (`historial.html`) y las capturas de Kiwi: `docs/img/kiwi-testruns.png`, `kiwi-testrun-18.png`, `kiwi-caso-ejecuciones.png` y `kiwi-status-matrix.png` | «El historial de Pages cubre la misma trazabilidad a lo largo de los runs; Kiwi corre en mi máquina.» |
+| k6 termina con `V-04: el equipo no está libre` (≈ 35 s) | El comando de respaldo, con `FORZAR=1 ESPERA_MAX=0` | «Relanzo sin esperar; el aviso queda registrado en `corrida.json`.» |
+| En el minuto 13:30 todavía no salió `web dashboard`, o k6 aborta dos veces | Deja de intentarlo: el video del ensayo, si lo grabaste, o `open tests/performance/resultados/demo/20261111-2125/reporte.html` y su `consola.txt` | «Esta es la misma demo, del ensayo.» |
+| `correr.sh` dice `falta k6 (brew install k6)` o la terminal dice `command not found: k6` | k6 es de Homebrew, no del `.venv`: `export PATH="/opt/homebrew/bin:$PATH"` y `k6 version` → `v2.3.0` | Nada; son 5 segundos |
+| `no such file or directory: tests/performance/correr.sh` | No estás en la raíz del clon `qolqe-wallet`: desde una subcarpeta, `cd "$(git rev-parse --show-toplevel)"`; si no, vuelve a la carpeta del clon | Nada |
+| El editor no tiene los cuatro archivos | El comando de [`guion-patron-90s.md`](guion-patron-90s.md) | Nada |
+
+## Checklist del día
+
+Del guion del 30-oct, que ya estaba bien:
+
+- [ ] Internet funciona y las pestañas de GitHub y Pages cargan.
+- [ ] En GitHub entraste con la cuenta Joharjbe: sin sesión no se ven el aviso de fusión bloqueada ni el botón *Run workflow*.
+- [ ] El último run de `main`, en la pestaña 1, está en verde. Anota su número (si el viernes hubo un commit final en `main`, ya no es el #24) y comprueba en la portada de Pages que da 335 casos, 295 pasan y 40 en fallo esperado, y que en «Resumen por módulo, nivel y tipo» las filas de API suman 237 `passed` y 39 `xfailed`. Si da otra cosa, las láminas 9 y 12 citan el #24: dilo así.
+- [ ] La terminal de la demo está en la carpeta del repositorio, con `(.venv)` al inicio y la letra aumentada (`Cmd +` tres veces).
+- [ ] Navegador con zoom al 125 % y notificaciones silenciadas.
+- [ ] Cargador y adaptador de video; la pantalla probada antes de tu turno.
+- [ ] `deck.pdf` abre a pantalla completa. No trae notas de orador ([`README.md`](README.md)): las notas van en este guion, impreso o abierto en otro dispositivo, y la versión completa está en el `<aside>` de cada `deck/project/slides/<id>.html`.
+
+Lo que agrega esta entrega:
+
+- [ ] La pestaña 5 abre la lista de PRs: antes de empezar, entra al PR #10, «NO FUSIONAR · Demo del quality gate sobre el pipeline actual», que muestra el bloqueo si pregunta por el gate. No al PR #3: es de la Entrega 2 y no tiene `quality-gate`.
+- [ ] La fila «Checks de main» de `hoja-demo.md` dio `["api","web","quality-gate"]`, que es lo que dicen la lámina 13, `docs/pipeline.md:32` y `docs/informe.md:164`. Si dio otra cosa, en la lámina 13 di lo que dio (ver su fila arriba).
+- [ ] El tag `entrega-final-v1` existe (`git ls-remote --tags entrega`) y la portada de Pages cita su commit; sus enlaces a Rendimiento y a Evidencias abren.
+- [ ] Kiwi con la sesión iniciada en https://localhost:8443.
+- [ ] Los cuatro archivos del patrón abiertos en VS Code.
+- [ ] La comprobación de k6 hecha, las dos terminales abiertas y el comando marcado en la hoja: principal o respaldo.
+- [ ] `~/Desktop/respaldo-sitio-con-imagenes` con `rendimiento/` dentro, y el video del ensayo si lo grabaste.
+- [ ] En el aula no se corre ni `pip` ni `npm`.
+- [ ] Una o dos preguntas anotadas para los otros grupos: en la Entrega 3 daban puntos extra (anuncio de Canvas); para el sábado no se sabe si valen.
+
+Los comandos, en el orden en que se usan, están en [`hoja-demo.md`](hoja-demo.md).

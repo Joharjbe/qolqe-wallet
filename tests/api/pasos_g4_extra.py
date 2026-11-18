@@ -4,14 +4,13 @@ import re
 import threading
 from datetime import datetime, timedelta
 
-import conftest  # Helpers compartidos: URL, USUARIOS, Sesiones.
+import conftest  # Helpers compartidos: URL, usuarios de la semilla, Sesiones.
 import httpx
 import jsonschema_rs
 from pytest_bdd import given, parsers, then, when
 
 # Los pasos nombran al usuario de forma explícita para no capturar frases de otros módulos.
 _NOMBRE = r"(?P<nombre>Ana|Bruno|Carla|Diego)"
-_PIN_CARGA = "2580"  # Usuarios de carga de la semilla: celulares 900000001 a 900000200.
 _SIN_CUERPO = "(sin cuerpo)"
 _CONTRATO = {}
 
@@ -21,7 +20,7 @@ _CONTRATO = {}
 def _cabeceras(s, nombre):
     """Token del usuario sin cambiar el usuario actual del escenario."""
     if nombre not in s.tokens:
-        celular, pin = conftest.USUARIOS.get(nombre, (nombre, _PIN_CARGA))
+        celular, pin = conftest.USUARIOS.get(nombre, (nombre, conftest.PIN_CARGA))
         r = s.cliente.post("/api/auth/login", json={"celular": celular, "pin": pin})
         assert r.status_code == 200, r.text
         s.tokens[nombre] = {"Authorization": f"Bearer {r.json()['access_token']}"}
@@ -134,7 +133,7 @@ def _a_la_vez(peticiones):
 def _cuerpo_valido(metodo, ruta):
     """Cuerpo que la operación aceptaría con un token válido: así un 401 prueba solo la autenticación."""
     if metodo == "POST" and ruta == "/api/contactos":
-        return {"celular": "998877665", "alias": "Diego"}
+        return {"celular": conftest.USUARIOS["Diego"][0], "alias": "Diego"}
     if metodo == "PUT" and ruta.startswith("/api/contactos/"):
         return {"favorito": False}
     if metodo == "POST" and ruta == "/api/solicitudes":

@@ -1,0 +1,24 @@
+<section id="p3-umbrales" class="pie" data-transition="fade">
+<p class="cejilla">PARTE 3 · 2 DE 4 · ANÁLISIS Y UMBRALES</p>
+<h2>El análisis: de los requisitos a mis umbrales</h2>
+<div class="cuerpo junto">
+<table class="densa" style="width:1664px">
+<tr><th width="9%">ID</th><th width="31%">El requerimiento dice (literal)</th><th width="38%">Mi umbral: métrica, percentil, valor y carga</th><th width="22%">Supuesto que tomé</th></tr>
+<tr><td><b>U-01</b></td><td>«el 95 %… en menos de 800 ms»</td><td>p95 &lt; 800&nbsp;ms, con 100 simultáneos</td><td>S-01: faltaba la carga</td></tr>
+<tr><td><b>U-02</b></td><td>«…en menos de 1.5 segundos»</td><td>p95 &lt; 1&nbsp;500&nbsp;ms, con 100 simultáneos</td><td>S-01: faltaba la carga</td></tr>
+<tr><td><b>U-03</b></td><td>«no más del 1 %… puede fallar»</td><td>≤ 1 % de operaciones fallidas, con 100 simultáneos; los 422 de negocio van aparte</td><td>S-06: «fallar» no estaba definido</td></tr>
+<tr><td><b>U-04 y U-05</b></td><td>«sostener el volumen… sin acumular retrasos»</td><td>≥ 9,6 req/s y ≥ 49 sesiones/min, con 100 simultáneos; 0 sesiones descartadas</td><td>S-04: no es un número; retraso = la cola crece</td></tr>
+<tr><td><b>U-06</b></td><td>«una degradación razonable»</td><td>p95 &lt; 1&nbsp;600 / 3&nbsp;000&nbsp;ms, error ≤ 1 % y 0 descartadas, con 300 simultáneos</td><td>S-05: el doble del normal, supuesto mío</td></tr>
+<tr><td><b>U-07</b></td><td>«…a medias ni aplicarse dos veces»</td><td>0 descuadres: saldos y movimientos antes y después</td><td>S-09</td></tr>
+<tr><td><b>U-08</b></td><td>«hasta cuántos usuarios… podemos crecer»</td><td>Se mide por ventana de 30&nbsp;s: simultáneos que cumplen U-01 a U-05 (U-04: atendido ≥ 90 %)</td><td>S-10</td></tr>
+<tr><td><b>U-09</b></td><td>«de 6:00 a 24:00 sin reinicios»</td><td>En 60 min a 100 simultáneos: RSS proyectado a 54&nbsp;000 sesiones &lt; 700&nbsp;MB; p95 final ≤ 1,2 × el inicial</td><td>S-11 y S-12: proyección de 60 min a 18 h</td></tr>
+</table>
+<p class="nota sola">Lo verifican: carga y resistencia, U-01 a U-05 · pico, U-06 · estrés, U-08 · resistencia, U-09 · todas las corridas, U-07.</p>
+</div>
+<p class="numero-pagina">3 · Entrega final · Pruebas de Qolqe</p>
+<aside>Este es el paso donde está el criterio del tester. La tabla es el análisis. A la izquierda está lo que dice el requerimiento, copiado tal cual. Tres frases ya traen número: 800 milisegundos, 1,5 segundos y el 1 % de error. Les faltaba la carga, y la fijé en la hora punta, 100 usuarios simultáneos: es el supuesto S-01. Además, el 95 % lo exijo por endpoint y por grupo, que es el S-03, para que un endpoint lento no quede escondido dentro de su grupo. Las que no traen número las convertí con un supuesto escrito. «Sin acumular retrasos» no es un tiempo: es que la cola no crezca, y por eso U-04 y U-05 miden throughput y sesiones descartadas, no milisegundos. «Degradación razonable» la fijé en el doble del umbral normal, y ese doble es un supuesto mío, S-05.
+
+En clase se dice que el tester no inventa el dato que falta: lo pregunta al negocio. Aquí no había a quién preguntar, así que dejé escrito cada supuesto. La capacidad, U-08, no pasa ni falla: se mide. En el estrés, U-01 a U-05 se juzgan en ventanas de 30 segundos, y en una ventana tan corta el throughput se mide con tolerancia: atendido al menos el 90 % de lo ofrecido, que sale de la variación de la fase base. Y la línea de abajo dice qué prueba verifica cada umbral: es el hilo de los requisitos a los escenarios.
+
+Antes de mirar resultados, cada corrida pasa siete criterios de validez; varios vienen del enunciado, como que el CPU de k6 quede bajo el 80 %.</aside>
+</section>

@@ -1,0 +1,38 @@
+<section id="p3-tipos" class="pie" data-transition="fade">
+<p class="cejilla">PARTE 3 · 1 DE 4 · CÓMO IDENTIFIQUÉ</p>
+<h2>Qué pide el requerimiento y qué pruebas necesita</h2>
+<p class="bajada corta">Regla de S13: el tipo lo define la pregunta, no la cantidad de usuarios.</p>
+<div class="cuerpo junto">
+<div>
+<p class="etiqueta">QUÉ PROBAR: SEIS FLUJOS CRÍTICOS, CADA UNO POR FRECUENCIA ≥ 15 %, POR MOVER DINERO O POR RIESGO ALTO</p>
+<div class="flujos" style="margin-top:10px">
+<div class="flujo"><b>F-01 login</b><br>todas las sesiones</div>
+<div class="flujo"><b>F-02 transferir</b><br>15 %, dinero</div>
+<div class="flujo"><b>F-03 saldo y perfil</b><br>30 %</div>
+<div class="flujo"><b>F-04 recarga</b><br>dinero</div>
+<div class="flujo"><b>F-05 pago</b><br>dinero</div>
+<div class="flujo"><b>F-06 movimientos</b><br>15 %, consulta N+1</div>
+</div>
+</div>
+<table class="densa" style="width:1664px">
+<tr><th width="57%">Frase del requerimiento (literal)</th><th width="12%">Tipo</th><th width="9%">¿Aplica?</th><th width="22%">¿Ejecutada?</th></tr>
+<tr><td>«si cumplimos en hora punta» (3&nbsp;000 sesiones por hora)</td><td><b>Carga</b></td><td>Sí</td><td>Sí: una de las dos que defiendo</td></tr>
+<tr><td>«hasta cuántos usuarios simultáneos podemos crecer antes de dejar de cumplir»</td><td><b>Estrés</b></td><td>Sí</td><td>Sí: la otra que defiendo</td></tr>
+<tr><td>«el triple de usuarios simultáneos que en hora punta, y que la mayoría inicie sesión en los primeros 5 minutos»</td><td><b>Pico</b></td><td>Sí</td><td>Sí, en el informe: cumple U-06</td></tr>
+<tr><td>«Qolqe opera todos los días de 6:00 a 24:00 sin reinicios»</td><td><b>Resistencia</b></td><td>Sí</td><td>Sí, 60 min: cumple U-09</td></tr>
+</table>
+<div class="tarjeta tarjeta-azul ajustada">
+<p class="chica"><b>Defiendo carga y estrés:</b> carga, porque es la carga esperada y ahí se miden los umbrales de tiempo y de error; estrés, porque es la única que dice dónde se rompe Qolqe y por qué. <b>Capa: API</b>, porque los umbrales hablan del tiempo de respuesta del servidor.</p>
+</div>
+</div>
+<p class="numero-pagina">2 · Entrega final · Pruebas de Qolqe</p>
+<aside>Lo primero fue leer el requerimiento y decidir qué medir. No se prueba todo: se prueban los flujos críticos. Los seis de arriba entran por al menos uno de los criterios del enunciado: pesan 15 % o más del tráfico, mueven dinero o tienen un riesgo alto con evidencia en el código. El login es el caso interesante: no mueve dinero, pero todas las sesiones pasan por él, el PIN se verifica con PBKDF2 de 200 000 iteraciones y la ráfaga de la campaña cae justo ahí. Después resultó ser donde se rompe. Movimientos entra por su peso y por una consulta N+1 de unas 243 consultas por petición.
+
+Luego, qué quiere saber el negocio. La regla que uso es la de la clase 13: el tipo de prueba lo define la pregunta, no cuántos usuarios pongo. Cada fila es una frase del requerimiento, copiada tal cual, y el tipo que la responde.
+
+«Si cumplimos en hora punta» pide la carga esperada: prueba de carga. «Hasta cuántos usuarios podemos crecer antes de dejar de cumplir» obliga a pasar el límite: estrés. «El triple de usuarios, la mayoría en los primeros 5 minutos» es un salto brusco y concentrado: pico. «De 6:00 a 24:00 sin reinicios» pregunta si Qolqe se mantiene estable durante horas: resistencia.
+
+Los cuatro aplican. En el informe están marcados como Sí, con su justificación, y los cuatro se ejecutaron. Para la exposición defiendo dos, que además son las que pide el enunciado: carga, porque es la carga esperada y los umbrales de tiempo y de error se miden en hora punta; y estrés, porque es la única que dice dónde se rompe Qolqe y por qué. El pico y la resistencia también cumplen, y el detalle está en el informe.
+
+La capa es la API: los umbrales hablan del tiempo en que responde el servidor, y la web es una página que llama a esos mismos endpoints. Simular cientos de navegadores en una laptop mediría al navegador, no a Qolqe.</aside>
+</section>

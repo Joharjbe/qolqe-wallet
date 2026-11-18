@@ -1,0 +1,32 @@
+<section id="pipeline" class="pie" data-transition="fade">
+<p class="cejilla">PUNTO 5 · PIPELINE · OBS. 2a</p>
+<h2>De lo barato a lo caro, y el contrato al inicio</h2>
+<div class="cuerpo junto">
+<div class="fila" style="align-items:stretch; gap:16px">
+<div class="tarjeta ajustada" style="flex:1"><p class="etiqueta">1 · ESTÁTICO</p><p style="font-size:26px">Lint, tipos, Gherkin, etiquetas, el workflow y la regla del patrón. 53 s</p></div>
+<div class="tarjeta tarjeta-azul ajustada" style="flex:1"><p class="etiqueta">2 · CONTRATO</p><p style="font-size:26px">Schemathesis genera casos desde el OpenAPI. 35 s</p></div>
+<div class="tarjeta ajustada" style="flex:1"><p class="etiqueta">3 · API</p><p style="font-size:26px">766 ejecuciones funcionales y técnicas. 6 min 53 s</p></div>
+<div class="tarjeta ajustada" style="flex:1"><p class="etiqueta">4 · WEB</p><p style="font-size:26px">Playwright, tres repeticiones. 4 min 7 s</p></div>
+</div>
+<p class="nota sola"><b>Después:</b> quality-gate, el veredicto único · reportes, la matriz y el sitio, aunque fallen las pruebas · gestion-casos, listo para un Kiwi en internet; hoy Kiwi está en mi máquina y se sincroniza en modo pull, así que solo deja el aviso · publicar, Pages, solo en main y el último.</p>
+<div class="fila-2">
+<div class="tarjeta tarjeta-azul ajustada">
+<p class="etiqueta">POR QUÉ EL CONTRATO VA ANTES</p>
+<p class="chica">Es la primera prueba que ejecuta la API; antes solo va estático, que no levanta Qolqe. Si la API no cumple el contrato que ella misma publica, los casos funcionales prueban sobre una base que no se sostiene.</p>
+</div>
+<div class="tarjeta tarjeta-ambar ajustada">
+<p class="etiqueta">LA TRAMPA: SKIPPED NO ES VERDE (CLASE 12)</p>
+<p class="chica">GitHub cuenta un job <b>omitido</b> como aprobado. Sin guarda, un contrato en rojo dejaría <span class="mono" style="font-size:24px">api</span> y <span class="mono" style="font-size:24px">web</span> en «omitido»: aprobados sin haber corrido. Cada job comprueba al anterior y falla en segundos si no está verde.</p>
+</div>
+</div>
+<p class="nota sola">Tiempos del run #24, intento 1: el run completo, 13 min 38 s.</p>
+</div>
+<p class="numero-pagina">12 · Entrega final · Pruebas de Qolqe</p>
+<aside>Este punto responde la observación 2a: mejorar la estructura del workflow y justificar cada job.
+
+El pipeline va de lo barato a lo caro: si falla algo de un minuto, no se gastan diez. Son ocho jobs. Los cuatro de arriba son las etapas de prueba; después vienen quality-gate, que junta todo en un solo veredicto en el resumen del run; reportes, que arma la matriz y el sitio y corre aunque fallen las pruebas, porque el reporte es lo que explica el fallo; gestion-casos, que queda listo para un Kiwi en internet: hoy Kiwi corre en mi máquina y lo sincronizo en modo pull, así que el job solo deja el aviso; y publicar, que sube el sitio a Pages, solo en main, y es el último.
+
+El cambio de esta entrega es el orden. Antes el contrato corría en paralelo con la API; ahora va antes y la bloquea, que es lo que pedía la indicación. No contradice que estático vaya primero: estático no levanta Qolqe, así que el contrato es la primera prueba que de verdad ejecuta la API. El razonamiento es que el contrato es lo que la API promete cumplir: si no lo cumple, los casos funcionales prueban sobre una base que no se sostiene. Ponerlo delante cuesta lo que dura su job: 41 segundos en el run #20 y 35 en el #24. Los tiempos de la lámina son del run #24, intento 1, que es el que se abre en la demo.
+
+Pero la parte interesante es la de la derecha, porque serializar tenía una trampa, que la clase 12 resume en una frase: skipped no es verde. GitHub cuenta un job omitido como aprobado en un check obligatorio. Si ponía el contrato delante sin más, un contrato en rojo habría dejado api y web en «omitido»; con solo api y web obligatorios, como estaba la protección cuando hice el cambio, el pull request se habría podido fusionar igual. Hoy además lo pararía quality-gate, que es obligatorio desde el 18 de noviembre y cuenta una etapa omitida como no aprobada; eso lo cuento en la lámina siguiente. Por eso cada job empieza con una guarda que comprueba el anterior y falla en segundos si no está en verde. Ahí el check queda en rojo de verdad y el merge se bloquea.</aside>
+</section>

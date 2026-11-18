@@ -1,0 +1,55 @@
+{
+  "v": 5,
+  "createdOnFiles": { "v": 1, "at": "2026-11-17T20:10:00Z" },
+  "lists": "css",
+  "format": { "v": 1, "shared": ["project/deck.css"] },
+  "title": "Entrega final · Pruebas de Qolqe (CS5383)",
+  "order": [
+    "portada",
+    "p3-tipos",
+    "p3-umbrales",
+    "p3-pruebas",
+    "p3-resultados",
+    "transicion",
+    "arquitectura",
+    "herramientas",
+    "api",
+    "web",
+    "patron",
+    "pipeline",
+    "gate",
+    "reporteria",
+    "trazabilidad",
+    "ia-que",
+    "ia-validacion",
+    "ia-resultado",
+    "ia-inyeccion",
+    "defectos",
+    "cierre"
+  ],
+  "sections": {
+    "foco": {
+      "description": "La portada y el foco de la Parte 3 en cuatro láminas: identificación, análisis y umbrales, las dos pruebas y el veredicto",
+      "start": "portada"
+    },
+    "consolidado": {
+      "description": "El consolidado de las tres partes, punto por punto del enunciado",
+      "start": "transicion"
+    },
+    "cierre": {
+      "description": "Lo que el trabajo encontró y lo que me llevo",
+      "start": "defectos"
+    }
+  },
+  "faces": {
+    "ibm-plex-sans": {
+      "family": "IBM Plex Sans",
+      "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap"
+    },
+    "jetbrains-mono": {
+      "family": "JetBrains Mono",
+      "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap"
+    }
+  },
+  "designSystems": []
+}

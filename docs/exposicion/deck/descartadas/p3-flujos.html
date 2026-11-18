@@ -1,0 +1,27 @@
+<section id="p3-flujos" class="pie" data-transition="fade">
+<p class="cejilla">PARTE 3 · PASO 1</p>
+<h2>Primero: qué vale la pena medir</h2>
+<p class="bajada" style="max-width:1500px">Tres criterios del enunciado: cuánto pesa en el tráfico, si mueve dinero y qué riesgo tiene, con evidencia en el código. Cada flujo entra por al menos uno.</p>
+<div class="cuerpo">
+<table class="compacta" style="width:1664px">
+<tr><th width="26%">Flujo crítico</th><th width="14%">Peso</th><th width="60%">Por qué entra</th></tr>
+<tr><td><b>F-01</b> Iniciar sesión</td><td class="mono">1 por sesión</td><td>El PBKDF2 del PIN se lleva el 65 % del CPU de una sesión</td></tr>
+<tr><td><b>F-02</b> Transferir a otro usuario</td><td class="mono">15 %</td><td>Mueve dinero y el antifraude retiene un hilo de 40 a 120 ms</td></tr>
+<tr><td><b>F-03</b> Consultar saldo y perfil</td><td class="mono">30 %</td><td>La operación más frecuente de todas</td></tr>
+<tr><td><b>F-04</b> Recargar un celular</td><td class="mono">10 %</td><td>Mueve dinero y recorre la tabla sin índice</td></tr>
+<tr><td><b>F-05</b> Pagar servicios</td><td class="mono">4 %</td><td>Mueve dinero; las deudas no tienen dueño asignado</td></tr>
+<tr><td><b>F-06</b> Consultar movimientos</td><td class="mono">15 %</td><td>Consulta N+1: unas 243 consultas por petición</td></tr>
+</table>
+<p class="nota">Los seis salen del requerimiento y del código de Qolqe, no de una suposición. Detalle en <span class="mono">docs/diseno-rendimiento.md §1</span>.</p>
+</div>
+<p class="numero-pagina">Entrega final · Pruebas de Qolqe</p>
+<aside>Antes de medir nada hay que decidir qué se mide. No se prueba todo: se prueban los flujos críticos.
+
+Los criterios son los del enunciado: cuánto pesa el flujo en el tráfico, si mueve dinero y qué riesgo tiene, con evidencia en el código. Cada uno de los seis entra por al menos uno, y la columna de la derecha dice por cuál.
+
+F-01, iniciar sesión, es el caso interesante: no mueve dinero y es una sola petición por sesión, pero entra igual porque todas las sesiones pasan por ahí y porque el PBKDF2 del PIN se lleva el 65 % del CPU de una sesión. Eso después resultó ser el cuello de botella, así que la decisión de incluirlo se justificó sola.
+
+Si pregunta por la regla de dos de tres del diseño: la escribí más estricta de lo que apliqué. Al pie de la letra, con riesgo alto, solo la cumplen F-02 y F-06. F-01 es la excepción que el diseño declara, porque todas las sesiones pasan por él; F-03 entra por ser el 30 % del tráfico, y F-04 y F-05 por mover dinero, con riesgo medio y medio-alto.
+
+Si pregunta de dónde salen los porcentajes: de la mezcla de operaciones que da el requerimiento.</aside>
+</section>

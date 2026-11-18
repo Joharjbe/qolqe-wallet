@@ -33,7 +33,7 @@ Por eso el resultado **se lee por clase, nunca con un solo porcentaje global**: 
 `defecto_real`, que es el 77 % del conjunto. Con 4 casos, `prueba_inestable` se informa como "N de 4" y
 no como un porcentaje.
 
-Cobertura: 25 de los 29 defectos del catálogo (`docs/defectos.md`), 47 casos de API y 5 de web,
+Cobertura: 25 de los 29 defectos que tenía el catálogo al armarlo (`docs/defectos.md`; DEF-30 se agregó después), 47 casos de API y 5 de web,
 29 del núcleo y 23 de G4.
 
 ## La regla de las tres clases
@@ -142,11 +142,11 @@ inventarse uno. La traza intermedia del `sqlite3` también va recortada: no se m
 En `casos_escritos.json`, campo `casos_fuera`. El motivo de fondo es el mismo en los cuatro: **no se le pide
 al componente lo que la entrada no permite responder**, porque eso es entrenar la alucinación.
 
-- **CP-T19** (no se reprodujo en todas las corridas, sin DEF): dentro de un solo run su fallo no se
+- **CP-T19** (no se reprodujo en todas las corridas; desde el 17-nov es DEF-30, evidencia manual): dentro de un solo run su fallo no se
   distingue de un defecto real. No hay XPASS ni repeticiones que alternen.
 - **CP-NA28** (DEF-16): evidencia manual medida a mano (45.9 ms frente a 1.6 ms). No deja un fallo en el JUnit.
 - **DEF-05, DEF-16 y DEF-29**: no tienen un caso que falle en este run (los dos de contrato los encuentran
-  checks que `schemathesis.toml` excluye). Por eso la cobertura es 25 de 29 y no 29 de 29.
+  checks que `schemathesis.toml` excluye). Por eso la cobertura es 25 de 29 y no 29 de 29 (DEF-30 tampoco tiene caso en el run).
 - **DEF-07**: su etiqueta sería discutible (entorno o producto), y se cita como precedente.
 
 ## Cómo se vuelve a armar
@@ -165,6 +165,18 @@ El script no escribe nada si alguna revisión falla: una clase desconocida, un `
 `docs/defectos.md`, una entrada con una fuga o **una cita que no aparece en el archivo y la línea que dice**.
 Esa última revisión es la que mantiene honesto al conjunto: si alguien mueve un párrafo de la documentación,
 el conjunto deja de armarse hasta que la cita vuelva a ser cierta.
+
+**Las citas valen para el commit `1025a78`.** Después, la entrega final editó la documentación y
+`features/web/solicitudes_web.feature`: sobre el árbol actual 12 citas cambiaron de línea, y las entradas
+de ORO-41 y ORO-51 leerían escenarios que se movieron (las respuestas grabadas se buscan por el hash
+del prompt, así que rearmar el conjunto las invalidaría). Por eso la comprobación se hace sobre ese commit:
+
+```bash
+mkdir /tmp/qolqe-1025a78 && git archive 1025a78 | tar -x -C /tmp/qolqe-1025a78
+gh run download 44225240314 -R Joharjbe/qolqe-wallet -n trazabilidad -D /tmp/run24
+python /tmp/qolqe-1025a78/tests/diagnostico/conjunto_oro/armar.py --junit /tmp/run24/junit-cp.xml --verificar
+# conjunto_oro.json: 52 casos, iguales a los que arma el script.
+```
 
 El JUnit del que salió esta versión queda identificado en `conjunto_oro.json`, campo `run_fuente`
 (nombre del run, 335 casos, 295 `passed`, 40 `xfailed`, y el sha256 del archivo).

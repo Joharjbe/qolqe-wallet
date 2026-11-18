@@ -1,0 +1,277 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img" aria-labelledby="titulo descripcion">
+<title id="titulo">Arquitectura de la automatización de Qolqe: tres partes, pipeline y reportería</title>
+<desc id="descripcion">Las tres partes (API con pytest-bdd y Schemathesis, web con playwright-bdd y Playwright, rendimiento con k6) prueban el mismo Qolqe sin modificarlo. La API y la web corren en el pipeline de GitHub Actions (estatico, contrato, api, web, quality-gate, reportes, gestion-casos, publicar); el rendimiento corre fuera, en Docker con 1 CPU. Todo termina en el resumen del run, en GitHub Pages y en Kiwi TCMS.</desc>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap');
+text { font-family: 'IBM Plex Sans', Arial, Helvetica, sans-serif; fill: #44506B; font-size: 20px; }
+.m { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+.cejilla { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 20px; font-weight: 700; fill: #1F5FD0; letter-spacing: 2px; }
+.titulo { font-size: 40px; font-weight: 600; fill: #14213D; }
+.parte { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 20px; font-weight: 700; fill: #1F5FD0; letter-spacing: 1px; }
+.nombre { font-size: 30px; font-weight: 600; fill: #14213D; }
+.caja-t { font-size: 24px; font-weight: 600; fill: #14213D; }
+.caja-t22 { font-size: 22px; font-weight: 600; fill: #14213D; }
+.tinta { fill: #14213D; }
+.nota { font-style: italic; }
+.job { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 22px; font-weight: 700; fill: #14213D; }
+.q-t { font-size: 22px; font-weight: 600; fill: #F7F6F2; }
+.q-m { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 22px; font-weight: 700; fill: #F7F6F2; }
+.q-d { fill: #E6EAF2; }
+.q-suave { fill: #A9BCDC; }
+.q-azul { fill: #8FB4F2; }
+.caja { fill: #FFFFFF; stroke: #D8D5CC; stroke-width: 2; }
+.herramienta { fill: #FFFFFF; stroke: #1F5FD0; stroke-width: 3; }
+.obligatorio { fill: #FFFFFF; stroke: #C2710C; stroke-width: 3; }
+.carril { fill: #EDEAE2; }
+.chip { fill: #1C2C4D; stroke: #2E4470; stroke-width: 2; }
+.flecha { stroke: #44506B; stroke-width: 2.5; fill: none; }
+.flecha-clara { stroke: #8FB4F2; stroke-width: 2.5; fill: none; }
+</style>
+<defs>
+<marker id="punta" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#44506B"/></marker>
+<marker id="punta-clara" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8FB4F2"/></marker>
+</defs>
+
+<rect width="1920" height="1080" fill="#F7F6F2"/>
+
+<!-- Encabezado -->
+<text x="56" y="72" class="cejilla">ARQUITECTURA DE LA AUTOMATIZACIÓN · ENTREGA FINAL CS5383</text>
+<text x="56" y="122" class="titulo">Tres partes sobre el mismo sistema bajo prueba</text>
+
+<!-- ============ Qolqe: sistema bajo prueba (qolqe/ sin modificar) ============ -->
+<rect x="1246" y="56" width="618" height="694" rx="16" fill="#14213D"/>
+<text x="1270" y="98" style="font-size:30px;font-weight:600;fill:#F7F6F2">QOLQE</text>
+<text x="1394" y="98" class="q-suave" style="font-size:22px">sistema bajo prueba</text>
+<text x="1270" y="130" class="q-suave"><tspan class="m q-azul">qolqe/</tspan> sin modificar · FastAPI</text>
+<!-- Instancia de las Partes 1 y 2: uvicorn en el puerto 8000, una base por suite (pruebas.yml, playwright.config.ts) -->
+<rect x="1258" y="146" width="594" height="372" rx="12" fill="none" stroke="#2E4470" stroke-width="2" stroke-dasharray="8 6"/>
+<g>
+<rect x="1270" y="160" width="320" height="84" rx="10" class="chip"/>
+<text x="1286" y="194" class="q-m">/api/*</text>
+<text x="1286" y="226" class="q-d">API REST</text>
+</g>
+<g>
+<rect x="1270" y="260" width="320" height="54" rx="10" class="chip"/>
+<text x="1286" y="295" class="q-m">/openapi.json</text>
+<text x="1474" y="295" class="q-d">· contrato</text>
+</g>
+<g>
+<rect x="1270" y="350" width="320" height="84" rx="10" class="chip"/>
+<text x="1286" y="384" class="q-t">interfaz web</text>
+<text x="1286" y="416" class="m q-d">qolqe/web/</text>
+</g>
+<g>
+<rect x="1270" y="450" width="320" height="54" rx="10" class="chip"/>
+<text x="1286" y="485" class="q-m">/api/pruebas/*</text>
+<text x="1490" y="485" class="q-d">· soporte</text>
+</g>
+<text x="1612" y="190" class="q-t">En CI y en local</text>
+<text x="1612" y="224" class="m q-azul">uvicorn :8000</text>
+<text x="1612" y="254" class="q-d">modo prueba</text>
+<text x="1612" y="284" class="q-d">una base SQLite</text>
+<text x="1612" y="310" class="q-d">por suite</text>
+<!-- Instancia de la Parte 3: contenedor qolqe-perf (tests/performance/docker/config.env) -->
+<rect x="1258" y="528" width="594" height="214" rx="12" fill="none" stroke="#2E4470" stroke-width="2" stroke-dasharray="8 6"/>
+<g>
+<rect x="1270" y="540" width="320" height="84" rx="10" class="chip"/>
+<text x="1286" y="574" class="q-m">/api/*</text>
+<text x="1286" y="606" class="q-d">la misma API</text>
+</g>
+<g>
+<rect x="1270" y="654" width="320" height="76" rx="10" class="chip"/>
+<text x="1286" y="686" class="q-t">contenedor</text>
+<text x="1286" y="716" class="q-d">CPU, memoria y base</text>
+</g>
+<text x="1612" y="572" class="q-t">En rendimiento</text>
+<text x="1612" y="604" class="m q-azul">Docker --cpus=1</text>
+<text x="1612" y="634" class="q-d">1 GB · puerto 8090</text>
+<text x="1612" y="664" class="q-d">3 000 usuarios</text>
+<text x="1612" y="690" class="q-d">precargados</text>
+
+<!-- ============ Parte 1 · API ============ -->
+<rect x="56" y="148" width="1150" height="178" rx="16" class="carril"/>
+<text x="80" y="186" class="parte">PARTE 1</text>
+<text x="80" y="224" class="nombre">API</text>
+<text x="80" y="254">Python</text>
+<text x="80" y="288">En el pipeline:</text>
+<text x="80" y="314" class="m tinta">contrato, api</text>
+<g>
+<rect x="272" y="156" width="264" height="92" rx="12" class="caja"/>
+<text x="288" y="186" class="caja-t">Gherkin</text>
+<text x="288" y="214" class="m">features/*.feature</text>
+<text x="288" y="238">10 archivos</text>
+</g>
+<g>
+<rect x="566" y="156" width="320" height="92" rx="12" class="herramienta"/>
+<text x="582" y="186" class="caja-t">pytest-bdd 9.0.0</text>
+<text x="582" y="214" class="m">tests/api/</text>
+<text x="582" y="238">pytest deja <tspan class="m">reportes/api/</tspan></text>
+</g>
+<g>
+<rect x="916" y="156" width="274" height="92" rx="12" class="caja"/>
+<text x="932" y="186" class="caja-t">httpx</text>
+<text x="932" y="214">cliente Sesiones</text>
+<text x="932" y="238">un token por usuario</text>
+</g>
+<text x="536" y="282" text-anchor="end" class="nota">el OpenAPI es</text>
+<text x="536" y="306" text-anchor="end" class="nota">la especificación</text>
+<g>
+<rect x="566" y="256" width="624" height="62" rx="12" class="herramienta"/>
+<text x="582" y="284" class="caja-t">Schemathesis 4.32.7</text>
+<text x="582" y="308">genera los casos desde <tspan class="m">/openapi.json</tspan> y los envía a <tspan class="m">/api/*</tspan></text>
+</g>
+<line x1="536" y1="202" x2="564" y2="202" class="flecha" marker-end="url(#punta)"/>
+<line x1="886" y1="202" x2="914" y2="202" class="flecha" marker-end="url(#punta)"/>
+<line x1="1190" y1="202" x2="1246" y2="202" class="flecha"/>
+<line x1="1246" y1="202" x2="1268" y2="202" class="flecha-clara" marker-end="url(#punta-clara)"/>
+<polyline points="1190,272 1226,272 1226,232 1246,232" class="flecha"/>
+<line x1="1246" y1="232" x2="1268" y2="232" class="flecha-clara" marker-end="url(#punta-clara)"/>
+<line x1="1190" y1="300" x2="1246" y2="300" class="flecha"/>
+<line x1="1246" y1="300" x2="1268" y2="300" class="flecha-clara" marker-end="url(#punta-clara)"/>
+
+<!-- ============ Parte 2 · Web ============ -->
+<rect x="56" y="338" width="1150" height="178" rx="16" class="carril"/>
+<text x="80" y="376" class="parte">PARTE 2</text>
+<text x="80" y="414" class="nombre">Web</text>
+<text x="80" y="444">TypeScript</text>
+<text x="80" y="478">En el pipeline:</text>
+<text x="80" y="504" class="m tinta">web ×3</text>
+<g>
+<rect x="272" y="346" width="264" height="92" rx="12" class="caja"/>
+<text x="288" y="376" class="caja-t">Gherkin</text>
+<text x="288" y="404" class="m">features/web/</text>
+<text x="288" y="428">4 archivos</text>
+</g>
+<g>
+<rect x="566" y="346" width="320" height="92" rx="12" class="herramienta"/>
+<text x="582" y="376" class="caja-t">playwright-bdd 9.2.1</text>
+<text x="582" y="404" class="m">tests/e2e/steps/</text>
+<text x="582" y="428">genera las specs del Gherkin</text>
+</g>
+<g>
+<rect x="916" y="346" width="274" height="92" rx="12" class="herramienta"/>
+<text x="932" y="376" class="caja-t">Playwright 1.64.1</text>
+<text x="932" y="404">Page Objects</text>
+<text x="932" y="428" class="m">tests/e2e/pages/</text>
+</g>
+<text x="536" y="472" text-anchor="end" class="nota">preparar por API,</text>
+<text x="536" y="496" text-anchor="end" class="nota">verificar por pantalla</text>
+<g>
+<rect x="566" y="446" width="624" height="62" rx="12" class="caja"/>
+<text x="582" y="474" class="caja-t">DatosPrueba <tspan class="m" style="font-size:20px;font-weight:400;fill:#44506B">tests/e2e/fixtures.ts</tspan></text>
+<text x="582" y="498">prepara los datos por <tspan class="m">/api/pruebas/*</tspan> y por <tspan class="m">/api/*</tspan></text>
+</g>
+<line x1="536" y1="392" x2="564" y2="392" class="flecha" marker-end="url(#punta)"/>
+<line x1="886" y1="392" x2="914" y2="392" class="flecha" marker-end="url(#punta)"/>
+<line x1="1190" y1="392" x2="1246" y2="392" class="flecha"/>
+<line x1="1246" y1="392" x2="1268" y2="392" class="flecha-clara" marker-end="url(#punta-clara)"/>
+<line x1="1190" y1="477" x2="1246" y2="477" class="flecha"/>
+<line x1="1246" y1="477" x2="1268" y2="477" class="flecha-clara" marker-end="url(#punta-clara)"/>
+
+<!-- ============ Parte 3 · Rendimiento (fuera del pipeline) ============ -->
+<rect x="56" y="528" width="1150" height="222" rx="16" class="carril"/>
+<text x="80" y="566" class="parte">PARTE 3</text>
+<text x="80" y="604" class="nombre">Rendimiento</text>
+<text x="80" y="634">k6 y Python</text>
+<text x="80" y="668">Fuera del</text>
+<text x="80" y="694">pipeline:</text>
+<text x="80" y="720" class="m tinta">correr.sh</text>
+<g>
+<rect x="272" y="536" width="264" height="92" rx="12" class="caja"/>
+<text x="288" y="566" class="caja-t">Diseño</text>
+<text x="288" y="594">umbrales U-01 a U-09</text>
+<text x="288" y="618" class="m">k6/umbrales.js</text>
+</g>
+<g>
+<rect x="566" y="536" width="320" height="92" rx="12" class="herramienta"/>
+<text x="582" y="566" class="caja-t">k6 2.3.0</text>
+<text x="582" y="594" class="m">tests/performance/k6/</text>
+<text x="582" y="618">modelo abierto, en el host</text>
+</g>
+<text x="1053" y="572" text-anchor="middle" class="nota">sesiones por HTTP</text>
+<line x1="536" y1="582" x2="564" y2="582" class="flecha" marker-end="url(#punta)"/>
+<line x1="886" y1="590" x2="1246" y2="590" class="flecha"/>
+<line x1="1246" y1="590" x2="1268" y2="590" class="flecha-clara" marker-end="url(#punta-clara)"/>
+<!-- Fila de medición: va de derecha a izquierda, de Qolqe a la evidencia -->
+<g>
+<rect x="916" y="650" width="274" height="92" rx="12" class="caja"/>
+<text x="932" y="680" class="caja-t">Mediciones</text>
+<text x="932" y="708">psutil, docker stats,</text>
+<text x="932" y="732">py-spy y <tspan class="m">verificar.py</tspan></text>
+</g>
+<g>
+<rect x="566" y="650" width="320" height="92" rx="12" class="caja"/>
+<text x="582" y="680" class="caja-t">Análisis</text>
+<text x="582" y="708">pandas y matplotlib</text>
+<text x="582" y="732">veredicto por umbral</text>
+</g>
+<g>
+<rect x="272" y="650" width="264" height="92" rx="12" class="caja"/>
+<text x="288" y="680" class="caja-t">Evidencia</text>
+<text x="288" y="708" class="m">resultados/</text>
+<text x="288" y="732">versionada</text>
+</g>
+<line x1="1268" y1="696" x2="1246" y2="696" class="flecha-clara"/>
+<line x1="1246" y1="696" x2="1192" y2="696" class="flecha" marker-end="url(#punta)"/>
+<line x1="916" y1="696" x2="888" y2="696" class="flecha" marker-end="url(#punta)"/>
+<line x1="566" y1="696" x2="538" y2="696" class="flecha" marker-end="url(#punta)"/>
+<line x1="726" y1="628" x2="726" y2="648" class="flecha" marker-end="url(#punta)"/>
+
+<!-- ============ Pipeline (.github/workflows/pruebas.yml) ============ -->
+<rect x="56" y="768" width="1094" height="288" rx="16" class="carril"/>
+<text x="80" y="802" class="cejilla" style="letter-spacing:1px">PIPELINE</text>
+<text x="196" y="802">GitHub Actions · <tspan class="m">.github/workflows/pruebas.yml</tspan> · en cada push y PR a main, y a mano</text>
+<!-- Fila 1: etapas en serie y el gate (needs: estatico, api, contrato, web) -->
+<rect x="80" y="818" width="140" height="52" rx="10" class="caja"/>
+<text x="150" y="852" text-anchor="middle" class="job">estatico</text>
+<rect x="254" y="818" width="140" height="52" rx="10" class="caja"/>
+<text x="324" y="852" text-anchor="middle" class="job">contrato</text>
+<rect x="428" y="818" width="100" height="52" rx="10" class="obligatorio"/>
+<text x="478" y="852" text-anchor="middle" class="job">api</text>
+<rect x="562" y="818" width="130" height="52" rx="10" class="obligatorio"/>
+<text x="627" y="852" text-anchor="middle" class="job">web ×3</text>
+<rect x="770" y="818" width="190" height="52" rx="10" class="obligatorio"/>
+<text x="865" y="852" text-anchor="middle" class="job">quality-gate</text>
+<line x1="220" y1="844" x2="252" y2="844" class="flecha" marker-end="url(#punta)"/>
+<line x1="394" y1="844" x2="426" y2="844" class="flecha" marker-end="url(#punta)"/>
+<line x1="528" y1="844" x2="560" y2="844" class="flecha" marker-end="url(#punta)"/>
+<line x1="692" y1="844" x2="768" y2="844" class="flecha" marker-end="url(#punta)"/>
+<!-- Fila 2: evidencia (reportes needs las 4 etapas; gestion-casos y publicar solo en main) -->
+<rect x="557" y="897" width="140" height="52" rx="10" class="caja"/>
+<text x="627" y="931" text-anchor="middle" class="job">reportes</text>
+<rect x="736" y="897" width="200" height="52" rx="10" class="caja"/>
+<text x="836" y="931" text-anchor="middle" class="job">gestion-casos</text>
+<rect x="970" y="897" width="140" height="52" rx="10" class="caja"/>
+<text x="1040" y="931" text-anchor="middle" class="job">publicar</text>
+<line x1="627" y1="870" x2="627" y2="895" class="flecha" marker-end="url(#punta)"/>
+<line x1="697" y1="923" x2="734" y2="923" class="flecha" marker-end="url(#punta)"/>
+<line x1="936" y1="923" x2="968" y2="923" class="flecha" marker-end="url(#punta)"/>
+<rect x="80" y="902" width="28" height="20" rx="4" class="obligatorio"/>
+<text x="120" y="919">check obligatorio de main</text>
+<text x="80" y="945">el gate y reportes esperan las 4 etapas</text>
+<text x="80" y="971">gestion-casos y publicar: solo en main</text>
+<text x="80" y="1004">La Parte 3 no corre aquí: necesita el equipo libre y Docker con 1 CPU.</text>
+<text x="80" y="1034">Su evidencia está versionada en el repo y el job <tspan class="m">reportes</tspan> la suma al sitio.</text>
+
+<!-- ============ Reportería ============ -->
+<rect x="1180" y="768" width="684" height="288" rx="16" class="carril"/>
+<text x="1204" y="802" class="cejilla" style="letter-spacing:1px">REPORTERÍA</text>
+<text x="1346" y="802">lo que queda de cada run</text>
+<g>
+<rect x="1204" y="814" width="636" height="66" rx="12" class="caja"/>
+<text x="1220" y="840" class="caja-t22">Resumen del run en Actions</text>
+<text x="1220" y="868"><tspan class="m">resumen.py</tspan> por job, tabla del quality gate y matriz</text>
+</g>
+<g>
+<rect x="1204" y="890" width="636" height="66" rx="12" class="caja"/>
+<text x="1220" y="916" class="caja-t22">GitHub Pages · job <tspan class="m">publicar</tspan></text>
+<text x="1220" y="944">reportes, matriz, historial de 30 runs y <tspan class="m">rendimiento/</tspan></text>
+</g>
+<g>
+<rect x="1204" y="966" width="636" height="66" rx="12" class="caja"/>
+<text x="1220" y="992" class="caja-t22">Kiwi TCMS · un TestRun por run de main</text>
+<text x="1220" y="1020"><tspan class="m">scripts/kiwi_sincronizar.py</tspan>, desde la máquina</text>
+</g>
+<line x1="960" y1="844" x2="1202" y2="844" class="flecha" marker-end="url(#punta)"/>
+<line x1="1110" y1="923" x2="1202" y2="923" class="flecha" marker-end="url(#punta)"/>
+</svg>
