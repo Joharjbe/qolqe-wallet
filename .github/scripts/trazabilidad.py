@@ -8,6 +8,7 @@ Con --verificar revisa las etiquetas sin ejecutar nada (job estatico).
 import argparse
 import html
 import json
+import os
 import re
 import shutil
 import sys
@@ -46,6 +47,32 @@ h1{margin-bottom:0}nav a{display:inline-block;margin:12px 8px 12px 0;padding:8px
 .celda{display:inline-block;width:1.4em;text-align:center}small{color:var(--suave)}
 """
 SIMBOLO = {"passed": "✓", "xfailed": "◐", "flaky": "≈", "failed": "✗", "skipped": "–", "sin ejecutar": "·"}
+# Repositorio donde se entrega el curso: se usa cuando no hay GITHUB_REPOSITORY (corrida local), para que los
+# enlaces de la portada al repo y al informe funcionen igual en el sitio publicado y en una prueba local.
+REPO_ENTREGA = "Joharjbe/qolqe-wallet"
+RAMA_POR_DEFECTO = "main"
+# Un run con imágenes deja hasta 213 capturas: desde esta cantidad de casos la página de evidencias abre con un
+# índice de anclas, para no obligar a bajar a mano.
+MUCHAS_CAPTURAS = 8
+
+
+def urls_github(run: dict) -> tuple[str, str]:
+    """(url del repositorio, url del informe) en GitHub, desde los datos del run o del entorno de Actions."""
+    servidor = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
+    repo = f"{servidor}/{run.get('repo') or REPO_ENTREGA}"
+    # El informe se enlaza en el commit del run: así lo que se lee coincide con los resultados publicados.
+    return repo, f"{repo}/blob/{run['sha'] or RAMA_POR_DEFECTO}/docs/informe.md"
+
+
+def url_evidencias(run: dict) -> str:
+    """URL absoluta de la página de evidencias en el sitio publicado, como la arma el job `publicar`.
+
+    La matriz se lee en tres lugares (portada del sitio, resumen del run y `docs/trazabilidad.md`) y en los dos
+    últimos una ruta relativa como `evidencias/` apuntaría a github.com o a `docs/`: solo la URL absoluta sirve.
+    Se deriva del mismo `repo` del run que usa urls_github(); sin él, del repositorio de entrega.
+    """
+    propietario, _, nombre = (run.get("repo") or REPO_ENTREGA).partition("/")
+    return f"https://{propietario.lower()}.github.io/{nombre}/evidencias/"
 
 
 def texto_resultado(caso: dict, datos: dict) -> str:
@@ -101,10 +128,14 @@ def tabla_md(cabecera: list[str], filas: list[list[str]]) -> str:
 
 
 def tabla_html(cabecera: list[str], filas: list[list[str]]) -> str:
+    """Tabla HTML. Solo la columna «Resultado» se interpreta como Markdown, porque filas_casos pone ahí el enlace a
+    la captura y así la misma fila sirve para la matriz .md y para la portada; el resto de las celdas se escapan."""
     def clase(celda: str) -> str:
         estado = next((e for e in ESTADOS if celda.startswith(e)), None)
         return f' class="{estado.split()[0]}"' if estado else ""
-    cuerpo = "".join("<tr>" + "".join(f"<td{clase(c)}>{html.escape(c)}</td>" for c in f) + "</tr>" for f in filas)
+    def celda(columna: int, texto: str) -> str:
+        return md_a_html(texto) if cabecera[columna] == "Resultado" else html.escape(texto)
+    cuerpo = "".join("<tr>" + "".join(f"<td{clase(c)}>{celda(i, c)}</td>" for i, c in enumerate(f)) + "</tr>" for f in filas)
     return f"<table><thead><tr>{''.join(f'<th>{html.escape(c)}</th>' for c in cabecera)}</tr></thead><tbody>{cuerpo}</tbody></table>"
 
 
@@ -133,12 +164,18 @@ def filas_cobertura(casos: dict, por_caso: dict, historias: dict) -> list[list[s
     return filas
 
 
-def filas_casos(casos: dict, por_caso: dict, modulo: str) -> list[list[str]]:
+def filas_casos(casos: dict, por_caso: dict, modulo: str, evidencias: dict | None = None,
+                url_captura: str = "evidencias/") -> list[list[str]]:
     filas = []
     for id_caso, c in sorted(casos.items(), key=lambda par: (min(par[1]["hu"], default="~"), par[0])):
         if c["modulo"] == modulo:
+            resultado = texto_resultado(c, por_caso[id_caso])
+            if (evidencias or {}).get(id_caso):
+                # Enlace en Markdown al ancla del caso en la página de evidencias: el estado sigue al inicio de la
+                # celda para que tabla_html le ponga su color.
+                resultado += f" · [captura]({url_captura}#{id_caso})"
             filas.append([", ".join(c["hu"]) or "—", ", ".join(c["ca"]) or "—", id_caso, c["titulo"],
-                          c["nivel"], c["tipo"], texto_resultado(c, por_caso[id_caso])])
+                          c["nivel"], c["tipo"], resultado])
     return filas
 
 
@@ -209,11 +246,22 @@ def escribir_sitio(sitio: Path, reportes: Path, run: dict, secciones: dict) -> N
     if (reportes / "api" / "reporte.html").exists():
         (sitio / "api").mkdir(exist_ok=True)
         shutil.copy(reportes / "api" / "reporte.html", sitio / "api" / "index.html")
+    # El reporte de Schemathesis enlaza su propio JUnit como ../junit.xml: sin esta copia ese enlace da 404 en el sitio.
+    if (reportes / "contrato" / "junit.xml").is_file():
+        shutil.copy(reportes / "contrato" / "junit.xml", sitio / "junit.xml")
     contrato_html = sorted((sitio / "contrato").rglob("index.html"))
     ruta_contrato = contrato_html[0].relative_to(sitio).as_posix() if contrato_html else "contrato/"
-    nav = (f'<nav><a href="web/">Reporte web (Playwright)</a><a href="api/">Reporte API (pytest-bdd)</a>'
-           f'<a href="{ruta_contrato}">Reporte de contrato (Schemathesis)</a><a href="historial.html">Historial de ejecuciones</a>'
-           f'<a href="trazabilidad.md">Matriz en Markdown</a><a href="junit-cp.xml">JUnit por caso</a><a href="run.json">run.json</a></nav>')
+    url_repo, url_informe = urls_github(run)
+    # Rendimiento va primero porque la exposición abre con la Parte 3. Rendimiento y evidencias los generan otros
+    # pasos: se enlazan solo si la carpeta está, para no dejar un 404.
+    enlaces = [("rendimiento/", "Rendimiento (Parte 3)")] if (sitio / "rendimiento").exists() else []
+    enlaces += [("web/", "Reporte web (Playwright)"), ("api/", "Reporte API (pytest-bdd)"),
+                (ruta_contrato, "Reporte de contrato (Schemathesis)"), ("historial.html", "Historial de ejecuciones")]
+    if (sitio / "evidencias" / "index.html").exists():
+        enlaces.append(("evidencias/", "Evidencias por caso"))
+    enlaces += [(url_repo, "Repositorio"), (url_informe, "Informe del proyecto"),
+                ("trazabilidad.md", "Matriz en Markdown"), ("junit-cp.xml", "JUnit por caso"), ("run.json", "run.json")]
+    nav = "<nav>" + "".join(f'<a href="{html.escape(url, quote=True)}">{html.escape(texto)}</a>' for url, texto in enlaces) + "</nav>"
     cuerpo = [f"<h1>Qolqe · Núcleo y G4 · Reportes del pipeline</h1><p>{md_a_html(encabezado(run))}</p>{nav}"]
     for titulo, clave, filas in secciones["orden"]:
         cuerpo.append(f"<h2>{html.escape(titulo)}</h2><div class=\"tabla\">{tabla_html(CABECERAS[clave], filas)}</div>")
@@ -233,6 +281,59 @@ def copiar_evidencias(destino: Path, evidencias: dict, reportes: Path) -> dict[s
     if (reportes / "api" / "reporte.html").exists():
         shutil.copy(reportes / "api" / "reporte.html", destino / "api-reporte.html")
     return copiadas
+
+
+def escribir_evidencias(destino: Path, evidencias: dict[str, list[str]], casos: dict, por_caso: dict, run: dict) -> None:
+    """Página de evidencias por caso, útil en los dos modos del pipeline.
+
+    Con capturas: un bloque por caso con las miniaturas que copió copiar_evidencias y el ancla #CP-xx que usa la
+    matriz (más un índice de anclas cuando son muchas). Sin capturas (el modo `sin-imagenes` con todo en verde):
+    la tabla de los casos de nivel web con su resultado y el enlace al reporte de Playwright, que trae las trazas
+    y los videos. El titular cuenta sobre los casos web porque solo ellos dejan PNG (los de API dejan HAR).
+    """
+    destino.mkdir(parents=True, exist_ok=True)
+    web = [id_caso for id_caso, c in sorted(casos.items()) if c["nivel"] == "web"]
+    con_captura = [id_caso for id_caso in sorted(evidencias) if evidencias[id_caso]]
+    aviso = ("Este run corrió en modo <code>sin-imagenes</code>: Playwright solo guarda la captura de los casos que "
+             "fallan, así que un caso que pasó no tiene captura. Para tener la captura de todos los casos hay que "
+             "lanzar el workflow a mano (<em>Run workflow</em>) con <code>evidencia=con-imagenes</code>."
+             if run["evidencia"] == "sin-imagenes"
+             else f"Modo de evidencia del run: <code>{html.escape(run['evidencia'])}</code>.")
+    partes = [(f"<h1>Evidencias por caso · núcleo y G4</h1><p>{len(con_captura)} de {len(web)} casos de nivel web "
+               f"tienen captura en este run; los casos de API dejan su evidencia en el reporte, no en imágenes. "
+               f"{aviso}</p>")]
+    enlaces = ['<a href="../">Volver a la portada</a>',
+               '<a href="../web/">Reporte web (Playwright): traza y video de cada caso</a>']
+    # api-reporte.html es la copia que copiar_evidencias deja para Kiwi; en el sitio el mismo reporte ya está en api/,
+    # así que el enlace va ahí y el visitante no ve dos copias de 1 MB del mismo archivo.
+    if (destino / "api-reporte.html").exists():
+        enlaces.append('<a href="../api/">Reporte de API completo (pytest-bdd)</a>')
+    partes.append("<p>" + " · ".join(enlaces) + "</p>")
+    if not con_captura:
+        filas = [[id_caso, casos[id_caso]["titulo"], texto_resultado(casos[id_caso], por_caso[id_caso]),
+                  casos[id_caso]["archivo"]] for id_caso in web]
+        partes.append('<h2>Casos de nivel web en este run</h2><div class="tabla">'
+                      + tabla_html(["Caso", "Título", "Resultado", "Archivo"], filas) + "</div>")
+    elif len(con_captura) >= MUCHAS_CAPTURAS:
+        partes.append("<p>Casos con captura: " + " · ".join(
+            f'<a href="#{html.escape(i, quote=True)}">{html.escape(i)}</a>' for i in con_captura) + "</p>")
+    for id_caso in con_captura:
+        c = casos.get(id_caso, {})
+        estado = por_caso.get(id_caso, {}).get("estado", "sin ejecutar")
+        partes.append(f'<h2 id="{html.escape(id_caso, quote=True)}">{html.escape(id_caso)} · '
+                      f'{html.escape(c.get("titulo", ""))}</h2>'
+                      f'<p>Resultado en este run: <span class="{estado.split()[0]}">{html.escape(estado)}</span>'
+                      f'{" · " + html.escape(c["archivo"]) if c.get("archivo") else ""}</p>')
+        # Las rutas que devuelve copiar_evidencias llevan el nombre de la carpeta; desde esta página basta el archivo.
+        for i, ruta in enumerate(evidencias[id_caso], 1):
+            nombre = Path(ruta).name
+            partes.append(f'<a href="{html.escape(nombre, quote=True)}"><img src="{html.escape(nombre, quote=True)}" '
+                          f'alt="Captura {i} de {html.escape(id_caso)}" width="360" loading="lazy" '
+                          f'style="margin:0 8px 8px 0;border:1px solid var(--borde);border-radius:6px"></a>')
+    if con_captura:
+        partes.append("<p><small>Cada imagen enlaza a la captura completa. Las mismas rutas están como propiedad "
+                      "<code>evidencia</code> de cada caso en <code>junit-cp.xml</code>.</small></p>")
+    (destino / "index.html").write_text(pagina("Qolqe · Evidencias por caso", "".join(partes)), encoding="utf-8")
 
 
 def escribir_junit_cp(ruta: Path, casos: dict, por_caso: dict, resultados: dict, run: dict, evidencias: dict) -> None:
@@ -440,17 +541,22 @@ def main() -> None:
     casos[CP_CONTRATO] = caso_contrato(list(resultados["operaciones"]))
     por_caso = resultados_por_caso(casos, resultados)
     run = metadatos_run(conclusion=args.conclusion)
+    # Las evidencias se copian antes de armar las secciones porque la columna Resultado enlaza a la captura del caso.
+    evidencias_dir = args.evidencias or (args.sitio / "evidencias" if args.sitio else None)
+    evidencias = copiar_evidencias(evidencias_dir, resultados["evidencias"], args.reportes) if evidencias_dir else {}
+    # URL absoluta del sitio publicado: la misma matriz se lee en la portada, en el resumen del run y en docs/.
+    url_captura = url_evidencias(run)
     secciones = {"orden": [
         ("Resumen por módulo, nivel y tipo", "resumen", filas_resumen(casos, por_caso)),
         ("Cobertura por historia", "cobertura", filas_cobertura(casos, por_caso, historias)),
-        ("Núcleo: HU → caso → resultado", "casos", filas_casos(casos, por_caso, "núcleo")),
-        ("G4: HU → caso → resultado", "casos", filas_casos(casos, por_caso, "G4")),
+        ("Núcleo: HU → caso → resultado", "casos", filas_casos(casos, por_caso, "núcleo", evidencias, url_captura)),
+        ("G4: HU → caso → resultado", "casos", filas_casos(casos, por_caso, "G4", evidencias, url_captura)),
         (f"Contrato ({CP_CONTRATO}): operación → resultado", "contrato", filas_contrato(resultados["operaciones"])),
         ("Defectos → casos", "defectos", filas_defectos(casos, por_caso)),
     ]}
     escribir_matriz(args.matriz, run, secciones)
-    evidencias_dir = args.evidencias or (args.sitio / "evidencias" if args.sitio else None)
-    evidencias = copiar_evidencias(evidencias_dir, resultados["evidencias"], args.reportes) if evidencias_dir else {}
+    if evidencias_dir:
+        escribir_evidencias(evidencias_dir, evidencias, casos, por_caso, run)
     if args.sitio:
         escribir_sitio(args.sitio, args.reportes, run, secciones)
     if args.junit_cp:

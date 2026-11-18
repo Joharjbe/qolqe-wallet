@@ -1,0 +1,15 @@
+{
+  "grupo": "G9",
+  "nombre": "Fallo esperado en alta de contactos simultáneos",
+  "fallos": [
+    {
+      "caso": "CP-T20",
+      "grupo": "G9",
+      "clase": "defecto_real",
+      "defecto": "DEF-26",
+      "confianza": "alta",
+      "razon": "El caso está marcado como fallo esperado (xfailed) debido a un defecto conocido ya registrado en el sistema.",
+      "evidencia": "Defecto conocido DEF-26 (fallo esperado)"
+    }
+  ]
+}

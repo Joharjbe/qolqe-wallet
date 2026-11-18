@@ -1,0 +1,24 @@
+{
+  "grupo": "G17",
+  "nombre": "Validación de códigos en transferencias simultáneas",
+  "fallos": [
+    {
+      "caso": "CP-NA126",
+      "grupo": "G17",
+      "clase": "defecto_real",
+      "defecto": "DEF-22",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y reportado con un defecto conocido que indica una falla en la lógica de negocio esperada.",
+      "evidencia": "Defecto conocido DEF-22 (fallo esperado)"
+    },
+    {
+      "caso": "CP-NA127",
+      "grupo": "G17",
+      "clase": "defecto_real",
+      "defecto": "DEF-22",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y reportado con un defecto conocido que indica una falla en la lógica de negocio esperada.",
+      "evidencia": "Defecto conocido DEF-22 (fallo esperado)"
+    }
+  ]
+}

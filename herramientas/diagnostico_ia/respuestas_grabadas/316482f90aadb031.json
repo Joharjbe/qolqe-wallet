@@ -1,0 +1,15 @@
+{
+  "grupo": "G31",
+  "nombre": "Cierre de cuentas y transferencia",
+  "fallos": [
+    {
+      "caso": "CP-NA95",
+      "grupo": "G31",
+      "clase": "defecto_real",
+      "defecto": "DEF-03",
+      "confianza": "alta",
+      "razon": "El caso está marcado como fallo esperado debido a un defecto ya identificado en el sistema.",
+      "evidencia": "Defecto conocido DEF-03 (fallo esperado)"
+    }
+  ]
+}

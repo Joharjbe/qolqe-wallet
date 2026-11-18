@@ -1,0 +1,33 @@
+{
+  "grupo": "G28",
+  "nombre": "Fallos conocidos en nucleo sesion",
+  "fallos": [
+    {
+      "caso": "CP-NA44",
+      "grupo": "G28",
+      "clase": "defecto_real",
+      "defecto": "DEF-09",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y asociado a un defecto conocido de funcionalidad.",
+      "evidencia": "Defecto conocido DEF-09 (fallo esperado)"
+    },
+    {
+      "caso": "CP-NA45",
+      "grupo": "G28",
+      "clase": "defecto_real",
+      "defecto": "DEF-09",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y asociado a un defecto conocido de funcionalidad.",
+      "evidencia": "Defecto conocido DEF-09 (fallo esperado)"
+    },
+    {
+      "caso": "CP-NA46",
+      "grupo": "G28",
+      "clase": "defecto_real",
+      "defecto": "DEF-09",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y asociado a un defecto conocido de funcionalidad.",
+      "evidencia": "Defecto conocido DEF-09 (fallo esperado)"
+    }
+  ]
+}

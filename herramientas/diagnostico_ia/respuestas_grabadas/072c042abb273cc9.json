@@ -1,0 +1,15 @@
+{
+  "grupo": "G8",
+  "nombre": "Validación de saldo negativo en solicitudes concurrentes",
+  "fallos": [
+    {
+      "caso": "CP-T18",
+      "grupo": "G8",
+      "clase": "defecto_real",
+      "defecto": "DEF-21",
+      "confianza": "alta",
+      "razon": "El caso de prueba está marcado como xfailed y reportado con un defecto conocido que impide el saldo negativo.",
+      "evidencia": "defecto conocido def-21 (fallo esperado)"
+    }
+  ]
+}

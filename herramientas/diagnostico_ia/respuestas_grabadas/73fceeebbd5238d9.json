@@ -1,0 +1,15 @@
+{
+  "grupo": "G24",
+  "nombre": "Redondeo comercial en comisiones",
+  "fallos": [
+    {
+      "caso": "CP-NA151",
+      "grupo": "G24",
+      "clase": "defecto_real",
+      "defecto": "DEF-23",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y reportado con un defecto conocido que indica una discrepancia en la lógica de redondeo.",
+      "evidencia": "xfailed: test_cpna151_la_simulación_usa_redondeo_comercial_cuando_el_tercer_decimal_es_5[299-299.00-4.49-303.49]"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "grupo": "G3",
+  "nombre": "Transferencia a contacto con cuenta cerrada",
+  "fallos": [
+    {
+      "caso": "CP-A18",
+      "grupo": "G3",
+      "clase": "defecto_real",
+      "defecto": "DEF-04",
+      "confianza": "alta",
+      "razon": "El caso está marcado como fallo esperado debido a un defecto identificado en la aplicación bajo prueba.",
+      "evidencia": "Defecto conocido DEF-04 (fallo esperado)"
+    }
+  ]
+}

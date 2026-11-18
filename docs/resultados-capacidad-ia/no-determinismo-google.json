@@ -1,0 +1,18 @@
+{
+  "backend": "google",
+  "corridas": 5,
+  "casos_del_run": 4,
+  "casos_clasificados_alguna_vez": 4,
+  "casos_que_cambiaron_de_clase": 0,
+  "detalle": {},
+  "veces_clasificado_de_n_corridas": {
+    "CP-A04": 5,
+    "CP-A79": 5,
+    "CP-NA03": 1,
+    "CP-T20": 5
+  },
+  "casos_que_el_modelo_nunca_contesto": [],
+  "casos_que_contesto_solo_a_veces": [
+    "CP-NA03"
+  ]
+}

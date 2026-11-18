@@ -1,0 +1,15 @@
+{
+  "grupo": "G5",
+  "nombre": "Fallo en ordenamiento de alias con tilde",
+  "fallos": [
+    {
+      "caso": "CP-A47",
+      "grupo": "G5",
+      "clase": "defecto_real",
+      "defecto": "DEF-27",
+      "confianza": "alta",
+      "razon": "La aplicación no realiza correctamente el ordenamiento de alias alfabético cuando estos inician con un carácter con tilde.",
+      "evidencia": "xfailed: test_cpa47_los_alias_que_empiezan_con_tilde_se_ordenan_con_su_letra"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "grupo": "G30",
+  "nombre": "Cierre de cuenta para transferencias",
+  "fallos": [
+    {
+      "caso": "CP-NA94",
+      "grupo": "G30",
+      "clase": "defecto_real",
+      "defecto": "DEF-04",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y tiene un defecto declarado para el fallo esperado en la funcionalidad de transferencia.",
+      "evidencia": "defecto conocido def-04 (fallo esperado)"
+    }
+  ]
+}

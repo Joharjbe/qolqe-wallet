@@ -1,0 +1,15 @@
+{
+  "grupo": "G11",
+  "nombre": "Fallo en validación de cabecera Allow",
+  "fallos": [
+    {
+      "caso": "CP-T29",
+      "grupo": "G11",
+      "clase": "defecto_real",
+      "defecto": "DEF-06",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y reporta un defecto conocido relacionado con la discrepancia en la lista de métodos permitidos en la cabecera Allow.",
+      "evidencia": "defecto conocido def-06 (fallo esperado)"
+    }
+  ]
+}

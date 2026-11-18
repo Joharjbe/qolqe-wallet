@@ -1,0 +1,15 @@
+{
+  "grupo": "G6",
+  "nombre": "Validación de token tras cierre de sesión",
+  "fallos": [
+    {
+      "caso": "CP-T07",
+      "grupo": "G6",
+      "clase": "defecto_real",
+      "defecto": "DEF-09",
+      "confianza": "alta",
+      "razon": "El caso está marcado como fallo esperado (xfailed) por un defecto conocido en el manejo de tokens tras cerrar sesión.",
+      "evidencia": "xfailed: test_cpt07_después_de_cerrar_sesión_el_token_ya_no_sirve_en_g4[GET-/api/contactos]"
+    }
+  ]
+}

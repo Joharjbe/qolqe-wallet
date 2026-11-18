@@ -1,0 +1,15 @@
+{
+  "grupo": "G21",
+  "nombre": "Fallo en validación de saldo para transferencia interbancaria",
+  "fallos": [
+    {
+      "caso": "CP-NA144",
+      "grupo": "G21",
+      "clase": "defecto_real",
+      "defecto": "DEF-19",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y asociado a un defecto conocido (DEF-19) que confirma el incumplimiento de la regla de negocio RN-08.",
+      "evidencia": "xfailed: test_cpna144_rn08_el_saldo_debe_cubrir_el_monto_más_la_comisión[49.01-50.01]"
+    }
+  ]
+}

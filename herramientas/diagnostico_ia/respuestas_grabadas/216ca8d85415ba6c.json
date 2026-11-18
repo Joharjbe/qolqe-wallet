@@ -1,0 +1,24 @@
+{
+  "grupo": "G18",
+  "nombre": "Fallo esperado en consulta de movimientos",
+  "fallos": [
+    {
+      "caso": "CP-NA129",
+      "grupo": "G18",
+      "clase": "defecto_real",
+      "defecto": "DEF-24",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y vinculado a un defecto conocido en el sistema.",
+      "evidencia": "Defecto conocido DEF-24 (fallo esperado)"
+    },
+    {
+      "caso": "CP-NA130",
+      "grupo": "G18",
+      "clase": "defecto_real",
+      "defecto": "DEF-24",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y vinculado a un defecto conocido en el sistema.",
+      "evidencia": "Defecto conocido DEF-24 (fallo esperado)"
+    }
+  ]
+}

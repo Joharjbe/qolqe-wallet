@@ -1,0 +1,15 @@
+{
+  "grupo": "G27",
+  "nombre": "Fallo esperado en bloqueo de sesiones",
+  "fallos": [
+    {
+      "caso": "CP-NA33",
+      "grupo": "G27",
+      "clase": "defecto_real",
+      "defecto": "DEF-11",
+      "confianza": "alta",
+      "razon": "El caso está marcado explícitamente como un fallo conocido bajo el defecto DEF-11.",
+      "evidencia": "defecto conocido def-11 (fallo esperado)"
+    }
+  ]
+}

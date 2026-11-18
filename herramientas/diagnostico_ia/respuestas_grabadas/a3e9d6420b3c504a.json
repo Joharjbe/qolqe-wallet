@@ -1,0 +1,15 @@
+{
+  "grupo": "G12",
+  "nombre": "Validación de nombres con recorte",
+  "fallos": [
+    {
+      "caso": "CP-NA04",
+      "grupo": "G12",
+      "clase": "defecto_real",
+      "defecto": "DEF-13",
+      "confianza": "alta",
+      "razon": "El caso de prueba está marcado como xfailed por un defecto conocido relacionado con el manejo de nombres tras recortar espacios.",
+      "evidencia": "defecto conocido def-13 (fallo esperado)"
+    }
+  ]
+}

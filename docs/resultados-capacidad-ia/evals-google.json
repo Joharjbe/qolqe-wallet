@@ -1,0 +1,1475 @@
+{
+  "lineabase": {
+    "backend": "lineabase",
+    "casos_del_conjunto": 52,
+    "casos_medidos": 52,
+    "sin_prediccion": [],
+    "por_clase": {
+      "defecto_real": {
+        "aciertos": 38,
+        "total": 40
+      },
+      "prueba_inestable": {
+        "aciertos": 4,
+        "total": 4
+      },
+      "error_entorno": {
+        "aciertos": 7,
+        "total": 8
+      }
+    },
+    "matriz": {
+      "defecto_real": {
+        "defecto_real": 38,
+        "prueba_inestable": 1,
+        "error_entorno": 1
+      },
+      "prueba_inestable": {
+        "defecto_real": 0,
+        "prueba_inestable": 4,
+        "error_entorno": 0
+      },
+      "error_entorno": {
+        "defecto_real": 1,
+        "prueba_inestable": 0,
+        "error_entorno": 7
+      }
+    },
+    "confianzas": {
+      "alta": 2,
+      "media": 11,
+      "baja": 39
+    },
+    "defecto": {
+      "aciertos": 0,
+      "total": 42,
+      "propuestos": 0,
+      "inventados": 0
+    },
+    "grupos_del_pase_unico": 20,
+    "rechazos_de_guardas": [],
+    "errores_del_backend": [],
+    "detalle": [
+      {
+        "oro": "ORO-01",
+        "caso": "CP-A04",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-01",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-02",
+        "caso": "CP-A06",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-02",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-03",
+        "caso": "CP-A18",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-04",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-04",
+        "caso": "CP-A32",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-03",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-05",
+        "caso": "CP-A47",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-27",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-06",
+        "caso": "CP-A54",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-02",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-07",
+        "caso": "CP-A79",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-01",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-08",
+        "caso": "CP-A80",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-01",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-09",
+        "caso": "CP-NA04",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-13",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 2 de 2 ejecuciones"
+      },
+      {
+        "oro": "ORO-10",
+        "caso": "CP-NA12",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-14",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-11",
+        "caso": "CP-NA15",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-12",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 3 de 3 ejecuciones"
+      },
+      {
+        "oro": "ORO-12",
+        "caso": "CP-NA20",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-15",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-13",
+        "caso": "CP-NA30",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-10",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-14",
+        "caso": "CP-NA33",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-11",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-15",
+        "caso": "CP-NA44",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-09",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-16",
+        "caso": "CP-NA45",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-09",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-17",
+        "caso": "CP-NA46",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-09",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-18",
+        "caso": "CP-NA60",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-17",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-19",
+        "caso": "CP-NA94",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-04",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 2 de 2 ejecuciones"
+      },
+      {
+        "oro": "ORO-20",
+        "caso": "CP-NA95",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-03",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-21",
+        "caso": "CP-NA104",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-28",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-22",
+        "caso": "CP-NA112",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-04",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-23",
+        "caso": "CP-NA117",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-20",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-24",
+        "caso": "CP-NA126",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-22",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-25",
+        "caso": "CP-NA127",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-22",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-26",
+        "caso": "CP-NA129",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-24",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-27",
+        "caso": "CP-NA130",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-24",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-28",
+        "caso": "CP-NA134",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-21",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-29",
+        "caso": "CP-NA135",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-21",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-30",
+        "caso": "CP-NA142",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-23",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 3 de 3 ejecuciones"
+      },
+      {
+        "oro": "ORO-31",
+        "caso": "CP-NA144",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-19",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 2 de 2 ejecuciones"
+      },
+      {
+        "oro": "ORO-32",
+        "caso": "CP-NA146",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-20",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-33",
+        "caso": "CP-NA151",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-23",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 3 de 3 ejecuciones"
+      },
+      {
+        "oro": "ORO-34",
+        "caso": "CP-NW03",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "error_entorno",
+        "acierto": false,
+        "defecto_oro": "DEF-18",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "El tipo de error del grupo es tiempo_de_espera: apunta al entorno, no a la app.",
+        "evidencia": "Fallaron 3 de 3 ejecuciones"
+      },
+      {
+        "oro": "ORO-35",
+        "caso": "CP-T07",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-09",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 9 de 9 ejecuciones"
+      },
+      {
+        "oro": "ORO-36",
+        "caso": "CP-T17",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-25",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-37",
+        "caso": "CP-T18",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-21",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-38",
+        "caso": "CP-T20",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": false,
+        "defecto_oro": "DEF-26",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "La documentación del proyecto declara este caso inestable: no da el mismo resultado en todas las corridas.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-39",
+        "caso": "CP-T26",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-08",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 2 de 2 ejecuciones"
+      },
+      {
+        "oro": "ORO-40",
+        "caso": "CP-T29",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-06",
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 3 de 3 ejecuciones"
+      },
+      {
+        "oro": "ORO-41",
+        "caso": "CP-W10",
+        "clase_oro": "prueba_inestable",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El run la marcó flaky: alternó entre resultado esperado y fallo.",
+        "evidencia": "Inestable: falló 1 de 3 ejecuciones"
+      },
+      {
+        "oro": "ORO-43",
+        "caso": "CP-NA69",
+        "clase_oro": "prueba_inestable",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": true,
+        "defecto_oro": "DEF-15",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "La documentación del proyecto declara este caso inestable: no da el mismo resultado en todas las corridas.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-44",
+        "caso": "CP-W05",
+        "clase_oro": "prueba_inestable",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El run la marcó flaky: alternó entre resultado esperado y fallo.",
+        "evidencia": "Inestable: falló 1 de 3 ejecuciones"
+      },
+      {
+        "oro": "ORO-45",
+        "caso": "CP-A01",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "El tipo de error del grupo es conexion: apunta al entorno, no a la app.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-46",
+        "caso": "CP-A05",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "El tipo de error del grupo es conexion: apunta al entorno, no a la app.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-47",
+        "caso": "CP-NA01",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "El tipo de error del grupo es conexion: apunta al entorno, no a la app.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-48",
+        "caso": "CP-A10",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "El tipo de error del grupo es conexion: apunta al entorno, no a la app.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      },
+      {
+        "oro": "ORO-49",
+        "caso": "CP-A09",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "El tipo de error del grupo es http_5xx: apunta al entorno, no a la app.",
+        "evidencia": "Fallaron 4 de 4 ejecuciones"
+      },
+      {
+        "oro": "ORO-50",
+        "caso": "CP-NA03",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "El tipo de error del grupo es no_ejecutado: apunta al entorno, no a la app.",
+        "evidencia": "sin ejecutar en este run"
+      },
+      {
+        "oro": "ORO-51",
+        "caso": "CP-W12",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "defecto_real",
+        "acierto": false,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "baja",
+        "razon": "Ninguna regla aplicó; la línea base supone defecto real porque es la clase más frecuente.",
+        "evidencia": "Fallaron 3 de 3 ejecuciones"
+      },
+      {
+        "oro": "ORO-52",
+        "caso": "CP-W01",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "El tipo de error del grupo es tiempo_de_espera: apunta al entorno, no a la app.",
+        "evidencia": "Fallaron 3 de 3 ejecuciones"
+      },
+      {
+        "oro": "ORO-42",
+        "caso": "CP-T20",
+        "clase_oro": "prueba_inestable",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": true,
+        "defecto_oro": "DEF-26",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "La documentación del proyecto declara este caso inestable: no da el mismo resultado en todas las corridas.",
+        "evidencia": "Fallaron 1 de 1 ejecuciones"
+      }
+    ]
+  },
+  "elegido": {
+    "backend": "google",
+    "casos_del_conjunto": 52,
+    "casos_medidos": 48,
+    "sin_prediccion": [
+      "ORO-04",
+      "ORO-09",
+      "ORO-11",
+      "ORO-18"
+    ],
+    "por_clase": {
+      "defecto_real": {
+        "aciertos": 28,
+        "total": 36
+      },
+      "prueba_inestable": {
+        "aciertos": 4,
+        "total": 4
+      },
+      "error_entorno": {
+        "aciertos": 8,
+        "total": 8
+      }
+    },
+    "matriz": {
+      "defecto_real": {
+        "defecto_real": 28,
+        "prueba_inestable": 8,
+        "error_entorno": 0
+      },
+      "prueba_inestable": {
+        "defecto_real": 0,
+        "prueba_inestable": 4,
+        "error_entorno": 0
+      },
+      "error_entorno": {
+        "defecto_real": 0,
+        "prueba_inestable": 0,
+        "error_entorno": 8
+      }
+    },
+    "confianzas": {
+      "alta": 35,
+      "media": 13,
+      "baja": 0
+    },
+    "defecto": {
+      "aciertos": 0,
+      "total": 38,
+      "propuestos": 0,
+      "inventados": 0
+    },
+    "grupos_del_pase_unico": 20,
+    "rechazos_de_guardas": [
+      {
+        "grupo": "G2",
+        "caso": "CP-A32",
+        "tipo": "guarda",
+        "motivos": [
+          "clase inválida: None"
+        ]
+      },
+      {
+        "grupo": "G3",
+        "caso": "CP-NA04",
+        "tipo": "guarda",
+        "motivos": [
+          "posible dato personal (celular o documento) en el texto: 987000135…"
+        ]
+      },
+      {
+        "grupo": "G3",
+        "caso": "CP-NA15",
+        "tipo": "guarda",
+        "motivos": [
+          "posible dato personal (celular o documento) en el texto: 987000330…"
+        ]
+      },
+      {
+        "grupo": "G5",
+        "caso": "CP-NA60",
+        "tipo": "guarda",
+        "motivos": [
+          "clase inválida: None"
+        ]
+      }
+    ],
+    "errores_del_backend": [],
+    "detalle": [
+      {
+        "oro": "ORO-01",
+        "caso": "CP-A04",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-01",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La prueba falló al intentar registrar un alias con la letra ñ, sugiriendo una validación incorrecta de caracteres especiales.",
+        "evidencia": "failed: test_cpa04_el_alias_admite_la_letra_ñ"
+      },
+      {
+        "oro": "ORO-02",
+        "caso": "CP-A06",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-02",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El sistema no detecta el alias duplicado al procesar los espacios, incumpliendo la lógica de negocio esperada.",
+        "evidencia": "failed: test_cpa06_el_alias_duplicado_se_detecta_tras_quitar_los_espacios"
+      },
+      {
+        "oro": "ORO-03",
+        "caso": "CP-A18",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-04",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La transferencia no resulta en el estado de error esperado para una cuenta cerrada, lo que indica un fallo en la validación de estado de cuenta.",
+        "evidencia": "failed: test_cpa18_transferir_a_un_contacto_con_cuenta_cerrada"
+      },
+      {
+        "oro": "ORO-05",
+        "caso": "CP-A47",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-27",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El orden alfabético de los contactos falla al procesar caracteres con tilde.",
+        "evidencia": "failed: test_cpa47_los_alias_que_empiezan_con_tilde_se_ordenan_con_su_letra"
+      },
+      {
+        "oro": "ORO-06",
+        "caso": "CP-A54",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-02",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "Fallo al validar alias duplicados durante la edición de un contacto al ignorar espacios.",
+        "evidencia": "failed: test_cpa54_al_editar_el_alias_duplicado_se_detecta_tras_quitar_los_espacios"
+      },
+      {
+        "oro": "ORO-07",
+        "caso": "CP-A79",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-01",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El sistema rechaza la letra Ñ mayúscula en el alias, lo cual es un fallo funcional de validación de entrada.",
+        "evidencia": "failed: test_cpa79_el_alias_admite_la_letra_ñ_mayúscula"
+      },
+      {
+        "oro": "ORO-08",
+        "caso": "CP-A80",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-01",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La edición de un alias conteniendo la letra ñ no devuelve la respuesta esperada de éxito.",
+        "evidencia": "failed: test_cpa80_editar_el_alias_con_la_letra_ñ"
+      },
+      {
+        "oro": "ORO-10",
+        "caso": "CP-NA12",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": false,
+        "defecto_oro": "DEF-14",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "El fallo en registros simultáneos sugiere una posible condición de carrera o problemas de sincronización en el test.",
+        "evidencia": "failed: test_cpna12_registros_simultáneos_con_el_mismo_celular"
+      },
+      {
+        "oro": "ORO-12",
+        "caso": "CP-NA20",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": false,
+        "defecto_oro": "DEF-15",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "El fallo en registros simultáneos con el mismo correo es característico de pruebas de concurrencia inestables.",
+        "evidencia": "failed: test_cpna20_registros_simultáneos_con_el_mismo_correo"
+      },
+      {
+        "oro": "ORO-13",
+        "caso": "CP-NA30",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-10",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "La lógica de reinicio de conteo de intentos fallidos tras un ingreso exitoso parece no estar funcionando según lo esperado en la API.",
+        "evidencia": "failed: test_cpna30_un_ingreso_exitoso_reinicia_el_conteo_de_intentos_fallidos"
+      },
+      {
+        "oro": "ORO-14",
+        "caso": "CP-NA33",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-11",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "Los intentos simultáneos no están disparando el bloqueo de cuenta esperado a nivel de API.",
+        "evidencia": "failed: test_cpna33_los_intentos_fallidos_simultáneos_también_deben_bloquear"
+      },
+      {
+        "oro": "ORO-15",
+        "caso": "CP-NA44",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-09",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "El token parece mantenerse activo o autorizado después de realizar la acción de cierre de sesión.",
+        "evidencia": "failed: test_cpna44_después_del_logout_el_token_ya_no_debe_servir"
+      },
+      {
+        "oro": "ORO-16",
+        "caso": "CP-NA45",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-09",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "La lista de sesiones activas no se actualiza correctamente tras la eliminación de una sesión.",
+        "evidencia": "failed: test_cpna45_la_sesión_cerrada_debe_desaparecer_de_mis_sesiones_activas"
+      },
+      {
+        "oro": "ORO-17",
+        "caso": "CP-NA46",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-09",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "El endpoint de logout no está rechazando adecuadamente intentos repetidos con el mismo token.",
+        "evidencia": "failed: test_cpna46_un_segundo_logout_con_el_mismo_token_debe_ser_rechazado"
+      },
+      {
+        "oro": "ORO-19",
+        "caso": "CP-NA94",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-04",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "Las pruebas fallaron consistentemente en todas las ejecuciones al esperar un error de destino inactivo.",
+        "evidencia": "failed: test_cpna94_nadie_puede_transferir_a_una_cuenta_recién_cerrada[celular-Bruno-10.00-Carla-800.00]"
+      },
+      {
+        "oro": "ORO-20",
+        "caso": "CP-NA95",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-03",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La operación no retorna el código de estado esperado tras intentar aceptar una solicitud de una cuenta cerrada.",
+        "evidencia": "failed: test_cpna95_aceptar_la_solicitud_de_una_cuenta_cerrada_no_le_transfiere_dinero"
+      },
+      {
+        "oro": "ORO-21",
+        "caso": "CP-NA104",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-28",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La aplicación no está rechazando correctamente el tipo de dato booleano en el contacto_id según lo esperado.",
+        "evidencia": "failed: test_cpna104_un_contacto_id_booleano_se_rechaza_como_tipo_inválido"
+      },
+      {
+        "oro": "ORO-22",
+        "caso": "CP-NA112",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-04",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La lógica de validación de cuentas cerradas no está bloqueando la transacción como se especifica en la regla de negocio.",
+        "evidencia": "failed: test_cpna112_rn07_no_se_transfiere_por_celular_a_una_cuenta_cerrada"
+      },
+      {
+        "oro": "ORO-23",
+        "caso": "CP-NA117",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-20",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El cálculo del límite diario no está integrando correctamente las transferencias interbancarias y Qolqe.",
+        "evidencia": "failed: test_cpna117_rn06_el_límite_diario_suma_también_las_transferencias_interbancarias"
+      },
+      {
+        "oro": "ORO-24",
+        "caso": "CP-NA126",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-22",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El sistema está generando códigos duplicados o no cumpliendo la unicidad requerida para transferencias en el mismo segundo.",
+        "evidencia": "failed: test_cpna126_rn10_dos_transferencias_del_mismo_usuario_en_el_mismo_segundo_tienen_códigos_distintos"
+      },
+      {
+        "oro": "ORO-25",
+        "caso": "CP-NA127",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": false,
+        "defecto_oro": "DEF-22",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "Las pruebas de concurrencia suelen fallar debido a condiciones de carrera en el entorno de pruebas, no necesariamente por un fallo del código.",
+        "evidencia": "failed: test_cpna127_rn10_transferencias_simultáneas_del_mismo_usuario_reciben_códigos_distintos"
+      },
+      {
+        "oro": "ORO-26",
+        "caso": "CP-NA129",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-24",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El destinatario no puede consultar sus propios movimientos, lo que indica un problema en el control de acceso a los datos de la transferencia.",
+        "evidencia": "failed: test_cpna129_el_destinatario_consulta_por_código_su_propio_movimiento_recibido"
+      },
+      {
+        "oro": "ORO-27",
+        "caso": "CP-NA130",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-24",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El sistema permite o no gestiona correctamente la visibilidad de movimientos de terceros, fallando en el control de acceso esperado.",
+        "evidencia": "failed: test_cpna130_un_tercero_no_puede_ver_por_código_el_movimiento_de_otros"
+      },
+      {
+        "oro": "ORO-28",
+        "caso": "CP-NA134",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": false,
+        "defecto_oro": "DEF-21",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "La gestión de saldos bajo condiciones de carga simultánea es propensa a fallos de concurrencia en la ejecución de pruebas.",
+        "evidencia": "failed: test_cpna134_transferencias_simultáneas_no_dejan_el_saldo_negativo"
+      },
+      {
+        "oro": "ORO-29",
+        "caso": "CP-NA135",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": false,
+        "defecto_oro": "DEF-21",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "La validación de límites diarios bajo concurrencia extrema es inestable en el entorno de pruebas.",
+        "evidencia": "failed: test_cpna135_transferencias_simultáneas_no_superan_el_límite_diario"
+      },
+      {
+        "oro": "ORO-30",
+        "caso": "CP-NA142",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-23",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La aplicación parece estar aplicando un redondeo distinto al esperado en los casos de prueba definidos.",
+        "evidencia": "failed: test_cpna142_rn09_la_comisión_usa_redondeo_comercial_cuando_el_tercer_decimal_es_5[67.00-1.005-1.01-68.01]"
+      },
+      {
+        "oro": "ORO-31",
+        "caso": "CP-NA144",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-19",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El sistema no está validando correctamente la insuficiencia de saldo para cubrir monto más comisión.",
+        "evidencia": "failed: test_cpna144_rn08_el_saldo_debe_cubrir_el_monto_más_la_comisión[49.01-50.01]"
+      },
+      {
+        "oro": "ORO-32",
+        "caso": "CP-NA146",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-20",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La lógica de consumo del límite diario de transferencias no está devolviendo el código de error esperado.",
+        "evidencia": "failed: test_cpna146_rn06_las_transferencias_interbancarias_consumen_el_límite_diario"
+      },
+      {
+        "oro": "ORO-33",
+        "caso": "CP-NA151",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-23",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La lógica de negocio de redondeo parece no coincidir con los resultados esperados definidos en los ejemplos del escenario.",
+        "evidencia": "failed: test_cpna151_la_simulación_usa_redondeo_comercial_cuando_el_tercer_decimal_es_5[67-67.00-1.01-68.01]"
+      },
+      {
+        "oro": "ORO-34",
+        "caso": "CP-NW03",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-18",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La aplicación devuelve el mensaje de error en inglés a pesar de que el caso de prueba espera una validación en español.",
+        "evidencia": "Received string: \"La solicitud tiene datos inválidos: String should have at least 2 characters\""
+      },
+      {
+        "oro": "ORO-35",
+        "caso": "CP-T07",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-09",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El token debería invalidarse tras cerrar sesión, pero todas las pruebas fallan al obtener acceso.",
+        "evidencia": "failed: test_cpt07_después_de_cerrar_sesión_el_token_ya_no_sirve_en_g4[GET-/api/contactos]"
+      },
+      {
+        "oro": "ORO-36",
+        "caso": "CP-T17",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": false,
+        "defecto_oro": "DEF-25",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "La prueba de concurrencia falló en una única ejecución, sugiriendo problemas de sincronización.",
+        "evidencia": "failed: test_cpt17_tres_aceptaciones_simultáneas_de_la_misma_solicitud_debitan_una_sola_vez"
+      },
+      {
+        "oro": "ORO-37",
+        "caso": "CP-T18",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": false,
+        "defecto_oro": "DEF-21",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "Fallo en escenario de concurrencia que requiere condiciones exactas para validar el saldo.",
+        "evidencia": "failed: test_cpt18_aceptar_a_la_vez_dos_solicitudes_que_juntas_superan_el_saldo_no_lo_deja_negativo"
+      },
+      {
+        "oro": "ORO-38",
+        "caso": "CP-T20",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": false,
+        "defecto_oro": "DEF-26",
+        "defecto_propuesto": null,
+        "confianza": "media",
+        "razon": "Las pruebas de ráfagas simultáneas suelen ser inestables si la infraestructura no garantiza el orden de ejecución.",
+        "evidencia": "failed: test_cpt20_cinco_altas_simultáneas_del_mismo_celular_crean_un_solo_contacto"
+      },
+      {
+        "oro": "ORO-39",
+        "caso": "CP-T26",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-08",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La API no está validando correctamente el tipo de dato para el campo favorito según la expectativa del caso.",
+        "evidencia": "failed: test_cpt26_favorito_no_acepta_números_aunque_pydantic_los_convierta[{\"favorito\": 0}]"
+      },
+      {
+        "oro": "ORO-40",
+        "caso": "CP-T29",
+        "clase_oro": "defecto_real",
+        "clase_propuesta": "defecto_real",
+        "acierto": true,
+        "defecto_oro": "DEF-06",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La cabecera Allow no está devolviendo los métodos esperados para las rutas consultadas.",
+        "evidencia": "failed: test_cpt29_la_cabecera_allow_lista_todos_los_métodos_de_la_ruta[PATCH-/api/contactos/1-PUT, DELETE]"
+      },
+      {
+        "oro": "ORO-41",
+        "caso": "CP-W10",
+        "clase_oro": "prueba_inestable",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El caso reporta resultados inconsistentes entre ejecuciones y el error de timeout sugiere problemas de sincronización en la interfaz.",
+        "evidencia": "Inestable: falló 1 de 3 ejecuciones"
+      },
+      {
+        "oro": "ORO-43",
+        "caso": "CP-NA69",
+        "clase_oro": "prueba_inestable",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": true,
+        "defecto_oro": "DEF-15",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La prueba fue marcada con XPASS (strict), lo que indica que el comportamiento esperado no se reprodujo consistentemente bajo las condiciones actuales.",
+        "evidencia": "failed: test_cpna69_ediciones_simultáneas_con_el_mismo_correo [XPASS(strict)] el fallo marcado como esperado no se reprodujo"
+      },
+      {
+        "oro": "ORO-44",
+        "caso": "CP-W05",
+        "clase_oro": "prueba_inestable",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La prueba alterna entre fallos y éxitos en la misma ejecución (flaky), y el fallo ocurre por un timeout esperando contenido dinámico.",
+        "evidencia": "Inestable: falló 1 de 3 ejecuciones"
+      },
+      {
+        "oro": "ORO-45",
+        "caso": "CP-A01",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El servidor no acepta conexiones durante la configuración de los datos de prueba.",
+        "evidencia": "httpx.ConnectError: [Errno 61] Connection refused"
+      },
+      {
+        "oro": "ORO-46",
+        "caso": "CP-A05",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El servidor no acepta conexiones durante la configuración de los datos de prueba.",
+        "evidencia": "httpx.ConnectError: [Errno 61] Connection refused"
+      },
+      {
+        "oro": "ORO-47",
+        "caso": "CP-NA01",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El error Connection refused indica que el servicio al que intenta conectar el fixture para reiniciar el estado está caído o no responde.",
+        "evidencia": "httpx.ConnectError: [Errno 61] Connection refused"
+      },
+      {
+        "oro": "ORO-48",
+        "caso": "CP-A10",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El log del servidor indica un conflicto de direcciones (Address already in use), impidiendo la conexión.",
+        "evidencia": "ERROR:    [Errno 48] Address already in use"
+      },
+      {
+        "oro": "ORO-49",
+        "caso": "CP-A09",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El log del servidor indica un error de base de datos bloqueada (database is locked), lo cual impide procesar la petición correctamente.",
+        "evidencia": "sqlite3.OperationalError: database is locked"
+      },
+      {
+        "oro": "ORO-50",
+        "caso": "CP-NA03",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "La prueba no se ejecuta debido a que falta una dependencia necesaria en el entorno de ejecución (ModuleNotFoundError).",
+        "evidencia": "E   ModuleNotFoundError: No module named 'jsonschema_rs'"
+      },
+      {
+        "oro": "ORO-51",
+        "caso": "CP-W12",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El entorno de ejecución no tiene instalados los binarios necesarios para ejecutar el navegador Playwright.",
+        "evidencia": "Error: browserType.launch: Executable doesn't exist"
+      },
+      {
+        "oro": "ORO-52",
+        "caso": "CP-W01",
+        "clase_oro": "error_entorno",
+        "clase_propuesta": "error_entorno",
+        "acierto": true,
+        "defecto_oro": null,
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El error indica que el servidor no respondió a tiempo durante el inicio, lo cual es un problema típico del entorno de ejecución.",
+        "evidencia": "Error: Timed out waiting 60000ms from config.webServer."
+      },
+      {
+        "oro": "ORO-42",
+        "caso": "CP-T20",
+        "clase_oro": "prueba_inestable",
+        "clase_propuesta": "prueba_inestable",
+        "acierto": true,
+        "defecto_oro": "DEF-26",
+        "defecto_propuesto": null,
+        "confianza": "alta",
+        "razon": "El caso estaba marcado como un fallo esperado (XPASS), lo que indica que el comportamiento de la aplicación cambió o la prueba no es consistente al validar la concurrencia.",
+        "evidencia": "[XPASS(strict)] el fallo marcado como esperado no se reprodujo"
+      }
+    ]
+  },
+  "hay_modelo": true,
+  "causas_sin_prediccion": {
+    "ORO-04": {
+      "caso": "CP-A32",
+      "grupo": "G2",
+      "tipo": "guarda",
+      "motivo": "clase inválida: None"
+    },
+    "ORO-09": {
+      "caso": "CP-NA04",
+      "grupo": "G3",
+      "tipo": "guarda",
+      "motivo": "posible dato personal (celular o documento) en el texto: 987000135…"
+    },
+    "ORO-11": {
+      "caso": "CP-NA15",
+      "grupo": "G3",
+      "tipo": "guarda",
+      "motivo": "posible dato personal (celular o documento) en el texto: 987000330…"
+    },
+    "ORO-18": {
+      "caso": "CP-NA60",
+      "grupo": "G5",
+      "tipo": "guarda",
+      "motivo": "clase inválida: None"
+    }
+  },
+  "comparacion": {
+    "ids_del_subconjunto": [
+      "ORO-01",
+      "ORO-02",
+      "ORO-03",
+      "ORO-05",
+      "ORO-06",
+      "ORO-07",
+      "ORO-08",
+      "ORO-10",
+      "ORO-12",
+      "ORO-13",
+      "ORO-14",
+      "ORO-15",
+      "ORO-16",
+      "ORO-17",
+      "ORO-19",
+      "ORO-20",
+      "ORO-21",
+      "ORO-22",
+      "ORO-23",
+      "ORO-24",
+      "ORO-25",
+      "ORO-26",
+      "ORO-27",
+      "ORO-28",
+      "ORO-29",
+      "ORO-30",
+      "ORO-31",
+      "ORO-32",
+      "ORO-33",
+      "ORO-34",
+      "ORO-35",
+      "ORO-36",
+      "ORO-37",
+      "ORO-38",
+      "ORO-39",
+      "ORO-40",
+      "ORO-41",
+      "ORO-42",
+      "ORO-43",
+      "ORO-44",
+      "ORO-45",
+      "ORO-46",
+      "ORO-47",
+      "ORO-48",
+      "ORO-49",
+      "ORO-50",
+      "ORO-51",
+      "ORO-52"
+    ],
+    "mismo_subconjunto": {
+      "casos": 48,
+      "por_clase": {
+        "defecto_real": {
+          "total": 36,
+          "base": 34,
+          "modelo": 28
+        },
+        "prueba_inestable": {
+          "total": 4,
+          "base": 4,
+          "modelo": 4
+        },
+        "error_entorno": {
+          "total": 8,
+          "base": 7,
+          "modelo": 8
+        }
+      },
+      "defecto": {
+        "total": 38,
+        "base": 0,
+        "modelo": 0
+      }
+    },
+    "conjunto_completo": {
+      "casos": 52,
+      "por_clase": {
+        "defecto_real": {
+          "total": 40,
+          "base": 38,
+          "modelo": 28
+        },
+        "prueba_inestable": {
+          "total": 4,
+          "base": 4,
+          "modelo": 4
+        },
+        "error_entorno": {
+          "total": 8,
+          "base": 7,
+          "modelo": 8
+        }
+      },
+      "defecto": {
+        "total": 42,
+        "base": 0,
+        "modelo": 0
+      }
+    }
+  }
+}

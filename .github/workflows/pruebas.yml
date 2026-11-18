@@ -1,5 +1,6 @@
 # Pipeline de pruebas de Qolqe (núcleo y G4). Detalle y justificación de cada job: docs/pipeline.md.
-# Etapas de rápido a lento: estatico -> api y contrato (en paralelo) -> web x3.
+# Etapas de rápido a lento: estatico -> contrato -> api -> web x3. El contrato va al inicio: si la API no cumple
+# su propio contrato, los casos funcionales y el navegador no significan nada todavía (y no se gasta runner en ellos).
 # quality-gate da un solo veredicto. reportes, gestion-casos y publicar dejan la evidencia y el historial.
 name: Pruebas núcleo y G4
 
@@ -71,21 +72,36 @@ jobs:
         run: python -m pytest tests/api --collect-only -q
       - name: Etiquetas de trazabilidad (@HU, @CA y @CP en cada escenario, CP únicos, DEF conocidos)
         run: python .github/scripts/trazabilidad.py --verificar
+      # El workflow también es código de pruebas: actionlint detecta jobs mal encadenados, expresiones inválidas
+      # y shell roto antes de gastar un runner. Versión fijada para que el resultado no cambie solo.
+      - name: Workflow válido (actionlint)
+        run: |
+          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/v1.7.12/scripts/download-actionlint.bash) 1.7.12
+          ./actionlint -color
+          rm -f actionlint
+      # Regla del patrón Page Object: un paso de Gherkin no toca la pantalla, delega en el Page Object.
+      # Sin esta guarda la regla vive solo en el informe; aquí el pipeline no deja romperla.
+      - name: Regla del patrón (ningún localizador en los pasos)
+        run: |
+          if grep -rnE "getBy|locator\(|page\." tests/e2e/steps; then
+            echo "::error::Un paso de Gherkin usa localizadores o 'page' directamente: eso va en tests/e2e/pages."
+            exit 1
+          fi
 
-  # Etapa 2a. API funcional y técnica contra Qolqe levantado en el runner.
-  # if !cancelled + la guarda: si estatico falla, este check obligatorio queda en rojo en vez de "omitido" (que cuenta como verde).
+  # Etapa 3. API funcional y técnica contra Qolqe levantado en el runner. Depende del contrato.
+  # if !cancelled + la guarda: si una etapa anterior falla, este check obligatorio queda en rojo en vez de "omitido" (que cuenta como verde).
   api:
     name: api
-    needs: estatico
+    needs: [estatico, contrato]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - name: Requiere estatico en verde
+      - name: Requiere estatico y contrato en verde
         id: guarda
-        if: ${{ needs.estatico.result != 'success' }}
+        if: ${{ needs.estatico.result != 'success' || needs.contrato.result != 'success' }}
         run: |
-          echo "::error::estatico terminó en '${{ needs.estatico.result }}': no se ejecuta la API."
+          echo "::error::estatico terminó en '${{ needs.estatico.result }}' y contrato en '${{ needs.contrato.result }}': no se ejecutan las pruebas de API."
           exit 1
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -119,13 +135,22 @@ jobs:
           overwrite: true
           retention-days: ${{ env.RETENCION }}
 
-  # Etapa 2b. Contrato OpenAPI con casos generados. En paralelo con api, en otro runner y con su propia base de datos.
+  # Etapa 2. Contrato OpenAPI con casos generados (Schemathesis), en su propio runner y con su propia base de datos.
+  # Va antes de las pruebas funcionales: es la indicación de la entrega final y es la etapa que invalida el resto si falla.
+  # if !cancelled + la guarda, igual que api: si estatico falla, este job queda en rojo en vez de "omitido".
   contrato:
     name: contrato
     needs: estatico
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
+      - name: Requiere estatico en verde
+        id: guarda
+        if: ${{ needs.estatico.result != 'success' }}
+        run: |
+          echo "::error::estatico terminó en '${{ needs.estatico.result }}': no se ejecutan las pruebas de contrato."
+          exit 1
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
         with:
@@ -143,11 +168,12 @@ jobs:
           curl --silent --fail --retry 60 --retry-delay 1 --retry-connrefused "$QOLQE_URL/api/salud"
       - name: Pruebas de contrato del núcleo y de G4 (Schemathesis)
         run: ./scripts/correr-contrato.sh
+      # Los pasos con !cancelled() corren aunque fallen las pruebas, pero no si la guarda cortó el job.
       - name: Resumen del job
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.guarda.outcome == 'skipped' }}
         run: python .github/scripts/resumen.py "Contrato" reportes/contrato/junit.xml
       - name: Publicar artefacto
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.guarda.outcome == 'skipped' }}
         uses: actions/upload-artifact@v4
         with:
           name: reportes-contrato
@@ -155,7 +181,7 @@ jobs:
           overwrite: true
           retention-days: ${{ env.RETENCION }}
 
-  # Etapa 3. Web E2E, la más cara: solo se ejecuta si toda la capa API (funcional, técnica y contrato) está en verde.
+  # Etapa 4. Web E2E, la más cara: solo se ejecuta si toda la capa API (contrato y pruebas funcionales y técnicas) está en verde.
   web:
     name: web
     needs: [api, contrato]
@@ -222,9 +248,20 @@ jobs:
           CONTRATO: ${{ needs.contrato.result }}
           WEB: ${{ needs.web.result }}
         run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'CRITERIOS'
+          ## Quality gate
+
+          Criterios de salida de este run, y quién los hace cumplir:
+
+          1. **Análisis estático** (job `estatico`): ruff, tipos de TypeScript, Gherkin con todos sus pasos definidos, etiquetas de trazabilidad, actionlint y la regla del patrón (ningún localizador en los pasos).
+          2. **Contrato de la API** (job `contrato`): Schemathesis genera los casos desde el OpenAPI y corre antes que las pruebas funcionales.
+          3. **API funcional y técnica** (job `api`): todas pasan y los fallos conocidos van declarados como xfail estricto con su DEF.
+          4. **Web de punta a punta** (job `web`): pasa las 3 corridas seguidas, sin pruebas inestables.
+
+          Alcance: el gate no evalúa el rendimiento (Parte 3, medida aparte con k6 en un entorno controlado de 1 CPU) ni el job `reportes`, que publica la evidencia incluso cuando las pruebas fallan.
+
+          CRITERIOS
           {
-            echo "## Quality gate"
-            echo ""
             echo "| Etapa | Resultado |"
             echo "|---|---|"
             echo "| estatico | $ESTATICO |"
@@ -240,7 +277,7 @@ jobs:
               exit 1
             fi
           done
-          echo "**Pasa:** todas las pruebas pasan, los fallos conocidos son xfail con su DEF y no hay pruebas inestables." >> "$GITHUB_STEP_SUMMARY"
+          echo "**Pasa:** las cuatro etapas terminaron en success, así que los cuatro criterios de salida se cumplen." >> "$GITHUB_STEP_SUMMARY"
 
   # Evidencia 1. Une etiquetas y JUnit: matriz del run, JUnit por CP, run.json, evidencias y vista previa del historial.
   # Corre también en PR y aunque fallen las pruebas: el reporte es lo que explica el fallo.
@@ -260,6 +297,10 @@ jobs:
           pattern: reportes-*
           path: descargas
           merge-multiple: true
+      # Antes de la portada: el nav de la portada enlaza rendimiento/ solo si la carpeta ya existe.
+      # La evidencia de la Parte 3 está versionada en tests/performance/resultados/, así que esto solo copia y arma la página.
+      - name: Sumar la Parte 3 (rendimiento con k6) al sitio
+        run: python .github/scripts/sitio_rendimiento.py --sitio sitio
       - name: Armar la matriz, el JUnit por caso, run.json y la portada
         env:
           CONCLUSION: ${{ needs.api.result == 'success' && needs.contrato.result == 'success' && needs.web.result == 'success' && 'success' || 'failure' }}
@@ -313,6 +354,14 @@ jobs:
           if [ -z "$KIWI_URL" ]; then
             echo "::notice::Gestión de casos sin configurar (faltan los secretos KIWI_URL, KIWI_USUARIO y KIWI_CLAVE). Sincronizar desde la máquina con scripts/kiwi_sincronizar.py."
             echo "activa=false" >> "$GITHUB_OUTPUT"
+            cat >> "$GITHUB_STEP_SUMMARY" <<'KIWI'
+          ## Gestión de casos
+
+          Sin configurar en Actions: faltan los secretos `KIWI_URL`, `KIWI_USUARIO` y `KIWI_CLAVE`.
+
+          La sincronización con Kiwi TCMS es *pull* desde la máquina del equipo, porque Kiwi corre ahí y los runners de GitHub no llegan a él: `scripts/kiwi_sincronizar.py` descarga el artefacto `trazabilidad` de este run y lo importa. Detalle en `docs/gestion-casos.md`.
+
+          KIWI
           else
             echo "activa=true" >> "$GITHUB_OUTPUT"
           fi
@@ -342,9 +391,11 @@ jobs:
           echo "Run #${GITHUB_RUN_NUMBER} registrado en Kiwi TCMS (plan ${KIWI_PLAN_ID})." >> "$GITHUB_STEP_SUMMARY"
 
   # Evidencia 3. Publica el sitio en GitHub Pages y suma este run al historial. Solo en main.
+  # needs incluye gestion-casos para que publicar sea siempre el último job del run: el reporte queda visible al terminar.
+  # No exige que gestion-casos esté en verde (!cancelled + la condición de reportes): si Kiwi no está configurado, el sitio se publica igual.
   publicar:
     name: publicar
-    needs: reportes
+    needs: [reportes, gestion-casos]
     if: ${{ !cancelled() && needs.reportes.result == 'success' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -390,3 +441,17 @@ jobs:
           path: sitio
       - id: despliegue
         uses: actions/deploy-pages@v4
+      # El último paso del último job deja el reporte a un clic desde el resumen del run.
+      - name: Dejar el reporte publicado en el resumen del run
+        env:
+          SITIO: ${{ steps.despliegue.outputs.page_url }}
+        run: |
+          {
+            echo "## Reporte publicado"
+            echo ""
+            echo "- Portada del run: $SITIO"
+            echo "- Rendimiento (Parte 3): ${SITIO}rendimiento/"
+            echo "- Evidencias por caso: ${SITIO}evidencias/"
+            echo "- Historial de ejecuciones: ${SITIO}historial.html"
+            echo "- Modo de evidencia de este run: $EVIDENCIA"
+          } >> "$GITHUB_STEP_SUMMARY"

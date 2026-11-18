@@ -1,0 +1,15 @@
+{
+  "grupo": "G15",
+  "nombre": "Límite diario en transferencias interbancarias",
+  "fallos": [
+    {
+      "caso": "CP-NA117",
+      "grupo": "G15",
+      "clase": "defecto_real",
+      "defecto": "DEF-20",
+      "confianza": "alta",
+      "razon": "El caso está marcado como xfailed y el reporte indica explícitamente un defecto conocido, confirmando que la funcionalidad no cumple con lo esperado.",
+      "evidencia": "Defecto conocido DEF-20 (fallo esperado)"
+    }
+  ]
+}

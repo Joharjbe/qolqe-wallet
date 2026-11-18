@@ -1,0 +1,7 @@
+{
+  "backend": "lineabase",
+  "corridas": 5,
+  "casos": 4,
+  "casos_que_cambiaron_de_clase": 0,
+  "diagnosticos_distintos": 1
+}
