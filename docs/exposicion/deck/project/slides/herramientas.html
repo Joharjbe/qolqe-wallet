@@ -1,24 +1,78 @@
 <section id="herramientas" class="pie" data-transition="fade">
 <p class="cejilla">PUNTO 1 · HERRAMIENTAS COMPLEMENTARIAS · OBS. 1c Y 5</p>
-<h2>Cada herramienta responde una pregunta distinta</h2>
-<div class="cuerpo junto">
-<table class="densa" style="width:1664px">
-<tr><th width="23%">Herramienta</th><th width="25%">Qué pregunta responde</th><th width="52%">Por qué esa, y frente a qué alternativa</th></tr>
-<tr><td><b>pytest-bdd + httpx</b><br>API, Python</td><td>¿La regla de negocio se cumple?</td><td>Lee el mismo Gherkin que la web; un hook deja cada DEF como xfail estricto. Postman + Newman: Newman ya no se actualiza y no lee Gherkin</td></tr>
-<tr><td><b>Schemathesis</b></td><td>¿La API cumple el contrato que promete?</td><td>Genera los casos desde el OpenAPI: así salieron DEF-05, 06, 08 y 29. Dredd: archivado en noviembre de 2024</td></tr>
-<tr><td><b>Playwright + playwright-bdd</b><br>web, TypeScript</td><td>¿El usuario puede hacerlo en la pantalla?</td><td>Espera sola, y da traza y video. CP-NW18 necesita dos sesiones, y Cypress no controla dos navegadores a la vez</td></tr>
-<tr><td><b>k6</b></td><td>¿Aguanta la hora punta y hasta dónde crece?</td><td>Modelo abierto: la carga como tasa de llegada. JMeter: su modelo abierto es experimental y termina con 0 aunque haya fallas</td></tr>
-<tr><td><b>GitHub Actions</b></td><td>¿Sigue cumpliendo después de cada cambio?</td><td>Ocho jobs, de lo barato a lo caro, sin servidor propio. Jenkins exige mantener un servidor y sus agentes</td></tr>
-<tr><td><b>Kiwi TCMS</b></td><td>¿Cómo le fue a un caso en cada corrida?</td><td>Las demás ejecutan; Kiwi registra y traza. Comparado con ocho herramientas en el punto 7</td></tr>
-</table>
-<p class="nota sola">La regla de niveles, de la clase 11: lo que se puede comprobar por API va por API, que es más rápido y estable; la web, lo que solo existe en la pantalla.</p>
+<h2>Una pregunta por herramienta</h2>
+<div class="g4-hr">
+<div class="g4-hr-capa g4-hr-c1"><p class="g4-aparece">EJECUTAN</p><p class="g4-hr-regla g4-pop g4-t135"><svg width="26" height="20" viewBox="0 0 26 20" role="img" aria-label="Flecha hacia la API"><path d="M23,10 H4 M11,3 L4,10 L11,17" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>API antes que pantalla</p></div>
+<div class="g4-hr-carta g4-hr-p1 g4-entra g4-t10">
+<p class="g4-hr-preg">¿La regla?</p>
+<div class="g4-hr-cab"><svg width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Ícono API"><circle cx="32" cy="32" r="31" fill="#E6EAF2"/><path d="M26,14 Q18.8,14 18.8,21.2 V27.2 Q18.8,32 12.8,32 Q18.8,32 18.8,36.8 V42.8 Q18.8,50 26,50 M38,14 Q45.2,14 45.2,21.2 V27.2 Q45.2,32 51.2,32 Q45.2,32 45.2,36.8 V42.8 Q45.2,50 38,50" fill="none" stroke="#1F5FD0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="g4-hr-nom">pytest-bdd</p></div>
+<p class="g4-hr-si"><svg width="28" height="28" viewBox="0 0 28 28" role="img" aria-label="Por qué"><circle cx="14" cy="14" r="13" fill="#2F6B2F"/><path d="M8,14.5 L12,18.5 L20,10" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>mismo Gherkin</p>
+<p class="g4-hr-no"><svg width="28" height="28" viewBox="0 0 28 28" role="img" aria-label="Alternativa descartada"><circle cx="14" cy="14" r="12" fill="none" stroke="#6B7693" stroke-width="2.5"/><path d="M9.5,9.5 L18.5,18.5 M18.5,9.5 L9.5,18.5" fill="none" stroke="#6B7693" stroke-width="2.5" stroke-linecap="round"/></svg>Newman</p>
+</div>
+<div class="g4-hr-carta g4-hr-p2 g4-entra g4-t20">
+<p class="g4-hr-preg">¿La pantalla?</p>
+<div class="g4-hr-cab"><svg width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Ícono web"><circle cx="32" cy="32" r="31" fill="#E6EAF2"/><rect x="13" y="17" width="38" height="30" rx="5" fill="none" stroke="#1F5FD0" stroke-width="3.5"/><path d="M13,26 H51 M19,21.5 h0.1 M24.5,21.5 h0.1" fill="none" stroke="#1F5FD0" stroke-width="3.5" stroke-linecap="round"/></svg><p class="g4-hr-nom">Playwright</p></div>
+<p class="g4-hr-si"><svg width="28" height="28" viewBox="0 0 28 28" role="img" aria-label="Por qué"><circle cx="14" cy="14" r="13" fill="#2F6B2F"/><path d="M8,14.5 L12,18.5 L20,10" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>sesiones simultáneas</p>
+<p class="g4-hr-no"><svg width="28" height="28" viewBox="0 0 28 28" role="img" aria-label="Alternativa descartada"><circle cx="14" cy="14" r="12" fill="none" stroke="#6B7693" stroke-width="2.5"/><path d="M9.5,9.5 L18.5,18.5 M18.5,9.5 L9.5,18.5" fill="none" stroke="#6B7693" stroke-width="2.5" stroke-linecap="round"/></svg>Cypress</p>
+</div>
+<div class="g4-hr-carta g4-hr-p3 g4-entra g4-t35">
+<p class="g4-hr-preg">¿El contrato?</p>
+<p class="g4-hr-sello g4-hr-def">4 DEF</p>
+<div class="g4-hr-cab"><svg width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Ícono contrato"><circle cx="32" cy="32" r="31" fill="#E6EAF2"/><path d="M20,14 H38 L46,22 V50 H20 Z M38,14 V22 H46 M26,36 L31,41 L40,31" fill="none" stroke="#1F5FD0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="g4-hr-nom">Schemathesis</p></div>
+<p class="g4-hr-si"><svg width="28" height="28" viewBox="0 0 28 28" role="img" aria-label="Por qué"><circle cx="14" cy="14" r="13" fill="#2F6B2F"/><path d="M8,14.5 L12,18.5 L20,10" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>genera casos</p>
+<p class="g4-hr-no"><svg width="28" height="28" viewBox="0 0 28 28" role="img" aria-label="Alternativa descartada"><circle cx="14" cy="14" r="12" fill="none" stroke="#6B7693" stroke-width="2.5"/><path d="M9.5,9.5 L18.5,18.5 M18.5,9.5 L9.5,18.5" fill="none" stroke="#6B7693" stroke-width="2.5" stroke-linecap="round"/></svg>Dredd</p>
+</div>
+<div class="g4-hr-carta g4-hr-p4 g4-entra g4-t45">
+<p class="g4-hr-preg">¿La carga?</p>
+<div class="g4-hr-cab"><svg width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Ícono rendimiento"><circle cx="32" cy="32" r="31" fill="#E6EAF2"/><path d="M13,43 A19,19 0 1 1 51,43" fill="none" stroke="#1F5FD0" stroke-width="3.5" stroke-linecap="round"/><path d="M32,40 L41,27" fill="none" stroke="#C2710C" stroke-width="3.5" stroke-linecap="round"/><circle cx="32" cy="40" r="4" fill="#14213D"/></svg><p class="g4-hr-nom">k6</p></div>
+<p class="g4-hr-si"><svg width="28" height="28" viewBox="0 0 28 28" role="img" aria-label="Por qué"><circle cx="14" cy="14" r="13" fill="#2F6B2F"/><path d="M8,14.5 L12,18.5 L20,10" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>modelo abierto</p>
+<p class="g4-hr-no"><svg width="28" height="28" viewBox="0 0 28 28" role="img" aria-label="Alternativa descartada"><circle cx="14" cy="14" r="12" fill="none" stroke="#6B7693" stroke-width="2.5"/><path d="M9.5,9.5 L18.5,18.5 M18.5,9.5 L9.5,18.5" fill="none" stroke="#6B7693" stroke-width="2.5" stroke-linecap="round"/></svg>JMeter</p>
+</div>
+<div class="g4-hr-flecha g4-aparece g4-t120"><svg width="48" height="582" viewBox="0 0 48 582" role="img" aria-label="Una flecha por fila, unidas por una barra: las cuatro que ejecutan, juntas, pasan a la que automatiza y a la que registra"><path d="M2,131 H42 M2,451 H42 M20,131 V451 M33,122 L43,131 L33,140 M33,442 L43,451 L33,460" fill="none" stroke="#1F5FD0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div class="g4-hr-capa g4-hr-c2"><p class="g4-aparece g4-t85">AUTOMATIZA</p></div>
+<div class="g4-hr-carta g4-hr-ancha g4-hr-p5 g4-entra g4-t85">
+<div class="g4-hr-mitad">
+<p class="g4-hr-preg">¿Cada cambio?</p>
+<div class="g4-hr-cab"><svg width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Ícono pipeline"><circle cx="32" cy="32" r="31" fill="#E6EAF2"/><path d="M17,22 L27,32 L17,42 M28,22 L38,32 L28,42 M39,22 L49,32 L39,42" fill="none" stroke="#1F5FD0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="g4-hr-nom">GitHub Actions</p></div>
+<div class="g4-hr-suites" role="img" aria-label="Las tres suites que pasan por aquí: API, web y contrato; k6 no"><svg width="44" height="44" viewBox="0 0 64 64" role="img" aria-label="API"><circle cx="32" cy="32" r="30" fill="none" stroke="#B8C6E6" stroke-width="3"/><path d="M26,14 Q18.8,14 18.8,21.2 V27.2 Q18.8,32 12.8,32 Q18.8,32 18.8,36.8 V42.8 Q18.8,50 26,50 M38,14 Q45.2,14 45.2,21.2 V27.2 Q45.2,32 51.2,32 Q45.2,32 45.2,36.8 V42.8 Q45.2,50 38,50" fill="none" stroke="#1F5FD0" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg><svg width="44" height="44" viewBox="0 0 64 64" role="img" aria-label="Web"><circle cx="32" cy="32" r="30" fill="none" stroke="#B8C6E6" stroke-width="3"/><rect x="13" y="17" width="38" height="30" rx="5" fill="none" stroke="#1F5FD0" stroke-width="4.5"/><path d="M13,26 H51" fill="none" stroke="#1F5FD0" stroke-width="4.5"/></svg><svg width="44" height="44" viewBox="0 0 64 64" role="img" aria-label="Contrato"><circle cx="32" cy="32" r="30" fill="none" stroke="#B8C6E6" stroke-width="3"/><path d="M20,14 H38 L46,22 V50 H20 Z M26,36 L31,41 L40,31" fill="none" stroke="#1F5FD0" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+</div>
+<div class="g4-hr-mitad g4-hr-der">
+<div class="g4-hr-jobs"><svg width="200" height="40" viewBox="0 0 200 40" role="img" aria-label="Ocho jobs en fila, de lo barato a lo caro: cada círculo es más grande que el anterior"><path d="M6,20 H184" fill="none" stroke="#D8D5CC" stroke-width="3"/><circle cx="6" cy="20" r="5" fill="#1F5FD0"/><circle cx="24.6" cy="20" r="6.1" fill="#1F5FD0"/><circle cx="45.6" cy="20" r="7.3" fill="#1F5FD0"/><circle cx="68.8" cy="20" r="8.4" fill="#1F5FD0"/><circle cx="94.3" cy="20" r="9.6" fill="#1F5FD0"/><circle cx="122.1" cy="20" r="10.7" fill="#1F5FD0"/><circle cx="152.1" cy="20" r="11.9" fill="#1F5FD0"/><circle cx="184.5" cy="20" r="13" fill="#1F5FD0"/></svg><p class="g4-hr-dato">8 jobs</p></div>
+<p class="g4-hr-si"><svg width="28" height="28" viewBox="0 0 28 28" role="img" aria-label="Por qué"><circle cx="14" cy="14" r="13" fill="#2F6B2F"/><path d="M8,14.5 L12,18.5 L20,10" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>sin servidor</p>
+<p class="g4-hr-no"><svg width="28" height="28" viewBox="0 0 28 28" role="img" aria-label="Alternativa descartada"><circle cx="14" cy="14" r="12" fill="none" stroke="#6B7693" stroke-width="2.5"/><path d="M9.5,9.5 L18.5,18.5 M18.5,9.5 L9.5,18.5" fill="none" stroke="#6B7693" stroke-width="2.5" stroke-linecap="round"/></svg>Jenkins</p>
+</div>
+</div>
+<div class="g4-hr-capa g4-hr-c3"><p class="g4-aparece g4-t120">REGISTRA</p></div>
+<div class="g4-hr-carta g4-hr-ancha g4-hr-p6 g4-entra g4-t120">
+<div class="g4-hr-mitad">
+<p class="g4-hr-preg">¿Cada corrida?</p>
+<div class="g4-hr-cab"><svg width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="Ícono gestión de casos"><circle cx="32" cy="32" r="31" fill="#E6EAF2"/><path d="M20,17 H44 V50 H20 Z M27,13 H37 V21 H27 Z M26,35 L31,40 L39,30" fill="none" stroke="#1F5FD0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="g4-hr-nom">Kiwi</p></div>
+<div class="g4-hr-suites" role="img" aria-label="Las tres suites que pasan por aquí: API, web y contrato; k6 no"><svg width="44" height="44" viewBox="0 0 64 64" role="img" aria-label="API"><circle cx="32" cy="32" r="30" fill="none" stroke="#B8C6E6" stroke-width="3"/><path d="M26,14 Q18.8,14 18.8,21.2 V27.2 Q18.8,32 12.8,32 Q18.8,32 18.8,36.8 V42.8 Q18.8,50 26,50 M38,14 Q45.2,14 45.2,21.2 V27.2 Q45.2,32 51.2,32 Q45.2,32 45.2,36.8 V42.8 Q45.2,50 38,50" fill="none" stroke="#1F5FD0" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg><svg width="44" height="44" viewBox="0 0 64 64" role="img" aria-label="Web"><circle cx="32" cy="32" r="30" fill="none" stroke="#B8C6E6" stroke-width="3"/><rect x="13" y="17" width="38" height="30" rx="5" fill="none" stroke="#1F5FD0" stroke-width="4.5"/><path d="M13,26 H51" fill="none" stroke="#1F5FD0" stroke-width="4.5"/></svg><svg width="44" height="44" viewBox="0 0 64 64" role="img" aria-label="Contrato"><circle cx="32" cy="32" r="30" fill="none" stroke="#B8C6E6" stroke-width="3"/><path d="M20,14 H38 L46,22 V50 H20 Z M26,36 L31,41 L40,31" fill="none" stroke="#1F5FD0" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+</div>
+<div class="g4-hr-mitad g4-hr-der">
+<div class="g4-hr-junit"><p class="g4-hr-ficha">JUnit</p><svg width="150" height="48" viewBox="0 0 150 48" role="img" aria-label="El JUnit entra a Kiwi y queda una fila por corrida"><path d="M4,24 H40 M30,15 L41,24 L30,33" fill="none" stroke="#14213D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="56" y="2" width="90" height="44" rx="8" fill="none" stroke="#1F5FD0" stroke-width="3"/><path d="M66,14 H136 M66,24 H136 M66,34 H136" fill="none" stroke="#1F5FD0" stroke-width="3" stroke-linecap="round"/></svg></div>
+<p class="g4-hr-no"><svg width="28" height="28" viewBox="0 0 28 28" role="img" aria-label="Alternativa descartada"><circle cx="14" cy="14" r="12" fill="none" stroke="#6B7693" stroke-width="2.5"/><path d="M9.5,9.5 L18.5,18.5 M18.5,9.5 L9.5,18.5" fill="none" stroke="#6B7693" stroke-width="2.5" stroke-linecap="round"/></svg>otras 8</p>
+</div>
+</div>
 </div>
 <p class="numero-pagina">10 · Entrega final · Pruebas de Qolqe</p>
 <aside>Esta lámina responde la observación que me hicieron dos veces: que las herramientas sean complementarias y que su elección esté sustentada.
 
-La idea que las ordena es que cada una responde una pregunta que las otras no responden, y la última columna dice frente a qué la elegí. pytest-bdd prueba los casos que yo diseñé desde los criterios, con el mismo Gherkin que la web; Postman con Newman no lee Gherkin y Newman ya no recibe actualizaciones. Schemathesis genera casos desde el contrato, así que encuentra lo que a mí no se me ocurrió: así salieron cuatro defectos; eso es complementario, no redundante. Playwright prueba lo que solo existe en la pantalla; elegí Playwright y no Cypress porque un caso necesita dos navegadores a la vez. k6 responde si aguanta la carga: el requerimiento da la carga como sesiones por hora, que es una tasa de llegada, y el modelo abierto de JMeter es experimental. GitHub Actions corre todo sin un servidor propio. Y Kiwi no ejecuta nada: registra cada corrida.
+Se lee por capas, de izquierda a derecha: cuatro herramientas ejecutan, una automatiza y una registra. Cada tarjeta tiene arriba la pregunta que responde, en verde por qué la elegí y tachada la alternativa que descarté. Ninguna responde la pregunta de otra: por eso son complementarias, no redundantes.
 
-Abajo está la regla que uso para decidir dónde va cada caso, que es de la clase 11: si se puede comprobar por API, se prueba por API, porque es más rápido y más estable. La web se reserva para lo que de verdad necesita el navegador.
+pytest-bdd con httpx, en Python, responde si la regla de negocio se cumple. Lee el mismo Gherkin que la web y un hook deja cada DEF como fallo esperado estricto. Postman con Newman no lee Gherkin y Newman ya no recibe actualizaciones.
+
+Playwright con playwright-bdd, en TypeScript, responde si el usuario puede hacerlo en la pantalla. Espera solo y da traza y video. Lo elegí y no Cypress porque CP-NW18 necesita dos sesiones a la vez, y Cypress no controla dos navegadores.
+
+Schemathesis responde si la API cumple el contrato que promete. Genera los casos desde el OpenAPI, así que encuentra lo que a mí no se me ocurrió: así salieron cuatro defectos, DEF-05, 06, 08 y 29; de esos cuatro, dos solo los detectó el contrato y los otros dos también los detectó otra suite. Dredd quedó archivado en noviembre de 2024.
+
+k6 responde si aguanta la hora punta y hasta dónde crece. El requerimiento da la carga como sesiones por hora, que es una tasa de llegada: eso es un modelo abierto. El modelo abierto de JMeter es experimental y JMeter termina con 0 aunque haya fallas. k6 corre a mano, fuera del pipeline.
+
+GitHub Actions responde si todo sigue cumpliendo después de cada cambio: ocho jobs, de lo barato a lo caro, sin un servidor propio. Jenkins exige mantener un servidor y sus agentes.
+
+Kiwi TCMS no ejecuta nada: importa el JUnit y registra cómo le fue a cada caso en cada corrida, con su trazabilidad. Lo comparé con ocho herramientas en el punto 7.
+
+La flecha de arriba, API antes que pantalla, es la regla de niveles, de la clase 11: lo que se puede comprobar por API va por API, que es más rápido y más estable; la web se reserva para lo que solo existe en la pantalla.
 
 Si pregunta por qué dos lenguajes: cada suite usa el runner que enseña la clase, pytest en Python para la API y Playwright Test en TypeScript para la web; lo que comparten es el Gherkin y el JUnit, no código. La comparación completa de k6 con JMeter, Gatling, Locust, Artillery y Taurus está en el informe de rendimiento.</aside>
 </section>

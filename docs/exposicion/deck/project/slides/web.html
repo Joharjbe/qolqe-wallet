@@ -1,38 +1,96 @@
 <section id="web" class="pie" data-transition="fade">
 <p class="cejilla">PUNTO 3 · COBERTURA WEB EN GHERKIN · OBS. 1a</p>
-<h2>Todo lo que corre en el navegador nace de un <span class="mono" style="font-size:52px">.feature</span></h2>
-<div class="cuerpo">
-<div class="fila-3">
-<div class="tarjeta">
-<p class="dato dato-azul">58</p>
-<p>escenarios web: 27 del núcleo común y 31 de G4</p>
-</div>
-<div class="tarjeta">
-<p class="dato dato-azul">4</p>
-<p>archivos <span class="mono">.feature</span>; ni una prueba suelta escrita en código</p>
-</div>
-<div class="tarjeta">
-<p class="dato dato-azul">× 3</p>
-<p>cada escenario corre tres veces seguidas, en cada pipeline</p>
-</div>
-</div>
-<div class="fila-2">
-<div class="tarjeta">
-<p class="etiqueta">POR QUÉ TRES VECES</p>
-<p class="chica">Una prueba que pasa dos de tres veces es inestable, no una prueba que pasa: sin eso, el equipo aprende a reintentar y deja de creerle a la suite. Es lo que pedía la Entrega 2: sin esperas fijas y pasa 3 veces seguidas. Hoy hay 0 esperas fijas.</p>
-</div>
-<div class="tarjeta">
-<p class="etiqueta">QUÉ SE AGREGÓ Y CON QUÉ CRITERIO</p>
-<p class="chica">De 19 escenarios web en la Entrega 2 a 58: los 27 del núcleo y 12 nuevos de G4. Va por la web lo que solo se ve en pantalla, los recorridos críticos con dinero o acceso y los errores que la interfaz debe mostrar: 48 de 51 criterios. Los otros 3 son dos SMS, que no aparecen en pantalla, y una carrera, que la interfaz no provoca de forma determinista.</p>
-</div>
-</div>
+<h2>Todo lo web nace de un <span class="g5-h2mono">.feature</span></h2>
+<div class="g5-lienzo">
+<svg class="g5-svg" width="1664" height="604" viewBox="0 0 1664 604" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A la izquierda, un escenario Gherkin real, CP-W11, del archivo solicitudes_web.feature, uno de los 4 archivos .feature de la web: Dado que Ana ingresó a Qolqe, cuando solicita 15.00, entonces ve Solicitud enviada. Una flecha con el ícono del navegador y la palabra Playwright lo lleva a tres franjas: las tres corridas seguidas de los 58 escenarios, cada una llena de celdas verdes y con un visto; una llave las junta en PASA. Arriba, 0 esperas fijas. Debajo, la regla: visto, aspa, visto es INESTABLE. Abajo, los 58 escenarios web en una barra: 19 que ya estaban en la Entrega 2, más 12 nuevos de G4, que suman 31 de G4, más 27 del núcleo común. A la derecha, el criterio: va por la web solo lo que se ve en la pantalla; así, 48 de los 51 criterios tienen caso web, 48 puntos llenos y 3 vacíos.">
+<g class="g5-entra g5-t000">
+<rect x="30" y="2" width="740" height="256" rx="16" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<rect x="20" y="16" width="740" height="256" rx="16" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<rect x="10" y="30" width="740" height="256" rx="16" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+</g>
+<g class="g5-entra g5-t010">
+<rect x="0" y="44" width="740" height="260" rx="16" fill="#FFFFFF" stroke="#C9CEDA" stroke-width="2"/>
+<path d="M0,102 H740" stroke="#D8D5CC" stroke-width="2"/>
+<path d="M26,59 H40 L48,67 V89 H26 Z M40,59 V67 H48" fill="none" stroke="#1F5FD0" stroke-width="3" stroke-linejoin="round"/>
+<text class="g5-m" x="62" y="82" font-size="24" fill="#14213D">solicitudes_web.feature</text>
+<rect x="556" y="57" width="164" height="34" rx="17" fill="#E6EAF2"/>
+<text x="638" y="82" text-anchor="middle" font-size="24" font-weight="600" fill="#1F5FD0">4 archivos</text>
+</g>
+<text class="g5-m g5-desliza g5-t025" x="28" y="150" font-size="26" font-weight="700" fill="#1F5FD0">Escenario:<tspan fill="#14213D"> CP-W11</tspan></text>
+<text class="g5-m g5-desliza g5-t035" x="60" y="198" font-size="26" fill="#14213D"><tspan font-weight="700" fill="#1F5FD0">Dado</tspan> que <tspan fill="#8F5207">"Ana"</tspan> ingresó a Qolqe</text>
+<text class="g5-m g5-desliza g5-t045" x="60" y="242" font-size="26" fill="#14213D"><tspan font-weight="700" fill="#1F5FD0">Cuando</tspan> solicita <tspan fill="#8F5207">"15.00"</tspan></text>
+<text class="g5-m g5-desliza g5-t055" x="60" y="286" font-size="26" fill="#14213D"><tspan font-weight="700" fill="#1F5FD0">Entonces</tspan> ve <tspan fill="#8F5207">"Solicitud enviada"</tspan></text>
+<g class="g5-aparece g5-t075">
+<rect x="838" y="138" width="46" height="36" rx="6" fill="#FFFFFF" stroke="#1F5FD0" stroke-width="3.4"/>
+<path d="M838,149 H884 M845,143.5 h0.1 M851,143.5 h0.1" fill="none" stroke="#1F5FD0" stroke-width="3.4" stroke-linecap="round"/>
+<text x="861" y="242" text-anchor="middle" font-size="24" font-weight="600" fill="#14213D">Playwright</text>
+</g>
+<path class="g5-traza g5-t080" d="M786,200 H936 M921,186 L937,200 L921,214" fill="none" stroke="#1F5FD0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<g class="g5-aparece g5-t085">
+<text class="g5-m" x="960" y="92" font-size="52" font-weight="700" fill="#1F5FD0">×3</text>
+<text x="1034" y="89" font-size="32" font-weight="600" fill="#14213D">seguidas</text>
+</g>
+<g class="g5-aparece g5-t200">
+<path d="M1384,62 H1410 L1384,98 H1410 Z" fill="none" stroke="#44506B" stroke-width="3.4" stroke-linejoin="round"/>
+<path d="M1378,102 L1416,58" stroke="#8F5207" stroke-width="4" stroke-linecap="round"/>
+<text x="1428" y="90" font-size="26" font-weight="600" fill="#14213D"><tspan class="g5-m" font-size="30" font-weight="700" fill="#2F6B2F">0</tspan> esperas fijas</text>
+</g>
+<rect class="g5-aparece g5-t090" x="962" y="122" width="540" height="40" rx="8" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<rect class="g5-aparece g5-t090" x="962" y="180" width="540" height="40" rx="8" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<rect class="g5-aparece g5-t090" x="962" y="238" width="540" height="40" rx="8" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<path class="g5-crece g5-t095" d="M966,142 H1498" stroke="#2F6B2F" stroke-width="26" stroke-dasharray="6.8 2.3724"/>
+<path class="g5-crece g5-t120" d="M966,200 H1498" stroke="#2F6B2F" stroke-width="26" stroke-dasharray="6.8 2.3724"/>
+<path class="g5-crece g5-t145" d="M966,258 H1498" stroke="#2F6B2F" stroke-width="26" stroke-dasharray="6.8 2.3724"/>
+<g class="g5-pop g5-t130"><circle cx="1532" cy="142" r="17" fill="#2F6B2F"/><path d="M1524,142 l5,5 l10,-10" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g class="g5-pop g5-t155"><circle cx="1532" cy="200" r="17" fill="#2F6B2F"/><path d="M1524,200 l5,5 l10,-10" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g class="g5-pop g5-t180"><circle cx="1532" cy="258" r="17" fill="#2F6B2F"/><path d="M1524,258 l5,5 l10,-10" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<path class="g5-aparece g5-t185" d="M1558,128 H1568 V272 H1558 M1568,200 H1580" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<g class="g5-pop g5-t190"><rect x="1584" y="180" width="80" height="40" rx="8" fill="#2F6B2F"/><text class="g5-m" x="1624" y="209" text-anchor="middle" font-size="26" font-weight="700" fill="#FFFFFF">PASA</text></g>
+<g class="g5-aparece g5-t205">
+<circle cx="980" cy="320" r="14" fill="#2F6B2F"/><path d="M973,320 l4,4 l8,-8" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1016" cy="320" r="14" fill="#8F5207"/><path d="M1011,315 l10,10 M1021,315 l-10,10" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round"/>
+<circle cx="1052" cy="320" r="14" fill="#2F6B2F"/><path d="M1045,320 l4,4 l8,-8" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1080" y="330" font-size="30" font-weight="600" fill="#14213D">=</text>
+<rect x="1106" y="300" width="164" height="40" rx="20" fill="#FFFFFF" stroke="#C2710C" stroke-width="3"/>
+<text class="g5-m" x="1188" y="328" text-anchor="middle" font-size="24" font-weight="700" fill="#8F5207">INESTABLE</text>
+</g>
+<text class="g5-m g5-entra g5-t130" x="0" y="506" font-size="128" font-weight="700" fill="#1F5FD0">58</text>
+<text class="g5-entra g5-t135" x="4" y="550" font-size="28" font-weight="600" fill="#14213D">escenarios web</text>
+<rect class="g5-crece g5-t140" x="290" y="438" width="447" height="64" rx="10" fill="#BFD0F2"/>
+<rect class="g5-crece g5-t160" x="743" y="438" width="278.4" height="64" rx="10" fill="#1F5FD0"/>
+<rect class="g5-crece g5-t180" x="1027.4" y="438" width="636.6" height="64" rx="10" fill="#14213D"/>
+<text class="g5-m g5-aparece g5-t150" x="513.5" y="482" text-anchor="middle" font-size="32" font-weight="700" fill="#14213D">19</text>
+<text class="g5-m g5-aparece g5-t170" x="882.2" y="482" text-anchor="middle" font-size="32" font-weight="700" fill="#FFFFFF">+12</text>
+<text class="g5-m g5-aparece g5-t190" x="1345.7" y="482" text-anchor="middle" font-size="32" font-weight="700" fill="#FFFFFF">+27</text>
+<text class="g5-aparece g5-t155" x="513.5" y="542" text-anchor="middle" font-size="26" font-weight="600" fill="#44506B">Entrega 2</text>
+<g class="g5-aparece g5-t195">
+<path d="M292,426 V414 H1019 V426" fill="none" stroke="#1F5FD0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="656" y="400" text-anchor="middle" font-size="28" font-weight="600" fill="#1F5FD0">G4 · <tspan class="g5-m" font-weight="700">31</tspan></text>
+</g>
+<g class="g5-aparece g5-t205">
+<path d="M1029,426 V414 H1662 V426" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1345.7" y="400" text-anchor="middle" font-size="28" font-weight="600" fill="#14213D">Núcleo común</text>
+</g>
+<g class="g5-aparece g5-t195">
+<rect x="708" y="522" width="956" height="78" rx="14" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<path d="M730,561 Q754,538 778,561 Q754,584 730,561 Z" fill="none" stroke="#1F5FD0" stroke-width="3.4" stroke-linejoin="round"/>
+<circle cx="754" cy="561" r="6" fill="#1F5FD0"/>
+<text x="794" y="570" font-size="26" font-weight="600" fill="#14213D">solo lo que se ve</text>
+<path d="M1036,561 H1078 M1068,552 L1079,561 L1068,570" fill="none" stroke="#44506B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<path class="g5-aparece g5-t205" d="M1096,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1113,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1130,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1147,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1164,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1181,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1198,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1215,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1232,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1249,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1266,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1283,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1300,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1317,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1334,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1351,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1368,544 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1096,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1113,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1130,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1147,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1164,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1181,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1198,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1215,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1232,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1249,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1266,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1283,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1300,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1317,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1334,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1351,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1368,561 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1096,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1113,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1130,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1147,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1164,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1181,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1198,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1215,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1232,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1249,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1266,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1283,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1300,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1317,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0" fill="#1F5FD0"/>
+<path class="g5-aparece g5-t205" d="M1334,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1351,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M1368,578 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0" fill="none" stroke="#8E97AC" stroke-width="2.5"/>
+<text class="g5-aparece g5-t210" x="1404" y="573" font-size="28" font-weight="600" fill="#14213D"><tspan class="g5-m" font-size="34" font-weight="700" fill="#1F5FD0">48/51</tspan> criterios</text>
+</svg>
 </div>
 <p class="numero-pagina">12 · Entrega final · Pruebas de Qolqe</p>
 <aside>Este punto responde la observación 1a: agregar los escenarios que a mi criterio requieren automatización y las pruebas del módulo común.
 
-El enunciado pide que los escenarios web estén en archivos .feature, y se cumple sin excepciones: los 58 escenarios web nacen de cuatro archivos Gherkin. No hay ni una prueba escrita directamente en código saltándose el Gherkin.
+Cómo se lee la lámina. A la izquierda hay un escenario real, CP-W11, del archivo solicitudes_web.feature, recortado para que se lea: Dado que Ana ingresó a Qolqe, abre la pantalla de contactos, cuando solicita 15.00 al contacto Prima Carla por Taxi compartido, entonces ve el aviso «Solicitud enviada». Las cartas de atrás son los otros archivos: el enunciado pide que los escenarios web estén en archivos .feature, y se cumple sin excepciones. Los 58 escenarios web nacen de cuatro archivos Gherkin; no hay ni una prueba escrita directamente en código saltándose el Gherkin.
 
-Lo que se agregó: en la Entrega 2 había 19 escenarios web de G4; ahora son 58, porque sumé los 27 del núcleo común y 12 nuevos de G4. El criterio es la regla de niveles de la clase 11. Va por la web lo que solo se ve en la pantalla, los pasos de un recorrido crítico que pasa por dinero o por el acceso, y los errores de la API que la interfaz debe mostrar. Con esa regla, 48 de los 51 criterios tienen caso web. Los tres que no lo tienen son dos SMS, que no aparecen en ninguna pantalla, y una carrera, que desde la interfaz no se puede provocar de forma determinista; esos tres sí tienen caso de API.
+Playwright toma cada escenario y lo corre en el navegador. Las tres franjas de la derecha son las tres corridas seguidas de los 58 escenarios, en cada pipeline, y las tres salen en verde, sin ninguna inestable. Una prueba que pasa dos de tres veces no es una prueba que pasa: es una prueba inestable, que es la regla que muestro debajo. Si no las detectas, el equipo aprende a reintentar hasta que pase, y a partir de ahí deja de creerle a la suite. Era el criterio de la Entrega 2: sin esperas fijas y que pase tres veces seguidas. Hoy no hay ninguna espera fija en las pruebas web.
 
-El número que quiero resaltar es el de la derecha: cada escenario corre tres veces seguidas en cada pipeline. Una prueba que pasa dos de tres veces no es una prueba que pasa: es una prueba inestable. Si no las detectas, el equipo aprende a reintentar hasta que pase, y a partir de ahí la suite deja de servir. Era el criterio de la Entrega 2: sin esperas fijas y que pase tres veces seguidas. Hoy no hay ninguna espera fija en las pruebas web, y las tres corridas salen en verde, sin ninguna inestable.</aside>
+Abajo, de dónde salen los 58. En la Entrega 2 había 19 escenarios web de G4; ahora son 58, porque sumé 12 nuevos de G4, que con los 19 dan 31 de G4, y los 27 del núcleo común.
+
+El criterio para decidir qué va por la web es la regla de niveles de la clase 11. Va por la web lo que solo se ve en la pantalla, los pasos de un recorrido crítico que pasa por dinero o por el acceso, y los errores de la API que la interfaz debe mostrar. Con esa regla, 48 de los 51 criterios tienen caso web: es el recuadro de abajo a la derecha, 48 puntos llenos y 3 vacíos. Los tres que no lo tienen son dos SMS, que no aparecen en ninguna pantalla, y una carrera, que desde la interfaz no se puede provocar de forma determinista; esos tres sí tienen caso de API.</aside>
 </section>

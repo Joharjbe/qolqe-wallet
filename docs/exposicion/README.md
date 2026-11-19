@@ -4,7 +4,7 @@ Material de la exposición del sábado 21-nov. Rutas desde esta carpeta.
 
 ## El deck
 
-- [`deck.pdf`](deck.pdf): las 23 láminas, una por página de 1920 × 1080, sin notas de orador. Las tres primeras abren: la portada, el contexto de G4 y lo que pidió la profesora; de la 4 a la 7, el foco de la Parte 3 (cuatro láminas); de la 8 a la 23, el consolidado. Se abre con cualquier visor de PDF, a pantalla completa, y no necesita internet.
+- [`deck.pdf`](deck.pdf): las 23 láminas, una por página de 1920 × 1080, sin notas de orador. Las tres primeras abren: la portada, el contexto de G4 y el mapa de la exposición; de la 4 a la 7, el foco de la Parte 3 (cuatro láminas); de la 8 a la 23, el consolidado. Se abre con cualquier visor de PDF, a pantalla completa, y no necesita internet.
 - [`deck/project/`](deck/project/): la fuente editable. `deck.json` da el orden de las láminas, `deck.css` el estilo común y cada `slides/<id>.html` es una lámina, con sus notas de orador en el `<aside>` del final. Se lee con cualquier editor. Una lámina suelta se abre en el navegador, pero sin `deck.css` ni las fuentes y con las notas a la vista; para verla como lámina, usar `deck.pdf`.
 - [`deck/descartadas/`](deck/descartadas/): las láminas que salieron del deck al dejar el foco en cuatro (`p3-flujos`, `p3-capacidad` y `proyecto`). No están en `deck.json` y no se exportan.
 

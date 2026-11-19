@@ -1,27 +1,99 @@
 <section id="transicion" class="oscura" data-transition="push">
 <p class="cejilla">EL CONSOLIDADO</p>
 <div class="franja"></div>
-<h2 style="font-size:88px; margin-top:48px; max-width:1500px">Tres partes, una sola suite</h2>
-<p class="bajada" style="max-width:1600px; font-size:36px">19 historias y 51 criterios → 335 casos → 30 defectos. API y web comparten los criterios, los identificadores CP y la matriz de trazabilidad. El rendimiento parte de su propio requerimiento: sus flujos F-01 a F-06 se trazan a las mismas historias, y su veredicto es por umbral (U-01 a U-09), no por caso.</p>
-<div class="fila" style="margin-top:auto; gap:48px">
-<div class="tarjeta" style="flex:1">
-<p class="etiqueta">PARTE 1 · API</p>
-<p>276 escenarios funcionales y técnicos, más el contrato</p>
-</div>
-<div class="tarjeta" style="flex:1">
-<p class="etiqueta">PARTE 2 · WEB Y CI/CD</p>
-<p>58 escenarios en Gherkin y un pipeline de 8 jobs</p>
-</div>
-<div class="tarjeta" style="flex:1">
-<p class="etiqueta">PARTE 3 · RENDIMIENTO</p>
-<p>4 tipos de prueba con k6 y la capacidad medida</p>
-</div>
-</div>
+<h2 class="g1-tr-titulo">Tres partes, una sola suite</h2>
+<svg class="g1-tr-mapa" width="1664" height="560" viewBox="0 0 1664 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama del consolidado. A la izquierda, 19 historias y 51 criterios. De ahí salen, con línea continua, la Parte 1 (API: 276 escenarios más el contrato) y la Parte 2 (web y CI/CD: 58 escenarios y un pipeline de 8 jobs); una llave las une porque comparten los mismos identificadores CP y la misma matriz, y juntas dan 335 casos, que encontraron 30 defectos. Con línea punteada, por sus 6 flujos (F-01 a F-06), sale la Parte 3 (rendimiento: 4 tipos de prueba con k6); su veredicto va por umbral, de U-01 a U-09, no por caso: no lleva ID CP. Abajo, una franja a todo lo ancho: la base común de las tres partes, la API de soporte, la semilla y el sitio publicado.">
+<g class="g1-sube g1-t090">
+<rect x="0" y="466" width="1664" height="88" rx="20" fill="#1C2C4D" stroke="#2E4470" stroke-width="2"/>
+<text class="g1-m" x="36" y="519" font-size="24" fill="#8FB4F2" letter-spacing="1">BASE COMÚN</text>
+<rect x="442" y="490" width="40" height="16" rx="4" fill="none" stroke="#8FB4F2" stroke-width="3"/>
+<rect x="442" y="512" width="40" height="16" rx="4" fill="none" stroke="#8FB4F2" stroke-width="3"/>
+<path d="M451,498 h0.1 M451,520 h0.1" fill="none" stroke="#8FB4F2" stroke-width="4" stroke-linecap="round"/>
+<text x="498" y="520" font-size="28" font-weight="600" fill="#E6EAF2">API de soporte</text>
+<path d="M896,534 V510 M896,514 C896,502 886,496 874,496 C874,508 882,514 896,514 Z M896,508 C896,496 906,490 918,490 C918,502 910,508 896,508 Z" fill="none" stroke="#8FB4F2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="934" y="520" font-size="28" font-weight="600" fill="#E6EAF2">semilla</text>
+<circle cx="1224" cy="510" r="17" fill="none" stroke="#8FB4F2" stroke-width="3"/>
+<ellipse cx="1224" cy="510" rx="7" ry="17" fill="none" stroke="#8FB4F2" stroke-width="3"/>
+<path d="M1207,510 H1241" fill="none" stroke="#8FB4F2" stroke-width="3"/>
+<text x="1256" y="520" font-size="28" font-weight="600" fill="#E6EAF2">sitio publicado</text>
+</g>
+<g class="g1-pop g1-t015">
+<rect x="0" y="110" width="260" height="220" rx="20" fill="#1C2C4D" stroke="#8FB4F2" stroke-width="3"/>
+<path d="M114,130 H138 L148,140 V174 H114 Z" fill="none" stroke="#8FB4F2" stroke-width="3.4" stroke-linejoin="round"/>
+<path d="M121,150 H141 M121,159 H141 M121,167 H133" fill="none" stroke="#8FB4F2" stroke-width="3.4" stroke-linecap="round"/>
+<text class="g1-m" x="28" y="244" font-size="56" fill="#F7F6F2">19</text>
+<text x="106" y="241" font-size="28" font-weight="600" fill="#E6EAF2">historias</text>
+<text class="g1-m" x="28" y="310" font-size="56" fill="#F7F6F2">51</text>
+<text x="106" y="307" font-size="28" font-weight="600" fill="#E6EAF2">criterios</text>
+</g>
+<path class="g1-traza g1-t035" d="M260,170 C302,170 298,60 340,60" fill="none" stroke="#8FB4F2" stroke-width="4" stroke-linecap="round"/>
+<g class="g1-entra g1-t035">
+<rect x="340" y="0" width="480" height="120" rx="18" fill="#1C2C4D" stroke="#2E4470" stroke-width="2"/>
+<circle cx="398" cy="60" r="34" fill="#14213D" stroke="#8FB4F2" stroke-width="3"/>
+<g transform="translate(378.4,40.4) scale(.7)"><path d="M21,7 Q12.6,7 12.6,15.4 V22.4 Q12.6,28 5.6,28 Q12.6,28 12.6,33.6 V40.6 Q12.6,49 21,49 M35,7 Q43.4,7 43.4,15.4 V22.4 Q43.4,28 50.4,28 Q43.4,28 43.4,33.6 V40.6 Q43.4,49 35,49" fill="none" stroke="#8FB4F2" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/></g>
+<text class="g1-m" x="452" y="46" font-size="24" fill="#8FB4F2" letter-spacing="1">PARTE 1 · API</text>
+<text x="452" y="98"><tspan class="g1-m" font-size="44" fill="#F7F6F2">276</tspan><tspan font-size="28" font-weight="600" fill="#A9BCDC" dx="12">+ contrato</tspan></text>
+</g>
+<path class="g1-traza g1-t050" d="M260,220 C300,220 300,200 340,200" fill="none" stroke="#8FB4F2" stroke-width="4" stroke-linecap="round"/>
+<g class="g1-entra g1-t050">
+<rect x="340" y="140" width="480" height="120" rx="18" fill="#1C2C4D" stroke="#2E4470" stroke-width="2"/>
+<circle cx="398" cy="200" r="34" fill="#14213D" stroke="#8FB4F2" stroke-width="3"/>
+<g transform="translate(378.4,180.4) scale(.7)"><rect x="5" y="9" width="46" height="38" rx="6" fill="none" stroke="#8FB4F2" stroke-width="4.6"/><path d="M5,20 H51 M12,14.5 h0.1 M18,14.5 h0.1" fill="none" stroke="#8FB4F2" stroke-width="4.6" stroke-linecap="round"/></g>
+<text class="g1-m" x="452" y="186" font-size="24" fill="#8FB4F2" letter-spacing="1">PARTE 2 · WEB Y CI/CD</text>
+<text x="452" y="238"><tspan class="g1-m" font-size="44" fill="#F7F6F2">58</tspan><tspan font-size="28" font-weight="600" fill="#A9BCDC" dx="12">· 8 jobs</tspan></text>
+</g>
+<path class="g1-traza g1-t065" d="M130,330 V346 Q130,360 144,360 H340" fill="none" stroke="#8FB4F2" stroke-width="4" stroke-dasharray="10 9" stroke-linecap="round"/>
+<text class="g1-aparece g1-t065" x="150" y="398" font-size="24" font-weight="600" fill="#8FB4F2">6 flujos</text>
+<g class="g1-entra g1-t065">
+<rect x="340" y="300" width="480" height="120" rx="18" fill="#1C2C4D" stroke="#8FB4F2" stroke-width="2.5" stroke-dasharray="10 8"/>
+<circle cx="398" cy="360" r="34" fill="#14213D" stroke="#8FB4F2" stroke-width="3"/>
+<g transform="translate(378.4,340.4) scale(.7)"><path d="M8,42 A21,21 0 1 1 48,42" fill="none" stroke="#8FB4F2" stroke-width="4.6" stroke-linecap="round"/><path d="M28,38 L39,22" fill="none" stroke="#C2710C" stroke-width="4.6" stroke-linecap="round"/><circle cx="28" cy="38" r="4.5" fill="#F7F6F2"/></g>
+<text class="g1-m" x="452" y="346" font-size="24" fill="#8FB4F2" letter-spacing="1">PARTE 3 · RENDIMIENTO</text>
+<text x="452" y="398"><tspan class="g1-m" font-size="44" fill="#F7F6F2">4</tspan><tspan font-size="28" font-weight="600" fill="#A9BCDC" dx="12">tipos · k6</tspan></text>
+</g>
+<path class="g1-aparece g1-t095" d="M832,12 Q848,12 848,28 V112 Q848,130 864,130 Q848,130 848,148 V232 Q848,248 832,248" fill="none" stroke="#8FB4F2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="g1-traza g1-t105" d="M870,130 H1036 M1024,118 L1040,130 L1024,142" fill="none" stroke="#8FB4F2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<g class="g1-aparece g1-t110">
+<text x="954" y="112" text-anchor="middle" font-size="24" font-weight="600" fill="#E6EAF2">mismos CP</text>
+<text x="954" y="166" text-anchor="middle" font-size="24" font-weight="600" fill="#E6EAF2">misma matriz</text>
+</g>
+<g class="g1-pop g1-t125">
+<rect x="1050" y="78" width="240" height="104" rx="18" fill="#1F5FD0"/>
+<text class="g1-m" x="1076" y="150" font-size="56" fill="#FFFFFF">335</text>
+<text x="1192" y="147" font-size="28" font-weight="600" fill="#FFFFFF">casos</text>
+</g>
+<path class="g1-traza g1-t145" d="M1300,130 H1356 M1344,118 L1360,130 L1344,142" fill="none" stroke="#8E97AC" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<g class="g1-pop g1-t150">
+<rect x="1374" y="78" width="290" height="104" rx="18" fill="#1C2C4D" stroke="#C2710C" stroke-width="4"/>
+<text class="g1-m" x="1400" y="150" font-size="56" fill="#C2710C">30</text>
+<text x="1484" y="147" font-size="28" font-weight="600" fill="#F7F6F2">defectos</text>
+</g>
+<path class="g1-traza g1-t115" d="M820,360 H1036 M1024,348 L1040,360 L1024,372" fill="none" stroke="#8FB4F2" stroke-width="4" stroke-dasharray="10 9" stroke-linecap="round" stroke-linejoin="round"/>
+<g class="g1-pop g1-t130">
+<rect x="1050" y="308" width="270" height="104" rx="18" fill="#1C2C4D" stroke="#8FB4F2" stroke-width="3"/>
+<g transform="translate(1094,360) scale(1.2)"><path d="M-17,-11 H17" fill="none" stroke="#C2710C" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="5 6"/><path d="M-17,13 L-9,2 L-2,8 L6,-3 L16,4" fill="none" stroke="#8FB4F2" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<text class="g1-m" x="1132" y="352" font-size="26" fill="#F7F6F2">U-01…U-09</text>
+<text x="1132" y="390" font-size="26" font-weight="600" fill="#A9BCDC">por umbral</text>
+</g>
+<g class="g1-pop g1-t165">
+<rect x="1374" y="328" width="286" height="64" rx="32" fill="none" stroke="#8E97AC" stroke-width="2" stroke-dasharray="6 6"/>
+<rect x="1394" y="343" width="56" height="34" rx="8" fill="none" stroke="#8E97AC" stroke-width="2.5"/>
+<text class="g1-m" x="1422" y="369" text-anchor="middle" font-size="24" fill="#A9BCDC">CP</text>
+<path d="M1392,378 L1452,342" fill="none" stroke="#C2710C" stroke-width="3.5" stroke-linecap="round"/>
+<text x="1468" y="369" font-size="26" font-weight="600" fill="#E6EAF2">no por caso</text>
+</g>
+</svg>
 <aside>Hasta aquí la Parte 3. Ahora el consolidado.
 
 Como dije al inicio: 335 casos y 30 defectos.
 
-Las tres partes no son tres trabajos pegados, pero tampoco comparten todo, y quiero decirlo exacto. API y web comparten los criterios de aceptación, los identificadores CP y la matriz de trazabilidad: un caso de API y uno de web se enlazan al mismo criterio. El rendimiento parte de su propio requerimiento, con sus propios IDs: flujos F, umbrales U y criterios de validez V. Sus flujos se trazan a las mismas historias, por ejemplo el login a HU-N-02, pero no tienen ID CP ni cuentan en los 335 casos: su veredicto es por umbral, no por caso. Lo que sí comparte es la API de soporte, la semilla y el sitio publicado.
+Las tres partes no son tres trabajos pegados, pero tampoco comparten todo, y quiero decirlo exacto. Leo el diagrama de izquierda a derecha.
+
+Todo parte de las 19 historias y sus 51 criterios. De ahí salen la Parte 1, la API, con 276 escenarios funcionales y técnicos más el contrato, y la Parte 2, la web y CI/CD, con 58 escenarios en Gherkin y un pipeline de 8 jobs. La llave las une porque API y web comparten los criterios de aceptación, los identificadores CP y la matriz de trazabilidad: un caso de API y uno de web se enlazan al mismo criterio. Juntas dan los 335 casos, y esos casos encontraron los 30 defectos.
+
+La Parte 3, el rendimiento, va con línea punteada porque parte de su propio requerimiento, con sus propios IDs: flujos F, umbrales U y criterios de validez V. Son 4 tipos de prueba con k6 y la capacidad medida. Sus flujos F-01 a F-06 se trazan a las mismas historias, por ejemplo el login a HU-N-02, pero no tienen ID CP ni cuentan en los 335 casos: su veredicto es por umbral, de U-01 a U-09, no por caso.
+
+Abajo, la base común: lo que sí comparten las tres partes es la API de soporte, la semilla y el sitio publicado.
 
 Voy a ir punto por punto del enunciado. Arriba de cada lámina va la observación de la Entrega 2 que resuelve.</aside>
 </section>

@@ -8,11 +8,11 @@ Lo que se dice y por qué este orden: [`guion.md`](guion.md). Carpeta: la raíz 
 
 | # | Qué | Comando |
 |---|---|---|
-| 1 | Repo al tag | `git switch main && git pull --ff-only entrega main && git fetch -q entrega --tags && git describe --tags` → `entrega-final-v1`. Si sale `entrega-final-v1-N-g…`, `main` tiene N commits después del tag: los de documentación que entraron después del 18-nov (PR #12 en adelante). Si da error, faltan los tags: repite el `git fetch` (el tag existe en `entrega` desde el 18-nov, sobre `37245d2`) |
+| 1 | Repo al tag | `git switch main && git pull --ff-only entrega main && git fetch -q entrega --tags && git describe --tags` → `entrega-final-v2`. Si sale `entrega-final-v2-N-g…`, hay N commits en `main` después del tag: no debería pasar; revísalos con `git log --oneline entrega-final-v2..main` antes de exponer. Si da error, faltan los tags: repite el `git fetch` (v2 existe en `entrega` desde el 19-nov, sobre el commit final de `main`; v1, del 18-nov, queda como versión anterior) |
 | 1b | Checks de main | `gh api repos/Joharjbe/qolqe-wallet/branches/main -q .protection.required_status_checks.contexts` → `["api","web","quality-gate"]` (salida del 18-nov), lo mismo que dicen la lámina 15, `docs/pipeline.md:32` y `docs/informe.md:164`. Si da otra cosa, en la lámina 15 di lo que dio (`guion.md`, fila `gate`) |
 | 2 | Base de k6 (≈ 2,5 min) | `export RESULTADOS="$HOME/demo-qolqe" USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv"` y `SIN_BUILD=1 tests/performance/preparar.sh 3000` |
 | 3 | Ensayo de k6 (≈ 2:40) | «Antes de k6» y el principal: primera línea `…/demo-qolqe/demo/<marca>`, última `k6 = 99 … integridad = 0` |
-| 4 | Parte 3 al respaldo | `.venv/bin/python .github/scripts/sitio_rendimiento.py --sitio ~/Desktop/respaldo-sitio-con-imagenes` |
+| 4 | Respaldo sin red | `ls ~/Desktop/respaldo-sitio-entrega-final/rendimiento/index.html`: es el sitio del run #28 (`con-imagenes`, commit del tag v1, mismo código que `main`) y ya trae la Parte 3 |
 | 5 | Al final | `./scripts/preparar-demo.sh` → `Listo. Qolqe responde en …` |
 
 ## 2. En el salón, 10 minutos antes (sin red; checklist en [`guion.md`](guion.md#checklist-del-día))
@@ -36,11 +36,11 @@ Lo que se dice y por qué este orden: [`guion.md`](guion.md). Carpeta: la raíz 
 - **Respaldo,** si lo marcaste o si sale `V-04: el equipo no está libre`: `RESULTADOS="$HOME/demo-qolqe" USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv" FORZAR=1 ESPERA_MAX=0 tests/performance/correr.sh demo`
 - **Opcional en D2, si vas adelantado o si pregunta cómo corre el Page Object:** `SLOWMO=700 npx playwright test --headed --grep "CP-W10"` → 28 s (23 s la prueba), el mismo recorrido de solicitudes del editor, en un Chromium visible. Después, `curl -sf -X POST http://127.0.0.1:8000/api/pruebas/reiniciar` deja los datos limpios.
 - **Si k6 falla dos veces:** `open tests/performance/resultados/demo/20261111-2125/reporte.html` o el video.
-- **Sin internet:** `cd ~/Desktop/respaldo-sitio-con-imagenes && python3 -m http.server 8100` → http://localhost:8100/
+- **Sin internet:** `cd ~/Desktop/respaldo-sitio-entrega-final && python3 -m http.server 8100` → http://localhost:8100/
 
 ## 4. Ensayo técnico del 18-nov (en esta Mac)
 
-Cada comando de esta hoja, corrido en el orden de arriba, con el repo en la rama del PR #12 (mismo código que el tag).
+Cada comando de esta hoja tal como estaba el 18-nov, corrido en el orden de arriba, con el repo en la rama del PR #12 (mismo código que el tag). Ese día el paso 1 daba `entrega-final-v1` (v2 todavía no existía), y el paso 4 y el 8100 se probaron sobre el respaldo del run #18. El respaldo de ahora, `respaldo-sitio-entrega-final` (run #28), ya trae `rendimiento/`: vuelve a servirlo en el 8100 antes del sábado.
 
 | Paso | Resultado | Tiempo |
 |---|---|---|

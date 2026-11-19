@@ -1,35 +1,35 @@
 <section id="ia-resultado" class="pie" data-transition="fade">
 <p class="cejilla">PUNTO 8 · EL RESULTADO MEDIDO</p>
-<h2>Contra las reglas: gana en entorno, pierde en defecto real</h2>
-<div class="cuerpo junto">
-<table class="compacta" style="width:1664px">
-<tr><th width="46%">Sobre los mismos 48 casos</th><th width="27%">Reglas, sin IA</th><th width="27%">Con el modelo</th></tr>
-<tr><td>Defecto real</td><td class="mono">34 de 36</td><td class="mono">28 de 36</td></tr>
-<tr><td>Prueba inestable</td><td class="mono">4 de 4</td><td class="mono">4 de 4</td></tr>
-<tr class="verde"><td>Error de entorno (8 sembrados)</td><td class="mono">7 de 8</td><td class="mono">8 de 8</td></tr>
-<tr><td><b>DEF-xx propuesto correcto</b></td><td class="mono">no lo intenta</td><td class="mono"><b>0 de 38</b></td></tr>
-</table>
-<div class="fila-2">
-<div class="tarjeta tarjeta-ambar ajustada">
-<p class="etiqueta">LA CONCLUSIÓN, SIN ADORNOS</p>
-<p class="chica">La capacidad se construyó para proponer el <span class="mono" style="font-size:24px">DEF</span> de cada fallo. <b>No lo logró: 0 de 38.</b> Tal como está, no sustituye al tester ni a las reglas.</p>
-</div>
-<div class="tarjeta ajustada">
-<p class="etiqueta">DÓNDE SÍ SIRVE, Y ES POCO</p>
-<p class="chica">Un primer pase: el código junta 40 fallos en 32 grupos, 32 preguntas en vez de 40, y el modelo acierta los 8 errores de entorno, donde las reglas fallan uno. En lo inestable empata, 4 de 4, pero llamó inestables a 12 casos y 8 eran defectos reales.</p>
-</div>
-</div>
-</div>
+<h2>Gana en entorno, pierde en defecto real</h2>
+<svg class="g7-lienzo" width="1664" height="590" viewBox="0 0 1664 590" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Barras comparativas sobre los mismos 48 casos, reglas sin IA contra el modelo. Defecto real, de 36: reglas 34, modelo 28; ganan las reglas. Prueba inestable, de 4: 4 y 4, empate. Error de entorno, de 8, todos sembrados: reglas 7, modelo 8; gana el modelo. DEF propuesto, de 38: las reglas no lo intentan y el modelo acierta 0. A la derecha, el error más caro: el modelo llamó inestables a 12 casos y 8 de ellos eran defectos reales; solo 4 eran inestables. Abajo, el veredicto en dos partes: sirve como primer pase de lectura, donde acierta los 8 errores de entorno de 8; y, tal como está, no sustituye al tester.">
+<g class="g7-aparece g7-t00"><rect x="20" y="6" width="26" height="26" rx="5" fill="#14213D"/><text x="58" y="29" font-size="26" fill="#14213D">Reglas sin IA</text><rect x="270" y="6" width="26" height="26" rx="5" fill="#1F5FD0"/><text x="308" y="29" font-size="26" fill="#14213D">Modelo</text><text class="g7-s" x="1060" y="29" text-anchor="end" font-size="26" fill="#44506B">48 casos</text></g>
+<g class="g7-entra g7-t01"><text class="g7-s" x="20" y="104" font-size="30" fill="#14213D">Defecto real</text><text x="20" y="138" font-size="24" fill="#44506B">de 36</text><rect x="320" y="74" width="560" height="34" rx="6" fill="#E6EAF2"/><rect x="320" y="116" width="560" height="34" rx="6" fill="#E6EAF2"/></g>
+<g class="g7-entra g7-t02"><text class="g7-s" x="20" y="216" font-size="30" fill="#14213D">Inestable</text><text x="20" y="250" font-size="24" fill="#44506B">de 4</text><rect x="320" y="186" width="560" height="34" rx="6" fill="#E6EAF2"/><rect x="320" y="228" width="560" height="34" rx="6" fill="#E6EAF2"/></g>
+<g class="g7-entra g7-t03"><text class="g7-s" x="20" y="328" font-size="30" fill="#14213D">Entorno</text><text x="20" y="362" font-size="24" fill="#44506B">8 sembrados</text><rect x="320" y="298" width="560" height="34" rx="6" fill="#E6EAF2"/><rect x="320" y="340" width="560" height="34" rx="6" fill="#E6EAF2"/></g>
+<g class="g7-entra g7-t04"><rect x="0" y="394" width="1072" height="104" rx="14" fill="#FAEEDC"/><text class="g7-s" x="20" y="440" font-size="30" fill="#14213D">DEF propuesto</text><text x="20" y="474" font-size="24" fill="#44506B">de 38</text><rect x="321" y="411" width="558" height="32" rx="6" fill="none" stroke="#8E97AC" stroke-width="2" stroke-dasharray="8 6"/><text x="338" y="436" font-size="24" fill="#44506B">no intenta</text><rect x="320" y="452" width="560" height="34" rx="6" fill="#E6EAF2"/></g>
+<g class="g7-crece g7-t06"><rect x="320" y="74" width="529" height="34" rx="6" fill="#14213D"/><rect x="320" y="186" width="560" height="34" rx="6" fill="#14213D"/><rect x="320" y="298" width="490" height="34" rx="6" fill="#14213D"/></g>
+<g class="g7-aparece g7-t09"><text class="g7-m" x="896" y="101" font-size="30" fill="#14213D">34</text><text class="g7-m" x="896" y="213" font-size="30" fill="#14213D">4</text><text class="g7-m" x="896" y="325" font-size="30" fill="#14213D">7</text></g>
+<g class="g7-crece g7-t09"><rect x="320" y="116" width="436" height="34" rx="6" fill="#1F5FD0"/><rect x="320" y="228" width="560" height="34" rx="6" fill="#1F5FD0"/><rect x="320" y="340" width="560" height="34" rx="6" fill="#1F5FD0"/></g>
+<g class="g7-aparece g7-t12"><text class="g7-m" x="896" y="143" font-size="30" fill="#1F5FD0">28</text><text class="g7-m" x="896" y="255" font-size="30" fill="#1F5FD0">4</text><text class="g7-m" x="896" y="367" font-size="30" fill="#1F5FD0">8</text><text class="g7-m" x="896" y="480" font-size="34" fill="#8F5207">0</text></g>
+<g class="g7-pop g7-t13"><circle cx="976" cy="91" r="16" fill="#2F6B2F"/><path d="M968,91 L974,97 L984,85" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g class="g7-pop g7-t13"><circle cx="976" cy="224" r="16" fill="#44506B"/><path d="M969,219 H983 M969,229 H983" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"/></g>
+<g class="g7-pop g7-t14"><circle cx="976" cy="357" r="16" fill="#2F6B2F"/><path d="M968,357 L974,363 L984,351" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g class="g7-pop g7-t15"><circle cx="976" cy="469" r="16" fill="#C2710C"/><path d="M970,463 L982,475 M982,463 L970,475" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"/></g>
+<g class="g7-entra g7-t10"><rect x="1110" y="64" width="554" height="434" rx="18" fill="#FFFFFF" stroke="#C2710C" stroke-width="3"/><text class="g7-m" x="1140" y="150" font-size="72" fill="#8F5207">12</text><text class="g7-s" x="1242" y="140" font-size="28" fill="#14213D">llamados inestables</text></g>
+<g class="g7-pop g7-t13"><circle cx="1176" cy="220" r="26" fill="#C2710C"/><circle cx="1250" cy="220" r="26" fill="#C2710C"/><circle cx="1324" cy="220" r="26" fill="#C2710C"/><circle cx="1398" cy="220" r="26" fill="#C2710C"/><circle cx="1472" cy="220" r="26" fill="#C2710C"/><circle cx="1546" cy="220" r="26" fill="#C2710C"/><circle cx="1176" cy="296" r="26" fill="#C2710C"/><circle cx="1250" cy="296" r="26" fill="#C2710C"/><circle cx="1324" cy="296" r="24.25" fill="#FFFFFF" stroke="#14213D" stroke-width="3.5"/><circle cx="1398" cy="296" r="24.25" fill="#FFFFFF" stroke="#14213D" stroke-width="3.5"/><circle cx="1472" cy="296" r="24.25" fill="#FFFFFF" stroke="#14213D" stroke-width="3.5"/><circle cx="1546" cy="296" r="24.25" fill="#FFFFFF" stroke="#14213D" stroke-width="3.5"/></g>
+<g class="g7-aparece g7-t15"><circle cx="1152" cy="364" r="12" fill="#C2710C"/><text class="g7-s" x="1176" y="373" font-size="26" fill="#14213D">8 defectos reales</text><circle cx="1152" cy="410" r="10.5" fill="#FFFFFF" stroke="#14213D" stroke-width="3"/><text x="1176" y="419" font-size="26" fill="#14213D">4 inestables</text><text class="g7-s" x="1140" y="470" font-size="26" fill="#8F5207">Error más caro</text></g>
+<g class="g7-entra g7-t16"><rect x="1.5" y="529.5" width="447" height="56" rx="28" fill="#EEF5EC" stroke="#2F6B2F" stroke-width="3"/><circle cx="36" cy="557.5" r="16" fill="#2F6B2F"/><path d="M28,557.5 L34,563.5 L44,551.5" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><text class="g7-s" x="64" y="568" font-size="30" fill="#2F6B2F">Primer pase · entorno 8/8</text></g><g class="g7-entra g7-t17"><rect x="473.5" y="529.5" width="390" height="56" rx="28" fill="#FFFFFF" stroke="#C2710C" stroke-width="3"/><circle cx="508" cy="557.5" r="16" fill="#C2710C"/><path d="M502,551.5 L514,563.5 M514,551.5 L502,563.5" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"/><text class="g7-s" x="536" y="568" font-size="30" fill="#8F5207">No sustituye al tester</text></g>
+</svg>
 <p class="numero-pagina">20 · Entrega final · Pruebas de Qolqe</p>
-<aside>Este es el resultado, y es incómodo.
+<aside>Este es el resultado, y es incómodo. Las barras se leen así: cada fila es una clase, la barra oscura son las reglas sin IA y la azul el modelo, y el largo completo es el total de esa clase. Las dos se miden sobre los mismos 48 casos.
 
-En la clase principal, defecto real, las reglas aciertan 34 de 36 y el modelo 28 de 36. Y en lo que venía a resolver, proponer el DEF de cada fallo, el modelo acertó cero de 38. Las reglas ni lo intentan: solo copian el DEF declarado, que se quitó de la entrada.
+En la clase principal, defecto real, las reglas aciertan 34 de 36 y el modelo 28 de 36. En lo inestable empatan, 4 de 4. En error de entorno, el modelo acierta los 8, donde las reglas fallan uno, y esos 8 son sembrados. Y en lo que venía a resolver, la franja de abajo, proponer el DEF de cada fallo, el modelo acertó cero de 38. Las reglas ni lo intentan: solo copian el DEF declarado, que se quitó de la entrada. La capacidad se construyó para proponer el DEF de cada fallo, y no lo logró.
 
 La conclusión que escribí en el documento es que, tal como está, esta capacidad no sustituye al tester ni a las reglas. Prefiero decir eso a inflar un número.
 
-Dónde sí sirve, y es poco: como primer pase de lectura. El código junta los 40 fallos del run en 32 grupos, así que son 32 preguntas en vez de 40, y el modelo acierta los ocho errores de entorno, que son sembrados, donde las reglas fallan uno. En lo inestable empata, 4 de 4, pero no sirve solo: llamó inestables a 12 casos y 8 eran defectos reales de concurrencia. Ese es el error más caro, porque llamar inestable a un defecto lo esconde. Por eso la decisión es del tester. Y sus guardrails pararon 4 respuestas malas, 2 de ellas con un número de celular copiado.
+Dónde sí sirve, y es poco: como primer pase de lectura, que es el chip verde de abajo. El código junta los 40 fallos del run en 32 grupos, así que son 32 preguntas en vez de 40, y el modelo acierta los ocho errores de entorno. Lo inestable no sirve solo, y eso es el recuadro de la derecha: llamó inestables a 12 casos y 8 eran defectos reales de concurrencia. Ese es el error más caro, porque llamar inestable a un defecto lo esconde. Por eso la decisión es del tester, y por eso el chip ámbar dice que no lo sustituye. Y sus guardrails pararon 4 respuestas malas, 2 de ellas con un número de celular copiado.
 
 Y hay una parte de culpa que es mía, no del modelo: el prompt le pide null si el DEF no está en los datos, y en las 52 entradas venía vacío. La guarda contra alucinación y la tarea se estorban. Darle el catálogo de defectos es la siguiente hipótesis, y no la medí, así que la dejo como hipótesis y no como conclusión.
 
-Una advertencia sobre la tabla: las dos columnas se miden sobre los mismos casos. Comparar los números crudos sería engañoso, porque el modelo clasificó menos casos que las reglas, y los que no clasificó salieron del denominador. Eso también está marcado en el reporte.</aside>
+Una advertencia sobre las barras: las dos se miden sobre los mismos casos. Comparar los números crudos sería engañoso, porque el modelo clasificó menos casos que las reglas, y los que no clasificó salieron del denominador. Eso también está marcado en el reporte.</aside>
 </section>
