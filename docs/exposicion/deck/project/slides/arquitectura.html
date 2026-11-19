@@ -1,40 +1,135 @@
 <section id="arquitectura" class="pie" data-transition="fade">
 <p class="cejilla">PUNTO 1 · ARQUITECTURA · OBS. 1c</p>
-<h2>Las capas, del Gherkin a la evidencia</h2>
-<div class="cuerpo junto">
-<div class="capas">
-<p class="titulo-col">QUÉ SE PRUEBA</p><span></span><p class="titulo-col">LO TRADUCE</p><span></span><p class="titulo-col">HABLA CON QOLQE</p><span></span><p class="titulo-col">SISTEMA</p><span></span><p class="titulo-col">DEJA</p>
-<div class="caja"><b>API</b> · 276 escenarios<br>features/*.feature</div><p class="flecha">→</p>
-<div class="caja"><b>pytest-bdd</b> · Python<br>266 pasos</div><p class="flecha">→</p>
-<div class="caja"><b>cliente Sesiones</b><br>(httpx)</div><p class="flecha">→</p>
-<div class="caja qolqe" style="grid-column:7; grid-row:2 / span 3"><div><b>Qolqe</b> sin cambios, una base SQLite por suite</div></div><p class="flecha">→</p>
-<div class="caja">JUnit + HTML<br>con las peticiones</div>
-<div class="caja"><b>Web</b> · 58 escenarios<br>features/web/</div><p class="flecha">→</p>
-<div class="caja"><b>playwright-bdd</b><br>TypeScript, 139 pasos</div><p class="flecha">→</p>
-<div class="caja"><b>Page Objects</b><br>y 5 componentes</div>
-<p class="flecha" style="grid-column:8">→</p>
-<div class="caja">JUnit + traza,<br>captura y video</div>
-<div class="caja"><b>Contrato</b> · CP-T04<br>/openapi.json</div><p class="flecha">→</p>
-<div class="caja"><b>Schemathesis</b> · Python<br>genera los casos</div><p class="flecha">→</p>
-<div class="caja">peticiones generadas<br>desde el contrato</div>
-<p class="flecha" style="grid-column:8">→</p>
-<div class="caja">JUnit + HTML<br>del contrato</div>
-<div class="caja k6"><b>Rendimiento</b><br>su propio requerimiento</div><p class="flecha">→</p>
-<div class="caja k6"><b>k6</b> · JavaScript<br>8 escenarios, a mano</div><p class="flecha">→</p>
-<div class="caja k6">sesiones completas<br>por HTTP</div><p class="flecha">→</p>
-<div class="caja k6 qolqe"><div>Qolqe en <b>Docker</b>, 1 CPU y 1 GB</div></div><p class="flecha">→</p>
-<div class="caja k6">resultados versionados<br>en el repositorio</div>
-</div>
-<div class="tarjeta tarjeta-azul ajustada">
-<p class="chica">Las tres primeras filas corren en <b>GitHub Actions</b>; el rendimiento, a mano. Las partes comparten artefactos, no código: el Gherkin con sus etiquetas <span class="mono" style="font-size:24px">@HU @CA @CP @DEF</span>, la API de soporte y el JUnit. Con el JUnit, <span class="mono" style="font-size:24px">trazabilidad.py</span> arma la matriz y el historial de Pages, y Kiwi TCMS lo importa desde mi máquina.</p>
-</div>
-</div>
+<h2>Del Gherkin a la evidencia</h2>
+<svg class="g4-lienzo g4-ar" width="1664" height="620" viewBox="0 0 1664 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Arquitectura de la automatización, en capas que se leen de izquierda a derecha. Qué se prueba: 276 escenarios de API y 58 web, escritos en Gherkin, y el contrato openapi.json. Lo traduce: pytest-bdd con 266 pasos para la API, playwright-bdd con 139 pasos para la web y Schemathesis, que genera los casos desde el contrato. Habla con Qolqe: el cliente httpx para la API, que guarda el token de cada usuario, y los Page Objects con 5 componentes para la web; el contrato va directo. Sistema: Qolqe sin cambios, con una base SQLite por suite. Las tres filas dejan un JUnit, que las une, y del JUnit salen la matriz, organizada por las etiquetas @HU @CA @CP @DEF, el historial y Kiwi. Esas tres filas corren en GitHub Actions. Abajo, aparte y a mano, el rendimiento: k6 contra Qolqe en Docker con 1 CPU, y sus resultados quedan en el repositorio, sin pasar por el JUnit.">
+<rect class="g4-aparece" x="0" y="50" width="1276" height="360" rx="20" fill="#E6EAF2"/>
+<rect class="g4-aparece" x="0" y="446" width="1276" height="148" rx="20" fill="none" stroke="#6B7693" stroke-width="2" stroke-dasharray="10 8"/>
+<g class="g4-m" font-size="24" fill="#1F5FD0" letter-spacing="1">
+<text class="g4-aparece" x="16" y="30">QUÉ</text>
+<text class="g4-aparece g4-t35" x="340" y="30">TRADUCE</text>
+<text class="g4-aparece g4-t60" x="644" y="30">HABLA</text>
+<text class="g4-aparece g4-t85" x="918" y="30">SISTEMA</text>
+<text class="g4-aparece g4-t110" x="1132" y="30">UNE</text>
+<text class="g4-aparece g4-t135" x="1336" y="30">DEJA</text>
+</g>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+<path class="g4-traza g4-t35" d="M296,113 H338 M328,105 L338,113 L328,121 M296,223 H338 M328,215 L338,223 L328,231 M296,333 H338 M328,325 L338,333 L328,341" stroke="#1F5FD0"/>
+<path class="g4-traza g4-t60" d="M600,113 H642 M632,105 L642,113 L632,121 M600,223 H642 M632,215 L642,223 L632,231" stroke="#1F5FD0"/>
+<path class="g4-traza g4-t85" d="M874,113 H916 M906,105 L916,113 L906,121 M874,223 H916 M906,215 L916,223 L906,231" stroke="#1F5FD0"/>
+<path class="g4-traza g4-t85" d="M600,333 H916 M906,325 L916,333 L906,341" stroke="#1F5FD0"/>
+<path class="g4-traza g4-t110" d="M1088,113 H1130 M1120,105 L1130,113 L1120,121 M1088,223 H1130 M1120,215 L1130,223 L1120,231 M1088,333 H1130 M1120,325 L1130,333 L1120,341" stroke="#1F5FD0"/>
+<g class="g4-aparece g4-t85" stroke="#6B7693"><path d="M296,513 H336 M600,513 H914 M1088,513 H1332" stroke-dasharray="8 7"/><path d="M328,505 L338,513 L328,521 M906,505 L916,513 L906,521 M1324,505 L1334,513 L1324,521"/></g>
+</g>
+<g class="g4-entra g4-t10">
+<rect x="16" y="70" width="280" height="86" rx="12" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<path d="M38,92 H60 L72,104 V134 H38 Z M60,92 V104 H72 M45,114 H65 M45,123 H65" fill="none" stroke="#1F5FD0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="g4-m" x="92" y="128" font-size="40" fill="#1F5FD0">276</text>
+<text x="178" y="126" font-size="28" font-weight="600" fill="#14213D">API</text>
+</g>
+<g class="g4-entra g4-t15">
+<rect x="16" y="180" width="280" height="86" rx="12" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<path d="M38,202 H60 L72,214 V244 H38 Z M60,202 V214 H72 M45,224 H65 M45,233 H65" fill="none" stroke="#1F5FD0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="g4-m" x="92" y="238" font-size="40" fill="#1F5FD0">58</text>
+<text x="152" y="236" font-size="28" font-weight="600" fill="#14213D">Web</text>
+</g>
+<g class="g4-entra g4-t20">
+<rect x="16" y="290" width="280" height="86" rx="12" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<path d="M50,318 Q43,318 43,325 V329 Q43,333 37,333 Q43,333 43,337 V341 Q43,348 50,348 M62,318 Q69,318 69,325 V329 Q69,333 75,333 Q69,333 69,337 V341 Q69,348 62,348" fill="none" stroke="#1F5FD0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="g4-m" x="88" y="342" font-size="26" fill="#14213D">openapi.json</text>
+</g>
+<g class="g4-entra g4-t25">
+<rect x="16" y="470" width="280" height="86" rx="12" fill="#FFFFFF" stroke="#6B7693" stroke-width="2" stroke-dasharray="8 6"/>
+<path d="M38,530 A18,18 0 1 1 74,530" fill="none" stroke="#1F5FD0" stroke-width="3" stroke-linecap="round"/>
+<path d="M56,527 L65,514" fill="none" stroke="#C2710C" stroke-width="3" stroke-linecap="round"/>
+<text x="90" y="523" font-size="28" font-weight="600" fill="#14213D">Rendimiento</text>
+</g>
+<g class="g4-entra g4-t35">
+<rect x="340" y="70" width="260" height="86" rx="12" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<text x="360" y="106" font-size="28" font-weight="600" fill="#14213D">pytest-bdd</text>
+<text x="360" y="141" font-size="26" fill="#44506B">266 pasos</text>
+<rect x="340" y="180" width="260" height="86" rx="12" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<text x="360" y="216" font-size="28" font-weight="600" fill="#14213D">playwright-bdd</text>
+<text x="360" y="251" font-size="26" fill="#44506B">139 pasos</text>
+<rect x="340" y="290" width="260" height="86" rx="12" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<text x="360" y="326" font-size="28" font-weight="600" fill="#14213D">Schemathesis</text>
+<text x="360" y="361" font-size="26" fill="#44506B">genera casos</text>
+<rect x="340" y="470" width="260" height="86" rx="12" fill="#FFFFFF" stroke="#6B7693" stroke-width="2" stroke-dasharray="8 6"/>
+<text class="g4-m" x="470" y="525" text-anchor="middle" font-size="34" fill="#14213D">k6</text>
+</g>
+<g class="g4-entra g4-t60">
+<rect x="644" y="70" width="230" height="86" rx="12" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<circle cx="674" cy="113" r="8" fill="none" stroke="#1F5FD0" stroke-width="3"/>
+<path d="M682,113 H700 M694,113 V120 M699,113 V118" fill="none" stroke="#1F5FD0" stroke-width="3" stroke-linecap="round"/>
+<text x="716" y="106" font-size="28" font-weight="600" fill="#14213D">cliente</text>
+<text class="g4-m" x="716" y="141" font-size="26" font-weight="700" fill="#44506B">httpx</text>
+<rect x="644" y="180" width="230" height="86" rx="12" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<text x="664" y="216" font-size="28" font-weight="600" fill="#14213D">Page Objects</text>
+<text x="664" y="251" font-size="26" fill="#44506B">5 componentes</text>
+</g>
+<g class="g4-entra g4-t85">
+<rect x="918" y="70" width="170" height="306" rx="14" fill="#FFFFFF" stroke="#1F5FD0" stroke-width="3"/>
+<path d="M985,90 H1021 Q1025,90 1025,94 V103 Q1025,107 1021,107 H985 Q981,107 981,103 V94 Q981,90 985,90 Z M985,113 H1021 Q1025,113 1025,117 V126 Q1025,130 1021,130 H985 Q981,130 981,126 V117 Q981,113 985,113 Z" fill="none" stroke="#14213D" stroke-width="3" stroke-linejoin="round"/>
+<path d="M990,98.5 h0.1 M990,121.5 h0.1" fill="none" stroke="#14213D" stroke-width="5" stroke-linecap="round"/>
+<text x="1003" y="172" text-anchor="middle" font-size="32" font-weight="600" fill="#14213D">Qolqe</text>
+<text x="1003" y="206" text-anchor="middle" font-size="26" fill="#44506B">sin cambios</text>
+<path d="M983,240 A20,7 0 0 0 1023,240 A20,7 0 0 0 983,240 Z M983,240 V268 A20,7 0 0 0 1023,268 V240 M983,254 A20,7 0 0 0 1023,254" fill="none" stroke="#1F5FD0" stroke-width="3" stroke-linejoin="round"/>
+<text x="1003" y="314" text-anchor="middle" font-size="26" font-weight="600" fill="#14213D">SQLite</text>
+<text x="1003" y="346" text-anchor="middle" font-size="26" fill="#44506B">por suite</text>
+<rect x="918" y="470" width="170" height="86" rx="12" fill="#FFFFFF" stroke="#1F5FD0" stroke-width="3" stroke-dasharray="9 6"/>
+<text x="1003" y="506" text-anchor="middle" font-size="28" font-weight="600" fill="#14213D">Docker</text>
+<text x="1003" y="541" text-anchor="middle" font-size="26" fill="#44506B">1 CPU</text>
+</g>
+<g class="g4-entra g4-t110">
+<rect x="1132" y="70" width="128" height="306" rx="14" fill="#14213D"/>
+<path d="M1182,168 H1204 L1212,176 V208 H1182 Z M1189,190 L1194,196 L1205,184" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1196" y="252" text-anchor="middle" font-size="30" font-weight="600" fill="#FFFFFF">JUnit</text>
+</g>
+<path class="g4-traza g4-t135" d="M1260,223 C1300,223 1296,113 1332,113 M1322,105 L1332,113 L1322,121 M1260,223 H1332 M1322,215 L1332,223 L1322,231 M1260,223 C1300,223 1296,333 1332,333 M1322,325 L1332,333 L1322,341" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="g4-viaja" cx="1260" cy="223" r="8" fill="#1F5FD0"><animateMotion begin="1.5s" dur=".5s" fill="freeze" path="M0,0 C40,0 36,-110 72,-110 H106"/></circle>
+<circle class="g4-viaja" cx="1260" cy="223" r="8" fill="#1F5FD0"><animateMotion begin="1.5s" dur=".5s" fill="freeze" path="M0,0 H106"/></circle>
+<circle class="g4-viaja" cx="1260" cy="223" r="8" fill="#1F5FD0"><animateMotion begin="1.5s" dur=".5s" fill="freeze" path="M0,0 C40,0 36,110 72,110 H106"/></circle>
+<g class="g4-entra g4-t140">
+<circle cx="1366" cy="113" r="30" fill="#FFFFFF" stroke="#14213D" stroke-width="3"/>
+<path d="M1352,99 H1380 V127 H1352 Z M1352,108.3 H1380 M1352,117.7 H1380 M1361.3,99 V127 M1370.7,99 V127" fill="none" stroke="#14213D" stroke-width="3" stroke-linejoin="round"/>
+<text x="1412" y="106" font-size="28" font-weight="600" fill="#14213D">Matriz</text>
+<text class="g4-m" x="1412" y="141" font-size="24" fill="#1F5FD0">@HU @CA @CP @DEF</text>
+</g>
+<g class="g4-entra g4-t150">
+<circle cx="1366" cy="223" r="30" fill="#FFFFFF" stroke="#14213D" stroke-width="3"/>
+<path d="M1351,237 H1381 M1356,231 V225 M1362,231 V217 M1368,231 V222 M1374,231 V213" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round"/>
+<text x="1412" y="233" font-size="28" font-weight="600" fill="#14213D">Historial</text>
+</g>
+<g class="g4-entra g4-t160">
+<circle cx="1366" cy="333" r="30" fill="#FFFFFF" stroke="#14213D" stroke-width="3"/>
+<path d="M1354,319 H1378 V349 H1354 Z M1361,316 H1371 V322 H1361 Z M1360,335 L1365,340 L1373,330" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1412" y="343" font-size="28" font-weight="600" fill="#14213D">Kiwi</text>
+</g>
+<g class="g4-entra g4-t110">
+<circle cx="1366" cy="513" r="30" fill="#FFFFFF" stroke="#6B7693" stroke-width="3"/>
+<path d="M1358,503 V523 M1374,507 C1374,516 1358,512 1358,519" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round"/>
+<circle cx="1358" cy="500" r="4" fill="none" stroke="#14213D" stroke-width="3"/>
+<circle cx="1358" cy="526" r="4" fill="none" stroke="#14213D" stroke-width="3"/>
+<circle cx="1374" cy="503" r="4" fill="none" stroke="#14213D" stroke-width="3"/>
+<text x="1412" y="523" font-size="28" font-weight="600" fill="#14213D">repositorio</text>
+</g>
+<g class="g4-pop g4-t175">
+<rect x="16" y="390" width="276" height="40" rx="20" fill="#1F5FD0"/>
+<path d="M40,402 L54,410 L40,418 Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>
+<text class="g4-m" x="66" y="418" font-size="24" fill="#FFFFFF">GitHub Actions</text>
+</g>
+<g class="g4-pop g4-t185">
+<rect x="16" y="575" width="150" height="38" rx="19" fill="#FFFFFF" stroke="#6B7693" stroke-width="2"/>
+<text class="g4-m" x="91" y="602" text-anchor="middle" font-size="24" fill="#44506B">a mano</text>
+</g>
+</svg>
 <p class="numero-pagina">9 · Entrega final · Pruebas de Qolqe</p>
 <aside>Esta lámina responde la primera observación: que quede clara la arquitectura del proyecto de automatización, API y web.
 
-Se lee de izquierda a derecha. El Gherkin dice qué se prueba. Los pasos lo traducen: pytest-bdd en Python para la API y playwright-bdd en TypeScript para la web. Después, lo que habla con Qolqe: en la API, el cliente Sesiones, hecho con httpx, que guarda el token de cada usuario; en la web, los Page Objects y sus componentes, así que ningún paso tiene un localizador. Y al final cada suite deja su JUnit y su reporte HTML. El contrato no pasa por Gherkin: Schemathesis lee el OpenAPI de Qolqe y genera los casos. El rendimiento tampoco: k6 corre a mano contra Qolqe en un contenedor de 1 CPU, fuera del pipeline, y su evidencia queda versionada en el repositorio.
+Se lee de izquierda a derecha, columna por columna. QUÉ: el Gherkin dice qué se prueba: 276 escenarios de API en features/*.feature y 58 web en features/web/. El contrato, CP-T04, no pasa por Gherkin: parte de /openapi.json. TRADUCE: los pasos. pytest-bdd en Python para la API, con 266 pasos, y playwright-bdd en TypeScript para la web, con 139. Schemathesis, también en Python, lee el OpenAPI de Qolqe y genera los casos. HABLA: lo que habla con Qolqe. En la API, el cliente Sesiones, hecho con httpx, que guarda el token de cada usuario; en la web, los Page Objects y sus 5 componentes, así que ningún paso tiene un localizador. El contrato manda directo las peticiones que generó. SISTEMA: Qolqe sin cambios, como caja negra, con una base SQLite por suite para que una suite no ensucie a la otra.
 
-Las partes comparten artefactos, no código: el Gherkin con sus etiquetas, la API de soporte y el formato JUnit. Por eso el JUnit es el punto de unión: de ahí salen la matriz, el historial de Pages y los Test Runs de Kiwi.
+UNE: cada suite deja su JUnit. La API, con su reporte HTML con las peticiones; la web, con traza, captura y video; el contrato, con su HTML. Las partes comparten artefactos, no código: el Gherkin con sus etiquetas @HU @CA @CP @DEF, la API de soporte y el formato JUnit. Por eso el JUnit es el punto de unión: con él, trazabilidad.py arma la matriz, que se ordena por esas etiquetas, y el historial que se publica en Pages; y Kiwi TCMS importa los Test Runs desde mi máquina.
+
+La franja azul es lo que corre en GitHub Actions: las tres primeras filas. La franja punteada va a mano: el rendimiento tiene su propio requerimiento, k6 en JavaScript con 8 escenarios escritos a mano, sesiones completas por HTTP contra Qolqe en un contenedor Docker de 1 CPU y 1 GB, fuera del pipeline. Su evidencia no pasa por el JUnit: queda versionada en el repositorio.
 
 Si pregunta por qué dos lenguajes: cada capa usa el runner que enseña la clase. La clase 10 enseña pytest con pytest-bdd y Schemathesis, en Python, que además es el lenguaje de Qolqe; la clase 11 enseña Playwright con playwright-bdd, en TypeScript, y su runner trae integradas las repeticiones, los reintentos y las trazas. El costo es real y está escrito: dos gestores de dependencias y los usuarios de prueba repetidos en las dos suites.</aside>
 </section>

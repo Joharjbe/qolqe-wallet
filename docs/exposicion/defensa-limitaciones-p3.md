@@ -32,7 +32,7 @@ Lo sostiene: `docs/informe.md:337` · `tests/performance/README.md:42` · `docs/
 
 **8. k6 y Qolqe corrieron en la misma laptop.**
 La clase 13 dice que generar la carga desde la misma máquina distorsiona las mediciones, y por eso está declarado como limitación. Lo que lo controla: Qolqe va con una cuota de 1 CPU, la referencia de 1 VU se mide en Docker (V-06) y V-01 vigila el CPU de k6, que no pasó de 1,2 % por ventana en la carga y el estrés ni de 1,7 % en ninguna corrida.
-Lo sostiene: `docs/Informe_Rendimiento_Qolqe.pdf`, §6, «Limitaciones conocidas» (pág. 16) · fila V-01 de `tests/performance/resultados/carga/20261111-1833/veredicto.md:12` y de `tests/performance/resultados/estres/20261111-1940/veredicto.md:12` · lámina 6, tarjeta de abajo.
+Lo sostiene: `docs/Informe_Rendimiento_Qolqe.pdf`, §6, «Limitaciones conocidas» (pág. 16) · fila V-01 de `tests/performance/resultados/carga/20261111-1833/veredicto.md:12` y de `tests/performance/resultados/estres/20261111-1940/veredicto.md:12` · lámina 6, el chip «Qolqe · 1 CPU» y su nota de orador, que da el 1,2 %.
 
 **9. La capacidad de 850 no se confirmó a carga constante.**
 850 sale de las ventanas de 30 s de una rampa. La corrida que la confirmaría sostenida, `L_CAP=850`, era opcional y no se ejecutó: queda como recomendación, junto a repetir el estrés tras cada corrección.

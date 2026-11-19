@@ -1,32 +1,150 @@
 <section id="pipeline" class="pie" data-transition="fade">
 <p class="cejilla">PUNTO 5 · PIPELINE · OBS. 2a</p>
-<h2>De lo barato a lo caro, y el contrato al inicio</h2>
-<div class="cuerpo junto">
-<div class="fila" style="align-items:stretch; gap:16px">
-<div class="tarjeta ajustada" style="flex:1"><p class="etiqueta">1 · ESTÁTICO</p><p style="font-size:26px">Lint, tipos, Gherkin, etiquetas, el workflow y la regla del patrón. 53 s</p></div>
-<div class="tarjeta tarjeta-azul ajustada" style="flex:1"><p class="etiqueta">2 · CONTRATO</p><p style="font-size:26px">Schemathesis genera casos desde el OpenAPI. 35 s</p></div>
-<div class="tarjeta ajustada" style="flex:1"><p class="etiqueta">3 · API</p><p style="font-size:26px">766 ejecuciones funcionales y técnicas. 6 min 53 s</p></div>
-<div class="tarjeta ajustada" style="flex:1"><p class="etiqueta">4 · WEB</p><p style="font-size:26px">Playwright, tres repeticiones. 4 min 7 s</p></div>
-</div>
-<p class="nota sola"><b>Después:</b> quality-gate, el veredicto único · reportes, la matriz y el sitio, aunque fallen las pruebas · gestion-casos, listo para un Kiwi en internet; hoy Kiwi está en mi máquina y se sincroniza en modo pull, así que solo deja el aviso · publicar, Pages, solo en main y el último.</p>
-<div class="fila-2">
-<div class="tarjeta tarjeta-azul ajustada">
-<p class="etiqueta">POR QUÉ EL CONTRATO VA ANTES</p>
-<p class="chica">Es la primera prueba que ejecuta la API; antes solo va estático, que no levanta Qolqe. Si la API no cumple el contrato que ella misma publica, los casos funcionales prueban sobre una base que no se sostiene.</p>
-</div>
-<div class="tarjeta tarjeta-ambar ajustada">
-<p class="etiqueta">LA TRAMPA: SKIPPED NO ES VERDE (CLASE 12)</p>
-<p class="chica">GitHub cuenta un job <b>omitido</b> como aprobado. Sin guarda, un contrato en rojo dejaría <span class="mono" style="font-size:24px">api</span> y <span class="mono" style="font-size:24px">web</span> en «omitido»: aprobados sin haber corrido. Cada job comprueba al anterior y falla en segundos si no está verde.</p>
-</div>
-</div>
-<p class="nota sola">Tiempos del run #24, intento 1: el run completo, 13 min 38 s.</p>
+<h2>Lo barato primero, el contrato al inicio</h2>
+<div class="g5-lienzo">
+<svg class="g5-svg" width="1664" height="600" viewBox="0 0 1664 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Los 8 jobs del pipeline como una línea de metro. En serie, cada uno con una guarda que comprueba al anterior: estatico, sin levantar Qolqe, 53 s; contrato, desde el OpenAPI, 35 s, resaltado porque es la primera prueba que ejecuta la API; api, 766 ejecuciones, 6 min 53 s; y web, tres veces, 4 min 7 s. Tiempos del run #24. Encima, en gris punteado, cómo era antes: de estatico se iba directo a api, porque el contrato corría en paralelo. Después de las cuatro etapas la línea se divide: quality-gate, el veredicto único; y reportes, que corre aunque fallen las pruebas, sigue con gestion-casos, que solo deja el aviso para Kiwi, y publicar, en Pages; estos dos, solo en main. Abajo a la izquierda, la trampa de la clase 12, skipped no es verde. Sin guarda: el contrato falla, api queda omitido y GitHub lo cuenta como verde. Con guarda: el contrato falla, api falla en su guarda y el merge queda bloqueado.">
+<path class="g5-traza g5-lento g5-lineal g5-t010" d="M80,104 H1000" fill="none" stroke="#1F5FD0" stroke-width="12" stroke-linecap="round"/>
+<path class="g5-traza g5-t090" d="M1000,104 H1180" fill="none" stroke="#14213D" stroke-width="12" stroke-linecap="round"/>
+<path class="g5-aparece g5-t095" d="M1000,104 Q1050,104 1050,154 V350 Q1050,400 1100,400" fill="none" stroke="#14213D" stroke-width="12" stroke-linecap="round"/>
+<path class="g5-traza g5-lento g5-lineal g5-t110" d="M1100,400 H1600" fill="none" stroke="#14213D" stroke-width="12" stroke-linecap="round"/>
+<g transform="translate(200,104)"><g class="g5-pop g5-t020"><path d="M0,-17 L13,-12 V-1 C13,8 7,14 0,17 C-7,14 -13,8 -13,-1 V-12 Z" fill="#FFFFFF" stroke="#14213D" stroke-width="3.4" stroke-linejoin="round"/></g></g>
+<g transform="translate(440,104)"><g class="g5-pop g5-t040"><path d="M0,-17 L13,-12 V-1 C13,8 7,14 0,17 C-7,14 -13,8 -13,-1 V-12 Z" fill="#FFFFFF" stroke="#14213D" stroke-width="3.4" stroke-linejoin="round"/></g></g>
+<g transform="translate(680,104)"><g class="g5-pop g5-t065"><path d="M0,-17 L13,-12 V-1 C13,8 7,14 0,17 C-7,14 -13,8 -13,-1 V-12 Z" fill="#FFFFFF" stroke="#14213D" stroke-width="3.4" stroke-linejoin="round"/></g></g>
+<g class="g5-aparece g5-t060">
+<path d="M80,58 C80,4 560,4 560,50" fill="none" stroke="#8E97AC" stroke-width="3" stroke-dasharray="8 8" stroke-linecap="round"/>
+<path d="M550,40 L560,53 L570,40" fill="none" stroke="#8E97AC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="282" y="1" width="76" height="30" rx="8" fill="#F7F6F2"/>
+<text class="g5-m" x="320" y="24" text-anchor="middle" font-size="24" font-weight="700" fill="#5F6A86">antes</text>
+</g>
+<g transform="translate(80,104)"><g class="g5-pop g5-t010">
+<circle r="40" fill="#FFFFFF" stroke="#1F5FD0" stroke-width="6"/>
+<path d="M-12,-17 H5 L12,-10 V17 H-12 Z M5,-17 V-10 H12 M-6,-3 H6 M-6,4 H6 M-6,11 H2" fill="none" stroke="#1F5FD0" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g></g>
+<g transform="translate(320,104)"><g class="g5-pop g5-t030">
+<circle r="53" fill="none" stroke="#BFD0F2" stroke-width="7"/>
+<circle r="40" fill="#1F5FD0" stroke="#1F5FD0" stroke-width="6"/>
+<path d="M-12,-17 H12 V8 M-12,-17 V17 H2 M-6,-9 H6 M-6,-2 H6" fill="none" stroke="#FFFFFF" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="9" cy="13" r="5.5" fill="none" stroke="#FFFFFF" stroke-width="3.6"/>
+</g></g>
+<g transform="translate(560,104)"><g class="g5-pop g5-t055">
+<circle r="40" fill="#FFFFFF" stroke="#1F5FD0" stroke-width="6"/>
+<path d="M-5,-15 Q-11,-15 -11,-9 V-4 Q-11,0 -16,0 Q-11,0 -11,4 V9 Q-11,15 -5,15 M5,-15 Q11,-15 11,-9 V-4 Q11,0 16,0 Q11,0 11,4 V9 Q11,15 5,15" fill="none" stroke="#1F5FD0" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g></g>
+<g transform="translate(800,104)"><g class="g5-pop g5-t075">
+<circle r="40" fill="#FFFFFF" stroke="#1F5FD0" stroke-width="6"/>
+<rect x="-18" y="-14" width="36" height="28" rx="4" fill="none" stroke="#1F5FD0" stroke-width="3.6"/>
+<path d="M-18,-5 H18" fill="none" stroke="#1F5FD0" stroke-width="3.6" stroke-linecap="round"/>
+</g></g>
+<g transform="translate(1180,104)"><g class="g5-pop g5-t110">
+<circle r="40" fill="#FFFFFF" stroke="#14213D" stroke-width="5"/>
+<path d="M0,-18 L15,-12 V0 C15,9 8,15 0,18 C-8,15 -15,9 -15,0 V-12 Z M-6,0 L-1,5 L7,-4" fill="none" stroke="#14213D" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g></g>
+<g transform="translate(1180,400)"><g class="g5-pop g5-t125">
+<circle r="40" fill="#FFFFFF" stroke="#14213D" stroke-width="5"/>
+<path d="M-16,15 H16 M-9,9 V1 M-3,9 V-8 M3,9 V-3 M9,9 V-12" fill="none" stroke="#14213D" stroke-width="3.6" stroke-linecap="round"/>
+</g></g>
+<g transform="translate(1390,400)"><g class="g5-pop g5-t155">
+<circle r="40" fill="#FFFFFF" stroke="#14213D" stroke-width="5"/>
+<rect x="-12" y="-13" width="24" height="30" rx="3" fill="none" stroke="#14213D" stroke-width="3.6"/>
+<path d="M-5,-17 H5 V-10 H-5 Z M-6,-1 H6 M-6,6 H6" fill="none" stroke="#14213D" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g></g>
+<g transform="translate(1600,400)"><g class="g5-pop g5-t190">
+<circle r="40" fill="#FFFFFF" stroke="#14213D" stroke-width="5"/>
+<path d="M0,7 V-15 M-8,-7 L0,-15 L8,-7 M-16,3 V14 H16 V3" fill="none" stroke="#14213D" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+</g></g>
+<g class="g5-aparece g5-t020">
+<text class="g5-m" x="80" y="186" text-anchor="middle" font-size="26" font-weight="700" fill="#14213D">estatico</text>
+<text x="80" y="218" text-anchor="middle" font-size="24" fill="#44506B">sin Qolqe</text>
+<rect x="37" y="234" width="86" height="38" rx="19" fill="#E6EAF2"/>
+<text class="g5-m" x="80" y="261" text-anchor="middle" font-size="24" font-weight="700" fill="#14213D">53 s</text>
+</g>
+<g class="g5-aparece g5-t040">
+<text class="g5-m" x="320" y="186" text-anchor="middle" font-size="26" font-weight="700" fill="#1F5FD0">contrato</text>
+<text x="320" y="218" text-anchor="middle" font-size="24" fill="#44506B">OpenAPI</text>
+<rect x="277" y="234" width="86" height="38" rx="19" fill="#E6EAF2"/>
+<text class="g5-m" x="320" y="261" text-anchor="middle" font-size="24" font-weight="700" fill="#14213D">35 s</text>
+</g>
+<g class="g5-aparece g5-t065">
+<text class="g5-m" x="560" y="186" text-anchor="middle" font-size="26" font-weight="700" fill="#14213D">api</text>
+<text x="560" y="218" text-anchor="middle" font-size="24" fill="#44506B">766 ejecuciones</text>
+<rect x="474" y="234" width="172" height="38" rx="19" fill="#E6EAF2"/>
+<text class="g5-m" x="560" y="261" text-anchor="middle" font-size="24" font-weight="700" fill="#14213D">6 min 53 s</text>
+</g>
+<g class="g5-aparece g5-t085">
+<text class="g5-m" x="800" y="186" text-anchor="middle" font-size="26" font-weight="700" fill="#14213D">web <tspan fill="#1F5FD0">×3</tspan></text>
+<rect x="721" y="234" width="158" height="38" rx="19" fill="#E6EAF2"/>
+<text class="g5-m" x="800" y="261" text-anchor="middle" font-size="24" font-weight="700" fill="#14213D">4 min 7 s</text>
+</g>
+<g class="g5-aparece g5-t120">
+<text class="g5-m" x="1180" y="186" text-anchor="middle" font-size="26" font-weight="700" fill="#14213D">quality-gate</text>
+<text x="1180" y="218" text-anchor="middle" font-size="24" fill="#44506B">veredicto único</text>
+</g>
+<g class="g5-aparece g5-t130">
+<text class="g5-m" x="1180" y="482" text-anchor="middle" font-size="26" font-weight="700" fill="#14213D">reportes</text>
+<text x="1180" y="514" text-anchor="middle" font-size="24" fill="#44506B">aunque fallen</text>
+</g>
+<g class="g5-aparece g5-t165">
+<text class="g5-m" x="1390" y="482" text-anchor="middle" font-size="26" font-weight="700" fill="#14213D">gestion-casos</text>
+<text x="1390" y="514" text-anchor="middle" font-size="24" fill="#44506B">aviso Kiwi</text>
+</g>
+<g class="g5-aparece g5-t200">
+<text class="g5-m" x="1600" y="482" text-anchor="middle" font-size="26" font-weight="700" fill="#14213D">publicar</text>
+<text x="1600" y="514" text-anchor="middle" font-size="24" fill="#44506B">Pages</text>
+</g>
+<g class="g5-aparece g5-t200">
+<path d="M1300,346 V336 H1662 V346" fill="none" stroke="#44506B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1481" y="324" text-anchor="middle" font-size="24" font-weight="600" fill="#44506B">solo <tspan class="g5-m" font-weight="700">main</tspan></text>
+</g>
+<g class="g5-entra g5-t130">
+<rect x="0" y="352" width="272" height="44" rx="22" fill="#8F5207"/>
+<text class="g5-m" x="136" y="383" text-anchor="middle" font-size="26" font-weight="700" fill="#FFFFFF">SKIPPED ≠ VERDE</text>
+</g>
+<g class="g5-aparece g5-t145">
+<path d="M14,452 L26,457 V466 C26,473 21,478 14,480 C7,478 2,473 2,466 V457 Z" fill="none" stroke="#8E97AC" stroke-width="3" stroke-linejoin="round"/>
+<path d="M0,482 L28,450" stroke="#8F5207" stroke-width="3.4" stroke-linecap="round"/>
+<text x="40" y="475" font-size="26" font-weight="600" fill="#14213D">Sin guarda</text>
+<circle cx="320" cy="466" r="26" fill="#1F5FD0"/>
+<path d="M310,453 H329 V469 M310,453 V479 H319 M315,459 H324 M315,465 H324" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="326" cy="475" r="4" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+<circle cx="341" cy="445" r="12" fill="#8F5207" stroke="#F7F6F2" stroke-width="3"/>
+<path d="M337,441 l8,8 M345,441 l-8,8" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+<path d="M358,466 H516 M504,456 L518,466 L504,476" fill="none" stroke="#44506B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="560" cy="466" r="26" fill="#F7F6F2" stroke="#8E97AC" stroke-width="3" stroke-dasharray="5 5"/>
+<path d="M556,456 Q552,456 552,460 V463 Q552,466 548,466 Q552,466 552,469 V472 Q552,476 556,476 M564,456 Q568,456 568,460 V463 Q568,466 572,466 Q568,466 568,469 V472 Q568,476 564,476" fill="none" stroke="#8E97AC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="598" y="475" font-size="26" font-weight="600" fill="#5F6A86">omitido</text>
+<path d="M712,466 H770 M758,456 L772,466 L758,476" fill="none" stroke="#44506B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="802" cy="466" r="17" fill="#2F6B2F"/><path d="M794,466 l5,5 l10,-10" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="828" y="475" font-size="26" font-weight="600" fill="#2F6B2F">verde</text>
+<path d="M926,450 L944,482 H908 Z" fill="#8F5207" stroke="#8F5207" stroke-width="3" stroke-linejoin="round"/>
+<path d="M926,461 V470 M926,476 V476.5" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round"/>
+</g>
+<g class="g5-aparece g5-t175">
+<path d="M14,546 L26,551 V560 C26,567 21,572 14,574 C7,572 2,567 2,560 V551 Z" fill="none" stroke="#14213D" stroke-width="3" stroke-linejoin="round"/>
+<text x="40" y="569" font-size="26" font-weight="600" fill="#14213D">Con guarda</text>
+<circle cx="320" cy="560" r="26" fill="#1F5FD0"/>
+<path d="M310,547 H329 V563 M310,547 V573 H319 M315,553 H324 M315,559 H324" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="326" cy="569" r="4" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+<circle cx="341" cy="539" r="12" fill="#8F5207" stroke="#F7F6F2" stroke-width="3"/>
+<path d="M337,535 l8,8 M345,535 l-8,8" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+<path d="M358,560 H516 M504,550 L518,560 L504,570" fill="none" stroke="#44506B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="560" cy="560" r="26" fill="#FFFFFF" stroke="#C2710C" stroke-width="3"/>
+<path d="M556,550 Q552,550 552,554 V557 Q552,560 548,560 Q552,560 552,563 V566 Q552,570 556,570 M564,550 Q568,550 568,554 V557 Q568,560 572,560 Q568,560 568,563 V566 Q568,570 564,570" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="581" cy="539" r="12" fill="#8F5207" stroke="#F7F6F2" stroke-width="3"/>
+<path d="M577,535 l8,8 M585,535 l-8,8" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+<text x="598" y="569" font-size="26" font-weight="600" fill="#8F5207">falla</text>
+<path d="M712,560 H770 M758,550 L772,560 L758,570" fill="none" stroke="#44506B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="790" y="559" width="24" height="18" rx="3" fill="#14213D"/>
+<path d="M794,559 V552 a8,8 0 0 1 16,0 V559" fill="none" stroke="#14213D" stroke-width="3.4"/>
+<text x="828" y="569" font-size="26" font-weight="600" fill="#14213D">merge bloqueado</text>
+</g>
+</svg>
 </div>
 <p class="numero-pagina">14 · Entrega final · Pruebas de Qolqe</p>
 <aside>Este punto responde la observación 2a: mejorar la estructura del workflow y justificar cada job.
 
-El pipeline va de lo barato a lo caro: si falla algo de un minuto, no se gastan diez. Son ocho jobs. Los cuatro de arriba son las etapas de prueba; después vienen quality-gate, que junta todo en un solo veredicto en el resumen del run; reportes, que arma la matriz y el sitio y corre aunque fallen las pruebas, porque el reporte es lo que explica el fallo; gestion-casos, que queda listo para un Kiwi en internet: hoy Kiwi corre en mi máquina y lo sincronizo en modo pull, así que el job solo deja el aviso; y publicar, que sube el sitio a Pages, solo en main, y es el último.
+Cómo se lee la lámina. Es el pipeline como una línea de metro. Va de lo barato a lo caro: si falla algo de un minuto, no se gastan diez. Son ocho jobs. Los cuatro de la línea azul son las etapas de prueba, en serie: estático, que es lint, tipos, Gherkin, etiquetas, el workflow y la regla del patrón, sin levantar Qolqe, 53 segundos; contrato, donde Schemathesis genera casos desde el OpenAPI, 35 segundos; api, con 766 ejecuciones funcionales y técnicas, 6 minutos 53 segundos; y web, Playwright con tres repeticiones, 4 minutos 7 segundos. Los escudos entre estaciones son las guardas: cada job comprueba al anterior. Los tiempos son del run #24, intento 1, que es el que se abre en la demo; el run completo duró 13 minutos 38 segundos.
 
-El cambio de esta entrega es el orden. Antes el contrato corría en paralelo con la API; ahora va antes y la bloquea, que es lo que pedía la indicación. No contradice que estático vaya primero: estático no levanta Qolqe, así que el contrato es la primera prueba que de verdad ejecuta la API. El razonamiento es que el contrato es lo que la API promete cumplir: si no lo cumple, los casos funcionales prueban sobre una base que no se sostiene. Ponerlo delante cuesta lo que dura su job: 41 segundos en el run #20 y 35 en el #24. Los tiempos de la lámina son del run #24, intento 1, que es el que se abre en la demo.
+Después de las cuatro etapas la línea se divide. quality-gate junta todo en un solo veredicto en el resumen del run. reportes arma la matriz y el sitio y corre aunque fallen las pruebas, porque el reporte es lo que explica el fallo. gestion-casos queda listo para un Kiwi en internet: hoy Kiwi corre en mi máquina y lo sincronizo en modo pull, así que el job solo deja el aviso. Y publicar sube el sitio a Pages, solo en main, y es el último. gestion-casos y publicar corren solo en main.
 
-Pero la parte interesante es la de la derecha, porque serializar tenía una trampa, que la clase 12 resume en una frase: skipped no es verde. GitHub cuenta un job omitido como aprobado en un check obligatorio. Si ponía el contrato delante sin más, un contrato en rojo habría dejado api y web en «omitido»; con solo api y web obligatorios, como estaba la protección cuando hice el cambio, el pull request se habría podido fusionar igual. Hoy además lo pararía quality-gate, que es obligatorio desde el 18 de noviembre y cuenta una etapa omitida como no aprobada; eso lo cuento en la lámina siguiente. Por eso cada job empieza con una guarda que comprueba el anterior y falla en segundos si no está en verde. Ahí el check queda en rojo de verdad y el merge se bloquea.</aside>
+El cambio de esta entrega es el orden, por eso el contrato va resaltado. Antes el contrato corría en paralelo con la API, que es el arco gris punteado de arriba, de estatico directo a api; ahora va antes y la bloquea, que es lo que pedía la indicación. No contradice que estático vaya primero: estático no levanta Qolqe, así que el contrato es la primera prueba que de verdad ejecuta la API. El razonamiento es que el contrato es lo que la API promete cumplir: si no lo cumple, los casos funcionales prueban sobre una base que no se sostiene. Ponerlo delante cuesta lo que dura su job: 41 segundos en el run #20 y 35 en el #24.
+
+Abajo, la parte interesante, porque serializar tenía una trampa que la clase 12 resume en una frase: skipped no es verde. GitHub cuenta un job omitido como aprobado en un check obligatorio. Si ponía el contrato delante sin más, un contrato en rojo habría dejado api y web en «omitido»; con solo api y web obligatorios, como estaba la protección cuando hice el cambio, el pull request se habría podido fusionar igual. Hoy además lo pararía quality-gate, que es obligatorio desde el 18 de noviembre y cuenta una etapa omitida como no aprobada; eso lo cuento en la lámina siguiente. Por eso cada job empieza con una guarda que comprueba el anterior y falla en segundos si no está en verde. Ahí el check queda en rojo de verdad y el merge se bloquea.</aside>
 </section>

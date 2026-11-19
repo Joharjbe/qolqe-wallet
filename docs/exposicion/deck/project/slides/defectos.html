@@ -1,24 +1,153 @@
 <section id="defectos" class="pie" data-transition="push">
 <p class="cejilla">LO QUE EL TRABAJO ENCONTRÓ</p>
 <h2>30 defectos, 8 críticos</h2>
-<div class="cuerpo">
-<table class="compacta" style="width:1664px">
-<tr><th width="14%">Defecto</th><th width="86%">Qué permite hacer hoy</th></tr>
-<tr><td class="mono">DEF-03</td><td>Aceptar una solicitud ya vencida, y el dinero se transfiere igual</td></tr>
-<tr><td class="mono">DEF-04</td><td>Transferir a una cuenta cerrada</td></tr>
-<tr><td class="mono">DEF-09</td><td>Seguir usando el token después de cerrar sesión</td></tr>
-<tr><td class="mono">DEF-11</td><td>Esquivar el bloqueo por intentos fallidos, mandándolos a la vez</td></tr>
-<tr><td class="mono">DEF-19</td><td>Dejar el saldo en negativo: la transferencia interbancaria no descuenta la comisión</td></tr>
-<tr><td class="mono">DEF-21</td><td>Superar el saldo o el límite diario con dos transferencias simultáneas</td></tr>
-<tr><td class="mono">DEF-25</td><td>Debitar varias veces la misma solicitud si se acepta varias veces a la vez</td></tr>
-<tr><td class="mono">DEF-30</td><td>Cancelar o rechazar mientras se acepta: las dos responden 200 y el dinero se mueve igual</td></tr>
-</table>
-<p class="nota">Los ocho tocan el dinero o la sesión, y cuatro solo aparecen con dos operaciones a la vez: una suite que prueba de a uno no los ve.</p>
-</div>
+<svg class="g8-lienzo" width="1664" height="600" viewBox="0 0 1664 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Los 30 defectos que encontró el trabajo. A la izquierda, un anillo de 30 segmentos, uno por defecto, coloreado por severidad: 8 críticos, 5 altos, 9 medios y 8 bajos. Debajo, de dónde salen, en barras: 24 los detectó la API, 1 la web, 2 solo el contrato, 1 el pipeline y 2 fueron manuales. A la derecha, los 8 críticos como fichas, cada una con un billete si toca el dinero o una llave si toca la sesión, salvo DEF-30, que lleva la persona de «Manual», en dos columnas según cuántas operaciones hacen falta para que aparezcan. Secuencial, con una sola operación: DEF-03, solicitud vencida; DEF-04, cuenta cerrada; DEF-09, el token sigue vivo tras cerrar sesión; DEF-19, saldo negativo. Concurrencia, solo con dos operaciones a la vez, 4 de los 8: DEF-11, bloqueo esquivado; DEF-21, límite superado; DEF-25, débito repetido; DEF-30, cancelar y aceptar. Una llave agrupa DEF-11, DEF-21 y DEF-25 y lleva a los 10 escenarios de concurrencia, que los automatizan; DEF-30 queda fuera de la llave: es evidencia manual.">
+<g transform="translate(150,158)">
+<path class="g8-arco g8-d015" d="M2.00,-127.98 A128,128 0 0 1 127.49,11.39" fill="none" stroke="#8F5207" stroke-width="44" stroke-dasharray="22.81 4"/>
+<path class="g8-arco g8-d035" d="M127.07,15.37 A128,128 0 0 1 53.88,116.11" fill="none" stroke="#C2710C" stroke-width="44" stroke-dasharray="22.81 4"/>
+<path class="g8-arco g8-d055" d="M50.23,117.73 A128,128 0 0 1 -127.07,15.37" fill="none" stroke="#6B7693" stroke-width="44" stroke-dasharray="22.81 4"/>
+<path class="g8-arco g8-d075" d="M-127.49,11.39 A128,128 0 0 1 -2.00,-127.98" fill="none" stroke="#6B7693" stroke-width="44" stroke-dasharray="22.81 4"/>
+<path class="g8-arco g8-d075" d="M-127.49,11.39 A128,128 0 0 1 -2.00,-127.98" fill="none" stroke="#A3ABBD" stroke-width="40" stroke-dasharray="18.81 8" stroke-dashoffset="-2"/>
+<text class="g8-m g8-pop g8-d010" y="34" text-anchor="middle" font-size="96" fill="#14213D">30</text>
+</g>
+<g class="g8-sube g8-d020">
+<rect x="352" y="38" width="28" height="28" rx="6" fill="#8F5207"/>
+<text class="g8-m" x="398" y="68" font-size="46" fill="#8F5207">8</text>
+<text x="438" y="62" font-size="30" font-weight="600" fill="#8F5207">críticos</text>
+</g>
+<g class="g8-sube g8-d040">
+<rect x="352" y="110" width="28" height="28" rx="6" fill="#C2710C"/>
+<text class="g8-m" x="398" y="140" font-size="46" fill="#14213D">5</text>
+<text x="438" y="134" font-size="30" font-weight="600" fill="#44506B">altos</text>
+</g>
+<g class="g8-sube g8-d060">
+<rect x="352" y="182" width="28" height="28" rx="6" fill="#6B7693"/>
+<text class="g8-m" x="398" y="212" font-size="46" fill="#14213D">9</text>
+<text x="438" y="206" font-size="30" font-weight="600" fill="#44506B">medios</text>
+</g>
+<g class="g8-sube g8-d080">
+<rect x="353" y="255" width="26" height="26" rx="5" fill="#A3ABBD" stroke="#6B7693" stroke-width="2"/>
+<text class="g8-m" x="398" y="284" font-size="46" fill="#14213D">8</text>
+<text x="438" y="278" font-size="30" font-weight="600" fill="#44506B">bajos</text>
+</g>
+<text class="g8-m g8-aparece g8-d080" x="0" y="378" font-size="24" letter-spacing="2" fill="#1F5FD0">DETECTADOS POR</text>
+<g class="g8-aparece g8-d090">
+<g transform="translate(20,416) scale(.78)" fill="none" stroke="#14213D" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M-5,-15 Q-11,-15 -11,-9 V-4 Q-11,0 -16,0 Q-11,0 -11,4 V9 Q-11,15 -5,15 M5,-15 Q11,-15 11,-9 V-4 Q11,0 16,0 Q11,0 11,4 V9 Q11,15 5,15"/></g>
+<text x="52" y="426" font-size="28" font-weight="600" fill="#14213D">API</text>
+<text class="g8-m" x="546" y="427" font-size="30" fill="#14213D">24</text>
+</g>
+<rect class="g8-crece g8-d090" x="196" y="404" width="336" height="24" rx="5" fill="#1F5FD0"/>
+<g class="g8-aparece g8-d100">
+<g transform="translate(20,460) scale(.78)" fill="none" stroke="#14213D" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><rect x="-18" y="-14" width="36" height="28" rx="4"/><path d="M-18,-5 H18"/></g>
+<text x="52" y="470" font-size="28" font-weight="600" fill="#14213D">Web</text>
+<text class="g8-m" x="224" y="471" font-size="30" fill="#14213D">1</text>
+</g>
+<rect class="g8-crece g8-d100" x="196" y="448" width="14" height="24" rx="5" fill="#1F5FD0"/>
+<g class="g8-aparece g8-d110">
+<g transform="translate(20,504) scale(.78)" fill="none" stroke="#14213D" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M-12,-16 H5 L12,-9 V16 H-12 Z M-6,-2 H6 M-6,5 H6 M-6,12 H2"/></g>
+<text x="52" y="514" font-size="28" font-weight="600" fill="#14213D">Contrato</text>
+<text class="g8-m" x="238" y="515" font-size="30" fill="#14213D">2</text>
+</g>
+<rect class="g8-crece g8-d110" x="196" y="492" width="28" height="24" rx="5" fill="#1F5FD0"/>
+<g class="g8-aparece g8-d120">
+<g transform="translate(20,548) scale(.78)" fill="none" stroke="#14213D" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="M-17,-11 L-7,0 L-17,11 M-4,-11 L6,0 L-4,11 M9,-11 L19,0 L9,11"/></g>
+<text x="52" y="558" font-size="28" font-weight="600" fill="#14213D">Pipeline</text>
+<text class="g8-m" x="224" y="559" font-size="30" fill="#14213D">1</text>
+</g>
+<rect class="g8-crece g8-d120" x="196" y="536" width="14" height="24" rx="5" fill="#1F5FD0"/>
+<g class="g8-aparece g8-d130">
+<g transform="translate(20,592) scale(.78)" fill="none" stroke="#14213D" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="-8" r="7"/><path d="M-14,16 Q-14,2 0,2 Q14,2 14,16"/></g>
+<text x="52" y="602" font-size="28" font-weight="600" fill="#14213D">Manual</text>
+<text class="g8-m" x="238" y="603" font-size="30" fill="#14213D">2</text>
+</g>
+<rect class="g8-crece g8-d130" x="196" y="580" width="28" height="24" rx="5" fill="#1F5FD0"/>
+<path class="g8-aparece g8-d050" d="M648,8 V592" stroke="#D8D5CC" stroke-width="2"/>
+<rect class="g8-aparece g8-d060" x="690" y="0" width="478" height="600" rx="20" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<g class="g8-aparece g8-d070" transform="translate(690,0)">
+<path d="M24,72 H74 M60,60 L75,72 L60,84" fill="none" stroke="#14213D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="g8-blanco" cx="106" cy="72" r="25" fill="currentColor"/>
+<path d="M106,60 V75 M106,84 V84.5" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+<text x="148" y="84" font-size="36" font-weight="600" fill="#14213D">Secuencial</text>
+</g>
+<circle class="g8-punto g8-viaja-1" cx="764" cy="72" r="8" fill="#1F5FD0"/>
+<g class="g8-pop g8-d130">
+<rect x="710" y="168" width="438" height="88" rx="14" fill="#FFFFFF" stroke="#C2710C" stroke-width="3"/>
+<g transform="translate(740,212)" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="-15" y="-10" width="30" height="20" rx="3"/><circle r="5"/></g>
+<text class="g8-m" x="768" y="222" font-size="28" fill="#8F5207">DEF-03</text>
+<text x="884" y="222" font-size="27" font-weight="600" fill="#14213D">Solicitud vencida</text>
+</g>
+<g class="g8-pop g8-d140">
+<rect x="710" y="272" width="438" height="88" rx="14" fill="#FFFFFF" stroke="#C2710C" stroke-width="3"/>
+<g transform="translate(740,316)" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="-15" y="-10" width="30" height="20" rx="3"/><circle r="5"/></g>
+<text class="g8-m" x="768" y="326" font-size="28" fill="#8F5207">DEF-04</text>
+<text x="884" y="326" font-size="27" font-weight="600" fill="#14213D">Cuenta cerrada</text>
+</g>
+<g class="g8-pop g8-d150">
+<rect x="710" y="376" width="438" height="88" rx="14" fill="#FFFFFF" stroke="#C2710C" stroke-width="3"/>
+<g transform="translate(740,420)" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="-8" r="6.5"/><path d="M-1.5,0 H15 M10,0 V6 M15,0 V5"/></g>
+<text class="g8-m" x="768" y="430" font-size="28" fill="#8F5207">DEF-09</text>
+<text x="884" y="430" font-size="27" font-weight="600" fill="#14213D">Token sigue vivo</text>
+</g>
+<g class="g8-pop g8-d160">
+<rect x="710" y="480" width="438" height="88" rx="14" fill="#FFFFFF" stroke="#C2710C" stroke-width="3"/>
+<g transform="translate(740,524)" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="-15" y="-10" width="30" height="20" rx="3"/><circle r="5"/></g>
+<text class="g8-m" x="768" y="534" font-size="28" fill="#8F5207">DEF-19</text>
+<text x="884" y="534" font-size="27" font-weight="600" fill="#14213D">Saldo negativo</text>
+</g>
+<rect class="g8-aparece g8-d070" x="1186" y="0" width="478" height="600" rx="20" fill="#FAEEDD" stroke="#C2710C" stroke-width="2"/>
+<g class="g8-aparece g8-d070" transform="translate(1186,0)">
+<path d="M24,40 L74,62 M67.4,49.7 L74,62 L60.4,65.4 M24,104 L74,82 M60.4,78.6 L74,82 L67.4,94.3" fill="none" stroke="#14213D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="g8-blanco" cx="106" cy="72" r="25" fill="currentColor"/>
+<path d="M106,60 V75 M106,84 V84.5" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+<text x="148" y="84" font-size="36" font-weight="600" fill="#14213D">Concurrencia</text>
+</g>
+<circle class="g8-punto g8-viaja-2" cx="1260" cy="62" r="8" fill="#1F5FD0"/>
+<circle class="g8-punto g8-viaja-3" cx="1260" cy="82" r="8" fill="#1F5FD0"/>
+<g class="g8-pop g8-d170">
+<rect x="1214" y="168" width="430" height="88" rx="14" fill="#FFFFFF" stroke="#C2710C" stroke-width="3"/>
+<g transform="translate(1244,212)" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="-8" r="6.5"/><path d="M-1.5,0 H15 M10,0 V6 M15,0 V5"/></g>
+<text class="g8-m" x="1272" y="222" font-size="28" fill="#8F5207">DEF-11</text>
+<text x="1388" y="222" font-size="27" font-weight="600" fill="#14213D">Bloqueo esquivado</text>
+</g>
+<g class="g8-pop g8-d180">
+<rect x="1214" y="272" width="430" height="88" rx="14" fill="#FFFFFF" stroke="#C2710C" stroke-width="3"/>
+<g transform="translate(1244,316)" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="-15" y="-10" width="30" height="20" rx="3"/><circle r="5"/></g>
+<text class="g8-m" x="1272" y="326" font-size="28" fill="#8F5207">DEF-21</text>
+<text x="1388" y="326" font-size="27" font-weight="600" fill="#14213D">Límite superado</text>
+</g>
+<g class="g8-pop g8-d190">
+<rect x="1214" y="376" width="430" height="88" rx="14" fill="#FFFFFF" stroke="#C2710C" stroke-width="3"/>
+<g transform="translate(1244,420)" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="-15" y="-10" width="30" height="20" rx="3"/><circle r="5"/></g>
+<text class="g8-m" x="1272" y="430" font-size="28" fill="#8F5207">DEF-25</text>
+<text x="1388" y="430" font-size="27" font-weight="600" fill="#14213D">Débito repetido</text>
+</g>
+<g class="g8-pop g8-d200">
+<rect x="1214" y="480" width="430" height="88" rx="14" fill="#FFFFFF" stroke="#C2710C" stroke-width="3"/>
+<g transform="translate(1244,524)" fill="none" stroke="#14213D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cy="-6.2" r="5.5"/><path d="M-11,12.5 Q-11,1.6 0,1.6 Q11,1.6 11,12.5"/></g>
+<text class="g8-m" x="1272" y="534" font-size="28" fill="#8F5207">DEF-30</text>
+<text x="1388" y="534" font-size="27" font-weight="600" fill="#14213D">Cancelar y aceptar</text>
+</g>
+<g class="g8-sube g8-d205" transform="translate(1186,0)">
+<path d="M20,172 H14 Q8,172 8,178 V454 Q8,460 14,460 H20 M8,178 V142 Q8,132 18,132 H54 M44,123 L56,132 L44,141" fill="none" stroke="#8F5207" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="68" y="142" font-size="28" font-weight="600" fill="#8F5207">10 escenarios</text>
+</g>
+</svg>
 <p class="numero-pagina">22 · Entrega final · Pruebas de Qolqe</p>
 <aside>Antes de cerrar quiero enseñar para qué sirvió todo esto, porque es fácil perderse en herramientas y pipelines. Al final, una suite de pruebas existe para esto.
 
-Son 30 defectos documentados, con sus pasos para reproducirlos, y ocho son críticos. Los ocho tocan el dinero o la sesión: aceptar una solicitud vencida y que el dinero igual se mueva, transferir a una cuenta cerrada, seguir usando el token después de cerrar sesión, dejar el saldo en negativo porque la interbancaria no descuenta la comisión. El último, DEF-30, salió el 17 de noviembre al medir CP-T19: si una solicitud se cancela o se rechaza mientras se acepta, las dos operaciones responden 200 y el dinero igual se mueve.
+Son 30 defectos documentados, cada uno con sus pasos para reproducirlo. El anillo tiene un segmento por defecto: 8 críticos, 5 altos, 9 medios y 8 bajos. Las barras de abajo dicen quién los encontró: 24 la suite de API, 1 la web, 2 solo el contrato, 1 el pipeline y 2 a mano, DEF-16 y DEF-30.
 
-Y el dato que para mí resume la Parte 1 y la Parte 3 juntas: cuatro de los ocho críticos solo aparecen cuando dos operaciones ocurren al mismo tiempo. Una suite que prueba de a una operación no los ve nunca. Por eso los diez escenarios de concurrencia, y por eso la regla de las 200 corridas para decidir cuáles se automatizan: tres de esos cuatro están automatizados, y DEF-30, que se reprodujo en 118 y 136 de 200 rondas, quedó como evidencia manual.</aside>
+A la derecha están los ocho críticos, y los ocho tocan el dinero o la sesión; por eso cada ficha lleva un billete o una llave. La excepción es DEF-30, que también mueve dinero pero lleva la persona de «Manual»: quedó como evidencia manual, y al final explico por qué. Uno por uno, lo que permite hacer hoy cada uno:
+DEF-03: aceptar una solicitud ya vencida, y el dinero se transfiere igual.
+DEF-04: transferir a una cuenta cerrada.
+DEF-09: seguir usando el token después de cerrar sesión.
+DEF-19: dejar el saldo en negativo, porque la transferencia interbancaria no descuenta la comisión.
+DEF-11: esquivar el bloqueo por intentos fallidos mandándolos a la vez.
+DEF-21: superar el saldo o el límite diario con dos transferencias simultáneas.
+DEF-25: debitar varias veces la misma solicitud si se acepta varias veces a la vez.
+DEF-30: cancelar o rechazar mientras se acepta; las dos operaciones responden 200 y el dinero se mueve igual. Este último salió el 17 de noviembre, al medir CP-T19.
+
+Las dos columnas son el dato que para mí resume la Parte 1 y la Parte 3 juntas. Los de la izquierda aparecen con una sola operación, en secuencia. Los de la derecha, cuatro de los ocho, solo aparecen cuando dos operaciones llegan al mismo tiempo, como muestran las dos flechas. Una suite que prueba de a una operación no los ve nunca.
+
+Por eso los 10 escenarios de concurrencia, y por eso la regla de las 200 corridas para decidir cuáles se automatizan: solo entra el que falla en 200 de 200. Tres de esos cuatro críticos están automatizados con @concurrencia: DEF-11, DEF-21 y DEF-25, los que abarca la llave que lleva a los 10 escenarios. DEF-30, que se reprodujo en 118 y 136 de 200 rondas, cancelando y rechazando, no cumple la regla y quedó como evidencia manual.</aside>
 </section>

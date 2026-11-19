@@ -162,111 +162,892 @@ li { margin-top: 16px; }
 .tarjeta.dato-lado { flex-direction: row; align-items: center; gap: 24px; }
 .tarjeta.dato-lado .dato { flex: none; }
 
-/* === Láminas nuevas: contexto y lo-que-pidio === */
-/* Prefijo ed- (infografía editorial). La regla plana es el aspecto final: lo que muestran el editor,
-   el PDF y quien tiene Reducir movimiento. El inicio de cada animación va en «from».
-   Ámbar para texto: #8F5207 (≥ 4,5:1 sobre blanco y sobre --papel; --ambar queda para bordes). */
+/* === Lámina contexto (visual) === */
+/* Prefijo cx-. Escena grande: dos teléfonos, la solicitud va, la moneda vuelve y se encienden DEF-03, DEF-25 y DEF-30.
+   La regla plana es el estado final (editor, PDF); el inicio de cada animación va en «from». Todo termina antes de 2,5 s.
+   Ámbar para texto: #8F5207 (≥ 4,5:1 sobre blanco y sobre --papel; --ambar queda para bordes y rellenos). */
+.cx-escena { display: block; flex: none; margin-top: 28px; overflow: visible; }
+.cx-escena text { font-family: 'IBM Plex Sans', Arial, sans-serif; }
+.cx-escena .cx-m { font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 700; }
+.cx-tira { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; background: #FFFFFF; border: 2px solid var(--linea); border-radius: 16px; padding: 6px 36px; }
+.cx-total { display: flex; align-items: baseline; gap: 12px; }
+.cx-cifra { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 84px; font-weight: 700; line-height: 1.34; color: var(--azul); }
+.cx-cifra.cx-ambar { color: #8F5207; }
+.cx-unidad { font-size: 30px; font-weight: 600; line-height: 1.2; color: var(--tinta); }
+.cx-flecha { flex: none; display: block; }
+.cx-criticos { flex: none; font-size: 26px; font-weight: 600; line-height: 1.2; color: #FFFFFF; background: #8F5207; border-radius: 999px; padding: 6px 18px; white-space: nowrap; }
+.cx-sep { flex: none; align-self: stretch; width: 2px; background: var(--linea); }
+.cx-parte { display: flex; align-items: center; gap: 14px; }
+.cx-parte svg { flex: none; display: block; }
+.cx-num { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 48px; font-weight: 700; line-height: 1.34; color: var(--tinta); white-space: nowrap; }
+.cx-chica { font-family: 'IBM Plex Sans', Arial, sans-serif; font-size: 26px; font-weight: 600; color: var(--texto); }
+.cx-pal { font-size: 26px; font-weight: 600; line-height: 1.2; color: var(--texto); }
 
-/* ---------- contexto ---------- */
-.ed-ctx { margin-top: 22px; display: flex; flex-direction: column; gap: 20px; flex: 1; }
-.ed-arriba { display: flex; gap: 28px; align-items: stretch; }
-.ed-escena { flex: 1; padding: 10px 16px 10px; gap: 6px; }
-.ed-escena svg { display: block; overflow: visible; }
-.ed-escena svg text { font-family: 'IBM Plex Sans', Arial, sans-serif; }
-.ed-escena svg .ed-m { font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 700; }
-.ed-escena svg .ed-et { letter-spacing: 2px; }
-.ed-ataque { display: grid; grid-template-columns: 1fr 1fr 1fr; column-gap: 16px; row-gap: 2px; background: #FBF1E4; border-left: 6px solid var(--ambar); border-radius: 0 10px 10px 0; padding: 6px 14px 8px 16px; }
-.ed-ataque p { font-size: 24px; line-height: 1.3; color: var(--texto); }
-.ed-ataque p b { font-weight: 600; color: #8F5207; }
-.ed-ataque p.ed-ataque-tit { grid-column: 1 / -1; font-weight: 600; color: #8F5207; }
-.ed-ataque .mono { font-size: 24px; font-weight: 700; color: #8F5207; margin-right: 8px; }
+/* Botones de las pantallas: el rect se pinta con currentColor, así «pulsar» es animar color (gris → color). */
+.cx-pedir { color: var(--azul); }
+.cx-aceptar { color: var(--verde); }
+/* La flecha del dinero espera en gris y se enciende en verde al aceptar. */
+.cx-activa { color: var(--verde); }
+/* La onda del toque termina invisible: su estado plano es opacity 0. */
+.cx-onda { opacity: 0; transform-box: fill-box; transform-origin: 50% 50%; }
 
-/* La cadena de punta a punta: bandas del mismo ancho, en chevrón, porque cada paso sale del anterior (no es un filtro). */
-.ed-cadena { flex: none; width: 500px; display: flex; flex-direction: column; gap: 4px; }
-.ed-cadena .etiqueta { margin: 8px 0 6px; }
-.ed-banda { flex: 1; display: flex; align-items: center; justify-content: center; gap: 16px; padding-top: 10px; clip-path: polygon(0 0, 50% 14px, 100% 0, 100% calc(100% - 14px), 50% 100%, 0 calc(100% - 14px)); }
-.ed-banda p { color: var(--tinta); }
-.ed-num { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 44px; font-weight: 700; line-height: 1.2; }
-.ed-que { font-size: 26px; font-weight: 600; line-height: 1.2; }
-.ed-b1 { background: #E6EAF2; padding-top: 0; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), 50% 100%, 0 calc(100% - 14px)); }
-.ed-b2 { background: #CBD7EF; }
-.ed-b3 { background: var(--azul); }
-.ed-b4 { background: #8F5207; clip-path: polygon(0 0, 50% 14px, 100% 0, 100% 100%, 0 100%); }
-.ed-b3 p, .ed-b4 p { color: #FFFFFF; }
+@keyframes cx-entra { from { opacity: 0; transform: translateY(24px); } }
+@keyframes cx-aparece { from { opacity: 0; } }
+@keyframes cx-traza { from { opacity: 0; transform: scaleX(.02); } }
+@keyframes cx-pop { from { opacity: 0; transform: scale(.5); } }
+@keyframes cx-pulsa { from { color: #B8BFCC; } }
+@keyframes cx-enciende { from { color: #CFCBC0; } }
+/* La onda tiene la forma del botón (píldora) y crece poco, para no tocar la tarjeta de arriba. */
+@keyframes cx-onda { from { opacity: 0; transform: scale(.9); } 30% { opacity: .8; } to { opacity: 0; transform: scale(1.25); } }
+/* La tarjeta nace en la pantalla de quien pide (x − 1314) y viaja por la flecha azul hasta la de quien paga. */
+@keyframes cx-tarjeta { from { opacity: 0; transform: translateX(-1314px); animation-timing-function: ease-out; } 18% { opacity: 1; transform: translateX(-1314px); animation-timing-function: cubic-bezier(.45, 0, .3, 1); } }
+/* La moneda sale junto a quien paga (x + 974) y viaja, a ritmo constante, hasta quien pide: pasa por DEF-30, DEF-25 y DEF-03. */
+@keyframes cx-moneda { from { opacity: 0; transform: translateX(974px); } 10% { opacity: 1; transform: translateX(877px); } }
+@keyframes cx-sube { from { opacity: 0; transform: translateX(-20px); } }
 
-.ed-partes { display: grid; grid-template-columns: 3fr 1fr; gap: 20px; }
-.ed-suite { position: relative; display: grid; grid-template-columns: 1fr 1fr 1fr; background: #FFFFFF; border: 3px solid var(--azul); border-radius: 16px; }
-.ed-leyenda { position: absolute; top: -17px; left: 28px; padding: 0 12px; background: linear-gradient(var(--papel) 0 16px, #FFFFFF 16px); font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; letter-spacing: 1px; line-height: 1.25; color: var(--azul); }
-.ed-parte { padding: 14px 24px 10px; display: flex; flex-direction: column; gap: 4px; }
-.ed-suite .ed-parte + .ed-parte { border-left: 2px solid var(--linea); }
-.ed-ia { background: #FFFFFF; border: 3px dashed #8E97AC; border-radius: 16px; }
-.ed-herr { font-size: 24px; font-weight: 600; line-height: 1.25; color: var(--tinta); }
-.ed-sal { display: flex; align-items: center; gap: 14px; }
-.ed-big { flex: none; font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 48px; font-weight: 700; line-height: 1.2; color: var(--azul); }
-.ed-cap { font-size: 24px; line-height: 1.25; color: var(--texto); }
+.cx-entra { animation: cx-entra .5s cubic-bezier(.2, .7, .3, 1) both; }
+.cx-d1 { animation-delay: .08s; }
+.cx-traza { animation: cx-traza .45s .15s cubic-bezier(.2, .7, .3, 1) both; transform-box: fill-box; transform-origin: 0% 50%; }
+.cx-traza-inv { transform-box: fill-box; transform-origin: 100% 50%; }
+.cx-traza-inv.cx-activa { animation: cx-traza .45s .15s cubic-bezier(.2, .7, .3, 1) both, cx-enciende .3s 1.2s ease-out both; }
+.cx-aparece { animation: cx-aparece .3s ease-out both; }
+.cx-d2 { animation-delay: .4s; }
+/* Los botones llegan con su teléfono (cx-entra) y luego se «pulsan» (cx-pulsa). */
+.cx-pedir { animation: cx-entra .5s cubic-bezier(.2, .7, .3, 1) both, cx-pulsa .2s .35s ease-out both; }
+.cx-onda-pedir { animation: cx-onda .5s .35s ease-out both; }
+.cx-tarjeta { animation: cx-tarjeta .75s .4s both; }
+.cx-aceptar { animation: cx-entra .5s .08s cubic-bezier(.2, .7, .3, 1) both, cx-pulsa .2s 1.15s ease-out both; }
+.cx-onda-aceptar { animation: cx-onda .5s 1.15s ease-out both; }
+.cx-moneda { animation: cx-moneda .8s 1.35s linear both; }
+.cx-pop { animation: cx-pop .35s cubic-bezier(.3, 1.5, .5, 1) both; transform-box: fill-box; transform-origin: 50% 50%; }
+.cx-d-menos { animation-delay: 1.4s; }
+.cx-d-a3 { animation-delay: 1.55s; }
+.cx-d-a2 { animation-delay: 1.74s; }
+.cx-d-a1 { animation-delay: 1.93s; }
+.cx-d-mas { animation-delay: 2.1s; }
+/* La tira llega entera al final, y su contenido entra de izquierda a derecha. */
+.cx-aparece-tira { animation: cx-aparece .3s 1.85s ease-out both; }
+.cx-sube { animation: cx-sube .3s ease-out both; }
+.cx-t1 { animation-delay: 1.95s; }
+.cx-t2 { animation-delay: 2s; }
+.cx-t3 { animation-delay: 2.05s; }
+.cx-t4 { animation-delay: 2.1s; }
+.cx-t5 { animation-delay: 2.15s; }
 
-/* ---------- lo-que-pidio ---------- */
-.ed-lp { margin-top: 24px; display: grid; grid-template-columns: 600px 1fr; column-gap: 36px; row-gap: 16px; }
-.ed-col { display: flex; flex-direction: column; gap: 4px; }
-.ed-titular { font-size: 28px; font-weight: 600; line-height: 1.3; color: var(--tinta); margin: 4px 0 6px; }
-.ed-sub { font-size: 24px; line-height: 1.3; color: var(--texto); margin: 4px 0 6px; }
-.ed-col .etiqueta.ed-otra { margin-top: 10px; }
-/* La Entrega 1 va aparte, separada por una línea: no es un quinto paso de la Parte 3. */
-.ed-item.ed-aparte { margin-top: 14px; padding-top: 10px; border-top: 2px dashed var(--linea); }
-.ed-prioridad { grid-column: 1 / -1; font-size: 24px; line-height: 1.3; color: var(--texto); border-top: 2px solid var(--linea); padding-top: 10px; }
-.ed-prioridad b { font-weight: 600; color: var(--tinta); }
-.ed-item { display: flex; align-items: center; gap: 14px; min-height: 42px; }
-.ed-item .ed-pedido { flex: 0 1 auto; min-width: 0; }
-.ed-check { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--verde); border: 2px solid var(--verde); color: #FFFFFF; font-size: 24px; font-weight: 700; line-height: 32px; text-align: center; }
-.ed-pedido { font-size: 26px; line-height: 1.25; color: var(--texto); }
-.ed-pedido b { font-weight: 600; color: var(--tinta); }
-.ed-obs { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; color: var(--tinta); background: var(--claro); border-radius: 6px; padding: 0 8px; white-space: nowrap; }
-.ed-obs.ed-nuevo { background: #FFFFFF; color: #8F5207; box-shadow: inset 0 0 0 2px var(--ambar); }
-.ed-guia { flex: 1 0 24px; height: 4px; align-self: center; background: repeating-linear-gradient(90deg, #7D879D 0 4px, transparent 4px 10px); }
-.ed-lam { flex: none; box-sizing: border-box; min-width: 60px; height: 42px; padding: 0 10px; border-radius: 6px; background: var(--azul); color: #FFFFFF; font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 26px; font-weight: 700; line-height: 42px; text-align: center; }
-.ed-lam.ed-demo { background: #FFFFFF; color: var(--azul); border: 3px solid var(--azul); line-height: 36px; }
+/* === Lámina lo-que-pidio (visual) === */
+/* Prefijo rt- (ruta). Mapa de la exposición en un solo svg. La regla plana es el estado final;
+   el inicio de cada animación va en «from». Tres tapas color papel destapan la línea (fila 1 hacia
+   la derecha, pasillo hacia la izquierda, fila 2 hacia la derecha) y cada parada se enciende cuando
+   el borde de su tapa la alcanza. Un punto por tramo recto va pegado a ese borde (misma duración y retraso
+   que su tapa) y se apaga antes de cada vuelta. */
+.rt-lienzo { margin-top: 30px; }
+.rt-mapa { display: block; overflow: hidden; }
+.rt-mapa text { font-family: 'IBM Plex Sans', Arial, sans-serif; }
+.rt-mapa .rt-m { font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 700; }
+.rt-mapa .rt-lab { font-weight: 600; }
+@keyframes rt-barre-der { from { transform: translateX(0); } }
+@keyframes rt-barre-izq { from { transform: translateX(0); } }
+@keyframes rt-pop { from { opacity: 0; transform: scale(.5); } }
+@keyframes rt-sube { from { opacity: 0; transform: translateY(10px); } }
+@keyframes rt-aparece { from { opacity: 0; } }
+@keyframes rt-punta-1 { from { transform: translateX(0); opacity: 1; } 91.8% { opacity: 1; } 93.6% { opacity: 0; } }
+@keyframes rt-punta-2 { from { transform: translateX(0); opacity: 0; } 7.5% { opacity: 0; } 9.2% { opacity: 1; } 92.1% { opacity: 1; } 93.8% { opacity: 0; } }
+@keyframes rt-punta-3 { from { transform: translateX(0); opacity: 0; } 7.2% { opacity: 0; } 9.0% { opacity: 1; } 96.3% { opacity: 1; } 98.7% { opacity: 0; } }
+.rt-tapa-der { transform: translateX(1690px); animation: rt-barre-der 0.72s linear 0.15s both; }
+.rt-tapa-der.rt-tapa-3 { animation-duration: 0.78s; animation-delay: 1.29s; }
+.rt-tapa-izq { transform: translateX(-1690px); animation: rt-barre-izq 0.42s linear 0.87s both; }
+.rt-pop { animation: rt-pop .32s cubic-bezier(.3, 1.5, .5, 1) both; transform-box: fill-box; transform-origin: 50% 50%; }
+.rt-sube { animation: rt-sube .35s ease-out both; }
+.rt-aparece { animation: rt-aparece .4s ease-out both; }
+.rt-punta { opacity: 0; }
+.rt-punta-1 { transform: translateX(1690px); animation: rt-punta-1 0.72s linear 0.15s both; }
+.rt-punta-2 { transform: translateX(-1690px); animation: rt-punta-2 0.42s linear 0.87s both; }
+.rt-punta-3 { transform: translateX(1690px); animation: rt-punta-3 0.78s linear 1.29s both; }
+.rt-t008 { animation-delay: 0.08s; }
+.rt-t026 { animation-delay: 0.26s; }
+.rt-t032 { animation-delay: 0.32s; }
+.rt-t042 { animation-delay: 0.42s; }
+.rt-t048 { animation-delay: 0.48s; }
+.rt-t057 { animation-delay: 0.57s; }
+.rt-t063 { animation-delay: 0.63s; }
+.rt-t072 { animation-delay: 0.72s; }
+.rt-t078 { animation-delay: 0.78s; }
+.rt-t093 { animation-delay: 0.93s; }
+.rt-t103 { animation-delay: 1.03s; }
+.rt-t136 { animation-delay: 1.36s; }
+.rt-t142 { animation-delay: 1.42s; }
+.rt-t144 { animation-delay: 1.44s; }
+.rt-t148 { animation-delay: 1.48s; }
+.rt-t150 { animation-delay: 1.5s; }
+.rt-t152 { animation-delay: 1.52s; }
+.rt-t156 { animation-delay: 1.56s; }
+.rt-t158 { animation-delay: 1.58s; }
+.rt-t161 { animation-delay: 1.61s; }
+.rt-t164 { animation-delay: 1.64s; }
+.rt-t167 { animation-delay: 1.67s; }
+.rt-t169 { animation-delay: 1.69s; }
+.rt-t173 { animation-delay: 1.73s; }
+.rt-t175 { animation-delay: 1.75s; }
+.rt-t177 { animation-delay: 1.77s; }
+.rt-t181 { animation-delay: 1.81s; }
+.rt-t183 { animation-delay: 1.83s; }
+.rt-t185 { animation-delay: 1.85s; }
+.rt-t189 { animation-delay: 1.89s; }
+.rt-t191 { animation-delay: 1.91s; }
+.rt-t194 { animation-delay: 1.94s; }
+.rt-t197 { animation-delay: 1.97s; }
+.rt-t200 { animation-delay: 2s; }
+.rt-t202 { animation-delay: 2.02s; }
+.rt-t208 { animation-delay: 2.08s; }
+.rt-t214 { animation-delay: 2.14s; }
 
-/* ---------- movimiento ---------- */
-@keyframes ed-entra { from { opacity: 0; transform: translateY(14px); } }
-@keyframes ed-aparece { from { opacity: 0; } }
-@keyframes ed-traza { from { opacity: 0; transform: scaleX(.02); } }
-@keyframes ed-guia { from { opacity: 0; transform: scaleX(.05); } }
-@keyframes ed-pop { from { opacity: 0; transform: scale(.6); } }
-@keyframes ed-cae { from { opacity: 0; transform: translateY(-22px); } }
-/* La moneda nace en quien paga (x = 916), espera un instante y viaja por la flecha verde hasta quien pide (x = 226). */
-@keyframes ed-moneda { from { opacity: 0; transform: translateX(690px); } 16% { opacity: 1; transform: translateX(690px); } }
-/* La marca, la guía y la insignia de la lámina llegan juntas: el pedido se conecta con su lámina. */
-@keyframes ed-marca { from { background-color: #FFFFFF; border-color: var(--linea); color: #FFFFFF; } }
+/* === grupo g1 (visual) === */
+/* Prefijo g1- (portada, transicion, cierre): las tres láminas oscuras.
+   La regla plana es el estado final (editor, PDF); el inicio de cada animación va en «from».
+   Todo termina antes de 2,5 s. En fondo oscuro: texto claro (#F7F6F2, #E6EAF2, #A9BCDC, #8FB4F2);
+   el ámbar (#C2710C) solo en bordes, rellenos y cifras de 44 px o más (4,3:1 sobre --tinta). */
 
-.ed-x-entra { animation: ed-entra .5s cubic-bezier(.2, .7, .3, 1) both; }
-.ed-x-aparece { animation: ed-aparece .45s ease-out both; }
-.ed-x-traza { animation: ed-traza .5s cubic-bezier(.2, .7, .3, 1) both; transform-box: fill-box; transform-origin: 0% 50%; }
-.ed-x-traza-inv { animation: ed-traza .5s cubic-bezier(.2, .7, .3, 1) both; transform-box: fill-box; transform-origin: 100% 50%; }
-.ed-x-pop { animation: ed-pop .4s cubic-bezier(.3, 1.5, .5, 1) both; transform-box: fill-box; transform-origin: 50% 50%; }
-.ed-x-cae { animation: ed-cae .45s cubic-bezier(.2, .7, .3, 1) both; }
-.ed-x-moneda { animation: ed-moneda .85s cubic-bezier(.5, 0, .3, 1) both; }
-.ed-x-guia { animation: ed-guia .35s ease-out both; transform-origin: 0% 50%; }
-.ed-x-lam { animation: ed-pop .4s cubic-bezier(.3, 1.5, .5, 1) both; }
-.ed-x-marca { animation: ed-marca .35s ease-out both; }
+/* Movimiento común */
+@keyframes g1-sube { from { opacity: 0; transform: translateY(24px); } }
+@keyframes g1-entra { from { opacity: 0; transform: translateX(-28px); } }
+@keyframes g1-pop { from { opacity: 0; transform: scale(.5); } }
+@keyframes g1-aparece { from { opacity: 0; } }
+@keyframes g1-traza { from { opacity: 0; transform: scaleX(.02); } }
+.g1-sube { animation: g1-sube .5s cubic-bezier(.2, .7, .3, 1) both; }
+.g1-entra { animation: g1-entra .45s cubic-bezier(.2, .7, .3, 1) both; }
+.g1-pop { animation: g1-pop .35s cubic-bezier(.3, 1.5, .5, 1) both; transform-box: fill-box; transform-origin: 50% 50%; }
+.g1-aparece { animation: g1-aparece .35s ease-out both; }
+.g1-traza { animation: g1-traza .45s cubic-bezier(.2, .7, .3, 1) both; transform-box: fill-box; transform-origin: 0% 50%; }
+.g1-t005 { animation-delay: .05s; }
+.g1-t010 { animation-delay: .1s; }
+.g1-t015 { animation-delay: .15s; }
+.g1-t020 { animation-delay: .2s; }
+.g1-t030 { animation-delay: .3s; }
+.g1-t035 { animation-delay: .35s; }
+.g1-t040 { animation-delay: .4s; }
+.g1-t050 { animation-delay: .5s; }
+.g1-t065 { animation-delay: .65s; }
+.g1-t070 { animation-delay: .7s; }
+.g1-t080 { animation-delay: .8s; }
+.g1-t085 { animation-delay: .85s; }
+.g1-t090 { animation-delay: .9s; }
+.g1-t095 { animation-delay: .95s; }
+.g1-t100 { animation-delay: 1s; }
+.g1-t105 { animation-delay: 1.05s; }
+.g1-t110 { animation-delay: 1.1s; }
+.g1-t115 { animation-delay: 1.15s; }
+.g1-t120 { animation-delay: 1.2s; }
+.g1-t125 { animation-delay: 1.25s; }
+.g1-t130 { animation-delay: 1.3s; }
+.g1-t135 { animation-delay: 1.35s; }
+.g1-t145 { animation-delay: 1.45s; }
+.g1-t150 { animation-delay: 1.5s; }
+.g1-t155 { animation-delay: 1.55s; }
+.g1-t160 { animation-delay: 1.6s; }
+.g1-t165 { animation-delay: 1.65s; }
+.g1-t170 { animation-delay: 1.7s; }
+.g1-t175 { animation-delay: 1.75s; }
+.g1-t180 { animation-delay: 1.8s; }
+.g1-t185 { animation-delay: 1.85s; }
+.g1-t190 { animation-delay: 1.9s; }
+.g1-t195 { animation-delay: 1.95s; }
+.g1-t200 { animation-delay: 2s; }
+.g1-t205 { animation-delay: 2.05s; }
+.g1-po-tel text, .g1-tr-mapa text, .g1-ci-vis text { font-family: 'IBM Plex Sans', Arial, sans-serif; }
+.g1-po-tel .g1-m, .g1-tr-mapa .g1-m, .g1-ci-vis .g1-m { font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 700; }
 
-.ed-d0 { animation-delay: 0s; }
-.ed-d1 { animation-delay: .1s; }
-.ed-d2 { animation-delay: .2s; }
-.ed-d3 { animation-delay: .3s; }
-.ed-d4 { animation-delay: .4s; }
-.ed-d5 { animation-delay: .5s; }
-.ed-d6 { animation-delay: .6s; }
-.ed-d7 { animation-delay: .7s; }
-.ed-d8 { animation-delay: .8s; }
-.ed-d9 { animation-delay: .9s; }
-.ed-d10 { animation-delay: 1s; }
-.ed-d11 { animation-delay: 1.1s; }
-.ed-d12 { animation-delay: 1.2s; }
-.ed-d13 { animation-delay: 1.3s; }
-.ed-d14 { animation-delay: 1.4s; }
-.ed-d15 { animation-delay: 1.5s; }
-.ed-d16 { animation-delay: 1.6s; }
-.ed-d17 { animation-delay: 1.7s; }
-.ed-d18 { animation-delay: 1.8s; }
-.ed-d19 { animation-delay: 1.9s; }
-.ed-d20 { animation-delay: 2s; }
+/* === Portada === */
+/* Título y partes a la izquierda; a la derecha, un teléfono con la billetera y cuatro pruebas
+   (tres pasan, una se enciende en ámbar: un defecto). Abajo, alumno, 335 → 30 y la fecha. */
+.g1-po-cuerpo { flex: 1; display: flex; align-items: center; justify-content: space-between; gap: 56px; }
+.g1-po-izq { display: flex; flex-direction: column; }
+.g1-po-izq h1 { white-space: nowrap; }
+.g1-po-izq .bajada { margin-top: 20px; }
+.g1-po-chips { display: flex; gap: 20px; margin-top: 44px; }
+.oscura .g1-chip { display: flex; align-items: center; gap: 14px; font-size: 30px; font-weight: 600; line-height: 1.2; color: var(--claro); background: #1C2C4D; border: 2px solid #2E4470; border-radius: 999px; padding: 12px 28px 12px 18px; white-space: nowrap; }
+.g1-chip svg { flex: none; display: block; }
+.g1-po-tel { flex: none; display: block; }
+.g1-po-pie { display: flex; align-items: flex-start; gap: 96px; margin-top: 12px; }
+.g1-po-valor { margin-top: 8px; }
+.g1-po-cifras { display: flex; align-items: baseline; gap: 14px; margin-top: 2px; }
+.oscura .g1-po-num { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 64px; font-weight: 700; line-height: 1.34; color: #8FB4F2; }
+.oscura .g1-po-num.g1-po-ambar { color: var(--ambar); }
+.oscura .g1-po-uni { font-size: 30px; font-weight: 600; line-height: 1.2; color: var(--claro); }
+.g1-po-flecha { flex: none; display: block; align-self: center; }
+
+/* === Transición === */
+/* Un solo svg: historias → API y web (llave: mismos CP, misma matriz) → 335 casos → 30 defectos;
+   rendimiento por línea punteada (6 flujos) → veredicto por umbral (U-01…U-09), no por caso;
+   todo sobre la franja de la base común. */
+.oscura h2.g1-tr-titulo { font-size: 88px; margin-top: 48px; max-width: 1500px; }
+.g1-tr-mapa { display: block; flex: none; margin-top: 36px; overflow: visible; }
+
+/* === Cierre === */
+/* Tres ideas, cada una con su ícono y su evidencia dibujada; abajo, dónde está todo y, al final, el paso a la demo. */
+.oscura h2.g1-ci-titulo { font-size: 88px; margin-top: 48px; max-width: 1500px; }
+.g1-ci-ideas { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; margin-top: 48px; }
+.g1-ci-idea { background: #1C2C4D; border: 2px solid #2E4470; border-radius: 18px; padding: 26px 26px 28px; display: flex; flex-direction: column; gap: 22px; }
+.g1-ci-cab { display: flex; align-items: center; gap: 18px; min-height: 76px; }
+.g1-ci-cab svg { flex: none; display: block; }
+.oscura .g1-ci-lema { font-size: 32px; font-weight: 600; line-height: 1.2; color: var(--papel); }
+.g1-ci-vis { display: block; flex: none; overflow: visible; }
+.g1-ci-donde { margin-top: 36px; display: flex; align-items: center; gap: 40px; background: #1C2C4D; border: 2px solid #2E4470; border-radius: 18px; padding: 20px 36px; }
+.oscura .g1-ci-lugar { display: flex; align-items: center; gap: 14px; font-size: 28px; font-weight: 600; line-height: 1.2; color: var(--claro); white-space: nowrap; }
+.g1-ci-lugar svg { flex: none; display: block; }
+.g1-ci-ruta { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 26px; font-weight: 700; }
+.oscura .g1-ci-demo { margin-left: auto; display: flex; align-items: center; gap: 12px; font-size: 28px; font-weight: 600; line-height: 1.2; color: var(--papel); background: var(--tinta); border: 2px solid #8FB4F2; border-radius: 999px; padding: 8px 26px 8px 18px; white-space: nowrap; }
+.g1-ci-demo svg { flex: none; display: block; }
+/* === fin g1 === */
+
+/* === grupo g2 (visual) === */
+/* Grupo g2 · p3-tipos y p3-umbrales. Prefijo g2-. Cada lámina es un solo svg.
+   La regla plana es el estado FINAL (editor, PDF); el inicio de cada animación va en «from». Todo termina antes de 2,5 s.
+   Ámbar para texto: #8F5207; --ambar (#C2710C) solo en bordes, líneas y rellenos. */
+.g2-lienzo { display: block; flex: none; margin-top: 26px; overflow: visible; }
+.g2-lienzo text { font-family: 'IBM Plex Sans', Arial, sans-serif; }
+.g2-lienzo .g2-m { font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 700; }
+@keyframes g2-entra { from { opacity: 0; transform: translateY(20px); } }
+@keyframes g2-pop { from { opacity: 0; transform: scale(.5); } }
+@keyframes g2-aparece { from { opacity: 0; } }
+@keyframes g2-baja { from { opacity: 0; transform: translateY(-12px); } }
+/* La tapa blanca termina encogida contra su borde derecho: destapa el perfil de carga de izquierda a derecha. */
+@keyframes g2-revela { from { transform: scaleX(1); } }
+.g2-entra { animation: g2-entra .45s cubic-bezier(.2, .7, .3, 1) both; }
+.g2-pop { animation: g2-pop .32s cubic-bezier(.3, 1.5, .5, 1) both; transform-box: fill-box; transform-origin: 50% 50%; }
+.g2-aparece { animation: g2-aparece .35s ease-out both; }
+.g2-baja { animation: g2-baja .3s ease-out both; }
+.g2-tapa { transform: scaleX(0); transform-box: fill-box; transform-origin: 100% 50%; animation: g2-revela .55s ease-in-out both; }
+.g2-t005 { animation-delay: 0.05s; }
+.g2-t012 { animation-delay: 0.12s; }
+.g2-t015 { animation-delay: 0.15s; }
+.g2-t020 { animation-delay: 0.2s; }
+.g2-t025 { animation-delay: 0.25s; }
+.g2-t028 { animation-delay: 0.28s; }
+.g2-t035 { animation-delay: 0.35s; }
+.g2-t036 { animation-delay: 0.36s; }
+.g2-t044 { animation-delay: 0.44s; }
+.g2-t045 { animation-delay: 0.45s; }
+.g2-t046 { animation-delay: 0.46s; }
+.g2-t052 { animation-delay: 0.52s; }
+.g2-t056 { animation-delay: 0.56s; }
+.g2-t057 { animation-delay: 0.57s; }
+.g2-t062 { animation-delay: 0.62s; }
+.g2-t066 { animation-delay: 0.66s; }
+.g2-t069 { animation-delay: 0.69s; }
+.g2-t076 { animation-delay: 0.76s; }
+.g2-t082 { animation-delay: 0.82s; }
+.g2-t085 { animation-delay: 0.85s; }
+.g2-t086 { animation-delay: 0.86s; }
+.g2-t092 { animation-delay: 0.92s; }
+.g2-t096 { animation-delay: 0.96s; }
+.g2-t100 { animation-delay: 1s; }
+.g2-t102 { animation-delay: 1.02s; }
+.g2-t106 { animation-delay: 1.06s; }
+.g2-t107 { animation-delay: 1.07s; }
+.g2-t112 { animation-delay: 1.12s; }
+.g2-t115 { animation-delay: 1.15s; }
+.g2-t116 { animation-delay: 1.16s; }
+.g2-t122 { animation-delay: 1.22s; }
+.g2-t127 { animation-delay: 1.27s; }
+.g2-t130 { animation-delay: 1.3s; }
+.g2-t132 { animation-delay: 1.32s; }
+.g2-t142 { animation-delay: 1.42s; }
+.g2-t152 { animation-delay: 1.52s; }
+.g2-t157 { animation-delay: 1.57s; }
+.g2-t160 { animation-delay: 1.6s; }
+.g2-t167 { animation-delay: 1.67s; }
+.g2-t177 { animation-delay: 1.77s; }
+.g2-t182 { animation-delay: 1.82s; }
+.g2-t197 { animation-delay: 1.97s; }
+.g2-t202 { animation-delay: 2.02s; }
+.g2-t210 { animation-delay: 2.1s; }
+.g2-t215 { animation-delay: 2.15s; }
+/* === fin g2 === */
+
+/* === grupo g3 (visual) === */
+/* Láminas p3-pruebas y p3-resultados (visual). Prefijo g3-.
+   La regla plana es el estado final (editor, PDF); el inicio de cada animación va en «from».
+   Todo termina antes de 2,5 s. Ámbar para texto: #8F5207; --ambar queda para trazos y rellenos.
+   Las tapas (g3-tapa) son rectángulos del color de la tarjeta que se encogen hacia la derecha y destapan
+   cada curva de izquierda a derecha. */
+.g3-lienzo { margin-top: 28px; display: flex; flex-direction: column; gap: 20px; }
+.g3-svg { display: block; flex: none; overflow: visible; }
+.g3-svg text { font-family: 'IBM Plex Sans', Arial, sans-serif; }
+.g3-svg .g3-m { font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 700; }
+
+/* p3-pruebas: fila de la sesión común y fichas de datos, entorno y herramienta */
+.g3-fila2 { display: flex; align-items: center; gap: 32px; }
+.g3-chips { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.g3-chip { display: flex; align-items: center; gap: 12px; background: #FFFFFF; border: 2px solid var(--linea); border-radius: 12px; padding: 2px 14px; font-size: 26px; line-height: 1.3; color: var(--texto); white-space: nowrap; }
+.g3-chip b { color: var(--tinta); font-weight: 600; }
+.g3-chip svg { flex: none; display: block; }
+
+/* p3-pruebas: mezcla de operaciones (anchos proporcionales al %) */
+.g3-mezcla { display: flex; gap: 6px; height: 76px; }
+.g3-ley { flex: none; width: 190px; white-space: nowrap; display: flex; flex-direction: column; justify-content: center; gap: 6px; font-size: 24px; line-height: 1.2; color: var(--texto); }
+.g3-ley span { border-left: 18px solid; padding-left: 8px; }
+.g3-ley b { color: var(--tinta); font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 700; }
+.g3-ley span.g3-ley-c { border-color: #B9CCF0; }
+.g3-ley span.g3-ley-d { border-color: #B5D3AB; }
+.g3-seg { min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 10px; font-size: 24px; line-height: 1.15; color: var(--tinta); white-space: nowrap; }
+.g3-seg span { font-weight: 600; }
+.g3-seg b { font-weight: 600; }
+.g3-c { background: #DCE6F8; }
+.g3-d { background: #DCEBD6; color: #1F4D1F; }
+.g3-cd { background: linear-gradient(90deg, #DCE6F8 0 60%, #DCEBD6 60% 100%); }
+.g3-f30 { flex: 30; }
+.g3-f15 { flex: 15; }
+.g3-f10 { flex: 10; }
+
+/* p3-resultados: semáforo por umbral, tarjeta de las tres preguntas y cuello de botella */
+.g3-res { margin-top: 28px; display: flex; flex-direction: column; gap: 22px; }
+.g3-resA { display: flex; gap: 28px; align-items: stretch; }
+.g3-matriz { flex: none; display: grid; grid-template-columns: 300px 222px 222px 34px 222px; grid-template-rows: 30px 54px repeat(6, 40px) 50px; column-gap: 8px; row-gap: 5px; align-items: center; }
+.g3-esq { align-self: stretch; }
+.g3-col-t { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; letter-spacing: 2px; color: var(--azul); text-align: center; align-self: end; }
+.g3-span3 { grid-column: span 3; border-bottom: 3px solid var(--azul); line-height: 1.1; padding-bottom: 2px; }
+.g3-c2 { border-bottom: 3px solid var(--azul); line-height: 1.1; padding-bottom: 2px; }
+.g3-num { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 44px; font-weight: 700; line-height: 1; color: var(--tinta); text-align: center; }
+.g3-num.g3-falla-t { color: #8F5207; }
+.g3-u { font-size: 26px; line-height: 1.2; color: var(--texto); white-space: nowrap; }
+.g3-u b { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; color: var(--tinta); margin-right: 8px; }
+.g3-ok, .g3-no { height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 600; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.g3-ok { background: #E4EFE0; color: var(--verde); }
+/* U-05 y U-07: una sola píldora cruza el muro, porque no se rompen ni en el colapso. */
+.g3-ok.g3-todo { grid-column: 2 / 6; position: relative; z-index: 1; }
+.g3-r7 { grid-row: 7; }
+.g3-r8 { grid-row: 8; }
+.g3-no { background: #8F5207; color: #FFFFFF; }
+.g3-pasa, .g3-falla { height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 28px; font-weight: 700; letter-spacing: 2px; color: #FFFFFF; }
+.g3-pasa { background: var(--verde); }
+.g3-falla { background: #8F5207; }
+/* El muro de la capacidad entre la última ventana que cumple (876) y la primera que no (946). */
+.g3-muro { grid-column: 4; grid-row: 2 / 7; align-self: stretch; display: flex; justify-content: center; }
+/* U-05 y U-07 cruzan el muro; el muro vuelve en la fila del veredicto, entre PASA y FALLA. */
+.g3-muro.g3-muro-v { grid-row: 9; }
+.g3-muro i { display: block; width: 0; border-left: 4px dashed var(--ambar); }
+
+.g3-cap { flex: 1; min-width: 0; background: #FFFFFF; border: 2px solid var(--linea); border-radius: 16px; padding: 16px 22px 10px; display: flex; flex-direction: column; gap: 8px; }
+.g3-pills { display: flex; gap: 12px; }
+.g3-pill { font-size: 26px; font-weight: 600; line-height: 1; color: var(--verde); background: #E4EFE0; border-radius: 999px; padding: 9px 18px; white-space: nowrap; }
+.g3-capn { display: flex; align-items: center; gap: 16px; }
+.g3-850 { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 76px; font-weight: 700; line-height: 1; color: var(--azul); }
+.g3-capt { display: flex; flex-direction: column; gap: 4px; font-size: 26px; line-height: 1.25; color: var(--texto); white-space: nowrap; }
+.g3-capt b { color: var(--tinta); font-weight: 600; }
+/* Notas que cuadran la lámina con el informe (850 = 876 redondeado; p95 de todas las peticiones). */
+.g3-nota { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; line-height: 1.25; color: var(--texto); white-space: nowrap; }
+.g3-nota b { color: var(--tinta); font-weight: 700; }
+/* La esquina de la fila de cifras: el ícono dice que 100, 876 y 946 son usuarios simultáneos. */
+.g3-esq-u { align-self: center; display: flex; justify-content: flex-end; padding-right: 10px; }
+.g3-esq-u svg { display: block; }
+/* U-01 consultas (celeste) y U-02 dinero (verde claro): el mismo código de color de las láminas 5 y 6. */
+.g3-u b.g3-uc, .g3-u b.g3-ud { border-radius: 6px; padding: 0 4px; margin-right: 4px; }
+.g3-u b.g3-uc { background: #DCE6F8; }
+.g3-u b.g3-ud { background: #DCEBD6; }
+
+.g3-cuello { background: #FFFFFF; border: 3px solid var(--ambar); border-radius: 16px; padding: 10px 26px 14px; display: flex; flex-direction: column; gap: 4px; }
+.g3-cuello-t { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; letter-spacing: 2px; line-height: 1.3; color: #8F5207; }
+.g3-pasos { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.g3-paso { display: flex; align-items: center; gap: 14px; }
+.g3-paso svg, .g3-pasos > svg { flex: none; display: block; }
+.g3-paso-t { display: flex; flex-direction: column; font-size: 26px; line-height: 1.25; color: var(--texto); white-space: nowrap; }
+.g3-paso-t b { font-size: 28px; font-weight: 600; color: var(--tinta); }
+.g3-paso-t .g3-mono { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; }
+.g3-paso-t b.g3-cifra { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 40px; font-weight: 700; line-height: 1.1; color: #8F5207; }
+.g3-paso-t b.g3-cifra-az { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 40px; font-weight: 700; line-height: 1.1; color: var(--azul); }
+
+/* Movimiento */
+@keyframes g3-entra { from { opacity: 0; transform: translateY(18px); } }
+@keyframes g3-aparece { from { opacity: 0; } }
+@keyframes g3-pop { from { opacity: 0; transform: scale(.6); } }
+@keyframes g3-sube { from { opacity: 0; transform: translateY(10px); } }
+@keyframes g3-destapa { from { transform: scaleX(1); } }
+
+.g3-entra { animation: g3-entra .45s cubic-bezier(.2, .7, .3, 1) both; }
+.g3-aparece { animation: g3-aparece .3s ease-out both; }
+.g3-pop { animation: g3-pop .32s cubic-bezier(.3, 1.5, .5, 1) both; transform-box: fill-box; transform-origin: 50% 50%; }
+.g3-sube { animation: g3-sube .3s ease-out both; }
+.g3-tapa { transform: scaleX(0); transform-box: fill-box; transform-origin: 100% 50%; animation: g3-destapa .8s linear both; }
+.g3-tapa-e { animation-duration: .9s; }
+.g3-d010 { animation-delay: .1s; }
+.g3-d015 { animation-delay: .15s; }
+.g3-d020 { animation-delay: .2s; }
+.g3-d025 { animation-delay: .25s; }
+.g3-d030 { animation-delay: .3s; }
+.g3-d035 { animation-delay: .35s; }
+.g3-d038 { animation-delay: .38s; }
+.g3-d040 { animation-delay: .4s; }
+.g3-d045 { animation-delay: .45s; }
+.g3-d048 { animation-delay: .48s; }
+.g3-d050 { animation-delay: .5s; }
+.g3-d055 { animation-delay: .55s; }
+.g3-d060 { animation-delay: .6s; }
+.g3-d065 { animation-delay: .65s; }
+.g3-d070 { animation-delay: .7s; }
+.g3-d075 { animation-delay: .75s; }
+.g3-d080 { animation-delay: .8s; }
+.g3-d083 { animation-delay: .83s; }
+.g3-d085 { animation-delay: .85s; }
+.g3-d088 { animation-delay: .88s; }
+.g3-d090 { animation-delay: .9s; }
+.g3-d092 { animation-delay: .92s; }
+.g3-d095 { animation-delay: .95s; }
+.g3-d098 { animation-delay: .98s; }
+.g3-d100 { animation-delay: 1s; }
+.g3-d105 { animation-delay: 1.05s; }
+.g3-d110 { animation-delay: 1.1s; }
+.g3-d115 { animation-delay: 1.15s; }
+.g3-d120 { animation-delay: 1.2s; }
+.g3-d125 { animation-delay: 1.25s; }
+.g3-d130 { animation-delay: 1.3s; }
+.g3-d135 { animation-delay: 1.35s; }
+.g3-d140 { animation-delay: 1.4s; }
+.g3-d145 { animation-delay: 1.45s; }
+.g3-d150 { animation-delay: 1.5s; }
+.g3-d155 { animation-delay: 1.55s; }
+.g3-d158 { animation-delay: 1.58s; }
+.g3-d160 { animation-delay: 1.6s; }
+.g3-d162 { animation-delay: 1.62s; }
+.g3-d165 { animation-delay: 1.65s; }
+.g3-d166 { animation-delay: 1.66s; }
+.g3-d170 { animation-delay: 1.7s; }
+.g3-d172 { animation-delay: 1.72s; }
+.g3-d174 { animation-delay: 1.74s; }
+.g3-d175 { animation-delay: 1.75s; }
+.g3-d178 { animation-delay: 1.78s; }
+.g3-d180 { animation-delay: 1.8s; }
+.g3-d182 { animation-delay: 1.82s; }
+.g3-d185 { animation-delay: 1.85s; }
+.g3-d188 { animation-delay: 1.88s; }
+.g3-d190 { animation-delay: 1.9s; }
+.g3-d192 { animation-delay: 1.92s; }
+.g3-d194 { animation-delay: 1.94s; }
+.g3-d195 { animation-delay: 1.95s; }
+.g3-d198 { animation-delay: 1.98s; }
+.g3-d200 { animation-delay: 2s; }
+.g3-d202 { animation-delay: 2.02s; }
+.g3-d205 { animation-delay: 2.05s; }
+.g3-d206 { animation-delay: 2.06s; }
+.g3-d210 { animation-delay: 2.1s; }
+.g3-d214 { animation-delay: 2.14s; }
+.g3-d215 { animation-delay: 2.15s; }
+.g3-d218 { animation-delay: 2.18s; }
+.g3-d220 { animation-delay: 2.2s; }
+.g3-d222 { animation-delay: 2.22s; }
+.g3-d226 { animation-delay: 2.26s; }
+/* === fin g3 === */
+
+/* === grupo g4 (visual) === */
+/* Grupo g4: arquitectura, herramientas y api. Prefijo g4- (clases y keyframes).
+   La regla plana es el estado FINAL (editor, PDF); el inicio de cada animación va en «from».
+   Solo se animan opacity, transform y color; todo termina antes de 2,5 s.
+   Ámbar para texto: #8F5207; --ambar (#C2710C) solo en bordes y rellenos. */
+
+/* --- Comunes --- */
+.g4-lienzo { display: block; flex: none; margin-top: 28px; overflow: visible; }
+.g4-lienzo text { font-family: 'IBM Plex Sans', Arial, sans-serif; }
+.g4-lienzo .g4-m, .g4-lienzo .g4-m text { font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 700; }
+.g4-mono { font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 700; }
+
+@keyframes g4-entra { from { opacity: 0; transform: translateY(20px); } }
+@keyframes g4-aparece { from { opacity: 0; } }
+@keyframes g4-traza { from { opacity: 0; transform: scaleX(.02); } }
+@keyframes g4-pop { from { opacity: 0; transform: scale(.5); } }
+@keyframes g4-gira { from { opacity: 0; transform: rotate(-120deg) scale(.7); } }
+/* Punto que recorre una curva (animateMotion): se ve solo mientras viaja; su estado plano es invisible. */
+@keyframes g4-viaja { from { opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } to { opacity: 0; } }
+
+.g4-entra { animation: g4-entra .45s cubic-bezier(.2, .7, .3, 1) both; }
+.g4-aparece { animation: g4-aparece .35s ease-out both; }
+.g4-traza { animation: g4-traza .3s cubic-bezier(.2, .7, .3, 1) both; transform-box: fill-box; transform-origin: 0% 50%; }
+.g4-pop { animation: g4-pop .35s cubic-bezier(.3, 1.5, .5, 1) both; transform-box: fill-box; transform-origin: 50% 50%; }
+.g4-viaja { opacity: 0; animation: g4-viaja .5s 1.5s linear both; }
+
+/* --- herramientas (g4-hr-) --- */
+/* Tres capas en una sola rejilla, para que las filas de tarjetas queden alineadas: ejecutan (2×2) → automatiza
+   y registra (dos tarjetas anchas). Los tres rótulos de capa van igual: encima de su grupo. La flecha va al centro
+   vertical: las cuatro que ejecutan alimentan a las dos de la derecha. Cada tarjeta: la pregunta en un globo,
+   la herramienta como ícono y nombre, por qué (✓) y frente a qué alternativa (✕, tachada). */
+.g4-hr { flex: 1; display: grid; grid-template-columns: 416px 24px 416px 48px 1fr; grid-template-rows: 40px 1fr 34px 1fr; row-gap: 12px; margin-top: 28px; }
+.g4-hr-capa { position: relative; display: flex; align-items: center; }
+.g4-hr-c1 { grid-column: 1 / 4; grid-row: 1; }
+.g4-hr-c2 { grid-column: 5; grid-row: 1; }
+.g4-hr-c3 { grid-column: 5; grid-row: 3; }
+.g4-hr-p1 { grid-column: 1; grid-row: 2; }
+.g4-hr-p2 { grid-column: 3; grid-row: 2; }
+.g4-hr-p3 { grid-column: 1; grid-row: 4; }
+.g4-hr-p4 { grid-column: 3; grid-row: 4; }
+.g4-hr-p5 { grid-column: 5; grid-row: 2; }
+.g4-hr-p6 { grid-column: 5; grid-row: 4; }
+.g4-hr-capa p { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; letter-spacing: 2px; color: var(--azul); line-height: 1.2; }
+.g4-hr-capa p.g4-hr-regla { position: absolute; left: 440px; top: 1px; letter-spacing: 0; color: var(--tinta); background: #FFFFFF; border: 2px solid var(--tinta); border-radius: 999px; padding: 2px 16px 2px 12px; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.g4-hr-regla svg { display: block; flex: none; }
+.g4-hr-flecha { grid-column: 4; grid-row: 2 / 5; display: flex; align-items: center; justify-content: center; }
+.g4-hr-flecha svg { display: block; }
+.g4-hr-carta { position: relative; background: #FFFFFF; border: 2px solid var(--linea); border-radius: 16px; padding: 20px 24px; display: flex; flex-direction: column; gap: 10px; }
+.g4-hr-carta.g4-hr-ancha { display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px; }
+.g4-hr-mitad { display: flex; flex-direction: column; gap: 10px; }
+.g4-hr-der { justify-content: center; gap: 12px; }
+.g4-hr-preg { align-self: flex-start; position: relative; font-size: 28px; font-weight: 600; line-height: 1.2; color: #FFFFFF; background: var(--azul); border-radius: 14px; padding: 8px 18px; margin-bottom: 8px; }
+.g4-hr-preg::after { content: ''; position: absolute; left: 22px; bottom: -12px; border-style: solid; border-width: 12px 10px 0 0; border-color: var(--azul) transparent transparent transparent; }
+.g4-hr-cab { display: flex; align-items: center; gap: 16px; }
+.g4-hr-cab svg { display: block; flex: none; }
+.g4-hr-nom { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 30px; font-weight: 700; color: var(--tinta); line-height: 1.15; }
+.g4-hr-si, .g4-hr-no { display: flex; align-items: center; gap: 12px; font-size: 26px; line-height: 1.25; }
+.g4-hr-si { color: var(--tinta); font-weight: 600; }
+.g4-hr-no { color: #6B7693; text-decoration: line-through; text-decoration-thickness: 2px; }
+.g4-hr-si svg, .g4-hr-no svg { display: block; flex: none; }
+.g4-hr-sello { position: absolute; top: 20px; right: 22px; font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; line-height: 1.2; border-radius: 999px; padding: 4px 14px; }
+.g4-hr-def { color: #FFFFFF; background: #8F5207; }
+.g4-hr-jobs { display: flex; align-items: center; gap: 14px; }
+.g4-hr-jobs svg { display: block; flex: none; }
+.g4-hr-suites { display: flex; gap: 10px; margin-top: 8px; padding-left: 10px; }
+.g4-hr-suites svg { display: block; flex: none; }
+.g4-hr-junit { display: flex; align-items: center; gap: 12px; }
+.g4-hr-junit svg { display: block; flex: none; }
+.g4-hr-ficha { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; color: #FFFFFF; background: var(--tinta); border-radius: 10px; padding: 6px 14px; line-height: 1.2; }
+.g4-hr-dato { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 26px; font-weight: 700; color: var(--tinta); white-space: nowrap; }
+
+/* --- api (g4-ap-) --- */
+.g4-ap { flex: 1; display: grid; grid-template-columns: 640px 1fr; column-gap: 56px; margin-top: 28px; }
+.g4-ap-izq, .g4-ap-der { display: flex; flex-direction: column; gap: 22px; justify-content: space-between; }
+.g4-ap-pildoras { align-self: flex-start; display: flex; gap: 12px; }
+.g4-ap-run { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; letter-spacing: 1px; color: #FFFFFF; background: var(--tinta); border-radius: 999px; padding: 4px 18px; line-height: 1.3; }
+.g4-ap-riesgo { color: var(--tinta); background: #FFFFFF; border: 2px solid var(--tinta); padding: 2px 16px; }
+.g4-ap-anillo { display: flex; align-items: center; gap: 28px; }
+.g4-ap-anillo > svg { display: block; flex: none; }
+.g4-ap-ley { display: flex; flex-direction: column; gap: 18px; }
+.g4-ap-item { display: grid; grid-template-columns: 22px auto; column-gap: 14px; align-items: baseline; }
+.g4-ap-cuadro { width: 22px; height: 22px; border-radius: 6px; align-self: center; }
+.g4-ap-num { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 60px; font-weight: 700; line-height: 1.05; }
+.g4-ap-pal { grid-column: 2; font-size: 28px; font-weight: 600; line-height: 1.2; color: var(--tinta); }
+.g4-ap-verde { color: var(--verde); }
+.g4-ap-ambar { color: #8F5207; }
+.g4-ap-manual { align-self: flex-start; font-size: 24px; font-weight: 600; color: var(--texto); border: 2px dashed #6B7693; border-radius: 999px; padding: 2px 14px; line-height: 1.3; }
+.g4-ap-ceros { display: flex; justify-content: space-between; background: #FFFFFF; border: 2px solid var(--linea); border-radius: 16px; padding: 20px 24px; }
+/* Cuarta celda: la deuda técnica del código de prueba (2 de 3 costos pagados), separada de los tres ceros por una línea. */
+.g4-ap-deuda { border-left: 2px solid var(--linea); padding-left: 24px; }
+.g4-ap-defx { display: inline-block; vertical-align: middle; margin-left: 14px; font-size: 24px; letter-spacing: 0; color: #FFFFFF; background: #8F5207; border-radius: 8px; padding: 2px 10px; line-height: 1.3; }
+.g4-ap-corr { font-family: 'IBM Plex Sans', Arial, sans-serif; font-size: 24px; font-weight: 600; color: var(--texto); margin-left: 10px; }
+.g4-ap-cero { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.g4-ap-cero-c { display: flex; align-items: center; gap: 12px; }
+.g4-ap-cero svg { display: block; flex: none; }
+.g4-ap-cero-n { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 48px; font-weight: 700; line-height: 1; color: var(--verde); }
+.g4-ap-cero-p { font-size: 24px; font-weight: 600; line-height: 1.15; color: var(--tinta); }
+.g4-ap-barra { display: block; flex: none; }
+.g4-ap-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.g4-ap-ficha { background: #FFFFFF; border: 2px solid var(--linea); border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px; }
+.g4-ap-cab { display: flex; align-items: baseline; gap: 12px; }
+.g4-ap-grande { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 56px; font-weight: 700; line-height: 1.05; color: var(--azul); }
+.g4-ap-ficha svg { display: block; }
+.g4-ap-conc { background: #FFFFFF; border: 3px solid var(--ambar); border-radius: 16px; padding: 26px 28px; display: flex; align-items: center; gap: 26px; }
+.g4-ap-conc svg { display: block; flex: none; }
+.g4-ap-et { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 24px; font-weight: 700; letter-spacing: 2px; color: #8F5207; line-height: 1.2; }
+.g4-ap-par { display: flex; align-items: baseline; gap: 10px; }
+.g4-ap-regla { margin-left: auto; display: flex; align-items: center; gap: 10px; border: 2px solid var(--tinta); border-radius: 12px; padding: 6px 16px 6px 12px; }
+.g4-ap-regla p { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 28px; font-weight: 700; color: var(--tinta); line-height: 1.2; }
+.g4-ap-grande.g4-ap-ambar, .g4-ap-pal.g4-ap-ambar { color: #8F5207; }
+.g4-ap-grande.g4-ap-tinta { color: var(--tinta); }
+
+.g4-ap-fondo-verde { background: var(--verde); }
+.g4-ap-fondo-ambar { background: var(--ambar); }
+.g4-ap-tinta { color: var(--tinta); }
+.g4-ap-sub { font-size: 26px; font-weight: 600; color: var(--texto); line-height: 1.2; }
+.g4-svgt { font-family: 'IBM Plex Sans', Arial, sans-serif; }
+.g4-svgm { font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 700; }
+
+/* Animación del anillo y de la barra (api) */
+.g4-gira { animation: g4-gira .7s cubic-bezier(.2, .7, .3, 1) both; transform-box: fill-box; transform-origin: 50% 50%; }
+
+/* --- Retrasos (al final: el atajo «animation» de arriba los reiniciaría) --- */
+.g4-t10 { animation-delay: .1s; }
+.g4-t15 { animation-delay: .15s; }
+.g4-t20 { animation-delay: .2s; }
+.g4-t25 { animation-delay: .25s; }
+.g4-t35 { animation-delay: .35s; }
+.g4-t45 { animation-delay: .45s; }
+.g4-t60 { animation-delay: .6s; }
+.g4-t70 { animation-delay: .7s; }
+.g4-t85 { animation-delay: .85s; }
+.g4-t95 { animation-delay: .95s; }
+.g4-t110 { animation-delay: 1.1s; }
+.g4-t120 { animation-delay: 1.2s; }
+.g4-t135 { animation-delay: 1.35s; }
+.g4-t140 { animation-delay: 1.4s; }
+.g4-t150 { animation-delay: 1.5s; }
+.g4-t160 { animation-delay: 1.6s; }
+.g4-t175 { animation-delay: 1.75s; }
+.g4-t185 { animation-delay: 1.85s; }
+.g4-t200 { animation-delay: 2s; }
+/* === fin g4 === */
+
+/* === grupo g5 (visual) === */
+/* Prefijo g5-: láminas web (punto 3), patron (punto 4) y pipeline (punto 5).
+   Cada lámina es un solo svg grande. La regla plana es el estado FINAL; el inicio va en «from».
+   Todo termina antes de 2,5 s. Ámbar para texto: #8F5207. */
+.g5-lienzo { margin-top: 30px; }
+.g5-svg { display: block; overflow: visible; }
+.g5-svg text { font-family: 'IBM Plex Sans', Arial, sans-serif; }
+.g5-svg .g5-m { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+.g5-h2mono { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 54px; font-weight: 700; }
+
+@keyframes g5-entra { from { opacity: 0; transform: translateY(20px); } }
+@keyframes g5-aparece { from { opacity: 0; } }
+@keyframes g5-pop { from { opacity: 0; transform: scale(.5); } }
+@keyframes g5-crece { from { transform: scaleX(0); } }
+@keyframes g5-traza { from { opacity: 0; transform: scaleX(.02); } }
+@keyframes g5-traza-v { from { opacity: 0; transform: scaleY(.02); } }
+@keyframes g5-desliza { from { opacity: 0; transform: translateX(-22px); } }
+@keyframes g5-llega { from { opacity: 0; transform: translateX(60px); } }
+
+.g5-entra { animation: g5-entra .5s cubic-bezier(.2, .7, .3, 1) both; }
+.g5-aparece { animation: g5-aparece .35s ease-out both; }
+.g5-pop { animation: g5-pop .34s cubic-bezier(.3, 1.5, .5, 1) both; transform-box: fill-box; transform-origin: 50% 50%; }
+.g5-crece { animation: g5-crece .38s cubic-bezier(.3, .7, .4, 1) both; transform-box: fill-box; transform-origin: 0% 50%; }
+.g5-traza { animation: g5-traza .4s cubic-bezier(.2, .7, .3, 1) both; transform-box: fill-box; transform-origin: 0% 50%; }
+.g5-traza-v { animation: g5-traza-v .3s ease-out both; transform-box: fill-box; transform-origin: 50% 100%; }
+.g5-desliza { animation: g5-desliza .35s ease-out both; }
+.g5-llega { animation: g5-llega .45s cubic-bezier(.2, .7, .3, 1) both; }
+/* La línea del pipeline se traza a ritmo constante: cada estación se enciende cuando la línea la alcanza. */
+.g5-lineal { animation-timing-function: linear; }
+.g5-lento { animation-duration: .8s; }
+
+.g5-t000 { animation-delay: 0s; }
+.g5-t010 { animation-delay: .1s; }
+.g5-t020 { animation-delay: .2s; }
+.g5-t025 { animation-delay: .25s; }
+.g5-t030 { animation-delay: .3s; }
+.g5-t035 { animation-delay: .35s; }
+.g5-t040 { animation-delay: .4s; }
+.g5-t045 { animation-delay: .45s; }
+.g5-t050 { animation-delay: .5s; }
+.g5-t055 { animation-delay: .55s; }
+.g5-t060 { animation-delay: .6s; }
+.g5-t065 { animation-delay: .65s; }
+.g5-t070 { animation-delay: .7s; }
+.g5-t075 { animation-delay: .75s; }
+.g5-t080 { animation-delay: .8s; }
+.g5-t085 { animation-delay: .85s; }
+.g5-t090 { animation-delay: .9s; }
+.g5-t095 { animation-delay: .95s; }
+.g5-t100 { animation-delay: 1s; }
+.g5-t105 { animation-delay: 1.05s; }
+.g5-t110 { animation-delay: 1.1s; }
+.g5-t115 { animation-delay: 1.15s; }
+.g5-t120 { animation-delay: 1.2s; }
+.g5-t125 { animation-delay: 1.25s; }
+.g5-t130 { animation-delay: 1.3s; }
+.g5-t135 { animation-delay: 1.35s; }
+.g5-t140 { animation-delay: 1.4s; }
+.g5-t145 { animation-delay: 1.45s; }
+.g5-t150 { animation-delay: 1.5s; }
+.g5-t155 { animation-delay: 1.55s; }
+.g5-t160 { animation-delay: 1.6s; }
+.g5-t165 { animation-delay: 1.65s; }
+.g5-t170 { animation-delay: 1.7s; }
+.g5-t175 { animation-delay: 1.75s; }
+.g5-t180 { animation-delay: 1.8s; }
+.g5-t185 { animation-delay: 1.85s; }
+.g5-t190 { animation-delay: 1.9s; }
+.g5-t195 { animation-delay: 1.95s; }
+.g5-t200 { animation-delay: 2s; }
+.g5-t205 { animation-delay: 2.05s; }
+.g5-t210 { animation-delay: 2.1s; }
+.g5-t215 { animation-delay: 2.15s; }
+/* === fin g5 === */
+
+/* === grupo g6 (visual) === */
+/* Láminas gate, reporteria y trazabilidad (prefijo g6-). Un svg por lámina, del ancho del lienzo (1664 px).
+   La regla plana es el estado FINAL (editor, PDF); el inicio de cada animación va en «from». Todo termina antes de 2,5 s.
+   Ámbar para texto: #8F5207; --ambar (#C2710C) solo para bordes y rellenos. */
+.g6-lienzo { display: block; flex: none; margin-top: 34px; overflow: visible; }
+.g6-lienzo text { font-family: 'IBM Plex Sans', Arial, sans-serif; }
+.g6-lienzo .g6-m { font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 700; }
+.g6-lienzo .g6-s { font-weight: 600; }
+.g6-r-lienzo { margin-top: 26px; }
+
+@keyframes g6-pop { from { opacity: 0; transform: scale(.5); } }
+@keyframes g6-sube { from { opacity: 0; transform: translateY(12px); } }
+@keyframes g6-aparece { from { opacity: 0; } }
+@keyframes g6-crece { from { opacity: 0; transform: scaleX(0); } }
+@keyframes g6-destapa { from { transform: scaleX(1); } }
+@keyframes g6-perilla { from { transform: translateX(-84px); } }
+@keyframes g6-enciende { from { color: #B8BFCC; } }
+
+.g6-pop { animation: g6-pop .32s cubic-bezier(.3, 1.5, .5, 1) both; transform-box: fill-box; transform-origin: 50% 50%; }
+.g6-sube { animation: g6-sube .35s ease-out both; }
+.g6-aparece { animation: g6-aparece .35s ease-out both; }
+.g6-crece { animation: g6-crece .35s cubic-bezier(.2, .7, .3, 1) both; transform-box: fill-box; transform-origin: 0% 50%; }
+
+/* Tapas color papel: terminan en scaleX(0) (invisibles) y destapan de izquierda a derecha. */
+.g6-tapa { transform: scaleX(0); transform-box: fill-box; transform-origin: 100% 50%; }
+/* gate: la tapa del carril tarda 1 s; cada compuerta se enciende cuando el borde la alcanza. */
+.g6-g-tapa { animation: g6-destapa 1s linear .15s both; }
+/* trazabilidad: las 10 columnas (Test Runs) aparecen de a una, una cada 0,1 s. */
+.g6-z-tapa { animation: g6-destapa 1s steps(10, end) 1.05s both; }
+
+/* reporteria: el interruptor pasa de «sin» (gris, perilla a la izquierda) a «con» (azul, perilla a la derecha). */
+.g6-r-pista { color: #1F5FD0; animation: g6-enciende .3s 1.75s ease-out both; }
+.g6-r-perilla { animation: g6-perilla .3s 1.75s cubic-bezier(.3, .9, .4, 1) both; }
+/* Retrasos (centésimas de segundo); van al final para ganarle al atajo «animation». */
+.g6-t005 { animation-delay: 0.05s; }
+.g6-t008 { animation-delay: 0.08s; }
+.g6-t010 { animation-delay: 0.1s; }
+.g6-t012 { animation-delay: 0.12s; }
+.g6-t015 { animation-delay: 0.15s; }
+.g6-t018 { animation-delay: 0.18s; }
+.g6-t028 { animation-delay: 0.28s; }
+.g6-t031 { animation-delay: 0.31s; }
+.g6-t037 { animation-delay: 0.37s; }
+.g6-t038 { animation-delay: 0.38s; }
+.g6-t040 { animation-delay: 0.4s; }
+.g6-t045 { animation-delay: 0.45s; }
+.g6-t047 { animation-delay: 0.47s; }
+.g6-t048 { animation-delay: 0.48s; }
+.g6-t053 { animation-delay: 0.53s; }
+.g6-t055 { animation-delay: 0.55s; }
+.g6-t058 { animation-delay: 0.58s; }
+.g6-t060 { animation-delay: 0.6s; }
+.g6-t063 { animation-delay: 0.63s; }
+.g6-t069 { animation-delay: 0.69s; }
+.g6-t070 { animation-delay: 0.7s; }
+.g6-t078 { animation-delay: 0.78s; }
+.g6-t080 { animation-delay: 0.8s; }
+.g6-t084 { animation-delay: 0.84s; }
+.g6-t085 { animation-delay: 0.85s; }
+.g6-t090 { animation-delay: 0.9s; }
+.g6-t092 { animation-delay: 0.92s; }
+.g6-t095 { animation-delay: 0.95s; }
+.g6-t100 { animation-delay: 1s; }
+.g6-t101 { animation-delay: 1.01s; }
+.g6-t104 { animation-delay: 1.04s; }
+.g6-t106 { animation-delay: 1.06s; }
+.g6-t114 { animation-delay: 1.14s; }
+.g6-t115 { animation-delay: 1.15s; }
+.g6-t120 { animation-delay: 1.2s; }
+.g6-t125 { animation-delay: 1.25s; }
+.g6-t130 { animation-delay: 1.3s; }
+.g6-t135 { animation-delay: 1.35s; }
+.g6-t140 { animation-delay: 1.4s; }
+.g6-t145 { animation-delay: 1.45s; }
+.g6-t150 { animation-delay: 1.5s; }
+.g6-t155 { animation-delay: 1.55s; }
+.g6-t160 { animation-delay: 1.6s; }
+.g6-t161 { animation-delay: 1.61s; }
+.g6-t172 { animation-delay: 1.72s; }
+.g6-t175 { animation-delay: 1.75s; }
+.g6-t180 { animation-delay: 1.8s; }
+.g6-t183 { animation-delay: 1.83s; }
+.g6-t189 { animation-delay: 1.89s; }
+.g6-t190 { animation-delay: 1.9s; }
+.g6-t194 { animation-delay: 1.94s; }
+.g6-t195 { animation-delay: 1.95s; }
+.g6-t198 { animation-delay: 1.98s; }
+.g6-t200 { animation-delay: 2s; }
+.g6-t205 { animation-delay: 2.05s; }
+.g6-t206 { animation-delay: 2.06s; }
+.g6-t210 { animation-delay: 2.1s; }
+.g6-t215 { animation-delay: 2.15s; }
+/* === fin g6 === */
+
+/* === grupo g7 (visual) === */
+/* Prefijo g7- (punto 8, capacidad de IA: ia-que, ia-validacion, ia-resultado, ia-inyeccion).
+   Cada lámina es un solo svg de 1664 px de ancho. ia-que e ia-resultado van 1:1 (24 unidades = 24 px);
+   ia-validacion e ia-inyeccion dibujan en 1540 unidades y se ven a ×1,08 (24 unidades ≈ 26 px), para usar el alto libre.
+   La regla plana es el estado FINAL (editor, PDF); el inicio de cada animación va en «from».
+   Todo termina antes de 2,5 s. Ámbar para texto: #8F5207; --ambar (#C2710C) solo en rellenos y bordes. */
+.g7-lienzo { display: block; flex: none; margin-top: 28px; overflow: visible; }
+.g7-lienzo text { font-family: 'IBM Plex Sans', Arial, sans-serif; }
+.g7-lienzo .g7-m { font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 700; }
+.g7-lienzo .g7-s { font-weight: 600; }
+
+@keyframes g7-entra { from { opacity: 0; transform: translateY(22px); } }
+@keyframes g7-aparece { from { opacity: 0; } }
+@keyframes g7-pop { from { opacity: 0; transform: scale(.4); } }
+@keyframes g7-crece { from { transform: scaleX(0); } }
+
+.g7-entra { animation: g7-entra .5s cubic-bezier(.2, .7, .3, 1) both; }
+.g7-aparece { animation: g7-aparece .35s ease-out both; }
+.g7-pop { animation: g7-pop .35s cubic-bezier(.3, 1.5, .5, 1) both; transform-box: fill-box; transform-origin: 50% 50%; }
+/* Conectores y barras crecen desde su borde izquierdo. */
+.g7-crece { animation: g7-crece .45s cubic-bezier(.2, .7, .3, 1) both; transform-box: fill-box; transform-origin: 0% 50%; }
+
+.g7-t00 { animation-delay: 0s; }
+.g7-t01 { animation-delay: .1s; }
+.g7-t02 { animation-delay: .2s; }
+.g7-t03 { animation-delay: .3s; }
+.g7-t04 { animation-delay: .4s; }
+.g7-t05 { animation-delay: .5s; }
+.g7-t06 { animation-delay: .6s; }
+.g7-t07 { animation-delay: .7s; }
+.g7-t08 { animation-delay: .8s; }
+.g7-t09 { animation-delay: .9s; }
+.g7-t10 { animation-delay: 1s; }
+.g7-t11 { animation-delay: 1.1s; }
+.g7-t12 { animation-delay: 1.2s; }
+.g7-t13 { animation-delay: 1.3s; }
+.g7-t14 { animation-delay: 1.4s; }
+.g7-t15 { animation-delay: 1.5s; }
+.g7-t16 { animation-delay: 1.6s; }
+.g7-t17 { animation-delay: 1.7s; }
+.g7-t18 { animation-delay: 1.8s; }
+.g7-t19 { animation-delay: 1.9s; }
+/* === fin g7 === */
+
+/* === grupo g8 (visual) === */
+/* === Lámina defectos (visual) === */
+/* Prefijo g8-. Un solo svg: anillo de 30 segmentos por severidad, barras de dónde salen y los 8 críticos
+   en dos columnas (secuencial / concurrencia). La regla plana es el estado FINAL; el inicio va en «from».
+   Todo termina antes de 2,5 s. Ámbar para texto: #8F5207. */
+.g8-lienzo { display: block; flex: none; margin-top: 36px; overflow: visible; }
+.g8-lienzo text { font-family: 'IBM Plex Sans', Arial, sans-serif; }
+.g8-lienzo .g8-m { font-family: 'JetBrains Mono', 'Courier New', monospace; font-weight: 700; }
+
+@keyframes g8-gira { from { opacity: 0; transform: rotate(-30deg); } }
+@keyframes g8-pop { from { opacity: 0; transform: scale(.85); } }
+@keyframes g8-sube { from { opacity: 0; transform: translateX(-16px); } }
+@keyframes g8-aparece { from { opacity: 0; } }
+@keyframes g8-crece { from { transform: scaleX(.002); } }
+@keyframes g8-enciende { from { color: #B8BFCC; } }
+/* Los puntos nacen al inicio de su flecha, llegan al blanco y se apagan: su estado plano es opacity 0. */
+@keyframes g8-viaja-1 { from { opacity: 0; transform: translate(-50px, 0); } 12% { opacity: 1; transform: translate(-50px, 0); } 82% { opacity: 1; transform: translate(0, 0); } to { opacity: 0; transform: translate(0, 0); } }
+@keyframes g8-viaja-2 { from { opacity: 0; transform: translate(-50px, -22px); } 12% { opacity: 1; transform: translate(-50px, -22px); } 82% { opacity: 1; transform: translate(0, 0); } to { opacity: 0; transform: translate(0, 0); } }
+@keyframes g8-viaja-3 { from { opacity: 0; transform: translate(-50px, 22px); } 12% { opacity: 1; transform: translate(-50px, 22px); } 82% { opacity: 1; transform: translate(0, 0); } to { opacity: 0; transform: translate(0, 0); } }
+
+/* Cada segmento del anillo gira desde el centro del anillo (origen local 0 0 del grupo trasladado). */
+.g8-arco { transform-box: view-box; transform-origin: 0 0; animation: g8-gira .5s cubic-bezier(.2, .7, .3, 1) both; }
+.g8-pop { transform-box: fill-box; transform-origin: 50% 50%; animation: g8-pop .35s cubic-bezier(.3, 1.4, .5, 1) both; }
+.g8-sube { animation: g8-sube .4s ease-out both; }
+.g8-aparece { animation: g8-aparece .35s ease-out both; }
+.g8-crece { transform-box: fill-box; transform-origin: 0% 50%; animation: g8-crece .45s cubic-bezier(.2, .7, .3, 1) both; }
+.g8-blanco { color: #C2710C; animation: g8-enciende .25s 1.3s ease-out both; }
+.g8-punto { opacity: 0; }
+.g8-viaja-1 { animation: g8-viaja-1 .6s .8s ease-in-out both; }
+.g8-viaja-2 { animation: g8-viaja-2 .6s .8s ease-in-out both; }
+.g8-viaja-3 { animation: g8-viaja-3 .6s .8s ease-in-out both; }
+
+.g8-d010 { animation-delay: .1s; }
+.g8-d015 { animation-delay: .15s; }
+.g8-d020 { animation-delay: .2s; }
+.g8-d035 { animation-delay: .35s; }
+.g8-d040 { animation-delay: .4s; }
+.g8-d050 { animation-delay: .5s; }
+.g8-d055 { animation-delay: .55s; }
+.g8-d060 { animation-delay: .6s; }
+.g8-d070 { animation-delay: .7s; }
+.g8-d075 { animation-delay: .75s; }
+.g8-d080 { animation-delay: .8s; }
+.g8-d090 { animation-delay: .9s; }
+.g8-d100 { animation-delay: 1s; }
+.g8-d110 { animation-delay: 1.1s; }
+.g8-d120 { animation-delay: 1.2s; }
+.g8-d130 { animation-delay: 1.3s; }
+.g8-d140 { animation-delay: 1.4s; }
+.g8-d150 { animation-delay: 1.5s; }
+.g8-d160 { animation-delay: 1.6s; }
+.g8-d170 { animation-delay: 1.7s; }
+.g8-d180 { animation-delay: 1.8s; }
+.g8-d190 { animation-delay: 1.9s; }
+.g8-d200 { animation-delay: 2s; }
+.g8-d205 { animation-delay: 2.05s; }
+/* === fin g8 === */

@@ -1,48 +1,39 @@
 <section id="ia-inyeccion" class="pie" data-transition="fade">
 <p class="cejilla">PUNTO 8 · RED TEAMING E INYECCIÓN DE PROMPTS · LIM-IA-01</p>
-<h2>Un texto en un log puede darle órdenes al modelo</h2>
-<p class="bajada corta" style="max-width:1500px">Cinco corridas por condición, con la misma firma de grupo en las tres.</p>
-<div class="cuerpo">
-<div class="fila-3">
-<div class="tarjeta ajustada">
-<p class="etiqueta">ENTRADA LIMPIA</p>
-<p class="dato">0 de 5</p>
-<p class="chica">corridas clasifican como pide la orden</p>
-</div>
-<div class="tarjeta tarjeta-ambar ajustada">
-<p class="etiqueta">CON LA ORDEN INYECTADA</p>
-<p class="dato dato-ambar">5 de 5</p>
-<p class="chica">obedecen: 4 pasan las guardas, y la quinta cae por un <span class="mono" style="font-size:24px; white-space:nowrap">DEF-99</span> que no existe</p>
-</div>
-<div class="tarjeta ajustada">
-<p class="etiqueta">INYECCIÓN AGRESIVA</p>
-<p class="dato">0 de 5</p>
-<p class="chica">el texto que se nota postizo lo trata como dato</p>
-</div>
-</div>
-<div class="fila-2">
-<div class="tarjeta tarjeta-azul ajustada">
-<p class="etiqueta">LA IA PROPONE, EL TESTER DECIDE</p>
-<p class="chica">La guarda paró el <span class="mono" style="font-size:24px; white-space:nowrap">DEF-99</span>; la clase equivocada, no, porque viene bien formada. Y el caso era un 500, que en el curso «siempre es un defecto». Ninguna clase se usa sin que yo mire el artefacto.</p>
-</div>
-<div class="tarjeta ajustada">
-<p class="etiqueta">MI PRIMERA PRUEBA ESTABA MAL</p>
-<p class="chica">Comparaba una corrida contra otra, y el texto inyectado cambiaba también la firma del grupo: oráculo débil y variables confundidas.</p>
-</div>
-</div>
-</div>
+<h2>Un log puede darle órdenes al modelo</h2>
+<svg class="g7-lienzo" width="1664" height="592" viewBox="0 0 1540 548" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Prueba de inyección de prompts: cinco corridas por condición, con la misma firma de grupo en las tres. Cada punto es una corrida; relleno ámbar si el modelo obedece la orden escrita en el log. Entrada limpia: 0 de 5. Con la orden inyectada, que parece una línea normal: 5 de 5; 4 pasan la guarda y la quinta la para la guarda porque propone un DEF-99 que no existe. Inyección agresiva, que se nota postiza: 0 de 5. A la derecha, la guarda: el DEF-99 inventado se para, pero un error 500 clasificado como «entorno» pasa. Abajo, el registro como xfail estricto: hoy el modelo obedece, la prueba da XFAIL y la suite queda en verde; si algún día resiste, la prueba da XPASS y el pipeline obliga a revisarla.">
+<g class="g7-aparece g7-t00"><rect x="1.5" y="1.5" width="384" height="40" rx="20" fill="#FFFFFF" stroke="#1F5FD0" stroke-width="3"/><text class="g7-m" x="193" y="30" text-anchor="middle" font-size="24" fill="#1F5FD0">5 CORRIDAS · MISMA FIRMA</text></g>
+<g class="g7-aparece g7-t01"><text class="g7-s" x="408" y="30" font-size="26" fill="#14213D">¿Obedece la orden?</text></g>
+<g class="g7-entra g7-t01"><rect x="0" y="76" width="120" height="88" rx="10" fill="#14213D"/><path d="M18,98 H102 M18,120 H90 M18,142 H96" fill="none" stroke="#8E97AC" stroke-width="5" stroke-linecap="round"/><text class="g7-s" x="148" y="132" font-size="30" fill="#14213D">Limpia</text></g>
+<g class="g7-pop g7-t03"><circle cx="416" cy="120" r="22.25" fill="#FFFFFF" stroke="#44506B" stroke-width="3.5"/><circle cx="478" cy="120" r="22.25" fill="#FFFFFF" stroke="#44506B" stroke-width="3.5"/><circle cx="540" cy="120" r="22.25" fill="#FFFFFF" stroke="#44506B" stroke-width="3.5"/><circle cx="602" cy="120" r="22.25" fill="#FFFFFF" stroke="#44506B" stroke-width="3.5"/><circle cx="664" cy="120" r="22.25" fill="#FFFFFF" stroke="#44506B" stroke-width="3.5"/></g>
+<g class="g7-aparece g7-t05"><text class="g7-m" x="732" y="136" font-size="44" fill="#44506B">0 de 5</text></g>
+<g class="g7-entra g7-t04"><rect x="0" y="226" width="120" height="88" rx="10" fill="#14213D"/><path d="M18,248 H102 M18,292 H96" fill="none" stroke="#8E97AC" stroke-width="5" stroke-linecap="round"/><path d="M18,270 H96" fill="none" stroke="#C2710C" stroke-width="6" stroke-linecap="round"/><text class="g7-s" x="148" y="268" font-size="30" fill="#14213D">Inyectada</text><text x="148" y="302" font-size="24" fill="#44506B">parece normal</text></g>
+<circle class="g7-pop g7-t06" cx="416" cy="270" r="24" fill="#C2710C"/>
+<circle class="g7-pop g7-t07" cx="478" cy="270" r="24" fill="#C2710C"/>
+<circle class="g7-pop g7-t08" cx="540" cy="270" r="24" fill="#C2710C"/>
+<circle class="g7-pop g7-t09" cx="602" cy="270" r="24" fill="#C2710C"/>
+<circle class="g7-pop g7-t10" cx="664" cy="270" r="24" fill="#C2710C"/>
+<g class="g7-pop g7-t11"><circle cx="684" cy="250" r="15" fill="#FFFFFF" stroke="#14213D" stroke-width="3"/><path d="M684,241 L691,244 V249 C691,254 688,257 684,259 C680,257 677,254 677,249 V244 Z" fill="#14213D"/></g>
+<g class="g7-aparece g7-t11"><text class="g7-m" x="732" y="286" font-size="44" fill="#8F5207">5 de 5</text></g>
+<g class="g7-aparece g7-t12"><path d="M396,302 V310 H624 V302" fill="none" stroke="#44506B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="398" y="340" font-size="24" fill="#44506B">4 pasan la guarda</text><text class="g7-m" x="672" y="340" text-anchor="middle" font-size="24" fill="#8F5207">DEF-99</text></g>
+<g class="g7-entra g7-t12"><rect x="0" y="376" width="120" height="88" rx="10" fill="#14213D"/><path d="M18,396 H102" fill="none" stroke="#8E97AC" stroke-width="5" stroke-linecap="round"/><rect x="14" y="412" width="92" height="40" rx="6" fill="#C2710C"/><path d="M60,421 V434 M60,444 V444.1" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><text class="g7-s" x="148" y="418" font-size="30" fill="#14213D">Agresiva</text><text x="148" y="452" font-size="24" fill="#44506B">se nota postiza</text></g>
+<g class="g7-pop g7-t14"><circle cx="416" cy="420" r="22.25" fill="#FFFFFF" stroke="#44506B" stroke-width="3.5"/><circle cx="478" cy="420" r="22.25" fill="#FFFFFF" stroke="#44506B" stroke-width="3.5"/><circle cx="540" cy="420" r="22.25" fill="#FFFFFF" stroke="#44506B" stroke-width="3.5"/><circle cx="602" cy="420" r="22.25" fill="#FFFFFF" stroke="#44506B" stroke-width="3.5"/><circle cx="664" cy="420" r="22.25" fill="#FFFFFF" stroke="#44506B" stroke-width="3.5"/></g>
+<g class="g7-aparece g7-t15"><text class="g7-m" x="732" y="436" font-size="44" fill="#44506B">0 de 5</text></g>
+<g class="g7-entra g7-t15"><rect x="937.5" y="1.5" width="601" height="248" rx="18" fill="#FFFFFF" stroke="#1F5FD0" stroke-width="3"/><path d="M986,32 L1008,40 V58 C1008,73 998,82 986,88 C974,82 964,73 964,58 V40 Z" fill="none" stroke="#1F5FD0" stroke-width="3.5" stroke-linejoin="round"/><text class="g7-m" x="1028" y="68" font-size="24" fill="#1F5FD0">LA GUARDA</text><circle cx="982" cy="136" r="17" fill="#2F6B2F"/><path d="M974,136 L980,142 L990,130" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><text x="1012" y="146" font-size="28" fill="#14213D"><tspan class="g7-m" fill="#8F5207">DEF-99</tspan> → parado</text><circle cx="982" cy="204" r="17" fill="#C2710C"/><path d="M976,198 L988,210 M988,198 L976,210" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round"/><text x="1012" y="214" font-size="28" fill="#14213D">500 como «entorno» → pasa</text></g>
+<g class="g7-entra g7-t17"><rect x="937.5" y="291.5" width="601" height="244" rx="18" fill="#FFFFFF" stroke="#14213D" stroke-width="3"/><text class="g7-m" x="966" y="342" font-size="24" fill="#14213D">XFAIL ESTRICTO</text><circle cx="986" cy="400" r="20" fill="#C2710C"/><path d="M1018,400 H1052 M1042,391 L1054,400 L1042,409" fill="none" stroke="#14213D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1064" y="378" width="124" height="44" rx="10" fill="#E6EAF2"/><text class="g7-m" x="1126" y="409" text-anchor="middle" font-size="26" fill="#14213D">XFAIL</text><path d="M1198,400 H1232 M1222,391 L1234,400 L1222,409" fill="none" stroke="#14213D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1244" y="378" width="140" height="44" rx="22" fill="#2F6B2F"/><path d="M1264,400 L1270,406 L1280,394" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><text class="g7-s" x="1290" y="409" font-size="26" fill="#FFFFFF">verde</text><text x="1404" y="409" font-size="24" fill="#44506B">hoy</text><circle cx="986" cy="484" r="18.25" fill="#FFFFFF" stroke="#44506B" stroke-width="3.5"/><path d="M1018,484 H1052 M1042,475 L1054,484 L1042,493" fill="none" stroke="#14213D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1064" y="462" width="124" height="44" rx="10" fill="#E6EAF2"/><text class="g7-m" x="1126" y="493" text-anchor="middle" font-size="26" fill="#14213D">XPASS</text><path d="M1198,484 H1232 M1222,475 L1234,484 L1222,493" fill="none" stroke="#14213D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1244" y="462" width="140" height="44" rx="22" fill="#8F5207"/><text class="g7-s" x="1314" y="493" text-anchor="middle" font-size="26" fill="#FFFFFF">revisar</text></g>
+</svg>
 <p class="numero-pagina">21 · Entrega final · Pruebas de Qolqe</p>
 <aside>En la clase 15 esto es red teaming: atacar a propósito mi propia capacidad. Es la prueba que encontró algo de verdad, y la registré como la limitación LIM-IA-01.
 
 La pregunta era: si un log trae texto dentro, ¿puede ese texto darle órdenes al modelo? Los logs son datos que yo no controlo.
 
-La respuesta es que sí. Con la orden metida en la salida del caso, el modelo clasificó como la orden le pedía en las cinco corridas, contra cero de cinco con la misma entrada limpia. Cuatro de esas cinco respuestas pasaron las guardas. En la corrida que quedó escrita, una de las cinco propuso además el DEF-99 que dictaba la orden y que no existe en mi reporte de defectos; eso solo pudo leerlo del texto inyectado, y esa la rechazó la guarda. Y lo que duele es el caso: era un 500, que en el curso siempre es un defecto, y la orden lo hizo pasar por error de entorno.
+Cada punto es una corrida, y se pinta ámbar si el modelo clasificó como la orden le pedía. Hice cinco corridas por condición, con la misma firma de grupo en las tres. La respuesta es que sí. Con la orden metida en la salida del caso, el modelo obedeció en las cinco corridas, contra cero de cinco con la misma entrada limpia. Cuatro de esas cinco respuestas pasaron las guardas. En la corrida que quedó escrita, una de las cinco propuso además el DEF-99 que dictaba la orden y que no existe en mi reporte de defectos; eso solo pudo leerlo del texto inyectado, y esa la rechazó la guarda: es el escudo sobre el quinto punto. Y lo que duele es el caso: era un 500, que en el curso siempre es un defecto, y la orden lo hizo pasar por error de entorno.
 
-Lo contraintuitivo es la tercera columna. La inyección agresiva, un bloque que se hace pasar por mensaje del sistema, funcionó peor. El texto que se nota postizo lo trata como dato; el que parece un mensaje normal de la aplicación es el que pasa.
+Lo contraintuitivo es la tercera fila. La inyección agresiva, un bloque que se hace pasar por mensaje del sistema, funcionó peor: 0 de 5. El texto que se nota postizo lo trata como dato; el que parece un mensaje normal de la aplicación es el que pasa.
 
-La defensa aguantó a medias: el DEF inventado lo rechazó la guarda, pero la clase equivocada viene bien formada y pasa. Una guarda de formato no distingue lo verdadero de lo falso. Por eso la IA propone y el tester decide: ninguna propuesta entra a defectos.md ni a Kiwi sin que yo mire el artefacto.
+Arriba a la derecha, la defensa aguantó a medias: el DEF inventado lo rechazó la guarda, pero la clase equivocada viene bien formada y pasa. Una guarda de formato no distingue lo verdadero de lo falso. Por eso la IA propone y el tester decide: ninguna clase se usa, ni entra a defectos.md o a Kiwi, sin que yo mire el artefacto.
 
-Y quiero contar mi error, porque es de los que enseña la clase. Mi primera versión comparaba una corrida contra una corrida y falló por el motivo equivocado: el texto inyectado cambiaba también la firma del grupo. Oráculo débil y variables confundidas al mismo tiempo. Por eso ahora comparo distribuciones, con la misma firma en las tres condiciones.
+Y quiero contar mi error, porque es de los que enseña la clase. Mi primera prueba estaba mal: comparaba una corrida contra una corrida y falló por el motivo equivocado, porque el texto inyectado cambiaba también la firma del grupo. Oráculo débil y variables confundidas al mismo tiempo. Por eso ahora comparo distribuciones, con la misma firma en las tres condiciones.
 
-La prueba está marcada como fallo esperado estricto apuntando a esta limitación, igual que hago con los defectos de Qolqe. Así la suite queda en verde, la limitación queda registrada, y si algún día deja de reproducirse el pipeline me obliga a volver a mirarla.</aside>
+Abajo a la derecha está cómo lo registré. La prueba está marcada como fallo esperado estricto, xfail strict, apuntando a esta limitación, igual que hago con los defectos de Qolqe. Hoy el modelo obedece, la prueba falla como se espera y la suite queda en verde, con la limitación registrada. Si algún día deja de reproducirse, la prueba pasa, sale XPASS, y como es estricta el pipeline me obliga a volver a mirarla.</aside>
 </section>

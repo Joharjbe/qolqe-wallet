@@ -132,7 +132,7 @@ Evidencia: `docs/capacidad-ia.md:323-364` (§5.1), `:471-479`, `:859-909` (§9) 
 
 **28b. ¿Por qué unas reglas sin IA son el control contra la falsa cobertura?**
 En la clase 15, falsa cobertura es que lo generado parezca cubrir sin cubrir. Aquí sería un número alto de aciertos de la IA que haga creer que el diagnóstico está cubierto. Si unas reglas sin IA aciertan igual sobre los mismos casos, ese número no prueba que la IA aporte; y aciertan más: 34 de 36 contra 28 en defecto real. Por eso las dos columnas van sobre los mismos 48 casos.
-Evidencia: `docs/resultados-capacidad-ia/evals-google.md:74-79` · `docs/resultados-capacidad-ia/evals-lineabase.md:18-22` · lámina 19, tarjeta «Un control sin IA, contra la falsa cobertura».
+Evidencia: `docs/resultados-capacidad-ia/evals-google.md:74-79` · `docs/resultados-capacidad-ia/evals-lineabase.md:18-22` · lámina 19, el carril de abajo, «Reglas sin IA · falsa cobertura».
 
 **29. ¿Por qué no usaste LLM-as-judge?**
 Porque el juez también se equivoca con seguridad, y entonces no habría nada firme contra qué medir. Cada respuesta correcta del eval cita un archivo y una línea, y `armar.py` falla si una cita deja de ser cierta: eso se audita, el juicio de un modelo no.

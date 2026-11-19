@@ -1,30 +1,77 @@
 <section id="p3-pruebas" class="pie" data-transition="fade">
 <p class="cejilla">PARTE 3 · 3 DE 4 · LAS DOS PRUEBAS</p>
-<h2>Las dos pruebas que defiendo: carga y estrés</h2>
-<div class="cuerpo junto">
-<table class="densa" style="width:1664px">
-<tr><th width="14%"></th><th width="43%">Carga</th><th width="43%">Estrés</th></tr>
-<tr><td><b>Pregunta</b></td><td>¿Cumplimos en hora punta?</td><td>¿Hasta cuántos usuarios antes de dejar de cumplir?</td></tr>
-<tr><td><b>VUs</b></td><td>100 simultáneos = 3&nbsp;000 ÷ 3&nbsp;600 × 120&nbsp;s (ley de Little, M-01 a M-03)</td><td>De 100 a 2&nbsp;400; 2&nbsp;400 = 1,33 × la saturación que estimé antes de medir (M-14)</td></tr>
-<tr><td><b>Ramp-up</b></td><td>120&nbsp;s: el llenado natural, lo que dura una sesión (M-24)</td><td>180&nbsp;s a 100 y luego +100 simultáneos por minuto durante 1&nbsp;380&nbsp;s (M-17)</td></tr>
-<tr><td><b>Duración</b></td><td>15 min estables</td><td>1&nbsp;680&nbsp;s planificados; k6 la cortó a los 947,7&nbsp;s por su red de seguridad técnica (20 % de fallas acumuladas)</td></tr>
-<tr><td><b>Think time</b></td><td colspan="2">10 a 25&nbsp;s entre acciones, triangular con media 18&nbsp;s (M-04), en las dos</td></tr>
-<tr><td><b>Distribución</b></td><td colspan="2">1 login por sesión y 6 operaciones: saldo y perfil 30 %, movimientos 15, transferir 15, contactos 10, recarga 10, deudas 6, pago 4, otras 10, en las dos</td></tr>
-</table>
-<div class="tarjeta ajustada" style="background:#EDEAE2">
-<p class="chica"><b>Datos:</b> 3&nbsp;000 usuarios distintos, uno por VU, con S/&nbsp;10&nbsp;000 cada uno. <b>Entorno:</b> Qolqe en Docker con 1 CPU y 1 GB; k6 en la misma Mac, fuera del contenedor (≤ 1,2 % del CPU del equipo). <b>Herramienta:</b> k6, porque su modelo abierto mantiene las 50 sesiones/min aunque Qolqe se atrase y cuenta las sesiones descartadas; comparada con 5 alternativas en el informe, §2.</p>
+<h2>De dónde sale cada número</h2>
+<div class="g3-lienzo">
+<svg class="g3-svg" width="1664" height="352" viewBox="0 0 1664 352" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Las dos pruebas como perfiles de usuarios simultáneos en el tiempo; el ícono de persona marca el eje de usuarios. Izquierda, carga: 3 000 sesiones por hora por 120 segundos que dura una sesión dan, por la ley de Little, 100 usuarios a la vez; la concurrencia sube de 0 a 100 en 120 segundos, lo que dura una sesión (M-24), y se queda 15 minutos estable. Derecha, estrés: el mismo arranque, 180 segundos con 100 simultáneos, y luego sube 100 simultáneos por minuto (M-17) hacia una cima de 2 400, que es 1,33 veces la saturación que estimé antes de medir (M-14). El plan era de 1 680 segundos, en gris; k6 cortó la corrida a los 947,7 segundos y el resto del plan queda punteado.">
+<rect class="g3-entra" x="1" y="1" width="814" height="350" rx="16" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<rect class="g3-entra g3-d010" x="849" y="1" width="814" height="350" rx="16" fill="#FFFFFF" stroke="#D8D5CC" stroke-width="2"/>
+<g class="g3-aparece g3-d015"><path d="M28,62 H60 M28,56 L38,40 H60" fill="none" stroke="#1F5FD0" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><text class="g3-m" x="74" y="62" font-size="30" letter-spacing="2" fill="#1F5FD0">CARGA</text></g>
+<g class="g3-pop g3-d030"><rect x="398" y="26" width="137" height="44" rx="10" fill="#FFFFFF" stroke="#1F5FD0" stroke-width="3"/><text class="g3-m" x="466.5" y="57" text-anchor="middle" font-size="26" fill="#14213D">3 000/h</text></g>
+<text class="g3-aparece g3-d038" x="553" y="57" text-anchor="middle" font-size="30" font-weight="600" fill="#14213D">×</text>
+<g class="g3-pop g3-d040"><rect x="571" y="26" width="106" height="44" rx="10" fill="#FFFFFF" stroke="#1F5FD0" stroke-width="3"/><text class="g3-m" x="624" y="57" text-anchor="middle" font-size="26" fill="#14213D">120 s</text></g>
+<text class="g3-aparece g3-d048" x="696" y="57" text-anchor="middle" font-size="30" font-weight="600" fill="#14213D">=</text>
+<g class="g3-pop g3-d050"><rect x="715" y="26" width="75" height="44" rx="10" fill="#1F5FD0" stroke="#1F5FD0" stroke-width="3"/><text class="g3-m" x="752.5" y="57" text-anchor="middle" font-size="26" fill="#FFFFFF">100</text></g>
+<text class="g3-aparece g3-d055" x="398" y="100" font-size="24" fill="#6B7693">Little · M-01…03</text>
+<path d="M96,292 L176.5,164 L780,164 L780,292 Z" fill="#1F5FD0" fill-opacity="0.1"/>
+<path d="M96,292 L176.5,164 L780,164" fill="none" stroke="#1F5FD0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="g3-tapa g3-d045" x="98" y="152" width="690" height="138" fill="#FFFFFF"/>
+<path class="g3-aparece g3-d060" d="M752.5,72 V158" stroke="#1F5FD0" stroke-width="2.5" stroke-dasharray="4 6" fill="none"/>
+<path d="M96,142 V292 H790" fill="none" stroke="#8E97AC" stroke-width="2"/>
+<text class="g3-m g3-aparece g3-d060" x="188.5" y="150" font-size="26" fill="#1F5FD0">100</text>
+<g class="g3-aparece g3-d020"><g transform="translate(62,158)"><circle cx="0" cy="-7" r="7" fill="none" stroke="#44506B" stroke-width="3"/><path d="M-12,14 Q-12,2 0,2 Q12,2 12,14" fill="none" stroke="#44506B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+<g class="g3-aparece g3-d075"><path d="M96,300 V310 H176.5 V300" fill="none" stroke="#44506B" stroke-width="2"/><text x="96" y="338" font-size="24" fill="#44506B"><tspan font-weight="600" fill="#14213D">120 s = 1 sesión</tspan> · M-24</text></g>
+<g class="g3-aparece g3-d115"><text x="478.2" y="220" text-anchor="middle" font-size="28" font-weight="600" fill="#14213D">15 min</text><path d="M190.5,234 H766 M200.5,226 L190.5,234 L200.5,242 M756,226 L766,234 L756,242" fill="none" stroke="#14213D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g class="g3-aparece g3-d025"><path d="M876,62 H910 M878,56 V50 H887 V43 H896 V36 H908" fill="none" stroke="#1F5FD0" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><text class="g3-m" x="924" y="62" font-size="30" letter-spacing="2" fill="#1F5FD0">ESTRÉS</text></g>
+<g class="g3-pop g3-d075"><rect x="1118" y="26" width="270" height="44" rx="10" fill="#FFFFFF" stroke="#1F5FD0" stroke-width="3"/><text font-weight="600" x="1253" y="57" text-anchor="middle" font-size="26" fill="#14213D">saturación estimada</text></g>
+<text class="g3-m g3-aparece g3-d083" x="1449" y="57" text-anchor="middle" font-size="26" fill="#14213D">× 1,33</text>
+<text class="g3-aparece g3-d088" x="1515" y="57" text-anchor="middle" font-size="30" font-weight="600" fill="#14213D">=</text>
+<g class="g3-pop g3-d092"><rect x="1534" y="26" width="106" height="44" rx="10" fill="#1F5FD0" stroke="#1F5FD0" stroke-width="3"/><text class="g3-m" x="1587" y="57" text-anchor="middle" font-size="26" fill="#FFFFFF">2 400</text></g>
+<text class="g3-aparece g3-d095" x="1118" y="100" font-size="24" fill="#6B7693">M-14</text>
+<path d="M944,292 L992.9,286.1 L1017.3,286.1 L1329.8,210.4 L1329.8,292 Z" fill="#1F5FD0" fill-opacity="0.1"/>
+<path d="M944,292 L992.9,286.1 L1017.3,286.1 L1329.8,210.4" fill="none" stroke="#1F5FD0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="g3-tapa g3-tapa-e g3-d095" x="946" y="198.4" width="387.8" height="91.6" fill="#FFFFFF"/>
+<path class="g3-aparece g3-d190" d="M1329.8,210.4 L1579.1,150 L1628,150" fill="none" stroke="#8E97AC" stroke-width="4" stroke-dasharray="10 9" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="g3-aparece g3-d098" d="M1587.0,72 V144" stroke="#1F5FD0" stroke-width="2.5" stroke-dasharray="4 6" fill="none"/>
+<path d="M944,140 V292 H1638" fill="none" stroke="#8E97AC" stroke-width="2"/>
+<g class="g3-aparece g3-d030"><g transform="translate(910,158)"><circle cx="0" cy="-7" r="7" fill="none" stroke="#44506B" stroke-width="3"/><path d="M-12,14 Q-12,2 0,2 Q12,2 12,14" fill="none" stroke="#44506B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+<g class="g3-aparece g3-d105"><text class="g3-m" x="984.6" y="272.1" text-anchor="middle" font-size="24" fill="#1F5FD0">100</text><path d="M944,300 V310 H1017.3 V300" fill="none" stroke="#44506B" stroke-width="2"/><text x="944" y="338" font-size="24" font-weight="600" fill="#14213D">180 s</text></g>
+<g class="g3-aparece g3-d140"><text transform="translate(1167.6,232.2) rotate(-13.62)" text-anchor="middle" font-size="26" fill="#44506B"><tspan class="g3-m" fill="#1F5FD0">+100/min</tspan> · M-17</text></g>
+<path class="g3-aparece g3-d185" d="M1329.8,136 V292" stroke="#C2710C" stroke-width="3" fill="none"/>
+<g transform="translate(1329.8,210.4)"><g class="g3-pop g3-d185"><circle r="15" fill="#C2710C" stroke="#FFFFFF" stroke-width="3"/><path d="M-6,-6 L6,6 M6,-6 L-6,6" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round"/></g></g>
+<text class="g3-aparece g3-d190" x="1317.8" y="152" text-anchor="end" font-size="26" font-weight="600" fill="#8F5207">k6 cortó · 947,7 s</text>
+<text class="g3-aparece g3-d200" x="1628" y="338" text-anchor="end" font-size="24" font-weight="600" fill="#6B7693">1 680 s</text>
+</svg>
+<div class="g3-fila2">
+<svg class="g3-svg" width="1110" height="150" viewBox="0 0 1110 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Las dos pruebas, carga y estrés, usan la misma sesión: 1 login y 6 operaciones, con una pausa entre acciones; la sesión dura 120 segundos, lo mismo que el ramp-up de la carga. La pausa va de 10 a 25 segundos, con distribución triangular y media 18 segundos (M-04).">
+<g class="g3-aparece g3-d150"><rect x="0" y="54" width="120" height="48" rx="24" fill="#14213D"/><path d="M18,88 H50 M18,82 L28,66 H50" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M68,88 H102 M70,82 V76 H79 V69 H88 V62 H100" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<path class="g3-aparece g3-d155" d="M196,78 H850" stroke="#C2710C" stroke-width="5" stroke-dasharray="1 12" stroke-linecap="round" fill="none"/>
+<g class="g3-pop g3-d155"><circle cx="196" cy="78" r="28" fill="#FFFFFF" stroke="#14213D" stroke-width="4"/><path d="M196,78 m-3,0 h17 m-6,0 v6 m5,-6 v5 M193,78 a7,7 0 1 1 -14,0 a7,7 0 1 1 14,0" fill="none" stroke="#14213D" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<circle class="g3-pop g3-d162" cx="300" cy="78" r="16" fill="#1F5FD0"/>
+<circle class="g3-pop g3-d166" cx="410" cy="78" r="16" fill="#1F5FD0"/>
+<circle class="g3-pop g3-d170" cx="520" cy="78" r="16" fill="#1F5FD0"/>
+<circle class="g3-pop g3-d174" cx="630" cy="78" r="16" fill="#1F5FD0"/>
+<circle class="g3-pop g3-d178" cx="740" cy="78" r="16" fill="#1F5FD0"/>
+<circle class="g3-pop g3-d182" cx="850" cy="78" r="16" fill="#1F5FD0"/>
+<text class="g3-aparece g3-d158" x="196" y="34" text-anchor="middle" font-size="26" font-weight="600" fill="#14213D">login</text>
+<text class="g3-aparece g3-d172" x="575" y="34" text-anchor="middle" font-size="26" font-weight="600" fill="#14213D">6 operaciones</text>
+<g class="g3-aparece g3-d192"><text x="1010" y="26" text-anchor="middle" font-size="24" fill="#44506B"><tspan font-weight="600" fill="#8F5207">pausa</tspan> · M-04</text><path d="M935,104 L1025,46 L1085,104 Z" fill="#C2710C" fill-opacity="0.18" stroke="#C2710C" stroke-width="3" stroke-linejoin="round"/><path d="M1015,104 V50" stroke="#14213D" stroke-width="2.5" stroke-dasharray="5 5" fill="none"/><text x="935" y="134" text-anchor="middle" font-size="24" fill="#44506B">10</text><text x="1015" y="134" text-anchor="middle" font-size="24" font-weight="600" fill="#14213D">18 s</text><text x="1085" y="134" text-anchor="middle" font-size="24" fill="#44506B">25</text></g>
+</svg>
+<div class="g3-chips"><div class="g3-chip g3-sube g3-d195"><svg width="38" height="38" viewBox="-19 -19 38 38" role="img" aria-label="Ícono usuarios: 3 000 usuarios de prueba"><path d="M-9,-6 a6,6 0 1 0 12,0 a6,6 0 1 0 -12,0 M-16,14 q0,-11 13,-11 q13,0 13,11 M8,-11 a5,5 0 0 1 0,10 M12,2 q6,2 6,10" fill="none" stroke="#1F5FD0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>3 000</b> · S/ 10 000</span></div><div class="g3-chip g3-sube g3-d200"><svg width="38" height="38" viewBox="-19 -19 38 38" role="img" aria-label="Ícono procesador: Qolqe con 1 CPU"><path d="M-10,-12 h20 a2,2 0 0 1 2,2 v20 a2,2 0 0 1 -2,2 h-20 a2,2 0 0 1 -2,-2 v-20 a2,2 0 0 1 2,-2 z M-4,-4 h8 v8 h-8 z M-5,-12 v-5 M5,-12 v-5 M-5,12 v5 M5,12 v5 M-12,-5 h-5 M-12,5 h-5 M12,-5 h5 M12,5 h5" fill="none" stroke="#1F5FD0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Qolqe · 1 CPU</b></span></div><div class="g3-chip g3-sube g3-d205"><svg width="38" height="38" viewBox="-19 -19 38 38" role="img" aria-label="Ícono medidor: k6, el generador de carga"><path d="M-15,8 a15,15 0 1 1 30,0 M0,8 L8,-5" fill="none" stroke="#1F5FD0" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>k6 · modelo abierto</b> · vs 5</span></div></div>
 </div>
+<div class="g3-mezcla"><div class="g3-ley g3-aparece g3-d200"><span class="g3-ley-c"><b>U-01</b> consulta</span><span class="g3-ley-d"><b>U-02</b> dinero</span></div><div class="g3-seg g3-c g3-f30 g3-sube g3-d194"><span>saldo/perfil</span><b>30 %</b></div><div class="g3-seg g3-c g3-f15 g3-sube g3-d198"><span>movimientos</span><b>15 %</b></div><div class="g3-seg g3-d g3-f15 g3-sube g3-d202"><span>transferir</span><b>15 %</b></div><div class="g3-seg g3-c g3-f10 g3-sube g3-d206"><span>contactos</span><b>10 %</b></div><div class="g3-seg g3-d g3-f10 g3-sube g3-d210"><span>recarga</span><b>10 %</b></div><div class="g3-seg g3-cd g3-f10 g3-sube g3-d214"><span>deudas 6</span><b>pago 4 %</b></div><div class="g3-seg g3-c g3-f10 g3-sube g3-d218"><span>otras</span><b>10 %</b></div></div>
 </div>
 <p class="numero-pagina">6 · Entrega final · Pruebas de Qolqe</p>
-<aside>Estas son las dos que defiendo, y lo importante es que cada número sale del requerimiento.
+<aside>Profesora, estas son las dos que defiendo, de las cuatro que ejecuté, y lo importante es que cada número sale del requerimiento.
 
-Los 100 usuarios simultáneos no los elegí yo: 3 000 sesiones por hora son 0,833 por segundo, y como cada sesión dura 120 segundos, por la ley de Little hay 100 a la vez. El ramp-up de 120 segundos tampoco lo elegí: con llegada constante, la concurrencia se llena sola en lo que dura una sesión. El think time sale del requerimiento, de 10 a 25 segundos con media 18; sin pausas, la carga sería una prueba de estrés disfrazada. Y la mezcla de operaciones es la tabla del requerimiento.
+Tarjeta de la izquierda, la carga; el ícono de persona marca el eje de usuarios simultáneos. Los 100 usuarios simultáneos no los elegí yo: 3 000 sesiones por hora son 0,833 por segundo, y como cada sesión dura 120 segundos, por la ley de Little hay 100 a la vez (M-01 a M-03). El ramp-up de 120 segundos tampoco lo elegí: con llegada constante, la concurrencia se llena sola en lo que dura una sesión (M-24), la de abajo. Después, 15 minutos estables.
 
-El estrés usa el mismo perfil, pero sube 100 usuarios simultáneos por minuto. La cima de 2 400 la calculé antes de medir: 1,33 veces la saturación que estimaba. k6 cortó la corrida a los 947 segundos con su red de seguridad técnica, que no es un umbral del SLA; la capacidad no depende de ese corte, porque se calcula por ventanas de 30 segundos.
+Tarjeta de la derecha, el estrés. Usa el mismo arranque, 180 segundos hasta tener los 100 simultáneos, y luego sube 100 simultáneos por minuto durante 1 380 segundos (M-17). La cima de 2 400 la calculé antes de medir: 1,33 veces la saturación que estimaba (M-14). Planifiqué 1 680 segundos, el número en gris; k6 cortó la corrida a los 947,7 segundos con su red de seguridad técnica, que corta al llegar al 20 % de fallas acumuladas. No es un umbral del SLA, y la capacidad no depende de ese corte, porque se calcula por ventanas de 30 segundos. Lo punteado es el plan que ya no se ejecutó.
 
-Los datos: un usuario distinto por VU, con saldo suficiente, para que reglas como el límite diario no se confundan con fallas de rendimiento.
+Abajo, lo que comparten las dos: la píldora oscura lleva los íconos de carga y de estrés. La misma sesión: 1 login y 6 operaciones, con una pausa de 10 a 25 segundos entre acciones, triangular con media 18 segundos (M-04): seis pausas son 108 segundos y, con 12 de cierre, la sesión dura 120. Sin pausas, la carga sería una prueba de estrés disfrazada. La mezcla es la tabla del requerimiento: saldo y perfil 30 %, movimientos 15, transferir 15, contactos 10, recarga 10, deudas y pagos 10 (6 de consulta y 4 de pago) y otras 10. En azul, lo que se juzga con U-01, consultas; en verde, lo que se juzga con U-02, dinero; por eso el segmento de deudas y pago va mitad y mitad.
 
-El entorno: k6 corre en la misma Mac, fuera del contenedor. La clase dice que generar la carga desde la misma máquina distorsiona las mediciones; por eso Qolqe tiene una cuota de 1 CPU, y k6 nunca pasó del 1,2 % del equipo en estas dos corridas. Está declarado como limitación en el informe.
+Los datos: 3 000 usuarios distintos, uno por VU, con S/ 10 000 cada uno, para que reglas como el límite diario no se confundan con fallas de rendimiento.
 
-Y la herramienta es k6 por el modelo abierto: el requerimiento da la carga como sesiones por hora y pide sostenerla sin acumular retrasos. k6 no baja la carga si Qolqe se atrasa, y cuenta las sesiones que no pudo iniciar.</aside>
+El entorno: Qolqe en Docker con 1 CPU y 1 GB, y k6 en la misma Mac, fuera del contenedor. La clase dice que generar la carga desde la misma máquina distorsiona las mediciones; por eso Qolqe tiene una cuota de 1 CPU, y k6 nunca pasó del 1,2 % del CPU del equipo en estas dos corridas. Está declarado como limitación en el informe.
+
+Y la herramienta es k6 por el modelo abierto: el requerimiento da la carga como sesiones por hora y pide sostenerla sin acumular retrasos. k6 mantiene las 50 sesiones por minuto aunque Qolqe se atrase, y cuenta las sesiones que no pudo iniciar. La comparé con otras cinco alternativas en el informe, §2: es la única que cumple mis cuatro criterios eliminatorios.</aside>
 </section>
