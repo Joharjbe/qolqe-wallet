@@ -725,7 +725,7 @@ li { margin-top: 16px; }
 .g4-ap-ambar { color: #8F5207; }
 .g4-ap-manual { align-self: flex-start; font-size: 24px; font-weight: 600; color: var(--texto); border: 2px dashed #6B7693; border-radius: 999px; padding: 2px 14px; line-height: 1.3; }
 .g4-ap-ceros { display: flex; justify-content: space-between; background: #FFFFFF; border: 2px solid var(--linea); border-radius: 16px; padding: 20px 24px; }
-/* Cuarta celda: la deuda técnica del código de prueba (2 de 3 costos pagados), separada de los tres ceros por una línea. */
+/* Cuarta celda: los costos del código de prueba (2 pagados y 1 decisión con su motivo), separada de los tres ceros por una línea. */
 .g4-ap-deuda { border-left: 2px solid var(--linea); padding-left: 24px; }
 .g4-ap-defx { display: inline-block; vertical-align: middle; margin-left: 14px; font-size: 24px; letter-spacing: 0; color: #FFFFFF; background: #8F5207; border-radius: 8px; padding: 2px 10px; line-height: 1.3; }
 .g4-ap-corr { font-family: 'IBM Plex Sans', Arial, sans-serif; font-size: 24px; font-weight: 600; color: var(--texto); margin-left: 10px; }
@@ -734,6 +734,7 @@ li { margin-top: 16px; }
 .g4-ap-cero svg { display: block; flex: none; }
 .g4-ap-cero-n { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 48px; font-weight: 700; line-height: 1; color: var(--verde); }
 .g4-ap-cero-p { font-size: 24px; font-weight: 600; line-height: 1.15; color: var(--tinta); }
+.g4-ap-dec { font-size: 24px; font-weight: 600; line-height: 1.15; color: var(--texto); margin-top: -4px; }
 .g4-ap-barra { display: block; flex: none; }
 .g4-ap-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .g4-ap-ficha { background: #FFFFFF; border: 2px solid var(--linea); border-radius: 16px; padding: 22px 24px; display: flex; flex-direction: column; gap: 14px; }

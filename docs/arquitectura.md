@@ -4,7 +4,7 @@ Este documento atiende tres indicaciones de la entrega final: que la arquitectur
 
 **En pocas líneas:** los criterios de aceptación se escriben en Gherkin y los ejecutan dos suites: API, en Python, y web, en TypeScript. Una tercera suite, de contrato, genera casos desde el OpenAPI de Qolqe. Las tres corren en el pipeline contra Qolqe sin modificarlo y entregan JUnit XML, que alimenta la trazabilidad, GitHub Pages y Kiwi TCMS. La Parte 3 mide el rendimiento con k6 contra Qolqe en un contenedor Docker de 1 CPU y 1 GB. Esas corridas se hacen a mano, fuera del pipeline (la sección 1.6 explica por qué), y su evidencia queda versionada en `tests/performance/resultados/`, desde donde el pipeline la publica en Pages.
 
-| Tamaño en la entrega final (tag [`entrega-final-v1`](https://github.com/Joharjbe/qolqe-wallet/releases/tag/entrega-final-v1)) | API | Contrato | Web | Rendimiento (k6) |
+| Tamaño en la entrega final (tag [`entrega-final-v2`](https://github.com/Joharjbe/qolqe-wallet/releases/tag/entrega-final-v2); el código y las pruebas son los mismos que en `entrega-final-v1`) | API | Contrato | Web | Rendimiento (k6) |
 |---|---|---|---|---|
 | Escenarios Gherkin | 276 en 10 `.feature` | — (caso CP-T04) | 58 en 4 `.feature` | — (no usa Gherkin). 8 escenarios en `k6/escenarios.js`: los 4 tipos de prueba (carga, pico, estrés y resistencia), referencia, calibración, demo y una confirmación de capacidad opcional |
 | Pruebas que ejecuta el runner | 766 (los esquemas se expanden) | 19 operaciones de `/openapi.json` | 71, por 3 repeticiones = 213 | Una corrida por escenario, a mano, con `tests/performance/correr.sh` |

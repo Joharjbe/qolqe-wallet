@@ -24,7 +24,7 @@ Lo que no cambió es la regla: la IA propone y el tester decide. En S11 era una 
 
 ## Antes de clase
 
-1. Tiene que existir `~/Desktop/respaldo-sitio-con-imagenes`. Es el sitio del run #18 (id 43109117336, `workflow_dispatch`, commit `5fbe969`) y también el plan B de la reportería. Su `run.json` dice 335 casos, 295 `passed`, 40 `xfailed`, 0 `failed` y conclusión `success` (`run.json:10-19`).
+1. Tiene que existir `~/Desktop/respaldo-sitio-con-imagenes`. Es el sitio del run #18 (id 43109117336, `workflow_dispatch`, commit `5fbe969`), y esta demo lo usa porque las respuestas grabadas se buscan por la petición exacta, que sale de ese run. El plan B de la reportería es otro: `~/Desktop/respaldo-sitio-entrega-final` (run #28). Su `run.json` dice 335 casos, 295 `passed`, 40 `xfailed`, 0 `failed` y conclusión `success` (`run.json:10-19`).
 2. Ensayo en casa: corre una vez el comando de la demo con `--salida ~/Desktop/diagnostico-ensayo`, para que la corrida en vivo no lo pise. La primera línea tiene que ser la de abajo. Si no lo es, no lo muestres en vivo: usa `evals-google.md`. Ese reporte es el respaldo.
 3. Los archivos se abren en el momento de usarlos, no antes de clase. En las preguntas ya pasó k6, y la línea «Antes de k6» de [`hoja-demo.md`](hoja-demo.md) cierra el editor. Desde la terminal de la demo, que está en la raíz del repositorio:
 
