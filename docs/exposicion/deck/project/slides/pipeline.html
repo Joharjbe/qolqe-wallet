@@ -21,7 +21,7 @@
 </div>
 <p class="nota sola">Tiempos del run #24, intento 1: el run completo, 13 min 38 s.</p>
 </div>
-<p class="numero-pagina">12 · Entrega final · Pruebas de Qolqe</p>
+<p class="numero-pagina">14 · Entrega final · Pruebas de Qolqe</p>
 <aside>Este punto responde la observación 2a: mejorar la estructura del workflow y justificar cada job.
 
 El pipeline va de lo barato a lo caro: si falla algo de un minuto, no se gastan diez. Son ocho jobs. Los cuatro de arriba son las etapas de prueba; después vienen quality-gate, que junta todo en un solo veredicto en el resumen del run; reportes, que arma la matriz y el sitio y corre aunque fallen las pruebas, porque el reporte es lo que explica el fallo; gestion-casos, que queda listo para un Kiwi en internet: hoy Kiwi corre en mi máquina y lo sincronizo en modo pull, así que el job solo deja el aviso; y publicar, que sube el sitio a Pages, solo en main, y es el último.

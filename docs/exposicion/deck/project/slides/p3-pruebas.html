@@ -15,7 +15,7 @@
 <p class="chica"><b>Datos:</b> 3&nbsp;000 usuarios distintos, uno por VU, con S/&nbsp;10&nbsp;000 cada uno. <b>Entorno:</b> Qolqe en Docker con 1 CPU y 1 GB; k6 en la misma Mac, fuera del contenedor (≤ 1,2 % del CPU del equipo). <b>Herramienta:</b> k6, porque su modelo abierto mantiene las 50 sesiones/min aunque Qolqe se atrase y cuenta las sesiones descartadas; comparada con 5 alternativas en el informe, §2.</p>
 </div>
 </div>
-<p class="numero-pagina">4 · Entrega final · Pruebas de Qolqe</p>
+<p class="numero-pagina">6 · Entrega final · Pruebas de Qolqe</p>
 <aside>Estas son las dos que defiendo, y lo importante es que cada número sale del requerimiento.
 
 Los 100 usuarios simultáneos no los elegí yo: 3 000 sesiones por hora son 0,833 por segundo, y como cada sesión dura 120 segundos, por la ley de Little hay 100 a la vez. El ramp-up de 120 segundos tampoco lo elegí: con llegada constante, la concurrencia se llena sola en lo que dura una sesión. El think time sale del requerimiento, de 10 a 25 segundos con media 18; sin pausas, la carga sería una prueba de estrés disfrazada. Y la mezcla de operaciones es la tabla del requerimiento.

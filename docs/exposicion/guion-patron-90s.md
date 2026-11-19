@@ -1,6 +1,6 @@
 # Recorrido del patrón en 90 segundos
 
-Es el paso D2 de la demo ([`guion.md`](guion.md)) y lo que [`respuesta-feedback.md`](../respuesta-feedback.md) promete para el punto 4: ir de un paso de Gherkin al Page Object y al componente `DialogoConfirmacion`, en el código y no de memoria. La lámina 11 (`patron`) ya dijo el porqué; aquí se ve. En la exposición de 15 minutos va la [versión de 40 s](#versión-de-40-s-la-de-la-exposición-de-15-minutos); la de 90 s es para las preguntas o para cuando vas adelantado.
+Es el paso D2 de la demo ([`guion.md`](guion.md)) y lo que [`respuesta-feedback.md`](../respuesta-feedback.md) promete para el punto 4: ir de un paso de Gherkin al Page Object y al componente `DialogoConfirmacion`, en el código y no de memoria. La lámina 13 (`patron`) ya dijo el porqué; aquí se ve. En la exposición de 15 minutos va la [versión de 40 s](#versión-de-40-s-la-de-la-exposición-de-15-minutos); la de 90 s es para las preguntas o para cuando vas adelantado.
 
 `scripts/preparar-demo.sh` deja los cuatro archivos abiertos en VS Code, cada uno en la línea del salto. Para pasar de uno a otro: `Ctrl + Tab`. Si no están abiertos, desde la raíz del repositorio:
 
@@ -37,4 +37,4 @@ Tres de los cinco saltos: el `.feature`, la página y otra página que usa el mi
 | ¿Qué otros usan el mismo diálogo? | 9 de los 58 escenarios web (CP-W07, W08, W10, W16, W17, W19, W20, W21 y W23). En el código: `SolicitudesPage.cancelar` (`SolicitudesPage.ts:105-108`) y dos pasos comunes que reciben el componente directo: `cancela la confirmación` y `la confirmación dice {string}` (`tests/e2e/steps/comunes.steps.ts:37` y `:42`) |
 | ¿Cómo sabes que ningún paso tiene localizadores? | `.github/workflows/pruebas.yml:84-89`: el job `estatico` hace `grep` de `getBy`, `locator(` y `page.` sobre `tests/e2e/steps` y falla si encuentra uno |
 | ¿De dónde sale la página que recibe el paso? | `tests/e2e/fixtures.ts:174`: el fixture `solicitudes` crea un `SolicitudesPage` por prueba |
-| ¿Y por qué no Screenplay? | Lámina 11: está pensado para suites grandes; con 58 escenarios sumaría actores, tareas y preguntas sin un problema que lo pida, y lo usaría con más de unos 100 escenarios, varios equipos o recorridos de varios actores (`docs/arquitectura.md` §3.3 y §3.7) |
+| ¿Y por qué no Screenplay? | Lámina 13: está pensado para suites grandes; con 58 escenarios sumaría actores, tareas y preguntas sin un problema que lo pida, y lo usaría con más de unos 100 escenarios, varios equipos o recorridos de varios actores (`docs/arquitectura.md` §3.3 y §3.7) |

@@ -15,7 +15,7 @@
 </table>
 <p class="nota sola">Lo verifican: carga y resistencia, U-01 a U-05 · pico, U-06 · estrés, U-08 · resistencia, U-09 · todas las corridas, U-07.</p>
 </div>
-<p class="numero-pagina">3 · Entrega final · Pruebas de Qolqe</p>
+<p class="numero-pagina">5 · Entrega final · Pruebas de Qolqe</p>
 <aside>Este es el paso donde está el criterio del tester. La tabla es el análisis. A la izquierda está lo que dice el requerimiento, copiado tal cual. Tres frases ya traen número: 800 milisegundos, 1,5 segundos y el 1 % de error. Les faltaba la carga, y la fijé en la hora punta, 100 usuarios simultáneos: es el supuesto S-01. Además, el 95 % lo exijo por endpoint y por grupo, que es el S-03, para que un endpoint lento no quede escondido dentro de su grupo. Las que no traen número las convertí con un supuesto escrito. «Sin acumular retrasos» no es un tiempo: es que la cola no crezca, y por eso U-04 y U-05 miden throughput y sesiones descartadas, no milisegundos. «Degradación razonable» la fijé en el doble del umbral normal, y ese doble es un supuesto mío, S-05.
 
 En clase se dice que el tester no inventa el dato que falta: lo pregunta al negocio. Aquí no había a quién preguntar, así que dejé escrito cada supuesto. La capacidad, U-08, no pasa ni falla: se mide. En el estrés, U-01 a U-05 se juzgan en ventanas de 30 segundos, y en una ventana tan corta el throughput se mide con tolerancia: atendido al menos el 90 % de lo ofrecido, que sale de la variación de la fase base. Y la línea de abajo dice qué prueba verifica cada umbral: es el hilo de los requisitos a los escenarios.
