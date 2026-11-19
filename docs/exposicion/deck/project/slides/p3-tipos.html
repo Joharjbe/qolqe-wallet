@@ -25,7 +25,7 @@
 <p class="chica"><b>Defiendo carga y estrés:</b> carga, porque es la carga esperada y ahí se miden los umbrales de tiempo y de error; estrés, porque es la única que dice dónde se rompe Qolqe y por qué. <b>Capa: API</b>, porque los umbrales hablan del tiempo de respuesta del servidor.</p>
 </div>
 </div>
-<p class="numero-pagina">2 · Entrega final · Pruebas de Qolqe</p>
+<p class="numero-pagina">4 · Entrega final · Pruebas de Qolqe</p>
 <aside>Lo primero fue leer el requerimiento y decidir qué medir. No se prueba todo: se prueban los flujos críticos. Los seis de arriba entran por al menos uno de los criterios del enunciado: pesan 15 % o más del tráfico, mueven dinero o tienen un riesgo alto con evidencia en el código. El login es el caso interesante: no mueve dinero, pero todas las sesiones pasan por él, el PIN se verifica con PBKDF2 de 200 000 iteraciones y la ráfaga de la campaña cae justo ahí. Después resultó ser donde se rompe. Movimientos entra por su peso y por una consulta N+1 de unas 243 consultas por petición.
 
 Luego, qué quiere saber el negocio. La regla que uso es la de la clase 13: el tipo de prueba lo define la pregunta, no cuántos usuarios pongo. Cada fila es una frase del requerimiento, copiada tal cual, y el tipo que la responde.

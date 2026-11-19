@@ -6,6 +6,8 @@
   "title": "Entrega final · Pruebas de Qolqe (CS5383)",
   "order": [
     "portada",
+    "contexto",
+    "lo-que-pidio",
     "p3-tipos",
     "p3-umbrales",
     "p3-pruebas",
@@ -29,7 +31,7 @@
   ],
   "sections": {
     "foco": {
-      "description": "La portada y el foco de la Parte 3 en cuatro láminas: identificación, análisis y umbrales, las dos pruebas y el veredicto",
+      "description": "Abre con la portada, el contexto y lo que pidió la profesora, y sigue con el foco de la Parte 3 en cuatro láminas: identificación, análisis y umbrales, las dos pruebas y el veredicto",
       "start": "portada"
     },
     "consolidado": {

@@ -10,12 +10,12 @@
 <tr><td class="mono">DEF-11</td><td>Esquivar el bloqueo por intentos fallidos, mandándolos a la vez</td></tr>
 <tr><td class="mono">DEF-19</td><td>Dejar el saldo en negativo: la transferencia interbancaria no descuenta la comisión</td></tr>
 <tr><td class="mono">DEF-21</td><td>Superar el saldo o el límite diario con dos transferencias simultáneas</td></tr>
-<tr><td class="mono">DEF-25</td><td>Debitar varias veces la misma solicitud si se acepta dos veces a la vez</td></tr>
+<tr><td class="mono">DEF-25</td><td>Debitar varias veces la misma solicitud si se acepta varias veces a la vez</td></tr>
 <tr><td class="mono">DEF-30</td><td>Cancelar o rechazar mientras se acepta: las dos responden 200 y el dinero se mueve igual</td></tr>
 </table>
 <p class="nota">Los ocho tocan el dinero o la sesión, y cuatro solo aparecen con dos operaciones a la vez: una suite que prueba de a uno no los ve.</p>
 </div>
-<p class="numero-pagina">20 · Entrega final · Pruebas de Qolqe</p>
+<p class="numero-pagina">22 · Entrega final · Pruebas de Qolqe</p>
 <aside>Antes de cerrar quiero enseñar para qué sirvió todo esto, porque es fácil perderse en herramientas y pipelines. Al final, una suite de pruebas existe para esto.
 
 Son 30 defectos documentados, con sus pasos para reproducirlos, y ocho son críticos. Los ocho tocan el dinero o la sesión: aceptar una solicitud vencida y que el dinero igual se mueva, transferir a una cuenta cerrada, seguir usando el token después de cerrar sesión, dejar el saldo en negativo porque la interbancaria no descuenta la comisión. El último, DEF-30, salió el 17 de noviembre al medir CP-T19: si una solicitud se cancela o se rechaza mientras se acepta, las dos operaciones responden 200 y el dinero igual se mueve.

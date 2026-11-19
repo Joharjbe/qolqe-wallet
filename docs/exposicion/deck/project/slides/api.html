@@ -26,8 +26,8 @@
 <p class="chica">Los 10 escenarios de concurrencia, dos usuarios a la vez: transferencias que superan el saldo, registros duplicados, aceptaciones que debitan varias veces. Regla propia: una carrera se automatiza solo si la reprodujo 200 de 200 veces.</p>
 </div>
 </div>
-<p class="numero-pagina">9 · Entrega final · Pruebas de Qolqe</p>
-<aside>Primero, qué es G4 y por qué importa: son los contactos y las solicitudes de dinero, y es el módulo que mueve dinero sin que el pagador inicie la operación, porque una persona pide y otra acepta. 4 de sus 10 historias son de prioridad Alta, y tres de los defectos críticos, DEF-03, DEF-25 y DEF-30, nacen en las solicitudes.
+<p class="numero-pagina">11 · Entrega final · Pruebas de Qolqe</p>
+<aside>Como vimos al inicio, G4 mueve dinero sin que el pagador inicie la operación: una persona pide y otra acepta. 4 de sus 10 historias son de prioridad Alta.
 
 De los 335 casos, 276 son de API, partidos en funcionales y técnicos. Los funcionales prueban la regla de negocio de cada criterio. Los técnicos prueban lo que el usuario no ve: que un token caducado no sirva, que un usuario no pueda leer los datos de otro, que los códigos de estado sean los que el contrato dice. Cada caso nombra su técnica de diseño. Contadas en todo el proyecto, API y web, la partición de equivalencia está en 155 casos, los valores límite en 74 y la transición de estados en 47; no es un reparto de los 276, porque un caso puede combinar dos técnicas.
 

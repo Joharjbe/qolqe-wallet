@@ -23,7 +23,7 @@
 </div>
 <p class="nota sola">Se lee en el resumen del run, sin abrir el YAML. No evalúa el rendimiento, que se mide aparte con 1 CPU, ni el job de reportes, que publica aunque fallen las pruebas.</p>
 </div>
-<p class="numero-pagina">13 · Entrega final · Pruebas de Qolqe</p>
+<p class="numero-pagina">15 · Entrega final · Pruebas de Qolqe</p>
 <aside>El anuncio pide que los quality gates estén claros. Claro significa dos cosas: qué mide y qué pasa si falla.
 
 Qué pasa si falla está arriba: el pull request no entra a main. La protección de main exige tres checks obligatorios, api, web y quality-gate, y la regla se aplica a todos, así que tampoco el dueño del repositorio puede fusionar sin los tres en verde. Son dos defensas: cada job comprueba al anterior, así que si estático o contrato fallan, api y web también quedan en rojo; y quality-gate junta los cuatro resultados, cuenta una etapa omitida como no aprobada y escribe el veredicto en el resumen. Lo probé de verdad: el PR #10 rompe a propósito el saldo esperado de un caso; en su run, el #25, api quedó en rojo, web falló en su guarda en vez de omitirse, quality-gate dio «no pasa» y la fusión quedó bloqueada.

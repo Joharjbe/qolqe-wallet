@@ -29,7 +29,7 @@
 <p class="chica">Las tres primeras filas corren en <b>GitHub Actions</b>; el rendimiento, a mano. Las partes comparten artefactos, no código: el Gherkin con sus etiquetas <span class="mono" style="font-size:24px">@HU @CA @CP @DEF</span>, la API de soporte y el JUnit. Con el JUnit, <span class="mono" style="font-size:24px">trazabilidad.py</span> arma la matriz y el historial de Pages, y Kiwi TCMS lo importa desde mi máquina.</p>
 </div>
 </div>
-<p class="numero-pagina">7 · Entrega final · Pruebas de Qolqe</p>
+<p class="numero-pagina">9 · Entrega final · Pruebas de Qolqe</p>
 <aside>Esta lámina responde la primera observación: que quede clara la arquitectura del proyecto de automatización, API y web.
 
 Se lee de izquierda a derecha. El Gherkin dice qué se prueba. Los pasos lo traducen: pytest-bdd en Python para la API y playwright-bdd en TypeScript para la web. Después, lo que habla con Qolqe: en la API, el cliente Sesiones, hecho con httpx, que guarda el token de cada usuario; en la web, los Page Objects y sus componentes, así que ningún paso tiene un localizador. Y al final cada suite deja su JUnit y su reporte HTML. El contrato no pasa por Gherkin: Schemathesis lee el OpenAPI de Qolqe y genera los casos. El rendimiento tampoco: k6 corre a mano contra Qolqe en un contenedor de 1 CPU, fuera del pipeline, y su evidencia queda versionada en el repositorio.

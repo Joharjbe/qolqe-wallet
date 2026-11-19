@@ -13,7 +13,7 @@
 </table>
 <p class="nota sola">La regla de niveles, de la clase 11: lo que se puede comprobar por API va por API, que es más rápido y estable; la web, lo que solo existe en la pantalla.</p>
 </div>
-<p class="numero-pagina">8 · Entrega final · Pruebas de Qolqe</p>
+<p class="numero-pagina">10 · Entrega final · Pruebas de Qolqe</p>
 <aside>Esta lámina responde la observación que me hicieron dos veces: que las herramientas sean complementarias y que su elección esté sustentada.
 
 La idea que las ordena es que cada una responde una pregunta que las otras no responden, y la última columna dice frente a qué la elegí. pytest-bdd prueba los casos que yo diseñé desde los criterios, con el mismo Gherkin que la web; Postman con Newman no lee Gherkin y Newman ya no recibe actualizaciones. Schemathesis genera casos desde el contrato, así que encuentra lo que a mí no se me ocurrió: así salieron cuatro defectos; eso es complementario, no redundante. Playwright prueba lo que solo existe en la pantalla; elegí Playwright y no Cypress porque un caso necesita dos navegadores a la vez. k6 responde si aguanta la carga: el requerimiento da la carga como sesiones por hora, que es una tasa de llegada, y el modelo abierto de JMeter es experimental. GitHub Actions corre todo sin un servidor propio. Y Kiwi no ejecuta nada: registra cada corrida.

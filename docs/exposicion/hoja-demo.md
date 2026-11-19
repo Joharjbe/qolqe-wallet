@@ -8,8 +8,8 @@ Lo que se dice y por qué este orden: [`guion.md`](guion.md). Carpeta: la raíz 
 
 | # | Qué | Comando |
 |---|---|---|
-| 1 | Repo al tag | `git switch main && git pull --ff-only entrega main && git fetch -q entrega --tags && git describe --tags` → `entrega-final-v1`. Si sale `entrega-final-v1-N-g…`, hay commits después del tag; si da error, el tag todavía no existe (al 18-nov, `git ls-remote --tags entrega` solo daba `parte-2` y `parte-3`) |
-| 1b | Checks de main | `gh api repos/Joharjbe/qolqe-wallet/branches/main -q .protection.required_status_checks.contexts` → `["api","web","quality-gate"]` (salida del 18-nov), lo mismo que dicen la lámina 13, `docs/pipeline.md:32` y `docs/informe.md:164`. Si da otra cosa, en la lámina 13 di lo que dio (`guion.md`, fila `gate`) |
+| 1 | Repo al tag | `git switch main && git pull --ff-only entrega main && git fetch -q entrega --tags && git describe --tags` → `entrega-final-v1`. Si sale `entrega-final-v1-N-g…`, `main` tiene N commits después del tag: los de documentación que entraron después del 18-nov (PR #12 en adelante). Si da error, faltan los tags: repite el `git fetch` (el tag existe en `entrega` desde el 18-nov, sobre `37245d2`) |
+| 1b | Checks de main | `gh api repos/Joharjbe/qolqe-wallet/branches/main -q .protection.required_status_checks.contexts` → `["api","web","quality-gate"]` (salida del 18-nov), lo mismo que dicen la lámina 15, `docs/pipeline.md:32` y `docs/informe.md:164`. Si da otra cosa, en la lámina 15 di lo que dio (`guion.md`, fila `gate`) |
 | 2 | Base de k6 (≈ 2,5 min) | `export RESULTADOS="$HOME/demo-qolqe" USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv"` y `SIN_BUILD=1 tests/performance/preparar.sh 3000` |
 | 3 | Ensayo de k6 (≈ 2:40) | «Antes de k6» y el principal: primera línea `…/demo-qolqe/demo/<marca>`, última `k6 = 99 … integridad = 0` |
 | 4 | Parte 3 al respaldo | `.venv/bin/python .github/scripts/sitio_rendimiento.py --sitio ~/Desktop/respaldo-sitio-con-imagenes` |
@@ -34,5 +34,24 @@ Lo que se dice y por qué este orden: [`guion.md`](guion.md). Carpeta: la raíz 
 
 - **Principal:** `RESULTADOS="$HOME/demo-qolqe" USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv" ESPERA_MAX=20 tests/performance/correr.sh demo`
 - **Respaldo,** si lo marcaste o si sale `V-04: el equipo no está libre`: `RESULTADOS="$HOME/demo-qolqe" USUARIOS_CSV="$HOME/demo-qolqe/usuarios.csv" FORZAR=1 ESPERA_MAX=0 tests/performance/correr.sh demo`
+- **Opcional en D2, si vas adelantado o si pregunta cómo corre el Page Object:** `SLOWMO=700 npx playwright test --headed --grep "CP-W10"` → 28 s (23 s la prueba), el mismo recorrido de solicitudes del editor, en un Chromium visible. Después, `curl -sf -X POST http://127.0.0.1:8000/api/pruebas/reiniciar` deja los datos limpios.
 - **Si k6 falla dos veces:** `open tests/performance/resultados/demo/20261111-2125/reporte.html` o el video.
 - **Sin internet:** `cd ~/Desktop/respaldo-sitio-con-imagenes && python3 -m http.server 8100` → http://localhost:8100/
+
+## 4. Ensayo técnico del 18-nov (en esta Mac)
+
+Cada comando de esta hoja, corrido en el orden de arriba, con el repo en la rama del PR #12 (mismo código que el tag).
+
+| Paso | Resultado | Tiempo |
+|---|---|---|
+| 1 y 1b. Tag y checks | `entrega-final-v1` · `["api","web","quality-gate"]` | — |
+| 2. Base de k6 | `Listo. Evidencia del entorno en …/demo-qolqe/entorno` | 154 s |
+| 3. Ensayo de k6, principal | V-04: 75,47 % ocioso · `5 de 9 umbrales … → FALLA` · `TOTAL descuadres: 0` · `U-07: PASA` · `k6 = 99 … integridad = 0` | 161 s |
+| 4. Parte 3 al respaldo | 92 archivos de 8 escenarios en `rendimiento/` (8,4 MB) | segundos |
+| 5. `preparar-demo.sh` | `Listo. Qolqe responde en …`, Kiwi arriba, 7 pestañas y los 4 archivos del patrón en sus líneas | 20 s con dependencias ya instaladas |
+| API en vivo, CP-A28 | `1 passed, 765 deselected in 0.52s` | 2 s |
+| Web en vivo, CP-W10 con `--headed` | `1 passed` | 28 s |
+| Capacidad de IA sin red | `40 fallos (40 casos) · 32 grupos · 36 clasificados · 1 rechazados por las guardas`; CP-T17 rechazado | < 1 s |
+| Respaldo sin red en el 8100 | portada, `historial.html`, `web/`, `api/`, `evidencias/` y `rendimiento/` responden 200 | — |
+
+El CPU ocioso quedó justo en el límite de la principal (77 % antes de lanzar, 75,47 % en V-04). Lo que más consumía era `suggestd`, un proceso del sistema (≈ 80 % de un núcleo), y CodexBar (18 %). El sábado, antes del paso 4 del salón, mira `ps -Ao pcpu,comm -r | head -4` y cierra lo que se pueda; si no llega a 75 %, usa el respaldo.
